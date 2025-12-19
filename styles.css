@@ -1,1 +1,1340 @@
-styles.css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #1a1a1a;
+    color: #ffffff;
+    line-height: 1.6;
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    background: #1a1a1a;
+    min-height: 100vh;
+    position: relative;
+}
+
+.header {
+    background: #2a2a2a;
+    color: white;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.header p {
+    font-size: 14px;
+    color: #b0b0b0;
+    margin: 0;
+}
+
+.content {
+    padding: 16px;
+    padding-bottom: 80px;
+}
+
+.content p, .content li {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+.section {
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.fop-info {
+    background: #2a2a2a;
+    border-left: 4px solid #4CAF50;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.fop-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.copy-section {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.copy-section h3 {
+    color: #b0b0b0;
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.data-block {
+    background: #333333;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.data-label {
+    font-size: 12px;
+    color: #b0b0b0;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.data-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    font-family: 'Montserrat', monospace;
+    word-break: break-all;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.4;
+}
+
+.copy-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 2px 4px rgba(76,175,80,0.3);
+}
+
+.copy-button:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(76,175,80,0.4);
+}
+
+.copy-button:active {
+    transform: translateY(0);
+    background: #3d8b40;
+}
+
+.copy-button-template {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 2px 4px rgba(76,175,80,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    line-height: 1.3;
+    min-width: 90px;
+    align-self: stretch;
+    height: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+.copy-button-template span {
+    display: block;
+}
+
+.copy-button-template i {
+    font-size: 12px;
+    vertical-align: middle;
+    margin-left: 2px;
+}
+
+.copy-button-template:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(76,175,80,0.4);
+}
+
+.copy-button-template:active {
+    transform: translateY(0);
+    background: #3d8b40;
+}
+
+.template-container {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    margin: 12px 0;
+}
+
+.template-content {
+    background: #333333;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid #4CAF50;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.template-text {
+    font-family: 'Montserrat', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-line;
+    color: #e0e0e0;
+}
+
+.divider {
+    height: 1px;
+    background: #333333;
+    margin: 16px 0;
+}
+
+.payment-options {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.payment-option {
+    background: #333333;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    border-left: 3px solid #4CAF50;
+    transition: all 0.2s ease;
+}
+
+.payment-option:hover {
+    background: #3a3a3a;
+}
+
+.payment-option strong {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.delivery-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.delivery-list li {
+    background: #333333;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    border-left: 3px solid #2196F3;
+    transition: all 0.2s ease;
+}
+
+.delivery-list li:hover {
+    background: #3a3a3a;
+}
+
+.delivery-list li strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.return-conditions {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.return-conditions h3 {
+    color: #ffffff;
+    margin: 16px 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #333333;
+}
+
+.return-conditions h3:first-of-type {
+    margin-top: 0;
+}
+
+.return-conditions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.return-conditions li {
+    background: #333333;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    border-left: 3px solid #FF9800;
+    transition: all 0.2s ease;
+}
+
+.return-conditions li:last-child {
+    margin-bottom: 0;
+}
+
+.return-conditions li:hover {
+    background: #3a3a3a;
+}
+
+.return-conditions li strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.contact-section {
+    background: #2a2a2a;
+    color: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    margin: 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.contact-section h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.contact-legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    background: #333333;
+    border-radius: 8px;
+    border-left: 3px solid #4CAF50;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #b0b0b0;
+}
+
+.legend-item iconify-icon {
+    color: #4CAF50;
+}
+
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #333333;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.contact-item:hover {
+    background: #3a3a3a;
+}
+
+.contact-item-telegram {
+    border-left-color: #0088cc;
+}
+
+.contact-item-viber {
+    border-left-color: #665CAC;
+}
+
+.contact-item-showcase {
+    border-left-color: #0088cc;
+}
+
+.contact-item-instagram {
+    border-left-color: #E4405F;
+}
+
+.contact-item-biggo {
+    border-left-color: #FF6B35;
+}
+
+.contact-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.contact-item-telegram .contact-icon {
+    background: #ffffff;
+    color: #0088cc;
+}
+
+.contact-item-viber .contact-icon {
+    background: #ffffff;
+    color: #665CAC;
+}
+
+.contact-item-showcase .contact-icon {
+    background: #ffffff;
+    color: #0088cc;
+}
+
+.contact-item-instagram .contact-icon {
+    background: #ffffff;
+    color: #E4405F;
+}
+
+.contact-item-biggo .contact-icon {
+    background: #ffffff;
+    color: #FF6B35;
+}
+
+.contact-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.contact-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #b0b0b0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.copy-success-badge {
+    display: none;
+    background: #28a745;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.copy-success-badge.show {
+    display: inline-block;
+}
+
+.contact-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    word-break: break-all;
+}
+
+.contact-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.contact-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+}
+
+.contact-action-btn i {
+    display: block;
+}
+
+.contact-action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.contact-action-btn:active {
+    transform: scale(0.95);
+}
+
+.contact-open-btn:hover {
+    background: #4CAF50;
+}
+
+.contact-copy-btn:hover {
+    background: #2196F3;
+}
+
+.contact-unavailable-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #444444;
+    color: #999999;
+    border: 1px solid #555555;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    cursor: not-allowed;
+    opacity: 0.6;
+    margin-left: auto;
+}
+
+.contact-item {
+    position: relative;
+}
+
+.contact-item .contact-unavailable-btn {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .contact-item {
+        padding: 10px;
+    }
+    
+    .contact-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .contact-action-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .copy-button-template {
+        min-width: 80px;
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+    
+    .template-container {
+        flex-direction: row;
+        align-items: stretch;
+    }
+    
+    .template-content {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .template-text {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+    
+    .copy-button-template {
+        min-width: 75px;
+        padding: 8px 10px;
+        font-size: 10px;
+        align-self: stretch;
+        height: 100%;
+        min-height: 100%;
+    }
+}
+
+.tiktok-instruction {
+    margin-top: 12px;
+    padding: 12px;
+    background: #333333;
+    border-radius: 10px;
+    border-left: 3px solid #FF0050;
+}
+
+.tiktok-instruction-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tiktok-instruction-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #b0b0b0;
+}
+
+.tiktok-instruction-text strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.contact-links {
+    margin-top: 15px;
+}
+
+.contact-links p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.contact-links a {
+    color: white;
+    text-decoration: underline;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px 16px;
+    color: #b0b0b0;
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.footer-credit {
+    margin-top: 20px;
+    padding: 16px;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    background: #2a2a2a;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.footer-credit-text {
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+.footer-credit-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.footer-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 12px 10px;
+    border-radius: 10px;
+    background: #333333;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: normal;
+    min-height: 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-link:hover {
+    background: #3a3a3a;
+    transform: translateY(-2px);
+}
+
+.footer-link:active {
+    transform: translateY(0);
+}
+
+.footer-link-telegram {
+    background: #0088cc;
+}
+
+.footer-link-telegram:hover {
+    background: #0077b3;
+}
+
+.footer-link-tiktok {
+    background: #FF0050;
+}
+
+.footer-link-tiktok:hover {
+    background: #e60047;
+}
+
+@media (max-width: 600px) {
+    .footer-credit-links {
+        grid-template-columns: 1fr;
+    }
+    
+    .data-block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .data-label {
+        margin-bottom: 5px;
+    }
+    
+    .data-value {
+        margin-bottom: 8px;
+        width: 100%;
+    }
+    
+    .copy-button {
+        width: 100%;
+    }
+    
+    .contact-columns {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+@media (min-width: 601px) {
+    .contact-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.footer-tiktok-instruction {
+    margin-top: 12px;
+    padding: 12px;
+    background: #333333;
+    border-radius: 10px;
+    border-left: 3px solid #FF0050;
+}
+
+.footer-tiktok-instruction p {
+    margin: 0;
+    color: #b0b0b0;
+    font-size: 12px;
+}
+
+.footer-tiktok-instruction p strong {
+    color: #ffffff;
+}
+
+/* Стилі для календаря */
+.calendar-container {
+    margin-top: 12px;
+}
+
+.calendar-container > div {
+    background: #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.calendar-events {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.calendar-event {
+    background: #333333;
+    border-left: 3px solid #4CAF50;
+    border-radius: 10px;
+    padding: 12px;
+    transition: all 0.2s ease;
+}
+
+.calendar-event:hover {
+    transform: translateX(3px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.calendar-event-date {
+    font-size: 14px;
+    font-weight: 600;
+    color: #b0b0b0;
+    margin-bottom: 6px;
+}
+
+.calendar-event-time {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.calendar-event-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #e0e0e0;
+    line-height: 1.5;
+}
+
+.calendar-empty {
+    text-align: center;
+    padding: 30px 16px;
+    color: #b0b0b0;
+    font-size: 14px;
+    background: #2a2a2a;
+    border-radius: 12px;
+}
+
+.calendar-not-synced {
+    text-align: center;
+    padding: 30px 16px;
+    color: #b0b0b0;
+    font-size: 16px;
+    font-weight: 600;
+    background: #2a2a2a;
+    border: 1px solid #444444;
+    border-radius: 12px;
+}
+
+.calendar-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.calendar-add-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #8FA3B8 0%, #6B7A8F 100%);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(107, 122, 143, 0.3);
+}
+
+.calendar-add-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(107, 122, 143, 0.4);
+    background: linear-gradient(135deg, #6B7A8F 0%, #5A6B7D 100%);
+}
+
+@media (max-width: 600px) {
+    .container {
+        border-radius: 0;
+    }
+    
+    #calendarIframe {
+        height: 400px !important;
+        min-height: 350px !important;
+    }
+    
+    .header h1 {
+        font-size: 22px;
+    }
+    
+    .section-title {
+        font-size: 16px;
+    }
+    
+    .content {
+        padding: 12px;
+    }
+    
+    .card, .fop-info, .copy-section, .contact-section, .return-conditions {
+        padding: 12px;
+    }
+}
+
+/* Модальне вікно */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: #2a2a2a;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 320px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #333333;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: #b0b0b0;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-btn:hover {
+    background: #333333;
+    color: #ffffff;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+.modal-contact-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    padding: 16px;
+    background: #333333;
+    border-radius: 10px;
+    word-break: break-all;
+    font-family: 'Montserrat', monospace;
+}
+
+.modal-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+.modal-action-btn i {
+    font-size: 18px;
+}
+
+.modal-copy-btn {
+    background: #2196F3;
+}
+
+.modal-copy-btn:hover {
+    background: #1976D2;
+    transform: translateY(-1px);
+}
+
+.modal-open-btn {
+    background: #4CAF50;
+}
+
+.modal-open-btn:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+}
+
+.modal-close-action-btn {
+    background: #666666;
+}
+
+.modal-close-action-btn:hover {
+    background: #777777;
+    transform: translateY(-1px);
+}
+
+.modal-action-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        padding: 20px;
+        max-width: 90%;
+    }
+    
+    .modal-header h3 {
+        font-size: 16px;
+    }
+    
+    .modal-contact-value {
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    .modal-action-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+/* Приховані якорі захисту */
+.veo-anchor {
+    position: absolute;
+    color: transparent;
+    font-size: 1px;
+    line-height: 1px;
+    opacity: 0.01;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    z-index: -1;
+    font-weight: 300;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.veo-anchor-bg-light {
+    color: #E8E8E8;
+}
+
+.veo-anchor-bg-white {
+    color: white;
+}
+
+.veo-anchor-bg-gray {
+    color: #D0D8E0;
+}
+
+/* Захист від приховування через CSS */
+.veo-anchor[style*="display: none"],
+.veo-anchor[style*="display:none"],
+.veo-anchor[hidden] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 0.01 !important;
+}
+
+/* TikTok Popup */
+#tiktok-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    z-index: 10000;
+    padding: 20px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+#tiktok-popup .tiktok-popup-content {
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+    border-radius: 20px;
+    padding: 36px 28px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(40, 167, 69, 0.3);
+    animation: popupSlideIn 0.4s ease;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+@keyframes popupSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.tiktok-popup-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 16px rgba(40, 167, 69, 0.4);
+}
+
+.tiktok-popup-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#tiktok-popup h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#tiktok-popup .tiktok-popup-warning {
+    background: rgba(40, 167, 69, 0.15);
+    border-left: 3px solid #28a745;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#tiktok-popup .tiktok-popup-warning strong {
+    color: #28a745;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#tiktok-popup p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #e0e0e0;
+    margin-bottom: 24px;
+}
+
+#tiktok-popup .tiktok-popup-steps {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 16px 0;
+    text-align: left;
+}
+
+#tiktok-popup .tiktok-popup-steps .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+#tiktok-popup .tiktok-popup-steps .step:last-child {
+    margin-bottom: 0;
+}
+
+#tiktok-popup .tiktok-popup-steps .step-number {
+    background: #28a745;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+#tiktok-popup .tiktok-popup-steps .step-text {
+    flex: 1;
+    color: #e0e0e0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#tiktok-popup .tiktok-popup-steps .step-text b {
+    color: #ffffff;
+}
+
+#tiktok-popup .tiktok-popup-close {
+    background: linear-gradient(135deg, #28a745 0%, #20c55e 100%);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
+    width: 100%;
+    max-width: 280px;
+}
+
+#tiktok-popup .tiktok-popup-close:hover {
+    background: linear-gradient(135deg, #20c55e 0%, #28a745 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+#tiktok-popup .tiktok-popup-close:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+    #tiktok-popup .tiktok-popup-content {
+        padding: 28px 20px;
+        max-width: 95%;
+    }
+    
+    .tiktok-popup-icon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 16px;
+    }
+    
+    #tiktok-popup h2 {
+        font-size: 20px;
+    }
+    
+    #tiktok-popup p {
+        font-size: 14px;
+    }
+    
+    #tiktok-popup .tiktok-popup-warning {
+        padding: 10px 14px;
+    }
+    
+    #tiktok-popup .tiktok-popup-steps {
+        padding: 12px;
+    }
+    
+    #tiktok-popup .tiktok-popup-close {
+        padding: 12px 24px;
+        font-size: 15px;
+    }
+}
