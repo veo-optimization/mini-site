@@ -187,43 +187,14 @@
         // КІНЕЦЬ КОНФІГУРАЦІЇ
         // ============================================
         
-        // Багаторівневий захист від крадіжки коду
+        // Захист від крадіжки коду (спрощена версія)
         (function() {
             function _0x5a6b() {
                 var _0x1a2b = ['Zm9yY2U=', 'dmVv', 'dmFzaWw=', 'b3B0aW1pemF0aW9u', 'bWluaS1zaXRl', 'c3R5bGVzLmNzcw==', 'c2NyaXB0Lmpz', 'dmVvLW9wdGltaXphdGlvbg=='];
                 var _0x3c4d = function(s) { try { return atob(s); } catch(e) { return ''; } };
                 var _0x7g8h = window.location.hostname;
-                var _0x7g8p = window.location.pathname;
                 
-                // Рівень 1: Перевірка правильного домену та шляху
-                var _0x8k9l = _0x7g8h === _0x3c4d(_0x1a2b[7]) + '.github.io' || 
-                              _0x7g8h === 'localhost' || 
-                              _0x7g8h === '127.0.0.1';
-                
-                // Рівень 2: Перевірка наявності посилань на файли
-                var _0xk1l = document.querySelector('link[href*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]) + '"]');
-                var _0xm2n = document.querySelector('script[src*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]) + '"]');
-                
-                // Рівень 3: Перевірка наявності якорів захисту
-                var _0xp3q = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
-                
-                // Рівень 4: Перевірка наявності файлів на правильному домені (тільки якщо не localhost)
-                var _0xq4r = true;
-                if (_0x7g8h.indexOf('github.io') !== -1 && _0x7g8h !== _0x3c4d(_0x1a2b[7]) + '.github.io') {
-                    // Якщо це інший github.io домен - перевіряємо доступність файлів на правильному домені
-                    _0xq4r = false;
-                    Promise.all([
-                        fetch('https://' + _0x3c4d(_0x1a2b[7]) + '.github.io/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]), {method: 'HEAD', mode: 'no-cors'}).catch(function() { return null; }),
-                        fetch('https://' + _0x3c4d(_0x1a2b[7]) + '.github.io/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]), {method: 'HEAD', mode: 'no-cors'}).catch(function() { return null; })
-                    ]).then(function(results) {
-                        // Якщо файли доступні на правильному домені - це крадіжка
-                        if (results[0] !== null || results[1] !== null) {
-                            _0x9s0t();
-                        }
-                    });
-                }
-                
-                // Рівень 5: Перевірка структури HTML (прихований маркер)
+                // Функція блокування
                 var _0x9s0t = function() {
                     var _0xo3p = document.createElement('style');
                     _0xo3p.textContent = 'body{display:none!important}';
@@ -235,75 +206,56 @@
                     }, 100);
                 };
                 
-                // Дозволити тільки на правильному домені або localhost
-                if (!_0x8k9l) {
+                // Дозволити на правильному домені та localhost - не перевіряти далі
+                var _0x8k9l = _0x7g8h === _0x3c4d(_0x1a2b[7]) + '.github.io' || 
+                              _0x7g8h === 'localhost' || 
+                              _0x7g8h === '127.0.0.1';
+                
+                if (_0x8k9l) {
+                    // На правильному домені - дозволити без перевірок
+                    return;
+                }
+                
+                // Для інших доменів - перевірка захисту
+                var _0xk1l = document.querySelector('link[href*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]) + '"]');
+                var _0xm2n = document.querySelector('script[src*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]) + '"]');
+                var _0xp3q = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
+                
+                // Блокувати, якщо немає посилань на файли або якорів
+                if (!_0xk1l || !_0xm2n || _0xp3q < 6) {
                     _0x9s0t();
                     return;
                 }
                 
-                // На правильному домені - перевіряємо тільки критичні елементи
-                // Перевірка наявності посилань на файли (обов'язково)
-                if (!_0xk1l || !_0xm2n) {
-                    _0x9s0t();
-                    return;
-                }
-                
-                // Перевірка якорів (даємо час на завантаження)
-                if (_0xp3q < 6) {
-                    // Якщо якорі ще не завантажилися, чекаємо трохи більше
-                    setTimeout(function() {
-                        var _0xp3q2 = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
-                        if (_0xp3q2 < 6 && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
-                            _0x9s0t();
-                        }
-                    }, 500);
-                }
-                
-                // Додаткова перевірка: перевірка шляху для GitHub Pages (тільки для інших доменів)
-                if (_0x7g8h.indexOf('github.io') !== -1 && _0x7g8h !== _0x3c4d(_0x1a2b[7]) + '.github.io') {
-                    if (_0x7g8p.indexOf('/' + _0x3c4d(_0x1a2b[4]) + '/') === -1 || _0x7g8p.indexOf('/clients/') === -1) {
-                        _0x9s0t();
-                        return;
-                    }
-                }
-                
-                // Рівень 6: Перевірка прихованого маркера в body (тільки якщо body існує)
+                // Перевірка маркерів (тільки для інших доменів)
                 if (document.body) {
                     var _0xr5s = document.body.getAttribute('data-v') || '';
-                    var _0xt6u = String.fromCharCode(118,101,111,45,102,111,114,99,101); // "veo-force"
-                    if (_0xr5s !== _0xt6u && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                    var _0xt6u = String.fromCharCode(118,101,111,45,102,111,114,99,101);
+                    if (_0xr5s !== _0xt6u) {
                         _0x9s0t();
                         return;
                     }
                 }
                 
-                // Рівень 7: Перевірка мета-тегу з маркером
                 var _0xu7v = document.querySelector('meta[name="' + String.fromCharCode(118,101,111) + '"]');
-                if (_0xu7v) {
-                    var _0xv8w = _0xu7v.getAttribute('content') || '';
-                    var _0xw9x = String.fromCharCode(118,101,111,45,102,111,114,99,101,45,112,114,111,116,101,99,116,105,111,110); // "veo-force-protection"
-                    if (_0xv8w !== _0xw9x && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
-                        _0x9s0t();
-                        return;
-                    }
-                } else if (_0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
-                    // Мета-тег обов'язковий тільки на продакшн домені
+                if (!_0xu7v) {
+                    _0x9s0t();
+                    return;
+                }
+                var _0xv8w = _0xu7v.getAttribute('content') || '';
+                var _0xw9x = String.fromCharCode(118,101,111,45,102,111,114,99,101,45,112,114,111,116,101,99,116,105,111,110);
+                if (_0xv8w !== _0xw9x) {
                     _0x9s0t();
                     return;
                 }
             }
             
-            // Чекаємо на повне завантаження DOM та всіх ресурсів
+            // Чекаємо на завантаження DOM
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
-                    // Даємо час на завантаження всіх елементів
-                    setTimeout(_0x5a6b, 500);
+                    setTimeout(_0x5a6b, 300);
                 });
-            } else if (document.readyState === 'interactive') {
-                // DOM завантажений, але ресурси ще завантажуються
-                setTimeout(_0x5a6b, 500);
             } else {
-                // DOM повністю завантажений
                 setTimeout(_0x5a6b, 300);
             }
         })();
