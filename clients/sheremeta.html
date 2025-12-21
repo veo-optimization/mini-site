@@ -187,76 +187,27 @@
         // КІНЕЦЬ КОНФІГУРАЦІЇ
         // ============================================
         
-        // Захист від крадіжки коду (спрощена версія)
+        // Мінімальний захист від крадіжки коду
         (function() {
-            function _0x5a6b() {
-                var _0x1a2b = ['Zm9yY2U=', 'dmVv', 'dmFzaWw=', 'b3B0aW1pemF0aW9u', 'bWluaS1zaXRl', 'c3R5bGVzLmNzcw==', 'c2NyaXB0Lmpz', 'dmVvLW9wdGltaXphdGlvbg=='];
-                var _0x3c4d = function(s) { try { return atob(s); } catch(e) { return ''; } };
-                var _0x7g8h = window.location.hostname;
-                
-                // Функція блокування
-                var _0x9s0t = function() {
-                    var _0xo3p = document.createElement('style');
-                    _0xo3p.textContent = 'body{display:none!important}';
-                    document.head.appendChild(_0xo3p);
-                    setTimeout(function() {
-                        if (document.body) {
-                            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1a1a;color:#fff;font-family:Montserrat,sans-serif;text-align:center;padding:20px;"><div><h1 style="color:#d32f2f;margin-bottom:20px;">⚠️ Помилка завантаження</h1><p style="color:#b0b0b0;font-size:18px;">Сторінка пошкоджена або модифікована.<br>Будь ласка, використовуйте оригінальну версію.</p></div></div>';
-                        }
-                    }, 100);
-                };
-                
-                // Дозволити на правильному домені та localhost - не перевіряти далі
-                var _0x8k9l = _0x7g8h === _0x3c4d(_0x1a2b[7]) + '.github.io' || 
-                              _0x7g8h === 'localhost' || 
-                              _0x7g8h === '127.0.0.1';
-                
-                if (_0x8k9l) {
-                    // На правильному домені - дозволити без перевірок
-                    return;
-                }
-                
-                // Для інших доменів - перевірка захисту
-                var _0xk1l = document.querySelector('link[href*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]) + '"]');
-                var _0xm2n = document.querySelector('script[src*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]) + '"]');
-                var _0xp3q = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
-                
-                // Блокувати, якщо немає посилань на файли або якорів
-                if (!_0xk1l || !_0xm2n || _0xp3q < 6) {
-                    _0x9s0t();
-                    return;
-                }
-                
-                // Перевірка маркерів (тільки для інших доменів)
-                if (document.body) {
-                    var _0xr5s = document.body.getAttribute('data-v') || '';
-                    var _0xt6u = String.fromCharCode(118,101,111,45,102,111,114,99,101);
-                    if (_0xr5s !== _0xt6u) {
-                        _0x9s0t();
-                        return;
-                    }
-                }
-                
-                var _0xu7v = document.querySelector('meta[name="' + String.fromCharCode(118,101,111) + '"]');
-                if (!_0xu7v) {
-                    _0x9s0t();
-                    return;
-                }
-                var _0xv8w = _0xu7v.getAttribute('content') || '';
-                var _0xw9x = String.fromCharCode(118,101,111,45,102,111,114,99,101,45,112,114,111,116,101,99,116,105,111,110);
-                if (_0xv8w !== _0xw9x) {
-                    _0x9s0t();
-                    return;
-                }
-            }
+            var _0x1a2b = ['dmVvLW9wdGltaXphdGlvbg=='];
+            var _0x3c4d = function(s) { try { return atob(s); } catch(e) { return ''; } };
+            var _0x7g8h = window.location.hostname;
             
-            // Чекаємо на завантаження DOM
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function() {
-                    setTimeout(_0x5a6b, 300);
-                });
-            } else {
-                setTimeout(_0x5a6b, 300);
+            // Дозволити тільки на правильному домені та localhost
+            var _0x8k9l = _0x7g8h === _0x3c4d(_0x1a2b[0]) + '.github.io' || 
+                          _0x7g8h === 'localhost' || 
+                          _0x7g8h === '127.0.0.1';
+            
+            // Якщо не правильний домен - блокувати
+            if (!_0x8k9l) {
+                var _0xo3p = document.createElement('style');
+                _0xo3p.textContent = 'body{display:none!important}';
+                document.head.appendChild(_0xo3p);
+                setTimeout(function() {
+                    if (document.body) {
+                        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1a1a;color:#fff;font-family:Montserrat,sans-serif;text-align:center;padding:20px;"><div><h1 style="color:#d32f2f;margin-bottom:20px;">⚠️ Помилка завантаження</h1><p style="color:#b0b0b0;font-size:18px;">Сторінка пошкоджена або модифікована.<br>Будь ласка, використовуйте оригінальну версію.</p></div></div>';
+                    }
+                }, 100);
             }
         })();
     </script>
