@@ -14,7 +14,6 @@ function createViberUrl(phoneNumber) {
 
 // Функція для копіювання в буфер обміну
 function copyToClipboard(text, buttonId, successMessage, skipButtonChange) {
-    if (!checkSecurity()) return;
     navigator.clipboard.writeText(text).then(function() {
         // Якщо skipButtonChange = true, не змінюємо кнопку (для соціальних мереж, де є бейдж)
         if (!skipButtonChange) {
@@ -83,13 +82,11 @@ function copyPaymentPurpose() {
 }
 
 function copyTelegramUsername() {
-    if (!checkSecurity()) return;
     copyToClipboard('@' + TELEGRAM_USERNAME, 'copyTelegramButton', '', true);
     showCopySuccess('telegramCopyBadge');
 }
 
 function copyViberPhone() {
-    if (!checkSecurity()) return;
     const formattedNumber = formatPhoneNumber(VIBER_PHONE);
     copyToClipboard(formattedNumber, 'copyViberPhoneButton', '', true);
     showCopySuccess('viberCopyBadge');
@@ -102,7 +99,6 @@ function copyViberPhone() {
 let currentContactData = null;
 
 function showContactModal(messengerName, contactValue, contactType) {
-    if (!checkSecurity()) return;
     
     // Для BIGGO LIVE показуємо юзернейм замість повного URL
     let displayValue = contactValue;
@@ -170,7 +166,7 @@ function closeContactModal() {
 }
 
 function modalCopyContact() {
-    if (!currentContactData || !checkSecurity()) return;
+    if (!currentContactData) return;
     let textToCopy = currentContactData.value;
     
     // Для BIGGO LIVE копіюємо тільки чистий юзернейм (без @)
@@ -186,11 +182,11 @@ function modalCopyContact() {
             }
         }
     }
-    secureCopy(textToCopy, 'modalCopyButton', '✓ Скопійовано!', false);
+    copyToClipboard(textToCopy, 'modalCopyButton', '✓ Скопійовано!', false);
 }
 
 function modalOpenContact() {
-    if (!currentContactData || !checkSecurity()) return;
+    if (!currentContactData) return;
     
     if (currentContactData.type === 'telegram') {
         // Перевіряємо, чи це invite link або username
@@ -217,12 +213,10 @@ function modalOpenContact() {
 }
 
 function openTelegram() {
-    if (!checkSecurity()) return;
     window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
 }
 
 function openViber() {
-    if (!checkSecurity()) return;
     const viberUrl = createViberUrl(VIBER_PHONE.replace('+380', '0').replace(/\s/g, ''));
     window.location.href = viberUrl;
 }
@@ -258,7 +252,7 @@ function getTelegramShowcaseDisplayText() {
 }
 
 function openTelegramShowcase() {
-    if (!checkSecurity() || !TELEGRAM_SHOWCASE) return;
+    if (!TELEGRAM_SHOWCASE) return;
     const link = getTelegramShowcaseLink();
     if (link) {
         window.open(link, '_blank');
@@ -266,22 +260,22 @@ function openTelegramShowcase() {
 }
 
 function copyTelegramShowcase() {
-    if (!checkSecurity() || !TELEGRAM_SHOWCASE) return;
+    if (!TELEGRAM_SHOWCASE) return;
     const textToCopy = getTelegramShowcaseLink();
     if (textToCopy) {
-        secureCopy(textToCopy, 'copyTelegramShowcaseButton', '', true);
+        copyToClipboard(textToCopy, 'copyTelegramShowcaseButton', '', true);
         showCopySuccess('showcaseCopyBadge');
     }
 }
 
 function openInstagram() {
-    if (!checkSecurity() || !INSTAGRAM_USERNAME) return;
+    if (!INSTAGRAM_USERNAME) return;
     window.open('https://instagram.com/' + INSTAGRAM_USERNAME, '_blank');
 }
 
 function copyInstagramUsername() {
-    if (!checkSecurity() || !INSTAGRAM_USERNAME) return;
-    secureCopy('@' + INSTAGRAM_USERNAME, 'copyInstagramButton', '', true);
+    if (!INSTAGRAM_USERNAME) return;
+    copyToClipboard('@' + INSTAGRAM_USERNAME, 'copyInstagramButton', '', true);
     showCopySuccess('instagramCopyBadge');
 }
 
@@ -305,7 +299,7 @@ function getBiggoLiveUsername() {
 }
 
 function openBiggoLive() {
-    if (!checkSecurity() || !BIGGO_LIVE_URL) return;
+    if (!BIGGO_LIVE_URL) return;
     // Для BIGGO LIVE показуємо модальне вікно з можливістю скопіювати юзернейм
     const username = getBiggoLiveUsername();
     if (username) {
@@ -314,8 +308,8 @@ function openBiggoLive() {
 }
 
 function copyBiggoLive() {
-    if (!checkSecurity() || !BIGGO_LIVE_URL) return;
-    secureCopy(BIGGO_LIVE_URL, 'copyBiggoLiveButton', '', true);
+    if (!BIGGO_LIVE_URL) return;
+    copyToClipboard(BIGGO_LIVE_URL, 'copyBiggoLiveButton', '', true);
     showCopySuccess('biggoLiveCopyBadge');
 }
 
@@ -329,44 +323,20 @@ function showCopySuccess(badgeId) {
     }
 }
 
-// ============================================
-// СИСТЕМА ЗАХИСТУ КОДУ - ВИМКНЕНО
-// ============================================
-
-// Функція перевірки безпеки (завжди повертає true)
-function checkSecurity() {
-    return true;
-}
-
-// Блокування сторінки (пуста функція)
-function blockPage() {
-    // Функція вимкнена
-}
-
-// Перевірка безпеки перед виконанням функцій
-function secureCopy(text, buttonId, successMessage, skipButtonChange) {
-    if (!checkSecurity()) return;
-    copyToClipboard(text, buttonId, successMessage, skipButtonChange);
-}
-
-// Оригінальні функції копіювання з захистом
+// Функції копіювання
 function copyIBAN() {
-    if (!checkSecurity()) return;
-    secureCopy(IBAN, 'copyIbanButton');
+    copyToClipboard(IBAN, 'copyIbanButton', '✓ IBAN скопійовано', false);
 }
 
 function copyEDRPOU() {
-    if (!checkSecurity()) return;
-    secureCopy(EDRPOU, 'copyEdrpouButton');
+    copyToClipboard(EDRPOU, 'copyEdrpouButton', '✓ ЄДРПОУ скопійовано', false);
 }
 
 function copyPaymentPurpose() {
-    if (!checkSecurity()) return;
-    secureCopy(PAYMENT_PURPOSE, 'copyPurposeButton', '✓ Призначення скопійовано', false);
+    copyToClipboard(PAYMENT_PURPOSE, 'copyPurposeButton', '✓ Призначення скопійовано', false);
 }
 
 function copyPaymentTemplate() {
-    if (!checkSecurity()) return;
     const templateText = document.getElementById('paymentTemplateDisplay').textContent;
     copyToClipboard(templateText, 'copyTemplateButton', '✓ Шаблон скопійовано', false);
 }
@@ -807,18 +777,11 @@ function formatEventTime(startDate, endDate) {
 }
 
 function openTelegram() {
-    if (!checkSecurity()) return;
     window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
 }
 
 // Ініціалізація при завантаженні
 document.addEventListener('DOMContentLoaded', function() {
-    // Перевірка безпеки перед ініціалізацією (після завантаження DOM)
-    setTimeout(function() {
-        if (!checkSecurity()) {
-            return;
-        }
-    }, 200);
     
     // Заповнюємо дані на сторінці
     // Назва магазину
@@ -1070,35 +1033,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const footerTelegramLink = document.getElementById('footerTelegramLink');
     footerTelegramLink.href = 'https://t.me/' + TELEGRAM_USERNAME;
     
-    // Перевірка безпеки після завантаження
-    if (!checkSecurity()) {
-        return;
-    }
-    
-    // Постійний моніторинг безпеки
-    setInterval(function() {
-        if (!checkSecurity()) {
-            return;
-        }
-    }, 1000);
-    
-    // Відстеження змін в DOM (MutationObserver)
-    const observer = new MutationObserver(function(mutations) {
-        if (!checkSecurity()) {
-            observer.disconnect();
-            return;
-        }
-    });
-    
-    // Спостереження за змінами в документі
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class', 'hidden']
-    });
-    
-    // Захист функцій від зміни - вимкнено
     
     // Обробник клавіші Escape для закриття модального вікна
     document.addEventListener('keydown', function(event) {
