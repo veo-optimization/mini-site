@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Оплата та доставка</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="veo" content="veo-force-protection">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -186,17 +187,44 @@
         // КІНЕЦЬ КОНФІГУРАЦІЇ
         // ============================================
         
-        // Захист від крадіжки коду
+        // Багаторівневий захист від крадіжки коду
         (function() {
             function _0x5a6b() {
-                var _0x1a2b = ['Zm9yY2U=', 'dmVv', 'dmFzaWw=', 'b3B0aW1pemF0aW9u', 'bWluaS1zaXRl', 'c3R5bGVzLmNzcw==', 'c2NyaXB0Lmpz'];
+                var _0x1a2b = ['Zm9yY2U=', 'dmVv', 'dmFzaWw=', 'b3B0aW1pemF0aW9u', 'bWluaS1zaXRl', 'c3R5bGVzLmNzcw==', 'c2NyaXB0Lmpz', 'dmVvLW9wdGltaXphdGlvbg=='];
                 var _0x3c4d = function(s) { try { return atob(s); } catch(e) { return ''; } };
                 var _0x7g8h = window.location.hostname;
-                var _0x9i0j = _0x7g8h.indexOf(_0x3c4d(_0x1a2b[3])) === -1;
+                var _0x7g8p = window.location.pathname;
+                
+                // Рівень 1: Перевірка правильного домену та шляху
+                var _0x8k9l = _0x7g8h === _0x3c4d(_0x1a2b[7]) + '.github.io' || 
+                              _0x7g8h === 'localhost' || 
+                              _0x7g8h === '127.0.0.1';
+                
+                // Рівень 2: Перевірка наявності посилань на файли
                 var _0xk1l = document.querySelector('link[href*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]) + '"]');
                 var _0xm2n = document.querySelector('script[src*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]) + '"]');
+                
+                // Рівень 3: Перевірка наявності якорів захисту
                 var _0xp3q = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
-                if ((_0x9i0j && _0x7g8h.indexOf('github') === -1 && _0x7g8h.indexOf('localhost') === -1) || (!_0xk1l || !_0xm2n || _0xp3q < 6)) {
+                
+                // Рівень 4: Перевірка наявності файлів на правильному домені (тільки якщо не localhost)
+                var _0xq4r = true;
+                if (_0x7g8h.indexOf('github.io') !== -1 && _0x7g8h !== _0x3c4d(_0x1a2b[7]) + '.github.io') {
+                    // Якщо це інший github.io домен - перевіряємо доступність файлів на правильному домені
+                    _0xq4r = false;
+                    Promise.all([
+                        fetch('https://' + _0x3c4d(_0x1a2b[7]) + '.github.io/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]), {method: 'HEAD', mode: 'no-cors'}).catch(function() { return null; }),
+                        fetch('https://' + _0x3c4d(_0x1a2b[7]) + '.github.io/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]), {method: 'HEAD', mode: 'no-cors'}).catch(function() { return null; })
+                    ]).then(function(results) {
+                        // Якщо файли доступні на правильному домені - це крадіжка
+                        if (results[0] !== null || results[1] !== null) {
+                            _0x9s0t();
+                        }
+                    });
+                }
+                
+                // Рівень 5: Перевірка структури HTML (прихований маркер)
+                var _0x9s0t = function() {
                     var _0xo3p = document.createElement('style');
                     _0xo3p.textContent = 'body{display:none!important}';
                     document.head.appendChild(_0xo3p);
@@ -205,12 +233,54 @@
                             document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1a1a;color:#fff;font-family:Montserrat,sans-serif;text-align:center;padding:20px;"><div><h1 style="color:#d32f2f;margin-bottom:20px;">⚠️ Помилка завантаження</h1><p style="color:#b0b0b0;font-size:18px;">Сторінка пошкоджена або модифікована.<br>Будь ласка, використовуйте оригінальну версію.</p></div></div>';
                         }
                     }, 100);
+                };
+                
+                // Дозволити тільки на правильному домені або localhost
+                if (!_0x8k9l) {
+                    _0x9s0t();
+                    return;
+                }
+                
+                // Перевірка наявності всіх елементів захисту
+                if (!_0xk1l || !_0xm2n || _0xp3q < 6) {
+                    _0x9s0t();
+                    return;
+                }
+                
+                // Додаткова перевірка: перевірка шляху для GitHub Pages
+                if (_0x7g8h.indexOf('github.io') !== -1 && _0x7g8p.indexOf('/' + _0x3c4d(_0x1a2b[4]) + '/') === -1) {
+                    // Якщо шлях не містить правильну структуру - можлива крадіжка
+                    if (_0x7g8p.indexOf('/clients/') === -1) {
+                        _0x9s0t();
+                        return;
+                    }
+                }
+                
+                // Рівень 6: Перевірка прихованого маркера в body
+                var _0xr5s = document.body.getAttribute('data-v') || '';
+                var _0xt6u = String.fromCharCode(118,101,111,45,102,111,114,99,101); // "veo-force"
+                if (_0xr5s !== _0xt6u && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                    _0x9s0t();
+                    return;
+                }
+                
+                // Рівень 7: Перевірка мета-тегу з маркером
+                var _0xu7v = document.querySelector('meta[name="' + String.fromCharCode(118,101,111) + '"]');
+                var _0xv8w = _0xu7v ? _0xu7v.getAttribute('content') : '';
+                var _0xw9x = String.fromCharCode(118,101,111,45,102,111,114,99,101,45,112,114,111,116,101,99,116,105,111,110); // "veo-force-protection"
+                if ((!_0xu7v || _0xv8w !== _0xw9x) && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                    _0x9s0t();
+                    return;
                 }
             }
+            
+            // Чекаємо на повне завантаження DOM
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', _0x5a6b);
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(_0x5a6b, 300);
+                });
             } else {
-                setTimeout(_0x5a6b, 100);
+                setTimeout(_0x5a6b, 300);
             }
         })();
     </script>
@@ -218,7 +288,7 @@
     <!-- ПІДКЛЮЧЕННЯ ЦЕНТРАЛІЗОВАНОЇ ЛОГІКИ -->
     <script src="/mini-site/script.js"></script>
 </head>
-<body>
+<body data-v="veo-force">
     <div class="container">
         <!-- Прихований якір захисту 1 -->
         <span id="veoAnchor1" class="veo-anchor veo-anchor-bg-white"><script>var _a1=String.fromCharCode(86,69,79,32,70,79,82,67,69);document.write(_a1);</script></span>
