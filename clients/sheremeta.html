@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -189,20 +188,29 @@
         
         // Захист від крадіжки коду
         (function() {
-            var _0x1a2b = ['Zm9yY2U=', 'dmVv', 'dmFzaWw=', 'b3B0aW1pemF0aW9u', 'bWluaS1zaXRl', 'c3R5bGVzLmNzcw==', 'c2NyaXB0Lmpz'];
-            var _0x3c4d = function(s) { try { return atob(s); } catch(e) { return ''; } };
-            var _0x7g8h = window.location.hostname;
-            var _0x9i0j = _0x7g8h.indexOf(_0x3c4d(_0x1a2b[3])) === -1;
-            var _0xk1l = document.querySelector('link[href*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]) + '"]');
-            var _0xm2n = document.querySelector('script[src*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]) + '"]');
-            var _0xp3q = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
-            if ((_0x9i0j && _0x7g8h.indexOf('github') === -1 && _0x7g8h.indexOf('localhost') === -1) || (!_0xk1l || !_0xm2n || _0xp3q < 6)) {
-                var _0xo3p = document.createElement('style');
-                _0xo3p.textContent = 'body{display:none!important}';
-                document.head.appendChild(_0xo3p);
-                setTimeout(function() {
-                    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1a1a;color:#fff;font-family:Montserrat,sans-serif;text-align:center;padding:20px;"><div><h1 style="color:#d32f2f;margin-bottom:20px;">⚠️ Помилка завантаження</h1><p style="color:#b0b0b0;font-size:18px;">Сторінка пошкоджена або модифікована.<br>Будь ласка, використовуйте оригінальну версію.</p></div></div>';
-                }, 100);
+            function _0x5a6b() {
+                var _0x1a2b = ['Zm9yY2U=', 'dmVv', 'dmFzaWw=', 'b3B0aW1pemF0aW9u', 'bWluaS1zaXRl', 'c3R5bGVzLmNzcw==', 'c2NyaXB0Lmpz'];
+                var _0x3c4d = function(s) { try { return atob(s); } catch(e) { return ''; } };
+                var _0x7g8h = window.location.hostname;
+                var _0x9i0j = _0x7g8h.indexOf(_0x3c4d(_0x1a2b[3])) === -1;
+                var _0xk1l = document.querySelector('link[href*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[5]) + '"]');
+                var _0xm2n = document.querySelector('script[src*="/' + _0x3c4d(_0x1a2b[4]) + '/' + _0x3c4d(_0x1a2b[6]) + '"]');
+                var _0xp3q = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
+                if ((_0x9i0j && _0x7g8h.indexOf('github') === -1 && _0x7g8h.indexOf('localhost') === -1) || (!_0xk1l || !_0xm2n || _0xp3q < 6)) {
+                    var _0xo3p = document.createElement('style');
+                    _0xo3p.textContent = 'body{display:none!important}';
+                    document.head.appendChild(_0xo3p);
+                    setTimeout(function() {
+                        if (document.body) {
+                            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1a1a;color:#fff;font-family:Montserrat,sans-serif;text-align:center;padding:20px;"><div><h1 style="color:#d32f2f;margin-bottom:20px;">⚠️ Помилка завантаження</h1><p style="color:#b0b0b0;font-size:18px;">Сторінка пошкоджена або модифікована.<br>Будь ласка, використовуйте оригінальну версію.</p></div></div>';
+                        }
+                    }, 100);
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', _0x5a6b);
+            } else {
+                setTimeout(_0x5a6b, 100);
             }
         })();
     </script>
