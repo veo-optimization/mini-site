@@ -241,45 +241,69 @@
                     return;
                 }
                 
-                // Перевірка наявності всіх елементів захисту
-                if (!_0xk1l || !_0xm2n || _0xp3q < 6) {
+                // На правильному домені - перевіряємо тільки критичні елементи
+                // Перевірка наявності посилань на файли (обов'язково)
+                if (!_0xk1l || !_0xm2n) {
                     _0x9s0t();
                     return;
                 }
                 
-                // Додаткова перевірка: перевірка шляху для GitHub Pages
-                if (_0x7g8h.indexOf('github.io') !== -1 && _0x7g8p.indexOf('/' + _0x3c4d(_0x1a2b[4]) + '/') === -1) {
-                    // Якщо шлях не містить правильну структуру - можлива крадіжка
-                    if (_0x7g8p.indexOf('/clients/') === -1) {
+                // Перевірка якорів (даємо час на завантаження)
+                if (_0xp3q < 6) {
+                    // Якщо якорі ще не завантажилися, чекаємо трохи більше
+                    setTimeout(function() {
+                        var _0xp3q2 = document.querySelectorAll('span[id*="' + String.fromCharCode(118,101,111) + '"]').length;
+                        if (_0xp3q2 < 6 && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                            _0x9s0t();
+                        }
+                    }, 500);
+                }
+                
+                // Додаткова перевірка: перевірка шляху для GitHub Pages (тільки для інших доменів)
+                if (_0x7g8h.indexOf('github.io') !== -1 && _0x7g8h !== _0x3c4d(_0x1a2b[7]) + '.github.io') {
+                    if (_0x7g8p.indexOf('/' + _0x3c4d(_0x1a2b[4]) + '/') === -1 || _0x7g8p.indexOf('/clients/') === -1) {
                         _0x9s0t();
                         return;
                     }
                 }
                 
-                // Рівень 6: Перевірка прихованого маркера в body
-                var _0xr5s = document.body.getAttribute('data-v') || '';
-                var _0xt6u = String.fromCharCode(118,101,111,45,102,111,114,99,101); // "veo-force"
-                if (_0xr5s !== _0xt6u && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
-                    _0x9s0t();
-                    return;
+                // Рівень 6: Перевірка прихованого маркера в body (тільки якщо body існує)
+                if (document.body) {
+                    var _0xr5s = document.body.getAttribute('data-v') || '';
+                    var _0xt6u = String.fromCharCode(118,101,111,45,102,111,114,99,101); // "veo-force"
+                    if (_0xr5s !== _0xt6u && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                        _0x9s0t();
+                        return;
+                    }
                 }
                 
                 // Рівень 7: Перевірка мета-тегу з маркером
                 var _0xu7v = document.querySelector('meta[name="' + String.fromCharCode(118,101,111) + '"]');
-                var _0xv8w = _0xu7v ? _0xu7v.getAttribute('content') : '';
-                var _0xw9x = String.fromCharCode(118,101,111,45,102,111,114,99,101,45,112,114,111,116,101,99,116,105,111,110); // "veo-force-protection"
-                if ((!_0xu7v || _0xv8w !== _0xw9x) && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                if (_0xu7v) {
+                    var _0xv8w = _0xu7v.getAttribute('content') || '';
+                    var _0xw9x = String.fromCharCode(118,101,111,45,102,111,114,99,101,45,112,114,111,116,101,99,116,105,111,110); // "veo-force-protection"
+                    if (_0xv8w !== _0xw9x && _0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                        _0x9s0t();
+                        return;
+                    }
+                } else if (_0x7g8h !== 'localhost' && _0x7g8h !== '127.0.0.1') {
+                    // Мета-тег обов'язковий тільки на продакшн домені
                     _0x9s0t();
                     return;
                 }
             }
             
-            // Чекаємо на повне завантаження DOM
+            // Чекаємо на повне завантаження DOM та всіх ресурсів
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
-                    setTimeout(_0x5a6b, 300);
+                    // Даємо час на завантаження всіх елементів
+                    setTimeout(_0x5a6b, 500);
                 });
+            } else if (document.readyState === 'interactive') {
+                // DOM завантажений, але ресурси ще завантажуються
+                setTimeout(_0x5a6b, 500);
             } else {
+                // DOM повністю завантажений
                 setTimeout(_0x5a6b, 300);
             }
         })();
