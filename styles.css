@@ -1101,46 +1101,6 @@ body {
     }
 }
 
-/* Приховані якорі захисту */
-.veo-anchor {
-    position: absolute;
-    color: transparent;
-    font-size: 1px;
-    line-height: 1px;
-    opacity: 0.01;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    z-index: -1;
-    font-weight: 300;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.veo-anchor-bg-light {
-    color: #E8E8E8;
-}
-
-.veo-anchor-bg-white {
-    color: white;
-}
-
-.veo-anchor-bg-gray {
-    color: #D0D8E0;
-}
-
-/* Захист від приховування через CSS */
-.veo-anchor[style*="display: none"],
-.veo-anchor[style*="display:none"],
-.veo-anchor[hidden] {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 0.01 !important;
-}
 
 /* TikTok Popup */
 #tiktok-popup {
