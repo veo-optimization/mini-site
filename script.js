@@ -330,79 +330,17 @@ function showCopySuccess(badgeId) {
 }
 
 // ============================================
-// СИСТЕМА ЗАХИСТУ КОДУ
+// СИСТЕМА ЗАХИСТУ КОДУ - ВИМКНЕНО
 // ============================================
 
-// Функція перевірки безпеки
+// Функція перевірки безпеки (завжди повертає true)
 function checkSecurity() {
-    try {
-        // Перевірка footer
-        const footerCredit = document.getElementById('footerCreditBlock');
-        if (!footerCredit || footerCredit.offsetParent === null) {
-            blockPage();
-            return false;
-        }
-        
-        // Перевірка наявності тексту про автора
-        const footerText = footerCredit.textContent || '';
-        if (!footerText.includes('VEO FORCE') || !footerText.includes('2025')) {
-            blockPage();
-            return false;
-        }
-        
-        // Перевірка якорів
-        const anchors = [
-            'veoAnchor1', 'veoAnchor2', 'veoAnchor3', 
-            'veoAnchor4', 'veoAnchor5', 'veoAnchor6'
-        ];
-        
-        for (let i = 0; i < anchors.length; i++) {
-            const anchor = document.getElementById(anchors[i]);
-            if (!anchor) {
-                blockPage();
-                return false;
-            }
-            
-            // Перевірка тексту якоря
-            const anchorText = anchor.textContent || anchor.innerText || '';
-            if (anchorText.trim() !== 'VEO FORCE') {
-                blockPage();
-                return false;
-            }
-            
-            // Перевірка, що елемент не прихований через display:none
-            const style = window.getComputedStyle(anchor);
-            if (style.display === 'none' || style.visibility === 'hidden') {
-                blockPage();
-                return false;
-            }
-        }
-        
-        return true;
-    } catch (e) {
-        blockPage();
-        return false;
-    }
+    return true;
 }
 
-// Блокування сторінки
+// Блокування сторінки (пуста функція)
 function blockPage() {
-    // Блокуємо всі функції
-    window.copyToClipboard = function() { return false; };
-    window.openTelegram = function() { return false; };
-    window.openViber = function() { return false; };
-    window.copyIBAN = function() { return false; };
-    window.copyEDRPOU = function() { return false; };
-    window.copyPaymentPurpose = function() { return false; };
-    window.copyTelegramUsername = function() { return false; };
-    window.copyViberPhone = function() { return false; };
-    window.openTelegramShowcase = function() { return false; };
-    window.copyTelegramShowcase = function() { return false; };
-    window.openInstagram = function() { return false; };
-    window.copyInstagramUsername = function() { return false; };
-    
-    // Показуємо повідомлення про помилку
-    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#E8E8E8;font-family:Montserrat,sans-serif;"><div style="text-align:center;padding:40px;background:white;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,0.2);"><h1 style="color:#d32f2f;margin-bottom:20px;">⚠️ Помилка завантаження</h1><p style="color:#666;font-size:18px;">Сторінка пошкоджена або модифікована.<br>Будь ласка, використовуйте оригінальну версію.</p></div></div>';
+    // Функція вимкнена
 }
 
 // Перевірка безпеки перед виконанням функцій
@@ -1160,20 +1098,7 @@ document.addEventListener('DOMContentLoaded', function() {
         attributeFilter: ['style', 'class', 'hidden']
     });
     
-    // Захист функцій від зміни
-    try {
-        Object.defineProperty(window, 'checkSecurity', {
-            writable: false,
-            configurable: false
-        });
-        Object.defineProperty(window, 'blockPage', {
-            writable: false,
-            configurable: false
-        });
-    } catch(e) {
-        // Якщо не вдалося захистити - блокуємо сторінку
-        blockPage();
-    }
+    // Захист функцій від зміни - вимкнено
     
     // Обробник клавіші Escape для закриття модального вікна
     document.addEventListener('keydown', function(event) {
