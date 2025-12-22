@@ -337,8 +337,17 @@ function copyPaymentPurpose() {
 }
 
 function copyPaymentTemplate() {
-    const templateText = document.getElementById('paymentTemplateDisplay').textContent;
-    copyToClipboard(templateText, 'copyTemplateButton', '✓ Шаблон скопійовано', false);
+    const templateElement = document.getElementById('paymentTemplateDisplay');
+    if (!templateElement) {
+        console.error('Шаблон не знайдено');
+        return;
+    }
+    const templateText = templateElement.innerText || templateElement.textContent || AFTER_PAYMENT_TEMPLATE;
+    if (templateText) {
+        copyToClipboard(templateText, 'copyTemplateButton', '✓ Шаблон скопійовано', false);
+    } else {
+        alert('Шаблон порожній');
+    }
 }
 
 // ============================================
@@ -916,9 +925,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Заповнюємо умови доставки
-    document.getElementById('deliveryMethod').textContent = DELIVERY_METHOD;
-    document.getElementById('deliveryTime').textContent = DELIVERY_TIME;
-    document.getElementById('deliveryNote').textContent = DELIVERY_NOTE;
+    const deliveryMethodEl = document.getElementById('deliveryMethod');
+    const deliveryTimeEl = document.getElementById('deliveryTime');
+    const deliveryNoteEl = document.getElementById('deliveryNote');
+    
+    if (deliveryMethodEl && DELIVERY_METHOD) {
+        deliveryMethodEl.textContent = DELIVERY_METHOD;
+    }
+    if (deliveryTimeEl && DELIVERY_TIME) {
+        deliveryTimeEl.textContent = DELIVERY_TIME;
+    }
+    if (deliveryNoteEl && DELIVERY_NOTE) {
+        deliveryNoteEl.textContent = DELIVERY_NOTE;
+    }
     
     // Заповнюємо умови обміну та повернення
     const exchangeReturnList = document.getElementById('exchangeReturnList');
@@ -974,8 +993,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Заповнюємо шаблон
     const templateDisplay = document.getElementById('paymentTemplateDisplay');
-    if (templateDisplay) {
-        templateDisplay.textContent = AFTER_PAYMENT_TEMPLATE;
+    if (templateDisplay && AFTER_PAYMENT_TEMPLATE) {
+        templateDisplay.innerText = AFTER_PAYMENT_TEMPLATE;
     }
     
     // Налаштовуємо Google Calendar iframe та кнопку підписки
