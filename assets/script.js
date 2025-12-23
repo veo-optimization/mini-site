@@ -84,8 +84,16 @@ function copyPaymentPurpose() {
 
 function copyTelegramUsername() {
     if (!checkSecurity()) return;
-    copyToClipboard('@' + TELEGRAM_USERNAME, 'copyTelegramButton', '', true);
-    showCopySuccess('telegramCopyBadge');
+    if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
+        // Якщо є номер телефону, копіюємо номер
+        const phone = formatPhoneNumber(TELEGRAM_PHONE);
+        copyToClipboard(phone, 'copyTelegramButton', '', true);
+        showCopySuccess('telegramCopyBadge');
+    } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
+        // Якщо є username, копіюємо username
+        copyToClipboard('@' + TELEGRAM_USERNAME, 'copyTelegramButton', '', true);
+        showCopySuccess('telegramCopyBadge');
+    }
 }
 
 function copyViberPhone() {
@@ -193,11 +201,15 @@ function modalOpenContact() {
     if (!currentContactData || !checkSecurity()) return;
     
     if (currentContactData.type === 'telegram') {
-        // Перевіряємо, чи це invite link або username
+        // Перевіряємо, чи це invite link, номер телефону або username
         if (currentContactData.value.includes('t.me/') || currentContactData.value.startsWith('http')) {
             // Це посилання (invite link або повне посилання)
             const link = currentContactData.value.startsWith('http') ? currentContactData.value : 'https://' + currentContactData.value;
             window.open(link, '_blank');
+        } else if (currentContactData.value.match(/^\+?\d{10,}$/)) {
+            // Це номер телефону
+            const phone = formatPhoneNumber(currentContactData.value);
+            window.open('https://t.me/+' + phone.replace('+', ''), '_blank');
         } else {
             // Це username
             window.open('https://t.me/' + currentContactData.value.replace('@', ''), '_blank');
@@ -218,7 +230,14 @@ function modalOpenContact() {
 
 function openTelegram() {
     if (!checkSecurity()) return;
-    window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
+    if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
+        // Якщо є номер телефону, використовуємо посилання з номером
+        const phone = formatPhoneNumber(TELEGRAM_PHONE);
+        window.open('https://t.me/+' + phone.replace('+', ''), '_blank');
+    } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
+        // Якщо є username, використовуємо стандартне посилання
+        window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
+    }
 }
 
 function openViber() {
@@ -877,12 +896,7 @@ function formatEventTime(startDate, endDate) {
     return startTime;
 }
 
-function openTelegram() {
-    if (!checkSecurity()) return;
-    window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
-}
-
-// Ініціалізація при завантаженні
+        // Ініціалізація при завантаженні
 document.addEventListener('DOMContentLoaded', function() {
     // Перевірка безпеки перед ініціалізацією (після завантаження DOM)
     setTimeout(function() {
@@ -896,6 +910,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const shopNameHeader = document.getElementById('shopNameHeader');
     if (shopNameHeader && typeof SHOP_NAME !== 'undefined') {
         shopNameHeader.textContent = SHOP_NAME;
+    }
+    
+    // Опис магазину (якщо є)
+    const shopDescriptionEl = document.querySelector('.header p');
+    if (shopDescriptionEl && typeof SHOP_DESCRIPTION !== 'undefined' && SHOP_DESCRIPTION) {
+        shopDescriptionEl.textContent = SHOP_DESCRIPTION;
     }
     
     // Назва календаря з назвою магазину
@@ -930,8 +950,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     const telegramUsernameEl = document.getElementById('telegramUsername');
-    if (telegramUsernameEl && typeof TELEGRAM_USERNAME !== 'undefined') {
-        telegramUsernameEl.textContent = '@' + TELEGRAM_USERNAME;
+    if (telegramUsernameEl) {
+        if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
+            // Якщо є номер телефону, показуємо його
+            telegramUsernameEl.textContent = formatPhoneNumber(TELEGRAM_PHONE);
+        } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
+            // Якщо є username, показуємо його
+            telegramUsernameEl.textContent = '@' + TELEGRAM_USERNAME;
+        }
     }
     
     const viberPhoneEl = document.getElementById('viberPhone');
@@ -1230,8 +1256,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Заповнюємо footer посилання
     const footerTelegramLink = document.getElementById('footerTelegramLink');
-    if (footerTelegramLink && typeof TELEGRAM_USERNAME !== 'undefined') {
-        footerTelegramLink.href = 'https://t.me/' + TELEGRAM_USERNAME;
+    if (footerTelegramLink) {
+        if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
+            const phone = formatPhoneNumber(TELEGRAM_PHONE);
+            footerTelegramLink.href = 'https://t.me/+' + phone.replace('+', '');
+        } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
+            footerTelegramLink.href = 'https://t.me/' + TELEGRAM_USERNAME;
+        }
     }
     
     // Перевірка безпеки після завантаження
