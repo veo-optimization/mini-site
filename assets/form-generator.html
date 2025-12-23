@@ -132,10 +132,14 @@
         }
         
         .help-text {
-            font-size: 12px;
+            font-size: 13px;
             color: #b0b0b0;
-            margin-top: 5px;
-            font-style: italic;
+            margin-top: 8px;
+            line-height: 1.5;
+            padding: 8px;
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid #4CAF50;
+            border-radius: 4px;
         }
         
         .generate-btn {
@@ -267,6 +271,112 @@
             display: block;
         }
         
+        .instruction-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .instruction-btn:hover {
+            background: #1976D2;
+            transform: scale(1.05);
+        }
+        
+        .instruction-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .instruction-modal.show {
+            display: flex;
+        }
+        
+        .instruction-content {
+            background: #2a2a2a;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .instruction-content h3 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .instruction-content ol,
+        .instruction-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instruction-content li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .instruction-content code {
+            background: #1a1a1a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #4CAF50;
+        }
+        
+        .instruction-close {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .instruction-close:hover {
+            background: #777;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        input.error,
+        textarea.error {
+            border-color: #ff6b6b;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -286,13 +396,25 @@
     <div class="container">
         <h1>📋 Генератор даних клієнта</h1>
         
+        <div style="background: #333; padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #4CAF50;">
+            <p style="margin: 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
+                <strong style="color: #4CAF50;">Як користуватися:</strong><br>
+                1️⃣ Заповніть всі поля форми (поля з <span style="color: #ff6b6b;">*</span> обов'язкові)<br>
+                2️⃣ Натисніть кнопку "Згенерувати блок даних" внизу<br>
+                3️⃣ Перевірте результат у спливаючому вікні<br>
+                4️⃣ Натисніть "Скопіювати" - блок даних скопіюється в буфер обміну<br>
+                5️⃣ Вставте скопійований блок у файл клієнта (замість старого CLIENT_DATA)
+            </p>
+        </div>
+        
         <form id="clientForm">
             <!-- Назва магазину -->
             <div class="form-section">
                 <h2>🏪 Основна інформація</h2>
                 <div class="form-group">
                     <label for="shopName">Назва магазину <span class="required">*</span></label>
-                    <input type="text" id="shopName" name="shopName" required>
+                    <input type="text" id="shopName" name="shopName" placeholder="Наприклад: VEO SHOP або Модний Бутик" required>
+                    <div class="help-text">📝 Це назва, яка буде відображатися в шапці сайту. Наприклад: "VEO SHOP", "Модний Бутик", "Одяг від А до Я"</div>
                 </div>
             </div>
             
@@ -301,25 +423,28 @@
                 <h2>💳 Реквізити ФОП</h2>
                 <div class="form-group">
                     <label for="fopName">ПІБ ФОП <span class="required">*</span></label>
-                    <input type="text" id="fopName" name="fopName" required>
+                    <input type="text" id="fopName" name="fopName" placeholder="Наприклад: ФОП Іванов Іван Іванович" required>
+                    <div class="help-text">📝 Повне ім'я фізичної особи-підприємця. Наприклад: "ФОП Іванов Іван Іванович" або "ФОП Петренко Марія Олександрівна"</div>
                 </div>
                 <div class="form-group">
                     <label for="edrpou">ЄДРПОУ <span class="required">*</span></label>
-                    <input type="text" id="edrpou" name="edrpou" required>
-                    <div class="help-text">8 або 10 цифр</div>
+                    <input type="text" id="edrpou" name="edrpou" placeholder="Наприклад: 3361708913" required>
+                    <div class="help-text">📝 Єдиний державний реєстр підприємств та організацій. Має 8 або 10 цифр. Наприклад: "3361708913" або "12345678"</div>
                 </div>
                 <div class="form-group">
                     <label for="iban">IBAN <span class="required">*</span></label>
-                    <input type="text" id="iban" name="iban" required>
-                    <div class="help-text">Формат: UA123456789012345678901234567</div>
+                    <input type="text" id="iban" name="iban" placeholder="Наприклад: UA273220010000026009330077981" required>
+                    <div class="help-text">📝 Міжнародний номер банківського рахунку. Завжди починається з "UA", потім 2 цифри, 4 літери, 19 цифр. Всього 29 символів. Наприклад: "UA273220010000026009330077981"</div>
                 </div>
                 <div class="form-group">
                     <label for="bankName">Назва банку <span class="required">*</span></label>
-                    <input type="text" id="bankName" name="bankName" required>
+                    <input type="text" id="bankName" name="bankName" placeholder="Наприклад: Universal bank або ПриватБанк" required>
+                    <div class="help-text">📝 Повна назва банку, де відкритий рахунок. Наприклад: "Universal bank", "ПриватБанк", "Ощадбанк", "Райффайзен Банк Аваль"</div>
                 </div>
                 <div class="form-group">
                     <label for="paymentPurpose">Призначення платежу <span class="required">*</span></label>
-                    <input type="text" id="paymentPurpose" name="paymentPurpose" required>
+                    <input type="text" id="paymentPurpose" name="paymentPurpose" placeholder="Наприклад: Послуга оптимізації реклами" required>
+                    <div class="help-text">📝 Короткий опис, що буде вказано в призначенні платежу. Наприклад: "Послуга оптимізації реклами", "Оплата товару", "Передоплата за замовлення"</div>
                 </div>
             </div>
             
@@ -328,28 +453,51 @@
                 <h2>📱 Контакти</h2>
                 <div class="form-group">
                     <label for="telegramUsername">Telegram username <span class="required">*</span></label>
-                    <input type="text" id="telegramUsername" name="telegramUsername" placeholder="без @" required>
-                    <div class="help-text">Без символу @</div>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <input type="text" id="telegramUsername" name="telegramUsername" placeholder="Наприклад: veoforce_support" required style="flex: 1;">
+                        <button type="button" class="instruction-btn" onclick="showInstruction('telegram')" title="Як створити username?">📖</button>
+                    </div>
+                    <div class="help-text">📝 Ім'я користувача Telegram БЕЗ символу @. Наприклад: якщо посилання "t.me/veoforce_support", то впишіть "veoforce_support" (без @ і без t.me/)</div>
                 </div>
                 <div class="form-group">
                     <label for="viberPhone">Viber телефон <span class="required">*</span></label>
-                    <input type="text" id="viberPhone" name="viberPhone" placeholder="0112223344" required>
-                    <div class="help-text">10 цифр, починається з 0</div>
+                    <input type="text" id="viberPhone" name="viberPhone" placeholder="Наприклад: 0112223344" required>
+                    <div class="help-text">📝 Номер телефону для Viber у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567", "0678901234" (БЕЗ +380 на початку!)</div>
                 </div>
                 <div class="form-group">
                     <label for="telegramShowcase">Telegram вітрина</label>
-                    <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="username або посилання">
-                    <div class="help-text">Username без @ або повне посилання</div>
+                    <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="Наприклад: veoforce_chat або https://t.me/+Z-iCu_n0QYdmYTJi">
+                    <div class="help-text">📝 Якщо є Telegram-вітрина (канал/група), вкажіть username БЕЗ @ або повне посилання. Наприклад: "veoforce_chat" або "https://t.me/+Z-iCu_n0QYdmYTJi". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="instagramUsername">Instagram username</label>
-                    <input type="text" id="instagramUsername" name="instagramUsername" placeholder="без @">
-                    <div class="help-text">Без символу @, залиште порожнім якщо немає</div>
+                    <input type="text" id="instagramUsername" name="instagramUsername" placeholder="Наприклад: my_shop_ua">
+                    <div class="help-text">📝 Ім'я користувача Instagram БЕЗ символу @. Наприклад: якщо посилання "instagram.com/my_shop_ua", то впишіть "my_shop_ua". Якщо немає Instagram - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="biggoLiveUrl">BIGGO LIVE URL</label>
-                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="https://biggo.tv/user/...">
-                    <div class="help-text">Повне посилання, залиште порожнім якщо немає</div>
+                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="Наприклад: https://biggo.tv/user/veo_me">
+                    <div class="help-text">📝 Повне посилання на профіль у BIGGO LIVE. Наприклад: "https://biggo.tv/user/veo_me" або "https://biggo.live/user/shop_name". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="facebookPage">Facebook сторінка/група</label>
+                    <input type="text" id="facebookPage" name="facebookPage" placeholder="Наприклад: my_shop_ua або https://facebook.com/my_shop_ua">
+                    <div class="help-text">📝 Username Facebook сторінки БЕЗ @ або повне посилання. Наприклад: "my_shop_ua" або "https://facebook.com/my_shop_ua". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="tiktokUsername">TikTok username</label>
+                    <input type="text" id="tiktokUsername" name="tiktokUsername" placeholder="Наприклад: my_shop_ua">
+                    <div class="help-text">📝 Ім'я користувача TikTok БЕЗ символу @. Наприклад: якщо посилання "tiktok.com/@my_shop_ua", то впишіть "my_shop_ua". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="youtubeChannel">YouTube канал</label>
+                    <input type="text" id="youtubeChannel" name="youtubeChannel" placeholder="Наприклад: @MyShopUA або https://youtube.com/@MyShopUA">
+                    <div class="help-text">📝 Username YouTube каналу з @ або повне посилання. Наприклад: "@MyShopUA" або "https://youtube.com/@MyShopUA". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="whatsappPhone">WhatsApp телефон</label>
+                    <input type="text" id="whatsappPhone" name="whatsappPhone" placeholder="Наприклад: 0112223344">
+                    <div class="help-text">📝 Номер телефону для WhatsApp у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567". Якщо немає - залиште порожнім</div>
                 </div>
             </div>
             
@@ -358,13 +506,16 @@
                 <h2>📅 Календар</h2>
                 <div class="form-group">
                     <label for="googleCalendarUrl">Google Calendar URL</label>
-                    <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="iCal URL або Calendar ID">
-                    <div class="help-text">Залиште порожнім якщо немає</div>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="Наприклад: https://calendar.google.com/calendar/ical/.../public/basic.ics" style="flex: 1;">
+                        <button type="button" class="instruction-btn" onclick="showInstruction('calendar')" title="Як дістати iCal посилання?">📖</button>
+                    </div>
+                    <div class="help-text">📝 Посилання на Google Calendar для відображення розкладу ефірів. Може бути iCal URL (закінчується на /public/basic.ics) або Calendar ID. Якщо немає календаря - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="googleCalendarApiKey">Google Calendar API Key</label>
-                    <input type="text" id="googleCalendarApiKey" name="googleCalendarApiKey">
-                    <div class="help-text">Опціонально</div>
+                    <input type="text" id="googleCalendarApiKey" name="googleCalendarApiKey" placeholder="Опціонально, зазвичай не потрібен">
+                    <div class="help-text">📝 API ключ Google Calendar (потрібен тільки для приватних календарів). Для публічних календарів залиште порожнім</div>
                 </div>
             </div>
             
@@ -373,10 +524,11 @@
                 <h2>💵 Умови оплати</h2>
                 <div id="paymentOptionsContainer">
                     <div class="array-input">
-                        <input type="text" name="paymentOption" placeholder="🔷 Варіант оплати 1" required>
+                        <input type="text" name="paymentOption" placeholder="Наприклад: 🔷 Повна передоплата 100%" required>
                     </div>
                 </div>
-                <button type="button" class="add-item-btn" onclick="addPaymentOption()">+ Додати варіант</button>
+                <button type="button" class="add-item-btn" onclick="addPaymentOption()">+ Додати варіант оплати</button>
+                <div class="help-text" style="margin-top: 10px;">📝 Додайте всі варіанти оплати, які приймає клієнт. Наприклад: "🔷 Повна передоплата 100%", "🔷 Накладний платіж з передоплатою 200 грн", "🔷 Оплата при отриманні"</div>
             </div>
             
             <!-- Умови доставки -->
@@ -384,15 +536,18 @@
                 <h2>🚚 Умови доставки</h2>
                 <div class="form-group">
                     <label for="deliveryMethod">Спосіб доставки <span class="required">*</span></label>
-                    <input type="text" id="deliveryMethod" name="deliveryMethod" required>
+                    <input type="text" id="deliveryMethod" name="deliveryMethod" placeholder="Наприклад: Нова пошта" required>
+                    <div class="help-text">📝 Який спосіб доставки використовується. Наприклад: "Нова пошта", "Укрпошта", "Самовивіз", "Кур'єрська доставка"</div>
                 </div>
                 <div class="form-group">
                     <label for="deliveryTime">Термін доставки <span class="required">*</span></label>
-                    <input type="text" id="deliveryTime" name="deliveryTime" required>
+                    <input type="text" id="deliveryTime" name="deliveryTime" placeholder="Наприклад: 1-3 робочі дні після отримання оплати" required>
+                    <div class="help-text">📝 Скільки часу займає доставка. Наприклад: "1-3 робочі дні після отримання оплати", "2-5 робочих днів", "Відправка щодня до 18:00"</div>
                 </div>
                 <div class="form-group">
                     <label for="deliveryNote">Примітка про доставку</label>
-                    <input type="text" id="deliveryNote" name="deliveryNote">
+                    <input type="text" id="deliveryNote" name="deliveryNote" placeholder="Наприклад: Термін доставки залежить від регіону отримувача">
+                    <div class="help-text">📝 Додаткова інформація про доставку. Наприклад: "Термін доставки залежить від регіону отримувача", "Доставка тільки в робочі дні". Якщо немає - залиште порожнім</div>
                 </div>
             </div>
             
@@ -401,30 +556,33 @@
                 <h2>🔄 Умови обміну та повернення</h2>
                 <div class="form-group">
                     <label for="exchangeDays">Днів для обміну</label>
-                    <input type="number" id="exchangeDays" name="exchangeDays" min="0" value="0">
-                    <div class="help-text">0 якщо обмін недоступний</div>
+                    <input type="number" id="exchangeDays" name="exchangeDays" min="0" value="0" placeholder="14">
+                    <div class="help-text">📝 Скільки днів після отримання товару можна зробити обмін. Вкажіть число (наприклад: 14). Якщо обмін недоступний - вкажіть 0</div>
                 </div>
                 <div class="form-group">
                     <label for="returnDays">Днів для повернення</label>
-                    <input type="number" id="returnDays" name="returnDays" min="0" value="0">
-                    <div class="help-text">0 якщо повернення недоступне</div>
+                    <input type="number" id="returnDays" name="returnDays" min="0" value="0" placeholder="14">
+                    <div class="help-text">📝 Скільки днів після отримання товару можна зробити повернення. Вкажіть число (наприклад: 14). Якщо повернення недоступне - вкажіть 0</div>
                 </div>
                 <div class="form-group">
                     <label>Умови обміну/повернення</label>
                     <div id="returnConditionsContainer">
                         <div class="array-input">
-                            <input type="text" name="returnCondition" placeholder="Умова 1">
+                            <input type="text" name="returnCondition" placeholder="Наприклад: Товар повинен бути в оригінальному стані">
                         </div>
                     </div>
                     <button type="button" class="add-item-btn" onclick="addReturnCondition()">+ Додати умову</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Додайте умови, які має виконувати товар для обміну/повернення. Наприклад: "Товар повинен бути в оригінальному стані", "Збережені всі етикетки та упаковка", "Товар не повинен бути пошкоджений"</div>
                 </div>
                 <div class="form-group">
                     <label for="returnMoneyTime">Термін повернення коштів</label>
-                    <input type="text" id="returnMoneyTime" name="returnMoneyTime" placeholder="3-5 робочих днів">
+                    <input type="text" id="returnMoneyTime" name="returnMoneyTime" placeholder="Наприклад: 3-5 робочих днів">
+                    <div class="help-text">📝 За скільки часу повертаються кошти після повернення товару. Наприклад: "3-5 робочих днів", "7-10 робочих днів". Якщо не застосовується - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="returnDeliveryCost">Вартість доставки при поверненні</label>
-                    <textarea id="returnDeliveryCost" name="returnDeliveryCost" placeholder="Опишіть умови..."></textarea>
+                    <textarea id="returnDeliveryCost" name="returnDeliveryCost" placeholder="Наприклад: відповідно до тарифів перевізника. Сплачує отримувач."></textarea>
+                    <div class="help-text">📝 Хто оплачує доставку при поверненні товару. Наприклад: "відповідно до тарифів перевізника. Сплачує отримувач." або "Доставку при поверненні оплачує продавець". Якщо не застосовується - залиште порожнім</div>
                 </div>
             </div>
             
@@ -433,8 +591,8 @@
                 <h2>📦 Шаблон після оплати</h2>
                 <div class="form-group">
                     <label for="afterPaymentTemplate">Текст шаблону <span class="required">*</span></label>
-                    <textarea id="afterPaymentTemplate" name="afterPaymentTemplate" required placeholder="👤 ПІБ: &#10;📍 Населений пункт: &#10;📦 Відділення НП: &#10;📱 Телефон отримувача: "></textarea>
-                    <div class="help-text">Використовуйте Enter для переносу рядка</div>
+                    <textarea id="afterPaymentTemplate" name="afterPaymentTemplate" required placeholder="Впишіть шаблон тут. Кожен рядок на новому рядку.&#10;&#10;Наприклад:&#10;👤 ПІБ: &#10;📍 Населений пункт: &#10;📦 Відділення НП: &#10;📱 Телефон отримувача: "></textarea>
+                    <div class="help-text">📝 Це шаблон, який клієнт заповнить після оплати. Кожен рядок на новому рядку (натисніть Enter). Наприклад: "👤 ПІБ: " (Enter) "📍 Населений пункт: " (Enter) "📦 Відділення НП: " (Enter) "📱 Телефон отримувача: "</div>
                 </div>
             </div>
             
@@ -468,7 +626,7 @@
             const div = document.createElement('div');
             div.className = 'array-input';
             div.innerHTML = `
-                <input type="text" name="paymentOption" placeholder="🔷 Варіант оплати">
+                <input type="text" name="paymentOption" placeholder="Наприклад: 🔷 Оплата при отриманні">
                 <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">×</button>
             `;
             container.appendChild(div);
@@ -480,7 +638,7 @@
             const div = document.createElement('div');
             div.className = 'array-input';
             div.innerHTML = `
-                <input type="text" name="returnCondition" placeholder="Умова">
+                <input type="text" name="returnCondition" placeholder="Наприклад: Товар не повинен бути пошкоджений">
                 <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">×</button>
             `;
             container.appendChild(div);
@@ -514,7 +672,11 @@
             code += `            viberPhone: "${escapeString(formData.viberPhone)}",                   // 10 цифр, починається з 0\n`;
             code += `            telegramShowcase: "${escapeString(formData.telegramShowcase || '')}",          // Без @ або повне посилання\n`;
             code += `            instagramUsername: "${escapeString(formData.instagramUsername || '')}",                      // Без @, порожньо якщо немає\n`;
-            code += `            biggoLiveUrl: "${escapeString(formData.biggoLiveUrl || '')}",                           // Повне посилання, порожньо якщо немає\n\n`;
+            code += `            biggoLiveUrl: "${escapeString(formData.biggoLiveUrl || '')}",                           // Повне посилання, порожньо якщо немає\n`;
+            code += `            facebookPage: "${escapeString(formData.facebookPage || '')}",                           // Без @ або повне посилання, порожньо якщо немає\n`;
+            code += `            tiktokUsername: "${escapeString(formData.tiktokUsername || '')}",                      // Без @, порожньо якщо немає\n`;
+            code += `            youtubeChannel: "${escapeString(formData.youtubeChannel || '')}",                      // З @ або повне посилання, порожньо якщо немає\n`;
+            code += `            whatsappPhone: "${escapeString(formData.whatsappPhone || '')}",                      // 10 цифр, починається з 0, порожньо якщо немає\n\n`;
             
             // Календар
             code += `            // Календар (залиште порожнім "", якщо немає)\n`;
@@ -574,9 +736,137 @@
                 .replace(/\t/g, '\\t');
         }
         
+        // Валідація даних
+        function validateForm() {
+            let isValid = true;
+            
+            // Валідація IBAN
+            const iban = document.getElementById('iban').value.trim().replace(/\s/g, '');
+            if (iban && !/^UA\d{2}[A-Z]{4}\d{19}$/.test(iban)) {
+                showError('iban', 'IBAN має бути у форматі: UA + 2 цифри + 4 літери + 19 цифр');
+                isValid = false;
+            } else {
+                hideError('iban');
+            }
+            
+            // Валідація ЄДРПОУ
+            const edrpou = document.getElementById('edrpou').value.trim().replace(/\s|-/g, '');
+            if (edrpou && !/^\d{8}(\d{2})?$/.test(edrpou)) {
+                showError('edrpou', 'ЄДРПОУ має бути 8 або 10 цифр');
+                isValid = false;
+            } else {
+                hideError('edrpou');
+            }
+            
+            // Валідація Viber телефону
+            const viberPhone = document.getElementById('viberPhone').value.trim().replace(/\s|-/g, '');
+            if (viberPhone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(viberPhone)) {
+                showError('viberPhone', 'Номер має бути 10 цифр, починається з 0 (наприклад: 0112223344)');
+                isValid = false;
+            } else {
+                hideError('viberPhone');
+            }
+            
+            // Валідація WhatsApp телефону
+            const whatsappPhone = document.getElementById('whatsappPhone').value.trim().replace(/\s|-/g, '');
+            if (whatsappPhone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(whatsappPhone)) {
+                showError('whatsappPhone', 'Номер має бути 10 цифр, починається з 0 (наприклад: 0112223344)');
+                isValid = false;
+            } else {
+                hideError('whatsappPhone');
+            }
+            
+            return isValid;
+        }
+        
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            field.classList.add('error');
+            let errorDiv = field.parentElement.querySelector('.error-message');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                field.parentElement.appendChild(errorDiv);
+            }
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+        
+        function hideError(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.classList.remove('error');
+            const errorDiv = field.parentElement.querySelector('.error-message');
+            if (errorDiv) {
+                errorDiv.classList.remove('show');
+            }
+        }
+        
+        // Додавання обробників валідації
+        document.getElementById('iban').addEventListener('blur', validateForm);
+        document.getElementById('edrpou').addEventListener('blur', validateForm);
+        document.getElementById('viberPhone').addEventListener('blur', validateForm);
+        document.getElementById('whatsappPhone').addEventListener('blur', validateForm);
+        
+        // Показ інструкцій
+        function showInstruction(type) {
+            const modal = document.getElementById('instructionModal');
+            const content = document.getElementById('instructionContent');
+            
+            let html = '';
+            
+            switch(type) {
+                case 'telegram':
+                    html = `
+                        <h3>📱 Як створити Telegram username?</h3>
+                        <ol>
+                            <li>Відкрийте Telegram на телефоні або комп'ютері</li>
+                            <li>Перейдіть в <strong>Налаштування</strong> (⚙️)</li>
+                            <li>Натисніть на ваше ім'я вгорі</li>
+                            <li>Знайдіть поле <strong>"Username"</strong></li>
+                            <li>Введіть бажаний username (наприклад: <code>my_shop_ua</code>)</li>
+                            <li>Натисніть <strong>"Готово"</strong></li>
+                            <li>Якщо username вільний, він буде встановлений</li>
+                        </ol>
+                        <p><strong>Важливо:</strong> Username має бути унікальним і може містити лише латинські літери, цифри та підкреслення. Вказуйте username БЕЗ символу @.</p>
+                    `;
+                    break;
+                case 'calendar':
+                    html = `
+                        <h3>📅 Як дістати iCal посилання Google Calendar?</h3>
+                        <ol>
+                            <li>Відкрийте <a href="https://calendar.google.com" target="_blank">Google Calendar</a></li>
+                            <li>Знайдіть ваш календар у списку зліва</li>
+                            <li>Натисніть на <strong>три крапки (⋮)</strong> біля назви календаря</li>
+                            <li>Виберіть <strong>"Налаштування та спільний доступ"</strong></li>
+                            <li>Прокрутіть до розділу <strong>"Інтеграція календаря"</strong></li>
+                            <li>Скопіюйте посилання з поля <strong>"Публічний URL iCal"</strong></li>
+                            <li>Якщо посилання немає, натисніть <strong>"Зробити календар публічним"</strong> спочатку</li>
+                        </ol>
+                        <p><strong>Приклад посилання:</strong><br><code>https://calendar.google.com/calendar/ical/abc123%40group.calendar.google.com/public/basic.ics</code></p>
+                        <p><strong>Альтернатива:</strong> Можна також вставити Calendar ID (виглядає як <code>abc123@group.calendar.google.com</code>)</p>
+                    `;
+                    break;
+                default:
+                    html = '<h3>Інструкція</h3><p>Інструкція буде додана найближчим часом.</p>';
+            }
+            
+            content.innerHTML = html + '<button class="instruction-close" onclick="closeInstruction()">Закрити</button>';
+            modal.classList.add('show');
+        }
+        
+        function closeInstruction() {
+            document.getElementById('instructionModal').classList.remove('show');
+        }
+        
         // Обробка форми
         document.getElementById('clientForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Валідація перед відправкою
+            if (!validateForm()) {
+                alert('Будь ласка, виправте помилки в полях перед генерацією коду.');
+                return;
+            }
             
             const formData = {
                 shopName: document.getElementById('shopName').value.trim(),
@@ -590,6 +880,10 @@
                 telegramShowcase: document.getElementById('telegramShowcase').value.trim(),
                 instagramUsername: document.getElementById('instagramUsername').value.trim(),
                 biggoLiveUrl: document.getElementById('biggoLiveUrl').value.trim(),
+                facebookPage: document.getElementById('facebookPage').value.trim(),
+                tiktokUsername: document.getElementById('tiktokUsername').value.trim(),
+                youtubeChannel: document.getElementById('youtubeChannel').value.trim(),
+                whatsappPhone: document.getElementById('whatsappPhone').value.trim(),
                 googleCalendarUrl: document.getElementById('googleCalendarUrl').value.trim(),
                 googleCalendarApiKey: document.getElementById('googleCalendarApiKey').value.trim(),
                 paymentOptions: Array.from(document.querySelectorAll('input[name="paymentOption"]'))
@@ -673,7 +967,21 @@
                 closeModal();
             }
         });
+        
+        // Закриття інструкцій при кліку поза вікном
+        document.getElementById('instructionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeInstruction();
+            }
+        });
     </script>
+    
+    <!-- Модальне вікно для інструкцій -->
+    <div class="instruction-modal" id="instructionModal">
+        <div class="instruction-content" id="instructionContent">
+            <!-- Контент буде додано динамічно -->
+        </div>
+    </div>
 </body>
 </html>
 
