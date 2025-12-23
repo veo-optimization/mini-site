@@ -91,6 +91,7 @@ function processClientData() {
     
     // Встановлюємо глобальні константи з даних клієнта
     window.SHOP_NAME = data.shopName || '';
+    window.SHOP_DESCRIPTION = data.shopDescription || '';
     window.FOP_NAME = data.fopName || '';
     window.EDRPOU = data.edrpou || '';
     window.IBAN = data.iban || '';
@@ -98,7 +99,16 @@ function processClientData() {
     window.PAYMENT_PURPOSE = data.paymentPurpose || '';
     
     // Контакти
-    window.TELEGRAM_USERNAME = data.telegramUsername || '';
+    // Telegram може бути username або номер телефону
+    if (data.telegramPhone) {
+        // Якщо є номер телефону, використовуємо його
+        window.TELEGRAM_PHONE = data.telegramPhone;
+        window.TELEGRAM_USERNAME = ''; // Очищаємо username
+    } else {
+        // Якщо є username, використовуємо його
+        window.TELEGRAM_USERNAME = data.telegramUsername || '';
+        window.TELEGRAM_PHONE = '';
+    }
     window.VIBER_PHONE = data.viberPhone || '';
     window.TELEGRAM_SHOWCASE = data.telegramShowcase || '';
     window.INSTAGRAM_USERNAME = data.instagramUsername || '';
