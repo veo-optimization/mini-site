@@ -685,6 +685,29 @@
                 </div>
             </div>
             
+            <!-- Локації магазинів на Google Maps -->
+            <div class="form-section">
+                <h2>📍 Локації магазинів на Google Maps</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 Додайте локації ваших магазинів або точок видачі товарів на Google Maps. Кожна локація має назву та посилання на Google Maps.
+                </div>
+                <div id="storeLocationsContainer">
+                    <div class="location-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label>Назва локації</label>
+                            <input type="text" class="location-name" placeholder="Наприклад: Магазин на Хрещатику або Склад №1" style="width: 100%;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label>Посилання на Google Maps</label>
+                            <input type="text" class="location-url" placeholder="Наприклад: https://maps.google.com/?q=50.4501,30.5234 або https://goo.gl/maps/..." style="width: 100%;">
+                        </div>
+                        <button type="button" class="remove-item-btn" onclick="removeLocation(this)" style="width: 100%;">× Видалити локацію</button>
+                    </div>
+                </div>
+                <button type="button" class="add-item-btn" onclick="addLocation()">+ Додати локацію</button>
+                <div class="help-text" style="margin-top: 10px;">📝 Натисніть "+ Додати локацію" для додавання нової локації. Посилання на Google Maps можна отримати, натиснувши "Поділитися" на карті Google Maps.</div>
+            </div>
+            
             <!-- Умови оплати -->
             <div class="form-section">
                 <h2>💵 Умови оплати</h2>
@@ -699,7 +722,7 @@
                     </div>
                     <div class="checkbox-item" style="display: flex; align-items: center; gap: 10px;">
                         <input type="checkbox" id="payment2custom" name="paymentOption" data-payment-type="cod-custom">
-                        <label for="payment2custom" style="flex: 0 0 auto; margin: 0;">
+                        <label for="payment2custom" style="flex: 0 0 auto; margin: 0; cursor: pointer;">
                             🔷 Накладний платіж із передплатою
                         </label>
                         <input type="number" id="codAmount" placeholder="сума" min="1" style="width: 100px; padding: 4px 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 14px;" disabled>
@@ -1008,17 +1031,19 @@
                     if (this.checked) {
                         cod200.checked = false;
                         codAmount.disabled = false;
+                        codAmount.removeAttribute('readonly');
                         // Використовуємо setTimeout, щоб поле активувалося після обробки події
                         setTimeout(() => {
                             codAmount.focus();
-                        }, 10);
+                            codAmount.select();
+                        }, 50);
                     } else {
                         codAmount.disabled = true;
                         codAmount.value = '';
                     }
                 });
                 
-                // Додатково: обробка кліку на label
+                // Додатково: обробка кліку на label та поле введення
                 const codCustomLabel = document.querySelector('label[for="payment2custom"]');
                 if (codCustomLabel) {
                     codCustomLabel.addEventListener('click', function(e) {
@@ -1027,8 +1052,19 @@
                             setTimeout(() => {
                                 if (codCustom.checked && !codAmount.disabled) {
                                     codAmount.focus();
+                                    codAmount.select();
                                 }
-                            }, 10);
+                            }, 50);
+                        }
+                    });
+                }
+                
+                // Обробка кліку безпосередньо на поле введення
+                if (codAmount) {
+                    codAmount.addEventListener('click', function() {
+                        if (codCustom.checked && this.disabled) {
+                            codAmount.disabled = false;
+                            codAmount.focus();
                         }
                     });
                 }
@@ -1043,6 +1079,34 @@
             }
             let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
             input.value = formatted;
+        }
+        
+        // Додавання нової локації
+        function addLocation() {
+            const container = document.getElementById('storeLocationsContainer');
+            const div = document.createElement('div');
+            div.className = 'location-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Назва локації</label>
+                    <input type="text" class="location-name" placeholder="Наприклад: Магазин на Хрещатику або Склад №1" style="width: 100%;">
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Посилання на Google Maps</label>
+                    <input type="text" class="location-url" placeholder="Наприклад: https://maps.google.com/?q=50.4501,30.5234 або https://goo.gl/maps/..." style="width: 100%;">
+                </div>
+                <button type="button" class="remove-item-btn" onclick="removeLocation(this)" style="width: 100%;">× Видалити локацію</button>
+            `;
+            container.appendChild(div);
+        }
+        
+        // Видалення локації
+        function removeLocation(button) {
+            const locationItem = button.closest('.location-item');
+            if (locationItem) {
+                locationItem.remove();
+            }
         }
         
         // Додаємо обробники для оновлення прев'ю
@@ -1200,7 +1264,25 @@
                 counter++;
             }
             
-            // c20+ - paymentOptions (масив)
+            // c20+ - storeLocations (масив локацій)
+            const storeLocations = [];
+            document.querySelectorAll('.location-item').forEach(item => {
+                const name = item.querySelector('.location-name').value.trim();
+                const url = item.querySelector('.location-url').value.trim();
+                if (name && url) {
+                    storeLocations.push(`${name}|${url}`);
+                }
+            });
+            const locationsCounter = counter;
+            storeLocations.forEach((location, index) => {
+                constants.push(`c${locationsCounter}${String.fromCharCode(97 + index)} - ${location}`);
+            });
+            if (storeLocations.length > 0) {
+                constants.push(`c${locationsCounter}_count - ${storeLocations.length}`);
+                counter++;
+            }
+            
+            // paymentOptions (масив)
             const paymentOptions = [];
             Array.from(document.querySelectorAll('input[name="paymentOption"]:checked')).forEach(cb => {
                 if (cb.id === 'payment2custom') {
@@ -1216,11 +1298,12 @@
             if (paymentCustom) {
                 paymentOptions.push(paymentCustom);
             }
+            const paymentCounter = counter;
             paymentOptions.forEach((option, index) => {
-                constants.push(`c${counter}${String.fromCharCode(97 + index)} - ${option}`);
+                constants.push(`c${paymentCounter}${String.fromCharCode(97 + index)} - ${option}`);
             });
             if (paymentOptions.length > 0) {
-                constants.push(`c${counter}_count - ${paymentOptions.length}`);
+                constants.push(`c${paymentCounter}_count - ${paymentOptions.length}`);
                 counter++;
             }
             
