@@ -275,13 +275,14 @@
             background: #2196F3;
             color: white;
             border: none;
-            padding: 10px 14px;
+            padding: 12px 18px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.2s ease;
             flex-shrink: 0;
+            white-space: nowrap;
         }
         
         .instruction-btn:hover {
@@ -377,6 +378,76 @@
             border-color: #ff6b6b;
         }
         
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-item:hover {
+            background: #252525;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .checkbox-item label {
+            cursor: pointer;
+            margin: 0;
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .custom-input-wrapper {
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+        }
+        
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #FFC107;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+        
+        .warning-box strong {
+            color: #FFC107;
+        }
+        
+        .template-preview {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #444;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-line;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -413,8 +484,13 @@
                 <h2>🏪 Основна інформація</h2>
                 <div class="form-group">
                     <label for="shopName">Назва магазину <span class="required">*</span></label>
-                    <input type="text" id="shopName" name="shopName" placeholder="Наприклад: VEO SHOP або Модний Бутик" required>
-                    <div class="help-text">📝 Це назва, яка буде відображатися в шапці сайту. Наприклад: "VEO SHOP", "Модний Бутик", "Одяг від А до Я"</div>
+                    <input type="text" id="shopName" name="shopName" placeholder="Наприклад: VEO SHOP або Модний Бутік" required>
+                    <div class="help-text">📝 Це назва, яка буде відображатися в шапці сайту. Наприклад: "VEO SHOP", "Модний Бутік", "Одяг від А до Я"</div>
+                </div>
+                <div class="form-group">
+                    <label for="shopDescription">Опис магазину</label>
+                    <input type="text" id="shopDescription" name="shopDescription" maxlength="100" placeholder="Наприклад: ТікТок-магазин модного одягу">
+                    <div class="help-text">📝 Короткий опис магазину (максимум 100 символів, 1 речення). Наприклад: "ТікТок-магазин модного одягу" або "Онлайн-магазин косметики та парфумерії"</div>
                 </div>
             </div>
             
@@ -452,17 +528,17 @@
             <div class="form-section">
                 <h2>📱 Контакти</h2>
                 <div class="form-group">
-                    <label for="telegramUsername">Telegram username <span class="required">*</span></label>
+                    <label for="telegramContact">Telegram</label>
                     <div style="display: flex; gap: 10px; align-items: flex-start;">
-                        <input type="text" id="telegramUsername" name="telegramUsername" placeholder="Наприклад: veoforce_support" required style="flex: 1;">
-                        <button type="button" class="instruction-btn" onclick="showInstruction('telegram')" title="Як створити username?">📖</button>
+                        <input type="text" id="telegramContact" name="telegramContact" placeholder="Username (наприклад: veoforce_support) або номер телефону (наприклад: +380661112233)" style="flex: 1;">
+                        <button type="button" class="instruction-btn" onclick="showInstruction('telegram')">Як створити username</button>
                     </div>
-                    <div class="help-text">📝 Ім'я користувача Telegram БЕЗ символу @. Наприклад: якщо посилання "t.me/veoforce_support", то впишіть "veoforce_support" (без @ і без t.me/)</div>
+                    <div class="help-text">📝 Вкажіть або username БЕЗ @ (наприклад: "veoforce_support"), або номер телефону з +380 (наприклад: "+380661112233"). Якщо вкажете номер, буде створено посилання https://t.me/+380661112233</div>
                 </div>
                 <div class="form-group">
-                    <label for="viberPhone">Viber телефон <span class="required">*</span></label>
-                    <input type="text" id="viberPhone" name="viberPhone" placeholder="Наприклад: 0112223344" required>
-                    <div class="help-text">📝 Номер телефону для Viber у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567", "0678901234" (БЕЗ +380 на початку!)</div>
+                    <label for="viberPhone">Viber телефон</label>
+                    <input type="text" id="viberPhone" name="viberPhone" placeholder="Наприклад: 0112223344">
+                    <div class="help-text">📝 Номер телефону для Viber у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567", "0678901234" (БЕЗ +380 на початку!). Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="telegramShowcase">Telegram вітрина</label>
@@ -508,46 +584,111 @@
                     <label for="googleCalendarUrl">Google Calendar URL</label>
                     <div style="display: flex; gap: 10px; align-items: flex-start;">
                         <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="Наприклад: https://calendar.google.com/calendar/ical/.../public/basic.ics" style="flex: 1;">
-                        <button type="button" class="instruction-btn" onclick="showInstruction('calendar')" title="Як дістати iCal посилання?">📖</button>
+                        <button type="button" class="instruction-btn" onclick="showInstruction('calendar')">Як дістати iCal посилання</button>
                     </div>
                     <div class="help-text">📝 Посилання на Google Calendar для відображення розкладу ефірів. Може бути iCal URL (закінчується на /public/basic.ics) або Calendar ID. Якщо немає календаря - залиште порожнім</div>
-                </div>
-                <div class="form-group">
-                    <label for="googleCalendarApiKey">Google Calendar API Key</label>
-                    <input type="text" id="googleCalendarApiKey" name="googleCalendarApiKey" placeholder="Опціонально, зазвичай не потрібен">
-                    <div class="help-text">📝 API ключ Google Calendar (потрібен тільки для приватних календарів). Для публічних календарів залиште порожнім</div>
                 </div>
             </div>
             
             <!-- Умови оплати -->
             <div class="form-section">
                 <h2>💵 Умови оплати</h2>
-                <div id="paymentOptionsContainer">
-                    <div class="array-input">
-                        <input type="text" name="paymentOption" placeholder="Наприклад: 🔷 Повна передоплата 100%" required>
+                <div class="checkbox-group" id="paymentOptionsCheckboxes">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment1" name="paymentOption" value="🔷 Повна передоплата 100%">
+                        <label for="payment1">🔷 Повна передоплата 100%</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment2" name="paymentOption" value="🔷 Накладний платіж з передоплатою 200 грн">
+                        <label for="payment2">🔷 Накладний платіж з передоплатою 200 грн</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment3" name="paymentOption" value="🔷 Оплата при отриманні">
+                        <label for="payment3">🔷 Оплата при отриманні</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment4" name="paymentOption" value="🔷 Розстрочка без переплати">
+                        <label for="payment4">🔷 Розстрочка без переплати</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment5" name="paymentOption" value="🔷 Оплата карткою онлайн">
+                        <label for="payment5">🔷 Оплата карткою онлайн</label>
                     </div>
                 </div>
-                <button type="button" class="add-item-btn" onclick="addPaymentOption()">+ Додати варіант оплати</button>
-                <div class="help-text" style="margin-top: 10px;">📝 Додайте всі варіанти оплати, які приймає клієнт. Наприклад: "🔷 Повна передоплата 100%", "🔷 Накладний платіж з передоплатою 200 грн", "🔷 Оплата при отриманні"</div>
+                <div class="custom-input-wrapper">
+                    <div class="form-group">
+                        <label for="paymentCustom">Своє поле для введення</label>
+                        <input type="text" id="paymentCustom" name="paymentCustom" placeholder="Впишіть свій варіант оплати">
+                        <div class="help-text">📝 Якщо потрібен інший варіант, впишіть його тут</div>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <strong>⚠️ Важливо:</strong> Всі тексти відображаються на сайті точно так, як Ви їх вписали, з усіма орфографічними та пунктуаційними помилками (якщо вони будуть). Ми не несемо відповідальність за правильність тексту, якщо Ви вводите його власноруч.
+                </div>
             </div>
             
             <!-- Умови доставки -->
             <div class="form-section">
                 <h2>🚚 Умови доставки</h2>
                 <div class="form-group">
-                    <label for="deliveryMethod">Спосіб доставки <span class="required">*</span></label>
-                    <input type="text" id="deliveryMethod" name="deliveryMethod" placeholder="Наприклад: Нова пошта" required>
-                    <div class="help-text">📝 Який спосіб доставки використовується. Наприклад: "Нова пошта", "Укрпошта", "Самовивіз", "Кур'єрська доставка"</div>
+                    <label>Спосіб доставки</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery1" name="deliveryMethod" value="Нова пошта">
+                            <label for="delivery1">Нова пошта</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery2" name="deliveryMethod" value="Укрпошта">
+                            <label for="delivery2">Укрпошта</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery3" name="deliveryMethod" value="Самовивіз">
+                            <label for="delivery3">Самовивіз</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery4" name="deliveryMethod" value="Кур'єрська доставка">
+                            <label for="delivery4">Кур'єрська доставка</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery5" name="deliveryMethod" value="Meest Express">
+                            <label for="delivery5">Meest Express</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper">
+                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Своє поле для введення">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="deliveryTime">Термін доставки <span class="required">*</span></label>
-                    <input type="text" id="deliveryTime" name="deliveryTime" placeholder="Наприклад: 1-3 робочі дні після отримання оплати" required>
-                    <div class="help-text">📝 Скільки часу займає доставка. Наприклад: "1-3 робочі дні після отримання оплати", "2-5 робочих днів", "Відправка щодня до 18:00"</div>
+                    <label>Термін доставки</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="deliveryTime1" name="deliveryTime" value="1-3 робочі дні після отримання оплати">
+                            <label for="deliveryTime1">1-3 робочі дні після отримання оплати</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="deliveryTime2" name="deliveryTime" value="2-5 робочих днів">
+                            <label for="deliveryTime2">2-5 робочих днів</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="deliveryTime3" name="deliveryTime" value="Відправка щодня до 18:00">
+                            <label for="deliveryTime3">Відправка щодня до 18:00</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="deliveryTime4" name="deliveryTime" value="Відправка 2-3 рази на тиждень">
+                            <label for="deliveryTime4">Відправка 2-3 рази на тиждень</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper">
+                        <input type="text" id="deliveryTimeCustom" name="deliveryTimeCustom" placeholder="Своє поле для введення">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="deliveryNote">Примітка про доставку</label>
                     <input type="text" id="deliveryNote" name="deliveryNote" placeholder="Наприклад: Термін доставки залежить від регіону отримувача">
-                    <div class="help-text">📝 Додаткова інформація про доставку. Наприклад: "Термін доставки залежить від регіону отримувача", "Доставка тільки в робочі дні". Якщо немає - залиште порожнім</div>
+                    <div class="help-text">📝 Додаткова інформація про доставку. Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="warning-box">
+                    <strong>⚠️ Важливо:</strong> Всі тексти відображаються на сайті точно так, як Ви їх вписали, з усіма орфографічними та пунктуаційними помилками (якщо вони будуть). Ми не несемо відповідальність за правильність тексту, якщо Ви вводите його власноруч.
                 </div>
             </div>
             
@@ -566,23 +707,70 @@
                 </div>
                 <div class="form-group">
                     <label>Умови обміну/повернення</label>
-                    <div id="returnConditionsContainer">
-                        <div class="array-input">
-                            <input type="text" name="returnCondition" placeholder="Наприклад: Товар повинен бути в оригінальному стані">
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond1" name="returnCondition" value="Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)">
+                            <label for="returnCond1">Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond2" name="returnCondition" value="Збережені всі етикетки, бирки та упаковка">
+                            <label for="returnCond2">Збережені всі етикетки, бирки та упаковка</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond3" name="returnCondition" value="Товар не повинен бути пошкоджений або забруднений">
+                            <label for="returnCond3">Товар не повинен бути пошкоджений або забруднений</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond4" name="returnCondition" value="Товар не повинен бути в експлуатації">
+                            <label for="returnCond4">Товар не повинен бути в експлуатації</label>
                         </div>
                     </div>
-                    <button type="button" class="add-item-btn" onclick="addReturnCondition()">+ Додати умову</button>
-                    <div class="help-text" style="margin-top: 10px;">📝 Додайте умови, які має виконувати товар для обміну/повернення. Наприклад: "Товар повинен бути в оригінальному стані", "Збережені всі етикетки та упаковка", "Товар не повинен бути пошкоджений"</div>
+                    <div class="custom-input-wrapper">
+                        <input type="text" id="returnConditionCustom" name="returnConditionCustom" placeholder="Своє поле для введення">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="returnMoneyTime">Термін повернення коштів</label>
-                    <input type="text" id="returnMoneyTime" name="returnMoneyTime" placeholder="Наприклад: 3-5 робочих днів">
-                    <div class="help-text">📝 За скільки часу повертаються кошти після повернення товару. Наприклад: "3-5 робочих днів", "7-10 робочих днів". Якщо не застосовується - залиште порожнім</div>
+                    <label>Термін повернення коштів</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnMoney1" name="returnMoneyTime" value="3-5 робочих днів">
+                            <label for="returnMoney1">3-5 робочих днів</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnMoney2" name="returnMoneyTime" value="7-10 робочих днів">
+                            <label for="returnMoney2">7-10 робочих днів</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnMoney3" name="returnMoneyTime" value="14 робочих днів">
+                            <label for="returnMoney3">14 робочих днів</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper">
+                        <input type="text" id="returnMoneyTimeCustom" name="returnMoneyTimeCustom" placeholder="Своє поле для введення">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="returnDeliveryCost">Вартість доставки при поверненні</label>
-                    <textarea id="returnDeliveryCost" name="returnDeliveryCost" placeholder="Наприклад: відповідно до тарифів перевізника. Сплачує отримувач."></textarea>
-                    <div class="help-text">📝 Хто оплачує доставку при поверненні товару. Наприклад: "відповідно до тарифів перевізника. Сплачує отримувач." або "Доставку при поверненні оплачує продавець". Якщо не застосовується - залиште порожнім</div>
+                    <label>Вартість доставки при поверненні</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnDelivery1" name="returnDeliveryCost" value="відповідно до тарифів перевізника. Сплачує отримувач">
+                            <label for="returnDelivery1">відповідно до тарифів перевізника. Сплачує отримувач</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnDelivery2" name="returnDeliveryCost" value="Доставку при поверненні оплачує продавець">
+                            <label for="returnDelivery2">Доставку при поверненні оплачує продавець</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnDelivery3" name="returnDeliveryCost" value="Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця">
+                            <label for="returnDelivery3">Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper">
+                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Своє поле для введення"></textarea>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <strong>⚠️ Важливо:</strong> Всі тексти відображаються на сайті точно так, як Ви їх вписали, з усіма орфографічними та пунктуаційними помилками (якщо вони будуть). Ми не несемо відповідальність за правильність тексту, якщо Ви вводите його власноруч.
                 </div>
             </div>
             
@@ -590,9 +778,50 @@
             <div class="form-section">
                 <h2>📦 Шаблон після оплати</h2>
                 <div class="form-group">
-                    <label for="afterPaymentTemplate">Текст шаблону <span class="required">*</span></label>
-                    <textarea id="afterPaymentTemplate" name="afterPaymentTemplate" required placeholder="Впишіть шаблон тут. Кожен рядок на новому рядку.&#10;&#10;Наприклад:&#10;👤 ПІБ: &#10;📍 Населений пункт: &#10;📦 Відділення НП: &#10;📱 Телефон отримувача: "></textarea>
-                    <div class="help-text">📝 Це шаблон, який клієнт заповнить після оплати. Кожен рядок на новому рядку (натисніть Enter). Наприклад: "👤 ПІБ: " (Enter) "📍 Населений пункт: " (Enter) "📦 Відділення НП: " (Enter) "📱 Телефон отримувача: "</div>
+                    <label>Оберіть поля для шаблону:</label>
+                    <div class="checkbox-group" id="templateFieldsCheckboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template1" name="templateField" value="👤 ПІБ: " checked>
+                            <label for="template1">👤 ПІБ</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template2" name="templateField" value="📍 Населений пункт: " checked>
+                            <label for="template2">📍 Населений пункт</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template3" name="templateField" value="📦 Відділення НП: " checked>
+                            <label for="template3">📦 Відділення Нова Пошта</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template4" name="templateField" value="📱 Телефон отримувача: " checked>
+                            <label for="template4">📱 Телефон отримувача</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template5" name="templateField" value="📮 Відділення Укрпошти: ">
+                            <label for="template5">📮 Відділення Укрпошти</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template6" name="templateField" value="🏠 Адреса доставки: ">
+                            <label for="template6">🏠 Адреса доставки (для кур'єра)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template7" name="templateField" value="📝 Коментар до замовлення: ">
+                            <label for="template7">📝 Коментар до замовлення</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper">
+                        <input type="text" id="templateCustom" name="templateCustom" placeholder="Своє поле для введення (наприклад: 🎁 Подарункова упаковка: )">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Прев'ю шаблону (як він виглядатиме на сайті):</label>
+                    <div class="template-preview" id="templatePreview">
+👤 ПІБ: 
+📍 Населений пункт: 
+📦 Відділення НП: 
+📱 Телефон отримувача: 
+                    </div>
+                    <div class="help-text" style="margin-top: 10px;">📝 Це шаблон, який клієнт заповнить після оплати. Оберіть потрібні поля вище, і шаблон автоматично оновиться</div>
                 </div>
             </div>
             
@@ -620,29 +849,36 @@
     <script>
         let generatedCode = '';
         
-        // Додавання варіантів оплати
-        function addPaymentOption() {
-            const container = document.getElementById('paymentOptionsContainer');
-            const div = document.createElement('div');
-            div.className = 'array-input';
-            div.innerHTML = `
-                <input type="text" name="paymentOption" placeholder="Наприклад: 🔷 Оплата при отриманні">
-                <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">×</button>
-            `;
-            container.appendChild(div);
+        // Оновлення прев'ю шаблону
+        function updateTemplatePreview() {
+            const templateFields = [];
+            Array.from(document.querySelectorAll('input[name="templateField"]:checked')).forEach(cb => {
+                templateFields.push(cb.value);
+            });
+            const templateCustom = document.getElementById('templateCustom').value.trim();
+            if (templateCustom) {
+                templateFields.push(templateCustom);
+            }
+            const preview = document.getElementById('templatePreview');
+            if (preview) {
+                preview.textContent = templateFields.join('\n') || '(шаблон порожній)';
+            }
         }
         
-        // Додавання умов повернення
-        function addReturnCondition() {
-            const container = document.getElementById('returnConditionsContainer');
-            const div = document.createElement('div');
-            div.className = 'array-input';
-            div.innerHTML = `
-                <input type="text" name="returnCondition" placeholder="Наприклад: Товар не повинен бути пошкоджений">
-                <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">×</button>
-            `;
-            container.appendChild(div);
-        }
+        // Додаємо обробники для оновлення прев'ю
+        document.addEventListener('DOMContentLoaded', function() {
+            // Оновлюємо прев'ю при зміні чекбоксів
+            document.querySelectorAll('input[name="templateField"]').forEach(cb => {
+                cb.addEventListener('change', updateTemplatePreview);
+            });
+            // Оновлюємо прев'ю при зміні кастомного поля
+            const templateCustom = document.getElementById('templateCustom');
+            if (templateCustom) {
+                templateCustom.addEventListener('input', updateTemplatePreview);
+            }
+            // Початкове оновлення
+            updateTemplatePreview();
+        });
         
         // Генерація коду
         function generateCode(formData) {
@@ -656,7 +892,11 @@
             
             // Основна інформація
             code += `            // Назва магазину\n`;
-            code += `            shopName: "${escapeString(formData.shopName)}",\n\n`;
+            code += `            shopName: "${escapeString(formData.shopName)}",\n`;
+            if (formData.shopDescription) {
+                code += `            shopDescription: "${escapeString(formData.shopDescription)}",\n`;
+            }
+            code += `\n`;
             
             // Реквізити ФОП
             code += `            // Реквізити ФОП\n`;
@@ -668,8 +908,23 @@
             
             // Контакти
             code += `            // Контакти (залиште порожнім "", якщо немає)\n`;
-            code += `            telegramUsername: "${escapeString(formData.telegramUsername)}",        // Без @\n`;
-            code += `            viberPhone: "${escapeString(formData.viberPhone)}",                   // 10 цифр, починається з 0\n`;
+            // Обробка Telegram - може бути username або номер телефону
+            const telegramContact = formData.telegramContact || '';
+            const cleanTelegramContact = telegramContact.replace(/\s|-/g, '');
+            // Перевіряємо, чи це номер телефону (починається з + або 0, або 380, і містить багато цифр)
+            if (telegramContact && (telegramContact.startsWith('+') || cleanTelegramContact.startsWith('0') || cleanTelegramContact.startsWith('380')) && /^\d{10,}$/.test(cleanTelegramContact.replace(/^\+?380/, '0'))) {
+                // Це номер телефону
+                let phone = cleanTelegramContact.replace(/^\+?380/, '0');
+                if (!phone.startsWith('0')) phone = '0' + phone;
+                code += `            telegramPhone: "${escapeString(phone)}",                   // Номер телефону для Telegram\n`;
+            } else if (telegramContact) {
+                // Це username
+                const username = telegramContact.replace('@', '').trim();
+                code += `            telegramUsername: "${escapeString(username)}",        // Без @\n`;
+            } else {
+                code += `            telegramUsername: "",        // Без @\n`;
+            }
+            code += `            viberPhone: "${escapeString(formData.viberPhone || '')}",                   // 10 цифр, починається з 0\n`;
             code += `            telegramShowcase: "${escapeString(formData.telegramShowcase || '')}",          // Без @ або повне посилання\n`;
             code += `            instagramUsername: "${escapeString(formData.instagramUsername || '')}",                      // Без @, порожньо якщо немає\n`;
             code += `            biggoLiveUrl: "${escapeString(formData.biggoLiveUrl || '')}",                           // Повне посилання, порожньо якщо немає\n`;
@@ -680,23 +935,49 @@
             
             // Календар
             code += `            // Календар (залиште порожнім "", якщо немає)\n`;
-            code += `            googleCalendarUrl: "${escapeString(formData.googleCalendarUrl || '')}",\n`;
-            code += `            googleCalendarApiKey: "${escapeString(formData.googleCalendarApiKey || '')}",                    // Опціонально\n\n`;
+            code += `            googleCalendarUrl: "${escapeString(formData.googleCalendarUrl || '')}",\n\n`;
             
             // Умови оплати
             code += `            // Умови оплати (масив рядків)\n`;
             code += `            paymentOptions: [\n`;
-            formData.paymentOptions.forEach((option, index) => {
+            const paymentOptions = [];
+            // Збираємо з чекбоксів
+            Array.from(document.querySelectorAll('input[name="paymentOption"]:checked')).forEach(cb => {
+                paymentOptions.push(cb.value);
+            });
+            // Додаємо кастомне поле, якщо заповнене
+            const paymentCustom = document.getElementById('paymentCustom').value.trim();
+            if (paymentCustom) {
+                paymentOptions.push(paymentCustom);
+            }
+            paymentOptions.forEach((option, index) => {
                 code += `                "${escapeString(option)}"`;
-                if (index < formData.paymentOptions.length - 1) code += ',';
+                if (index < paymentOptions.length - 1) code += ',';
                 code += '\n';
             });
             code += `            ],\n\n`;
             
             // Умови доставки
             code += `            // Умови доставки\n`;
-            code += `            deliveryMethod: "${escapeString(formData.deliveryMethod)}",\n`;
-            code += `            deliveryTime: "${escapeString(formData.deliveryTime)}",\n`;
+            const deliveryMethods = [];
+            Array.from(document.querySelectorAll('input[name="deliveryMethod"]:checked')).forEach(cb => {
+                deliveryMethods.push(cb.value);
+            });
+            const deliveryMethodCustom = document.getElementById('deliveryMethodCustom').value.trim();
+            if (deliveryMethodCustom) {
+                deliveryMethods.push(deliveryMethodCustom);
+            }
+            code += `            deliveryMethod: "${escapeString(deliveryMethods.join(', ') || formData.deliveryMethod || '')}",\n`;
+            
+            const deliveryTimes = [];
+            Array.from(document.querySelectorAll('input[name="deliveryTime"]:checked')).forEach(cb => {
+                deliveryTimes.push(cb.value);
+            });
+            const deliveryTimeCustom = document.getElementById('deliveryTimeCustom').value.trim();
+            if (deliveryTimeCustom) {
+                deliveryTimes.push(deliveryTimeCustom);
+            }
+            code += `            deliveryTime: "${escapeString(deliveryTimes.join(', ') || formData.deliveryTime || '')}",\n`;
             code += `            deliveryNote: "${escapeString(formData.deliveryNote || '')}",\n\n`;
             
             // Умови обміну та повернення
@@ -704,21 +985,54 @@
             code += `            exchangeDays: ${formData.exchangeDays || 0},                           // 0 якщо недоступно\n`;
             code += `            returnDays: ${formData.returnDays || 0},                              // 0 якщо недоступно\n`;
             code += `            returnConditions: [                         // Масив умов\n`;
-            if (formData.returnConditions && formData.returnConditions.length > 0) {
-                formData.returnConditions.forEach((condition, index) => {
-                    code += `                "${escapeString(condition)}"`;
-                    if (index < formData.returnConditions.length - 1) code += ',';
-                    code += '\n';
-                });
+            const returnConditions = [];
+            Array.from(document.querySelectorAll('input[name="returnCondition"]:checked')).forEach(cb => {
+                returnConditions.push(cb.value);
+            });
+            const returnConditionCustom = document.getElementById('returnConditionCustom').value.trim();
+            if (returnConditionCustom) {
+                returnConditions.push(returnConditionCustom);
             }
+            returnConditions.forEach((condition, index) => {
+                code += `                "${escapeString(condition)}"`;
+                if (index < returnConditions.length - 1) code += ',';
+                code += '\n';
+            });
             code += `            ],\n`;
-            code += `            returnMoneyTime: "${escapeString(formData.returnMoneyTime || '')}",\n`;
-            code += `            returnDeliveryCost: "${escapeString(formData.returnDeliveryCost || '')}",\n\n`;
+            
+            const returnMoneyTimes = [];
+            Array.from(document.querySelectorAll('input[name="returnMoneyTime"]:checked')).forEach(cb => {
+                returnMoneyTimes.push(cb.value);
+            });
+            const returnMoneyTimeCustom = document.getElementById('returnMoneyTimeCustom').value.trim();
+            if (returnMoneyTimeCustom) {
+                returnMoneyTimes.push(returnMoneyTimeCustom);
+            }
+            code += `            returnMoneyTime: "${escapeString(returnMoneyTimes.join(', ') || formData.returnMoneyTime || '')}",\n`;
+            
+            const returnDeliveryCosts = [];
+            Array.from(document.querySelectorAll('input[name="returnDeliveryCost"]:checked')).forEach(cb => {
+                returnDeliveryCosts.push(cb.value);
+            });
+            const returnDeliveryCostCustom = document.getElementById('returnDeliveryCostCustom').value.trim();
+            if (returnDeliveryCostCustom) {
+                returnDeliveryCosts.push(returnDeliveryCostCustom);
+            }
+            code += `            returnDeliveryCost: "${escapeString(returnDeliveryCosts.join(', ') || formData.returnDeliveryCost || '')}",\n\n`;
             
             // Шаблон після оплати
             code += `            // Шаблон після оплати (використовуйте \\n для переносу рядка)\n`;
-            const template = (formData.afterPaymentTemplate || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
-            code += `            afterPaymentTemplate: "${template}"\n`;
+            const templateFields = [];
+            Array.from(document.querySelectorAll('input[name="templateField"]:checked')).forEach(cb => {
+                templateFields.push(cb.value);
+            });
+            const templateCustom = document.getElementById('templateCustom').value.trim();
+            if (templateCustom) {
+                templateFields.push(templateCustom);
+            }
+            const template = templateFields.join('\n');
+            const templateEscaped = template.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
+            code += `            afterPaymentTemplate: "${templateEscaped}"\n`;
             
             code += `        };`;
             
@@ -806,6 +1120,22 @@
         document.getElementById('edrpou').addEventListener('blur', validateForm);
         document.getElementById('viberPhone').addEventListener('blur', validateForm);
         document.getElementById('whatsappPhone').addEventListener('blur', validateForm);
+        document.getElementById('shopDescription').addEventListener('input', function() {
+            const maxLength = 100;
+            const currentLength = this.value.length;
+            if (currentLength > maxLength) {
+                this.value = this.value.substring(0, maxLength);
+            }
+            // Оновлюємо лічильник, якщо він є
+            let counter = this.parentElement.querySelector('.char-counter');
+            if (!counter) {
+                counter = document.createElement('div');
+                counter.className = 'char-counter';
+                counter.style.cssText = 'font-size: 12px; color: #b0b0b0; margin-top: 5px; text-align: right;';
+                this.parentElement.appendChild(counter);
+            }
+            counter.textContent = `${this.value.length}/${maxLength} символів`;
+        });
         
         // Показ інструкцій
         function showInstruction(type) {
@@ -870,12 +1200,13 @@
             
             const formData = {
                 shopName: document.getElementById('shopName').value.trim(),
+                shopDescription: document.getElementById('shopDescription').value.trim(),
                 fopName: document.getElementById('fopName').value.trim(),
                 edrpou: document.getElementById('edrpou').value.trim(),
                 iban: document.getElementById('iban').value.trim(),
                 bankName: document.getElementById('bankName').value.trim(),
                 paymentPurpose: document.getElementById('paymentPurpose').value.trim(),
-                telegramUsername: document.getElementById('telegramUsername').value.trim(),
+                telegramContact: document.getElementById('telegramContact').value.trim(),
                 viberPhone: document.getElementById('viberPhone').value.trim(),
                 telegramShowcase: document.getElementById('telegramShowcase').value.trim(),
                 instagramUsername: document.getElementById('instagramUsername').value.trim(),
@@ -885,21 +1216,9 @@
                 youtubeChannel: document.getElementById('youtubeChannel').value.trim(),
                 whatsappPhone: document.getElementById('whatsappPhone').value.trim(),
                 googleCalendarUrl: document.getElementById('googleCalendarUrl').value.trim(),
-                googleCalendarApiKey: document.getElementById('googleCalendarApiKey').value.trim(),
-                paymentOptions: Array.from(document.querySelectorAll('input[name="paymentOption"]'))
-                    .map(input => input.value.trim())
-                    .filter(val => val),
-                deliveryMethod: document.getElementById('deliveryMethod').value.trim(),
-                deliveryTime: document.getElementById('deliveryTime').value.trim(),
-                deliveryNote: document.getElementById('deliveryNote').value.trim(),
                 exchangeDays: parseInt(document.getElementById('exchangeDays').value) || 0,
                 returnDays: parseInt(document.getElementById('returnDays').value) || 0,
-                returnConditions: Array.from(document.querySelectorAll('input[name="returnCondition"]'))
-                    .map(input => input.value.trim())
-                    .filter(val => val),
-                returnMoneyTime: document.getElementById('returnMoneyTime').value.trim(),
-                returnDeliveryCost: document.getElementById('returnDeliveryCost').value.trim(),
-                afterPaymentTemplate: document.getElementById('afterPaymentTemplate').value.trim()
+                deliveryNote: document.getElementById('deliveryNote').value.trim()
             };
             
             // Генерація коду
