@@ -715,6 +715,9 @@
             <!-- Умови оплати -->
             <div class="form-section">
                 <h2>💵 Умови оплати</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 <strong>Як це працює:</strong> Оберіть варіанти оплати, які Вам як продавцю комфортні. Можна обрати один або декілька варіантів одночасно. Всі обрані варіанти будуть відображені на міні-сайті клієнта у вигляді списку. Якщо оберете "Накладний платіж із передплатою" з кастомною сумою, введіть суму передплати - вона автоматично додасться до тексту варіанту оплати. Також можна додати свій власний варіант оплати в полі "Своє поле для введення".
+                </div>
                 <div class="checkbox-group" id="paymentOptionsCheckboxes">
                     <div class="checkbox-item">
                         <input type="checkbox" id="payment1" name="paymentOption" value="🔷 Повна передоплата 100%">
@@ -752,24 +755,24 @@
                     <label>Спосіб доставки</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="delivery1" name="deliveryMethod" value="Нова пошта">
+                            <input type="checkbox" id="delivery1" name="deliveryMethod" value="Нова пошта" data-requires-location="true">
                             <label for="delivery1">Нова пошта</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="delivery2" name="deliveryMethod" value="Укрпошта">
+                            <input type="checkbox" id="delivery2" name="deliveryMethod" value="Укрпошта" data-requires-location="true">
                             <label for="delivery2">Укрпошта</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="delivery3" name="deliveryMethod" value="Самовивіз">
-                            <label for="delivery3">Самовивіз</label>
+                            <input type="checkbox" id="delivery5" name="deliveryMethod" value="Meest Express" data-requires-location="true">
+                            <label for="delivery5">Meest Express</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="delivery4" name="deliveryMethod" value="Кур'єрська доставка">
                             <label for="delivery4">Кур'єрська доставка</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="delivery5" name="deliveryMethod" value="Meest Express">
-                            <label for="delivery5">Meest Express</label>
+                            <input type="checkbox" id="delivery3" name="deliveryMethod" value="Самовивіз">
+                            <label for="delivery3">Самовивіз</label>
                         </div>
                     </div>
                     <div class="custom-input-wrapper">
@@ -1612,6 +1615,36 @@
             document.getElementById('instructionModal').classList.remove('show');
         }
         
+        // Перевірка локацій для перевізників
+        function checkDeliveryLocations() {
+            const selectedCarriers = [];
+            Array.from(document.querySelectorAll('input[name="deliveryMethod"]:checked')).forEach(cb => {
+                if (cb.hasAttribute('data-requires-location')) {
+                    selectedCarriers.push(cb.value);
+                }
+            });
+            
+            if (selectedCarriers.length > 0) {
+                // Перевіряємо, чи є локації на Google Maps
+                const locations = [];
+                document.querySelectorAll('.location-item').forEach(item => {
+                    const name = item.querySelector('.location-name').value.trim();
+                    const url = item.querySelector('.location-url').value.trim();
+                    if (name && url) {
+                        locations.push({ name, url });
+                    }
+                });
+                
+                if (locations.length === 0) {
+                    const carriersList = selectedCarriers.join(', ');
+                    alert(`⚠️ Ви обрали перевізників: ${carriersList}\n\nДля цих перевізників необхідно вказати локацію на Google Maps.\n\nБудь ласка, додайте локацію в блоці "📍 Локації магазинів на Google Maps" перед генерацією коду.`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
         // Обробка форми
         document.getElementById('clientForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1619,6 +1652,11 @@
             // Валідація перед відправкою
             if (!validateForm()) {
                 alert('Будь ласка, виправте помилки в полях перед генерацією коду.');
+                return;
+            }
+            
+            // Перевірка локацій для перевізників
+            if (!checkDeliveryLocations()) {
                 return;
             }
             
