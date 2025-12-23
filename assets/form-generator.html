@@ -599,6 +599,14 @@
                     <input type="text" id="paymentPurpose" name="paymentPurpose" placeholder="Наприклад: Послуга оптимізації реклами">
                     <div class="help-text">📝 Короткий опис, що буде вказано в призначенні платежу. Наприклад: "Послуга оптимізації реклами", "Оплата товару", "Передоплата за замовлення"</div>
                 </div>
+            </div>
+            
+            <!-- Оплата на картку -->
+            <div class="form-section">
+                <h2>💳 Оплата на картку</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 Цей блок для тих, хто приймає оплату на банківську картку (часто неФОПи продають, отримуючи просто на картку, або ФОПи, які також надають цей спосіб оплати)
+                </div>
                 <div class="form-group">
                     <label for="cardNumber">Номер картки</label>
                     <input type="text" id="cardNumber" name="cardNumber" placeholder="Наприклад: 5169 3305 1234 5678" maxlength="19">
@@ -689,25 +697,13 @@
                         <input type="checkbox" id="payment2" name="paymentOption" value="🔷 Накладний платіж з передоплатою 200 грн" data-payment-type="cod-200">
                         <label for="payment2">🔷 Накладний платіж з передоплатою 200 грн</label>
                     </div>
-                    <div class="checkbox-item">
+                    <div class="checkbox-item" style="display: flex; align-items: center; gap: 10px;">
                         <input type="checkbox" id="payment2custom" name="paymentOption" data-payment-type="cod-custom">
-                        <label for="payment2custom" style="flex: 1;">
-                            🔷 Накладний платіж із передплатою 
-                            <input type="number" id="codAmount" placeholder="сума" min="1" style="width: 100px; margin-left: 5px; padding: 4px 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 14px;" disabled>
-                            грн
+                        <label for="payment2custom" style="flex: 0 0 auto; margin: 0;">
+                            🔷 Накладний платіж із передплатою
                         </label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="payment3" name="paymentOption" value="🔷 Оплата при отриманні">
-                        <label for="payment3">🔷 Оплата при отриманні</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="payment4" name="paymentOption" value="🔷 Розстрочка без переплати">
-                        <label for="payment4">🔷 Розстрочка без переплати</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="payment5" name="paymentOption" value="🔷 Оплата карткою онлайн">
-                        <label for="payment5">🔷 Оплата карткою онлайн</label>
+                        <input type="number" id="codAmount" placeholder="сума" min="1" style="width: 100px; padding: 4px 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 14px;" disabled>
+                        <span style="flex: 0 0 auto;">грн</span>
                     </div>
                 </div>
                 <div class="custom-input-wrapper">
@@ -872,6 +868,9 @@
             <!-- Шаблон після оплати -->
             <div class="form-section">
                 <h2>📦 Шаблон після оплати</h2>
+                <div class="help-text" style="margin-bottom: 20px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    📝 Це шаблон, який клієнт заповнить після оплати. Оберіть потрібні поля нижче, і шаблон автоматично оновиться. Клієнт скопіює це повідомлення і вставить його в месенджер (Telegram, Viber тощо), де буде дописувати свої реквізити і дані для отримання товару.
+                </div>
                 <div class="form-group">
                     <label>Оберіть поля для шаблону:</label>
                     <div class="checkbox-group" id="templateFieldsCheckboxes">
@@ -916,7 +915,6 @@
 📦 Відділення НП: 
 📱 Телефон отримувача: 
                     </div>
-                    <div class="help-text" style="margin-top: 10px;">📝 Це шаблон, який клієнт заповнить після оплати. Оберіть потрібні поля вище, і шаблон автоматично оновиться</div>
                 </div>
             </div>
             
@@ -1010,12 +1008,30 @@
                     if (this.checked) {
                         cod200.checked = false;
                         codAmount.disabled = false;
-                        codAmount.focus();
+                        // Використовуємо setTimeout, щоб поле активувалося після обробки події
+                        setTimeout(() => {
+                            codAmount.focus();
+                        }, 10);
                     } else {
                         codAmount.disabled = true;
                         codAmount.value = '';
                     }
                 });
+                
+                // Додатково: обробка кліку на label
+                const codCustomLabel = document.querySelector('label[for="payment2custom"]');
+                if (codCustomLabel) {
+                    codCustomLabel.addEventListener('click', function(e) {
+                        // Якщо клікнули на label, а не на input всередині
+                        if (e.target === codCustomLabel || e.target.tagName === 'SPAN') {
+                            setTimeout(() => {
+                                if (codCustom.checked && !codAmount.disabled) {
+                                    codAmount.focus();
+                                }
+                            }, 10);
+                        }
+                    });
+                }
             }
         }
         
@@ -1335,8 +1351,9 @@
             
             // Валідація IBAN
             const iban = document.getElementById('iban').value.trim().replace(/\s/g, '');
-            if (iban && !/^UA\d{2}[A-Z]{4}\d{19}$/.test(iban)) {
-                showError('iban', 'IBAN має бути у форматі: UA + 2 цифри + 4 літери + 19 цифр');
+            // Український IBAN: UA + 2 цифри (контрольна сума) + 4 символи (код банку, може бути літери або цифри) + 19 цифр (номер рахунку) = 29 символів
+            if (iban && !/^UA\d{2}[A-Z0-9]{4}\d{19}$/.test(iban)) {
+                showError('iban', 'IBAN має бути у форматі: UA + 2 цифри + 4 символи (літери або цифри) + 19 цифр');
                 isValid = false;
             } else {
                 hideError('iban');
