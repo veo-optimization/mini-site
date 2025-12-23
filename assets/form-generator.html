@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор даних клієнта</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4CAF50;
+            font-size: 28px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #333333;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .form-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+        
+        .required {
+            color: #ff6b6b;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .array-input {
+            margin-bottom: 10px;
+        }
+        
+        .array-input input {
+            margin-bottom: 5px;
+        }
+        
+        .add-item-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .add-item-btn:hover {
+            background: #45a049;
+        }
+        
+        .remove-item-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+        
+        .remove-item-btn:hover {
+            background: #ff5252;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .generate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+        
+        .generate-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Модальне вікно */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #2a2a2a;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-header h2 {
+            color: #4CAF50;
+            font-size: 24px;
+        }
+        
+        .modal-body {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-body pre {
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn-back {
+            background: #666;
+            color: white;
+        }
+        
+        .modal-btn-back:hover {
+            background: #777;
+        }
+        
+        .modal-btn-copy {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .modal-btn-copy:hover {
+            background: #45a049;
+        }
+        
+        .copy-success {
+            display: none;
+            text-align: center;
+            color: #4CAF50;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .copy-success.show {
+            display: block;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .form-section {
+                padding: 15px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Генератор даних клієнта</h1>
+        
+        <form id="clientForm">
+            <!-- Назва магазину -->
+            <div class="form-section">
+                <h2>🏪 Основна інформація</h2>
+                <div class="form-group">
+                    <label for="shopName">Назва магазину <span class="required">*</span></label>
+                    <input type="text" id="shopName" name="shopName" required>
+                </div>
+            </div>
+            
+            <!-- Реквізити ФОП -->
+            <div class="form-section">
+                <h2>💳 Реквізити ФОП</h2>
+                <div class="form-group">
+                    <label for="fopName">ПІБ ФОП <span class="required">*</span></label>
+                    <input type="text" id="fopName" name="fopName" required>
+                </div>
+                <div class="form-group">
+                    <label for="edrpou">ЄДРПОУ <span class="required">*</span></label>
+                    <input type="text" id="edrpou" name="edrpou" required>
+                    <div class="help-text">8 або 10 цифр</div>
+                </div>
+                <div class="form-group">
+                    <label for="iban">IBAN <span class="required">*</span></label>
+                    <input type="text" id="iban" name="iban" required>
+                    <div class="help-text">Формат: UA123456789012345678901234567</div>
+                </div>
+                <div class="form-group">
+                    <label for="bankName">Назва банку <span class="required">*</span></label>
+                    <input type="text" id="bankName" name="bankName" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentPurpose">Призначення платежу <span class="required">*</span></label>
+                    <input type="text" id="paymentPurpose" name="paymentPurpose" required>
+                </div>
+            </div>
+            
+            <!-- Контакти -->
+            <div class="form-section">
+                <h2>📱 Контакти</h2>
+                <div class="form-group">
+                    <label for="telegramUsername">Telegram username <span class="required">*</span></label>
+                    <input type="text" id="telegramUsername" name="telegramUsername" placeholder="без @" required>
+                    <div class="help-text">Без символу @</div>
+                </div>
+                <div class="form-group">
+                    <label for="viberPhone">Viber телефон <span class="required">*</span></label>
+                    <input type="text" id="viberPhone" name="viberPhone" placeholder="0112223344" required>
+                    <div class="help-text">10 цифр, починається з 0</div>
+                </div>
+                <div class="form-group">
+                    <label for="telegramShowcase">Telegram вітрина</label>
+                    <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="username або посилання">
+                    <div class="help-text">Username без @ або повне посилання</div>
+                </div>
+                <div class="form-group">
+                    <label for="instagramUsername">Instagram username</label>
+                    <input type="text" id="instagramUsername" name="instagramUsername" placeholder="без @">
+                    <div class="help-text">Без символу @, залиште порожнім якщо немає</div>
+                </div>
+                <div class="form-group">
+                    <label for="biggoLiveUrl">BIGGO LIVE URL</label>
+                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="https://biggo.tv/user/...">
+                    <div class="help-text">Повне посилання, залиште порожнім якщо немає</div>
+                </div>
+            </div>
+            
+            <!-- Календар -->
+            <div class="form-section">
+                <h2>📅 Календар</h2>
+                <div class="form-group">
+                    <label for="googleCalendarUrl">Google Calendar URL</label>
+                    <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="iCal URL або Calendar ID">
+                    <div class="help-text">Залиште порожнім якщо немає</div>
+                </div>
+                <div class="form-group">
+                    <label for="googleCalendarApiKey">Google Calendar API Key</label>
+                    <input type="text" id="googleCalendarApiKey" name="googleCalendarApiKey">
+                    <div class="help-text">Опціонально</div>
+                </div>
+            </div>
+            
+            <!-- Умови оплати -->
+            <div class="form-section">
+                <h2>💵 Умови оплати</h2>
+                <div id="paymentOptionsContainer">
+                    <div class="array-input">
+                        <input type="text" name="paymentOption" placeholder="🔷 Варіант оплати 1" required>
+                    </div>
+                </div>
+                <button type="button" class="add-item-btn" onclick="addPaymentOption()">+ Додати варіант</button>
+            </div>
+            
+            <!-- Умови доставки -->
+            <div class="form-section">
+                <h2>🚚 Умови доставки</h2>
+                <div class="form-group">
+                    <label for="deliveryMethod">Спосіб доставки <span class="required">*</span></label>
+                    <input type="text" id="deliveryMethod" name="deliveryMethod" required>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryTime">Термін доставки <span class="required">*</span></label>
+                    <input type="text" id="deliveryTime" name="deliveryTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryNote">Примітка про доставку</label>
+                    <input type="text" id="deliveryNote" name="deliveryNote">
+                </div>
+            </div>
+            
+            <!-- Умови обміну та повернення -->
+            <div class="form-section">
+                <h2>🔄 Умови обміну та повернення</h2>
+                <div class="form-group">
+                    <label for="exchangeDays">Днів для обміну</label>
+                    <input type="number" id="exchangeDays" name="exchangeDays" min="0" value="0">
+                    <div class="help-text">0 якщо обмін недоступний</div>
+                </div>
+                <div class="form-group">
+                    <label for="returnDays">Днів для повернення</label>
+                    <input type="number" id="returnDays" name="returnDays" min="0" value="0">
+                    <div class="help-text">0 якщо повернення недоступне</div>
+                </div>
+                <div class="form-group">
+                    <label>Умови обміну/повернення</label>
+                    <div id="returnConditionsContainer">
+                        <div class="array-input">
+                            <input type="text" name="returnCondition" placeholder="Умова 1">
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addReturnCondition()">+ Додати умову</button>
+                </div>
+                <div class="form-group">
+                    <label for="returnMoneyTime">Термін повернення коштів</label>
+                    <input type="text" id="returnMoneyTime" name="returnMoneyTime" placeholder="3-5 робочих днів">
+                </div>
+                <div class="form-group">
+                    <label for="returnDeliveryCost">Вартість доставки при поверненні</label>
+                    <textarea id="returnDeliveryCost" name="returnDeliveryCost" placeholder="Опишіть умови..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Шаблон після оплати -->
+            <div class="form-section">
+                <h2>📦 Шаблон після оплати</h2>
+                <div class="form-group">
+                    <label for="afterPaymentTemplate">Текст шаблону <span class="required">*</span></label>
+                    <textarea id="afterPaymentTemplate" name="afterPaymentTemplate" required placeholder="👤 ПІБ: &#10;📍 Населений пункт: &#10;📦 Відділення НП: &#10;📱 Телефон отримувача: "></textarea>
+                    <div class="help-text">Використовуйте Enter для переносу рядка</div>
+                </div>
+            </div>
+            
+            <button type="submit" class="generate-btn" id="generateBtn">Згенерувати блок даних</button>
+        </form>
+    </div>
+    
+    <!-- Модальне вікно -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✅ Блок даних згенеровано!</h2>
+            </div>
+            <div class="modal-body">
+                <pre id="generatedCode"></pre>
+            </div>
+            <div class="copy-success" id="copySuccess">✓ Скопійовано в буфер обміну!</div>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn modal-btn-back" onclick="closeModal()">Назад</button>
+                <button type="button" class="modal-btn modal-btn-copy" onclick="copyToClipboard()">Скопіювати</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let generatedCode = '';
+        
+        // Додавання варіантів оплати
+        function addPaymentOption() {
+            const container = document.getElementById('paymentOptionsContainer');
+            const div = document.createElement('div');
+            div.className = 'array-input';
+            div.innerHTML = `
+                <input type="text" name="paymentOption" placeholder="🔷 Варіант оплати">
+                <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(div);
+        }
+        
+        // Додавання умов повернення
+        function addReturnCondition() {
+            const container = document.getElementById('returnConditionsContainer');
+            const div = document.createElement('div');
+            div.className = 'array-input';
+            div.innerHTML = `
+                <input type="text" name="returnCondition" placeholder="Умова">
+                <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(div);
+        }
+        
+        // Генерація коду
+        function generateCode(formData) {
+            let code = '        // ============================================\n';
+            code += '        // ДАНІ КЛІЄНТА - ЗАПОВНІТЬ ЦІ ПОЛЯ\n';
+            code += '        // ============================================\n';
+            code += '        // Вставте дані, отримані від клієнта, у відповідні поля\n';
+            code += '        // Всі поля обов\'язкові, якщо не вказано інакше\n';
+            code += '        \n';
+            code += '        const CLIENT_DATA = {\n';
+            
+            // Основна інформація
+            code += `            // Назва магазину\n`;
+            code += `            shopName: "${escapeString(formData.shopName)}",\n\n`;
+            
+            // Реквізити ФОП
+            code += `            // Реквізити ФОП\n`;
+            code += `            fopName: "${escapeString(formData.fopName)}",\n`;
+            code += `            edrpou: "${escapeString(formData.edrpou)}",\n`;
+            code += `            iban: "${escapeString(formData.iban)}",\n`;
+            code += `            bankName: "${escapeString(formData.bankName)}",\n`;
+            code += `            paymentPurpose: "${escapeString(formData.paymentPurpose)}",\n\n`;
+            
+            // Контакти
+            code += `            // Контакти (залиште порожнім "", якщо немає)\n`;
+            code += `            telegramUsername: "${escapeString(formData.telegramUsername)}",        // Без @\n`;
+            code += `            viberPhone: "${escapeString(formData.viberPhone)}",                   // 10 цифр, починається з 0\n`;
+            code += `            telegramShowcase: "${escapeString(formData.telegramShowcase || '')}",          // Без @ або повне посилання\n`;
+            code += `            instagramUsername: "${escapeString(formData.instagramUsername || '')}",                      // Без @, порожньо якщо немає\n`;
+            code += `            biggoLiveUrl: "${escapeString(formData.biggoLiveUrl || '')}",                           // Повне посилання, порожньо якщо немає\n\n`;
+            
+            // Календар
+            code += `            // Календар (залиште порожнім "", якщо немає)\n`;
+            code += `            googleCalendarUrl: "${escapeString(formData.googleCalendarUrl || '')}",\n`;
+            code += `            googleCalendarApiKey: "${escapeString(formData.googleCalendarApiKey || '')}",                    // Опціонально\n\n`;
+            
+            // Умови оплати
+            code += `            // Умови оплати (масив рядків)\n`;
+            code += `            paymentOptions: [\n`;
+            formData.paymentOptions.forEach((option, index) => {
+                code += `                "${escapeString(option)}"`;
+                if (index < formData.paymentOptions.length - 1) code += ',';
+                code += '\n';
+            });
+            code += `            ],\n\n`;
+            
+            // Умови доставки
+            code += `            // Умови доставки\n`;
+            code += `            deliveryMethod: "${escapeString(formData.deliveryMethod)}",\n`;
+            code += `            deliveryTime: "${escapeString(formData.deliveryTime)}",\n`;
+            code += `            deliveryNote: "${escapeString(formData.deliveryNote || '')}",\n\n`;
+            
+            // Умови обміну та повернення
+            code += `            // Умови обміну та повернення\n`;
+            code += `            exchangeDays: ${formData.exchangeDays || 0},                           // 0 якщо недоступно\n`;
+            code += `            returnDays: ${formData.returnDays || 0},                              // 0 якщо недоступно\n`;
+            code += `            returnConditions: [                         // Масив умов\n`;
+            if (formData.returnConditions && formData.returnConditions.length > 0) {
+                formData.returnConditions.forEach((condition, index) => {
+                    code += `                "${escapeString(condition)}"`;
+                    if (index < formData.returnConditions.length - 1) code += ',';
+                    code += '\n';
+                });
+            }
+            code += `            ],\n`;
+            code += `            returnMoneyTime: "${escapeString(formData.returnMoneyTime || '')}",\n`;
+            code += `            returnDeliveryCost: "${escapeString(formData.returnDeliveryCost || '')}",\n\n`;
+            
+            // Шаблон після оплати
+            code += `            // Шаблон після оплати (використовуйте \\n для переносу рядка)\n`;
+            const template = (formData.afterPaymentTemplate || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
+            code += `            afterPaymentTemplate: "${template}"\n`;
+            
+            code += `        };`;
+            
+            return code;
+        }
+        
+        // Екранування рядків
+        function escapeString(str) {
+            if (!str) return '';
+            return str
+                .replace(/\\/g, '\\\\')
+                .replace(/"/g, '\\"')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r')
+                .replace(/\t/g, '\\t');
+        }
+        
+        // Обробка форми
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                shopName: document.getElementById('shopName').value.trim(),
+                fopName: document.getElementById('fopName').value.trim(),
+                edrpou: document.getElementById('edrpou').value.trim(),
+                iban: document.getElementById('iban').value.trim(),
+                bankName: document.getElementById('bankName').value.trim(),
+                paymentPurpose: document.getElementById('paymentPurpose').value.trim(),
+                telegramUsername: document.getElementById('telegramUsername').value.trim(),
+                viberPhone: document.getElementById('viberPhone').value.trim(),
+                telegramShowcase: document.getElementById('telegramShowcase').value.trim(),
+                instagramUsername: document.getElementById('instagramUsername').value.trim(),
+                biggoLiveUrl: document.getElementById('biggoLiveUrl').value.trim(),
+                googleCalendarUrl: document.getElementById('googleCalendarUrl').value.trim(),
+                googleCalendarApiKey: document.getElementById('googleCalendarApiKey').value.trim(),
+                paymentOptions: Array.from(document.querySelectorAll('input[name="paymentOption"]'))
+                    .map(input => input.value.trim())
+                    .filter(val => val),
+                deliveryMethod: document.getElementById('deliveryMethod').value.trim(),
+                deliveryTime: document.getElementById('deliveryTime').value.trim(),
+                deliveryNote: document.getElementById('deliveryNote').value.trim(),
+                exchangeDays: parseInt(document.getElementById('exchangeDays').value) || 0,
+                returnDays: parseInt(document.getElementById('returnDays').value) || 0,
+                returnConditions: Array.from(document.querySelectorAll('input[name="returnCondition"]'))
+                    .map(input => input.value.trim())
+                    .filter(val => val),
+                returnMoneyTime: document.getElementById('returnMoneyTime').value.trim(),
+                returnDeliveryCost: document.getElementById('returnDeliveryCost').value.trim(),
+                afterPaymentTemplate: document.getElementById('afterPaymentTemplate').value.trim()
+            };
+            
+            // Генерація коду
+            generatedCode = generateCode(formData);
+            
+            // Показ модального вікна
+            document.getElementById('generatedCode').textContent = generatedCode;
+            document.getElementById('modalOverlay').classList.add('show');
+            document.getElementById('copySuccess').classList.remove('show');
+        });
+        
+        // Закриття модального вікна
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+        }
+        
+        // Копіювання в буфер обміну
+        function copyToClipboard() {
+            // Створюємо тимчасовий елемент для копіювання
+            const textarea = document.createElement('textarea');
+            textarea.value = generatedCode;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // Для мобільних пристроїв
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    document.getElementById('copySuccess').classList.add('show');
+                    setTimeout(() => {
+                        document.getElementById('copySuccess').classList.remove('show');
+                    }, 3000);
+                } else {
+                    // Fallback для сучасних браузерів
+                    navigator.clipboard.writeText(generatedCode).then(() => {
+                        document.getElementById('copySuccess').classList.add('show');
+                        setTimeout(() => {
+                            document.getElementById('copySuccess').classList.remove('show');
+                        }, 3000);
+                    }).catch(() => {
+                        alert('Не вдалося скопіювати. Скопіюйте вручну.');
+                    });
+                }
+            } catch (err) {
+                // Fallback для сучасних браузерів
+                navigator.clipboard.writeText(generatedCode).then(() => {
+                    document.getElementById('copySuccess').classList.add('show');
+                    setTimeout(() => {
+                        document.getElementById('copySuccess').classList.remove('show');
+                    }, 3000);
+                }).catch(() => {
+                    alert('Не вдалося скопіювати. Скопіюйте вручну.');
+                });
+            }
+            
+            document.body.removeChild(textarea);
+        }
+        
+        // Закриття модального вікна при кліку поза ним
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+
