@@ -343,6 +343,10 @@
             border-radius: 4px;
             font-family: 'Courier New', monospace;
             color: #4CAF50;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            display: inline-block;
+            max-width: 100%;
         }
         
         .instruction-close {
@@ -1584,7 +1588,7 @@
                     html = `
                         <h3>📅 Як дістати iCal посилання Google Calendar?</h3>
                         <ol>
-                            <li>Відкрийте <a href="https://calendar.google.com" target="_blank">Google Calendar</a></li>
+                            <li>Відкрийте <a href="https://calendar.google.com" target="_blank" style="color: #64B5F6; text-decoration: underline;">Google Calendar</a></li>
                             <li>Знайдіть ваш календар у списку зліва</li>
                             <li>Натисніть на <strong>три крапки (⋮)</strong> біля назви календаря</li>
                             <li>Виберіть <strong>"Налаштування та спільний доступ"</strong></li>
