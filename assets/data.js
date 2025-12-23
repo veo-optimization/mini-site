@@ -103,6 +103,10 @@ function processClientData() {
     window.TELEGRAM_SHOWCASE = data.telegramShowcase || '';
     window.INSTAGRAM_USERNAME = data.instagramUsername || '';
     window.BIGGO_LIVE_URL = data.biggoLiveUrl || '';
+    window.FACEBOOK_PAGE = data.facebookPage || '';
+    window.TIKTOK_USERNAME = data.tiktokUsername || '';
+    window.YOUTUBE_CHANNEL = data.youtubeChannel || '';
+    window.WHATSAPP_PHONE = data.whatsappPhone || '';
     
     // Календар
     window.GOOGLE_CALENDAR_URL_OR_ID = data.googleCalendarUrl || '';
