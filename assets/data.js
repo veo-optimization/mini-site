@@ -220,7 +220,26 @@ function parseClientConstants(constantsText) {
         counter++;
     }
     
-    // c20+ - paymentOptions (масив)
+    // c20+ - storeLocations (масив локацій)
+    if (constants[`c${counter}_count`]) {
+        const count = parseInt(constants[`c${counter}_count`]);
+        data.storeLocations = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, ...
+            if (constants[`c${counter}${char}`]) {
+                const locationData = constants[`c${counter}${char}`].split('|');
+                if (locationData.length === 2) {
+                    data.storeLocations.push({
+                        name: locationData[0],
+                        url: locationData[1]
+                    });
+                }
+            }
+        }
+        counter++;
+    }
+    
+    // paymentOptions (масив)
     if (constants[`c${counter}_count`]) {
         const count = parseInt(constants[`c${counter}_count`]);
         data.paymentOptions = [];
@@ -349,6 +368,9 @@ function processClientData() {
     // Календар
     window.GOOGLE_CALENDAR_URL_OR_ID = data.googleCalendarUrl || '';
     window.GOOGLE_CALENDAR_API_KEY = data.googleCalendarApiKey || '';
+    
+    // Локації магазинів на Google Maps
+    window.STORE_LOCATIONS = data.storeLocations || [];
     
     // Умови оплати
     window.PAYMENT_OPTIONS = data.paymentOptions || [];
