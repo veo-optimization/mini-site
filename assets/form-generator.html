@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор даних клієнта</title>
+    <title>Стандарт-форма: дані продавця</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -546,7 +546,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>📋 Генератор даних клієнта</h1>
+        <h1>📋 Стандарт-форма: дані продавця</h1>
         
         <div style="background: #333; padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #4CAF50;">
             <p style="margin: 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
@@ -554,8 +554,7 @@
                 1️⃣ Заповніть всі поля форми (поля з <span style="color: #ff6b6b;">*</span> обов'язкові)<br>
                 2️⃣ Натисніть кнопку "Згенерувати блок даних" внизу<br>
                 3️⃣ Перевірте результат у спливаючому вікні<br>
-                4️⃣ Натисніть "Скопіювати" - блок даних скопіюється в буфер обміну<br>
-                5️⃣ Вставте скопійований блок у файл клієнта (замість старого CLIENT_DATA)
+                4️⃣ Натисніть "Скопіювати" - блок даних скопіюється в буфер обміну
             </p>
         </div>
         
@@ -774,6 +773,9 @@
                             <input type="checkbox" id="delivery3" name="deliveryMethod" value="Самовивіз">
                             <label for="delivery3">Самовивіз</label>
                         </div>
+                    </div>
+                    <div id="deliveryLocationWarning" class="warning-box" style="display: none; margin-top: 10px;">
+                        <strong>⚠️ Увага:</strong> Для доставки через "Нова пошта", "Укрпошта" або "Meest Express" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps". Будь ласка, заповніть цей блок перед генерацією даних.
                     </div>
                     <div class="custom-input-wrapper">
                         <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Своє поле для введення">
@@ -1106,6 +1108,13 @@
                 <button type="button" class="remove-item-btn" onclick="removeLocation(this)" style="width: 100%;">× Видалити локацію</button>
             `;
             container.appendChild(div);
+            
+            // Перевіряємо локації після додавання
+            setTimeout(() => {
+                if (typeof checkDeliveryLocations === 'function') {
+                    checkDeliveryLocations(false);
+                }
+            }, 100);
         }
         
         // Видалення локації
@@ -1140,6 +1149,61 @@
                     formatCardNumber(this);
                 });
             }
+            
+            // Перевірка локацій при виборі перевізників
+            window.checkDeliveryLocations = function(showAlert) {
+                const requiresLocation = Array.from(document.querySelectorAll('input[name="deliveryMethod"][data-requires-location="true"]:checked'));
+                const hasLocations = document.querySelectorAll('.location-item').length > 0 && 
+                    Array.from(document.querySelectorAll('.location-item')).some(item => {
+                        const name = item.querySelector('.location-name').value.trim();
+                        const url = item.querySelector('.location-url').value.trim();
+                        return name && url;
+                    });
+                
+                const warningBox = document.getElementById('deliveryLocationWarning');
+                if (requiresLocation.length > 0 && !hasLocations) {
+                    if (warningBox) {
+                        warningBox.style.display = 'block';
+                    }
+                    if (showAlert) {
+                        alert('⚠️ Увага!\n\nДля доставки через "Нова пошта", "Укрпошта" або "Meest Express" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
+                        return false;
+                    }
+                    return false;
+                } else {
+                    if (warningBox) {
+                        warningBox.style.display = 'none';
+                    }
+                    return true;
+                }
+            };
+            
+            // Додаємо обробники для перевірки локацій
+            document.querySelectorAll('input[name="deliveryMethod"][data-requires-location="true"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    checkDeliveryLocations(false);
+                });
+            });
+            
+            // Перевірка при зміні локацій
+            const storeLocationsContainer = document.getElementById('storeLocationsContainer');
+            if (storeLocationsContainer) {
+                // Використовуємо делегування подій для динамічно доданих локацій
+                storeLocationsContainer.addEventListener('input', function(e) {
+                    if (e.target.classList.contains('location-name') || e.target.classList.contains('location-url')) {
+                        checkDeliveryLocations(false);
+                    }
+                });
+            }
+            
+            // Перевірка при видаленні локацій
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-item-btn') && e.target.closest('#storeLocationsContainer')) {
+                    setTimeout(function() {
+                        checkDeliveryLocations(false);
+                    }, 100);
+                }
+            });
         });
         
         // Генерація коду у простому форматі з псевдонімами
@@ -1656,7 +1720,7 @@
             }
             
             // Перевірка локацій для перевізників
-            if (!checkDeliveryLocations()) {
+            if (!checkDeliveryLocations(true)) {
                 return;
             }
             
