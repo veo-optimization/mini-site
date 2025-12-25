@@ -419,9 +419,48 @@
         }
         
         .custom-input-wrapper {
-            margin-top: 10px;
-            padding-top: 15px;
-            border-top: 1px solid #444;
+            margin-top: 15px;
+            padding: 15px;
+            border-top: 2px dashed #4CAF50;
+            background: rgba(76, 175, 80, 0.05);
+            border-radius: 6px;
+            position: relative;
+        }
+        
+        .custom-input-wrapper::before {
+            display: block;
+            color: #4CAF50;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        
+        .custom-input-wrapper[data-label="payment"]::before {
+            content: "➕ Або вкажіть свій варіант оплати:";
+        }
+        
+        .custom-input-wrapper[data-label="delivery-method"]::before {
+            content: "➕ Або вкажіть свій спосіб доставки:";
+        }
+        
+        .custom-input-wrapper[data-label="delivery-time"]::before {
+            content: "➕ Або вкажіть свій термін доставки:";
+        }
+        
+        .custom-input-wrapper[data-label="return-condition"]::before {
+            content: "➕ Або вкажіть свою умову обміну/повернення:";
+        }
+        
+        .custom-input-wrapper[data-label="return-money"]::before {
+            content: "➕ Або вкажіть свій термін повернення коштів:";
+        }
+        
+        .custom-input-wrapper[data-label="return-delivery"]::before {
+            content: "➕ Або вкажіть свою умову щодо вартості доставки при поверненні:";
+        }
+        
+        .custom-input-wrapper[data-label="template"]::before {
+            content: "➕ Або додайте своє поле до шаблону:";
         }
         
         .warning-box {
@@ -715,7 +754,7 @@
             <div class="form-section">
                 <h2>💵 Умови оплати</h2>
                 <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
-                    💡 <strong>Як це працює:</strong> Оберіть варіанти оплати, які Вам як продавцю комфортні. Можна обрати один або декілька варіантів одночасно. Всі обрані варіанти будуть відображені на міні-сайті клієнта у вигляді списку. Якщо оберете "Накладний платіж із передплатою" з кастомною сумою, введіть суму передплати - вона автоматично додасться до тексту варіанту оплати. Також можна додати свій власний варіант оплати в полі "Своє поле для введення".
+                    💡 <strong>Як це працює:</strong> Оберіть варіанти оплати, які Вам як продавцю комфортні. Можна обрати один або декілька варіантів одночасно. Всі обрані варіанти будуть відображені на міні-сайті клієнта у вигляді списку. Якщо оберете "Накладний платіж із передплатою" з кастомною сумою, введіть суму передплати - вона автоматично додасться до тексту варіанту оплати. Також можна додати свій власний варіант оплати в полі нижче.
                 </div>
                 <div class="checkbox-group" id="paymentOptionsCheckboxes">
                     <div class="checkbox-item">
@@ -735,11 +774,10 @@
                         <span style="flex: 0 0 auto;">грн</span>
                     </div>
                 </div>
-                <div class="custom-input-wrapper">
-                    <div class="form-group">
-                        <label for="paymentCustom">Своє поле для введення</label>
-                        <input type="text" id="paymentCustom" name="paymentCustom" placeholder="Впишіть свій варіант оплати">
-                        <div class="help-text">📝 Якщо потрібен інший варіант, впишіть його тут</div>
+                <div class="custom-input-wrapper" data-label="payment">
+                    <div class="form-group" style="margin: 0;">
+                        <input type="text" id="paymentCustom" name="paymentCustom" placeholder="Наприклад: 🔷 Оплата через Приват24 або 🔷 Безготівковий розрахунок">
+                        <div class="help-text" style="margin-top: 8px;">📝 Якщо потрібен інший варіант оплати, впишіть його тут</div>
                     </div>
                 </div>
                 <div class="warning-box">
@@ -770,15 +808,15 @@
                             <label for="delivery4">Кур'єрська доставка</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="delivery3" name="deliveryMethod" value="Самовивіз">
+                            <input type="checkbox" id="delivery3" name="deliveryMethod" value="Самовивіз" data-requires-location-warning="true">
                             <label for="delivery3">Самовивіз</label>
                         </div>
                     </div>
                     <div id="deliveryLocationWarning" class="warning-box" style="display: none; margin-top: 10px;">
-                        <strong>⚠️ Увага:</strong> Для доставки через "Нова пошта", "Укрпошта" або "Meest Express" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps". Будь ласка, заповніть цей блок перед генерацією даних.
+                        <strong>⚠️ Увага:</strong> Для "Самовивіз" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps". Будь ласка, заповніть цей блок перед генерацією даних.
                     </div>
-                    <div class="custom-input-wrapper">
-                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Своє поле для введення">
+                    <div class="custom-input-wrapper" data-label="delivery-method">
+                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Наприклад: Justin або Деливери">
                     </div>
                 </div>
                 <div class="form-group">
@@ -801,8 +839,8 @@
                             <label for="deliveryTime4">Відправка 2-3 рази на тиждень</label>
                         </div>
                     </div>
-                    <div class="custom-input-wrapper">
-                        <input type="text" id="deliveryTimeCustom" name="deliveryTimeCustom" placeholder="Своє поле для введення">
+                    <div class="custom-input-wrapper" data-label="delivery-time">
+                        <input type="text" id="deliveryTimeCustom" name="deliveryTimeCustom" placeholder="Наприклад: Відправка щопонеділка та четверга">
                     </div>
                 </div>
                 <div class="form-group">
@@ -848,8 +886,8 @@
                             <label for="returnCond4">Товар не повинен бути в експлуатації</label>
                         </div>
                     </div>
-                    <div class="custom-input-wrapper">
-                        <input type="text" id="returnConditionCustom" name="returnConditionCustom" placeholder="Своє поле для введення">
+                    <div class="custom-input-wrapper" data-label="return-condition">
+                        <input type="text" id="returnConditionCustom" name="returnConditionCustom" placeholder="Наприклад: Товар не повинен мати запах тютюну">
                     </div>
                 </div>
                 <div class="form-group">
@@ -868,8 +906,8 @@
                             <label for="returnMoney3">14 робочих днів</label>
                         </div>
                     </div>
-                    <div class="custom-input-wrapper">
-                        <input type="text" id="returnMoneyTimeCustom" name="returnMoneyTimeCustom" placeholder="Своє поле для введення">
+                    <div class="custom-input-wrapper" data-label="return-money">
+                        <input type="text" id="returnMoneyTimeCustom" name="returnMoneyTimeCustom" placeholder="Наприклад: 5-7 робочих днів">
                     </div>
                 </div>
                 <div class="form-group">
@@ -888,8 +926,8 @@
                             <label for="returnDelivery3">Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця</label>
                         </div>
                     </div>
-                    <div class="custom-input-wrapper">
-                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Своє поле для введення"></textarea>
+                    <div class="custom-input-wrapper" data-label="return-delivery">
+                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Наприклад: Доставку при поверненні оплачує покупець, якщо товар не має дефектів"></textarea>
                     </div>
                 </div>
                 <div class="warning-box">
@@ -935,8 +973,8 @@
                             <label for="template7">📝 Коментар до замовлення</label>
                         </div>
                     </div>
-                    <div class="custom-input-wrapper">
-                        <input type="text" id="templateCustom" name="templateCustom" placeholder="Своє поле для введення (наприклад: 🎁 Подарункова упаковка: )">
+                    <div class="custom-input-wrapper" data-label="template">
+                        <input type="text" id="templateCustom" name="templateCustom" placeholder="Наприклад: 🎁 Подарункова упаковка:  або 📞 Додатковий контакт: ">
                     </div>
                 </div>
                 <div class="form-group">
@@ -1152,7 +1190,11 @@
             
             // Перевірка локацій при виборі перевізників
             window.checkDeliveryLocations = function(showAlert) {
+                // Перевірка для обов'язкових локацій (Нова пошта, Укрпошта, Meest Express)
                 const requiresLocation = Array.from(document.querySelectorAll('input[name="deliveryMethod"][data-requires-location="true"]:checked'));
+                // Перевірка для попередження (Самовивіз)
+                const requiresLocationWarning = Array.from(document.querySelectorAll('input[name="deliveryMethod"][data-requires-location-warning="true"]:checked'));
+                
                 const hasLocations = document.querySelectorAll('.location-item').length > 0 && 
                     Array.from(document.querySelectorAll('.location-item')).some(item => {
                         const name = item.querySelector('.location-name').value.trim();
@@ -1161,12 +1203,26 @@
                     });
                 
                 const warningBox = document.getElementById('deliveryLocationWarning');
+                
+                // Для обов'язкових локацій (Нова пошта, Укрпошта, Meest Express) - блокуємо без попередження
                 if (requiresLocation.length > 0 && !hasLocations) {
+                    if (warningBox) {
+                        warningBox.style.display = 'none';
+                    }
+                    if (showAlert) {
+                        alert('⚠️ Помилка!\n\nДля доставки через "Нова пошта", "Укрпошта" або "Meest Express" обов\'язково необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
+                        return false;
+                    }
+                    return false;
+                }
+                
+                // Для попередження (Самовивіз) - показуємо попередження
+                if (requiresLocationWarning.length > 0 && !hasLocations) {
                     if (warningBox) {
                         warningBox.style.display = 'block';
                     }
                     if (showAlert) {
-                        alert('⚠️ Увага!\n\nДля доставки через "Нова пошта", "Укрпошта" або "Meest Express" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
+                        alert('⚠️ Увага!\n\nДля "Самовивіз" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
                         return false;
                     }
                     return false;
@@ -1179,7 +1235,7 @@
             };
             
             // Додаємо обробники для перевірки локацій
-            document.querySelectorAll('input[name="deliveryMethod"][data-requires-location="true"]').forEach(checkbox => {
+            document.querySelectorAll('input[name="deliveryMethod"][data-requires-location="true"], input[name="deliveryMethod"][data-requires-location-warning="true"]').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     checkDeliveryLocations(false);
                 });
