@@ -823,19 +823,19 @@
                     <label>Термін доставки</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="deliveryTime1" name="deliveryTime" value="1-3 робочі дні після отримання оплати">
+                            <input type="radio" id="deliveryTime1" name="deliveryTime" value="1-3 робочі дні після отримання оплати">
                             <label for="deliveryTime1">1-3 робочі дні після отримання оплати</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="deliveryTime2" name="deliveryTime" value="2-5 робочих днів">
+                            <input type="radio" id="deliveryTime2" name="deliveryTime" value="2-5 робочих днів">
                             <label for="deliveryTime2">2-5 робочих днів</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="deliveryTime3" name="deliveryTime" value="Відправка щодня до 18:00">
+                            <input type="radio" id="deliveryTime3" name="deliveryTime" value="Відправка щодня до 18:00">
                             <label for="deliveryTime3">Відправка щодня до 18:00</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="deliveryTime4" name="deliveryTime" value="Відправка 2-3 рази на тиждень">
+                            <input type="radio" id="deliveryTime4" name="deliveryTime" value="Відправка 2-3 рази на тиждень">
                             <label for="deliveryTime4">Відправка 2-3 рази на тиждень</label>
                         </div>
                     </div>
@@ -874,8 +874,8 @@
                             <label for="returnCond1">Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="returnCond2" name="returnCondition" value="Збережені всі етикетки, бирки та упаковка">
-                            <label for="returnCond2">Збережені всі етикетки, бирки та упаковка</label>
+                            <input type="checkbox" id="returnCond2" name="returnCondition" value="Збережені всі етикетки, бірки та упаковка">
+                            <label for="returnCond2">Збережені всі етикетки, бірки та упаковка</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="returnCond3" name="returnCondition" value="Товар не повинен бути пошкоджений або забруднений">
@@ -894,15 +894,15 @@
                     <label>Термін повернення коштів</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="returnMoney1" name="returnMoneyTime" value="3-5 робочих днів">
+                            <input type="radio" id="returnMoney1" name="returnMoneyTime" value="3-5 робочих днів">
                             <label for="returnMoney1">3-5 робочих днів</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="returnMoney2" name="returnMoneyTime" value="7-10 робочих днів">
+                            <input type="radio" id="returnMoney2" name="returnMoneyTime" value="7-10 робочих днів">
                             <label for="returnMoney2">7-10 робочих днів</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="returnMoney3" name="returnMoneyTime" value="14 робочих днів">
+                            <input type="radio" id="returnMoney3" name="returnMoneyTime" value="14 робочих днів">
                             <label for="returnMoney3">14 робочих днів</label>
                         </div>
                     </div>
@@ -914,15 +914,15 @@
                     <label>Вартість доставки при поверненні</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="returnDelivery1" name="returnDeliveryCost" value="відповідно до тарифів перевізника. Сплачує отримувач">
+                            <input type="radio" id="returnDelivery1" name="returnDeliveryCost" value="відповідно до тарифів перевізника. Сплачує отримувач">
                             <label for="returnDelivery1">відповідно до тарифів перевізника. Сплачує отримувач</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="returnDelivery2" name="returnDeliveryCost" value="Доставку при поверненні оплачує продавець">
+                            <input type="radio" id="returnDelivery2" name="returnDeliveryCost" value="Доставку при поверненні оплачує продавець">
                             <label for="returnDelivery2">Доставку при поверненні оплачує продавець</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="returnDelivery3" name="returnDeliveryCost" value="Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця">
+                            <input type="radio" id="returnDelivery3" name="returnDeliveryCost" value="Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця">
                             <label for="returnDelivery3">Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця</label>
                         </div>
                     </div>
@@ -939,7 +939,7 @@
             <div class="form-section">
                 <h2>📦 Шаблон після оплати</h2>
                 <div class="help-text" style="margin-bottom: 20px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
-                    📝 Це шаблон, який клієнт заповнить після оплати. Оберіть потрібні поля нижче, і шаблон автоматично оновиться. Клієнт скопіює це повідомлення і вставить його в месенджер (Telegram, Viber тощо), де буде дописувати свої реквізити і дані для отримання товару.
+                    📝 <strong>Як це працює:</strong> Це шаблон тексту, який кінцевий споживач скопіює з міні-сайту і вставить у месенджер (Telegram, Viber тощо) з Вами як продавцем. Після цього споживач допише свої реквізити та дані для отримання товару. Ви як продавець формуєте цей шаблон - оберіть потрібні поля нижче, і шаблон автоматично оновиться. Створіть такий текст, який Вам буде зручно опрацьовувати при отриманні повідомлень від клієнтів.
                 </div>
                 <div class="form-group">
                     <label>Оберіть поля для шаблону:</label>
@@ -978,7 +978,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Прев'ю шаблону (як він виглядатиме на сайті):</label>
+                    <label>Прев'ю шаблону (як його скопіює кінцевий клієнт для вставки в месенджер для подальшого заповнення індивідуальних даних на отримання товару і посилки):</label>
                     <div class="template-preview" id="templatePreview">
 👤 ПІБ: 
 📍 Населений пункт: 
@@ -1453,17 +1453,14 @@
                 counter++;
             }
             
-            // deliveryTime
-            const deliveryTimes = [];
-            Array.from(document.querySelectorAll('input[name="deliveryTime"]:checked')).forEach(cb => {
-                deliveryTimes.push(cb.value);
-            });
+            // deliveryTime (радіо-кнопка - тільки один варіант)
+            const deliveryTimeRadio = document.querySelector('input[name="deliveryTime"]:checked');
             const deliveryTimeCustom = document.getElementById('deliveryTimeCustom').value.trim();
-            if (deliveryTimeCustom) {
-                deliveryTimes.push(deliveryTimeCustom);
-            }
-            if (deliveryTimes.length > 0) {
-                constants.push(`c${counter} - ${deliveryTimes.join(', ')}`);
+            if (deliveryTimeRadio) {
+                constants.push(`c${counter} - ${deliveryTimeRadio.value}`);
+                counter++;
+            } else if (deliveryTimeCustom) {
+                constants.push(`c${counter} - ${deliveryTimeCustom}`);
                 counter++;
             }
             
@@ -1502,31 +1499,25 @@
                 counter++;
             }
             
-            // returnMoneyTime
-            const returnMoneyTimes = [];
-            Array.from(document.querySelectorAll('input[name="returnMoneyTime"]:checked')).forEach(cb => {
-                returnMoneyTimes.push(cb.value);
-            });
+            // returnMoneyTime (радіо-кнопка - тільки один варіант)
+            const returnMoneyTimeRadio = document.querySelector('input[name="returnMoneyTime"]:checked');
             const returnMoneyTimeCustom = document.getElementById('returnMoneyTimeCustom').value.trim();
-            if (returnMoneyTimeCustom) {
-                returnMoneyTimes.push(returnMoneyTimeCustom);
-            }
-            if (returnMoneyTimes.length > 0) {
-                constants.push(`c${counter} - ${returnMoneyTimes.join(', ')}`);
+            if (returnMoneyTimeRadio) {
+                constants.push(`c${counter} - ${returnMoneyTimeRadio.value}`);
+                counter++;
+            } else if (returnMoneyTimeCustom) {
+                constants.push(`c${counter} - ${returnMoneyTimeCustom}`);
                 counter++;
             }
             
-            // returnDeliveryCost
-            const returnDeliveryCosts = [];
-            Array.from(document.querySelectorAll('input[name="returnDeliveryCost"]:checked')).forEach(cb => {
-                returnDeliveryCosts.push(cb.value);
-            });
+            // returnDeliveryCost (радіо-кнопка - тільки один варіант)
+            const returnDeliveryCostRadio = document.querySelector('input[name="returnDeliveryCost"]:checked');
             const returnDeliveryCostCustom = document.getElementById('returnDeliveryCostCustom').value.trim();
-            if (returnDeliveryCostCustom) {
-                returnDeliveryCosts.push(returnDeliveryCostCustom);
-            }
-            if (returnDeliveryCosts.length > 0) {
-                constants.push(`c${counter} - ${returnDeliveryCosts.join(', ')}`);
+            if (returnDeliveryCostRadio) {
+                constants.push(`c${counter} - ${returnDeliveryCostRadio.value}`);
+                counter++;
+            } else if (returnDeliveryCostCustom) {
+                constants.push(`c${counter} - ${returnDeliveryCostCustom}`);
                 counter++;
             }
             
