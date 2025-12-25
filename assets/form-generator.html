@@ -580,6 +580,24 @@
             .modal-content {
                 padding: 20px;
             }
+            
+            /* Стилі для мобільних пристроїв - накладний платіж з передплатою */
+            #payment2custom + label {
+                flex: 1 1 100%;
+                min-width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            #payment2custom + label + div {
+                flex: 1 1 100%;
+                width: 100%;
+                margin-left: 30px; /* Відступ для вирівнювання з іншими елементами */
+            }
+            
+            #codAmount {
+                width: 100% !important;
+                max-width: 150px;
+            }
         }
     </style>
 </head>
@@ -629,7 +647,7 @@
                 <div class="form-group">
                     <label for="iban">IBAN</label>
                     <input type="text" id="iban" name="iban" placeholder="Наприклад: UA273220010000026009330077981">
-                    <div class="help-text">📝 Міжнародний номер банківського рахунку. Завжди починається з "UA", потім 2 цифри, 4 літери, 19 цифр. Всього 29 символів. Наприклад: "UA273220010000026009330077981"</div>
+                    <div class="help-text">📝 Міжнародний номер банківського рахунку. Завжди починається з "UA", потім 2 цифри, 4 символи (літери або цифри), 19 цифр. Всього 27 символів. Наприклад: "UA273220010000026009330077981"<br><strong>IBAN має бути у форматі: UA + 2 цифри + 4 символи (літери або цифри) + 19 цифр</strong></div>
                 </div>
                 <div class="form-group">
                     <label for="bankName">Назва банку</label>
@@ -765,13 +783,15 @@
                         <input type="checkbox" id="payment2" name="paymentOption" value="🔷 Накладний платіж з передоплатою 200 грн" data-payment-type="cod-200">
                         <label for="payment2">🔷 Накладний платіж з передоплатою 200 грн</label>
                     </div>
-                    <div class="checkbox-item" style="display: flex; align-items: center; gap: 10px;">
+                    <div class="checkbox-item" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <input type="checkbox" id="payment2custom" name="paymentOption" data-payment-type="cod-custom">
-                        <label for="payment2custom" style="flex: 0 0 auto; margin: 0; cursor: pointer;">
+                        <label for="payment2custom" style="flex: 1 1 auto; min-width: 0; margin: 0; cursor: pointer; word-break: break-word;">
                             🔷 Накладний платіж із передплатою
                         </label>
-                        <input type="number" id="codAmount" placeholder="сума" min="1" style="width: 100px; padding: 4px 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 14px;" disabled>
-                        <span style="flex: 0 0 auto;">грн</span>
+                        <div style="display: flex; align-items: center; gap: 5px; flex: 0 0 auto;">
+                            <input type="number" id="codAmount" placeholder="сума" min="1" style="width: 80px; padding: 4px 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 14px;" disabled>
+                            <span>грн</span>
+                        </div>
                     </div>
                 </div>
                 <div class="custom-input-wrapper" data-label="payment">
@@ -1557,8 +1577,10 @@
             
             // Валідація IBAN
             const iban = document.getElementById('iban').value.trim().replace(/\s/g, '');
-            // Український IBAN: UA + 2 цифри (контрольна сума) + 4 символи (код банку, може бути літери або цифри) + 19 цифр (номер рахунку) = 29 символів
-            if (iban && !/^UA\d{2}[A-Z0-9]{4}\d{19}$/.test(iban)) {
+            // Український IBAN: UA + 2 цифри (контрольна сума) + 4 символи (код банку, може бути літери або цифри) + 19 цифр (номер рахунку)
+            // Формат: UA + 2 цифри + 4 символи (літери або цифри) + 19 цифр = 27 символів загалом
+            // Перевіряємо: UA (2 символи) + 2 цифри + 4 символи (A-Z0-9) + 19 цифр
+            if (iban && !/^UA\d{2}[A-Z0-9]{4}\d{19}$/i.test(iban)) {
                 showError('iban', 'IBAN має бути у форматі: UA + 2 цифри + 4 символи (літери або цифри) + 19 цифр');
                 isValid = false;
             } else {
