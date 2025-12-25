@@ -816,7 +816,7 @@
                         <strong>⚠️ Увага:</strong> Для "Самовивіз" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps". Будь ласка, заповніть цей блок перед генерацією даних.
                     </div>
                     <div class="custom-input-wrapper" data-label="delivery-method">
-                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Наприклад: Justin або Деливери">
+                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Наприклад: Justin або Делівері">
                     </div>
                 </div>
                 <div class="form-group">
@@ -1203,20 +1203,18 @@
                     });
                 
                 const warningBox = document.getElementById('deliveryLocationWarning');
+                let isValid = true;
                 
                 // Для обов'язкових локацій (Нова пошта, Укрпошта, Meest Express) - блокуємо без попередження
                 if (requiresLocation.length > 0 && !hasLocations) {
-                    if (warningBox) {
-                        warningBox.style.display = 'none';
-                    }
                     if (showAlert) {
                         alert('⚠️ Помилка!\n\nДля доставки через "Нова пошта", "Укрпошта" або "Meest Express" обов\'язково необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
                         return false;
                     }
-                    return false;
+                    isValid = false;
                 }
                 
-                // Для попередження (Самовивіз) - показуємо попередження
+                // Для попередження (Самовивіз) - показуємо попередження завжди, якщо вибрано
                 if (requiresLocationWarning.length > 0 && !hasLocations) {
                     if (warningBox) {
                         warningBox.style.display = 'block';
@@ -1225,13 +1223,20 @@
                         alert('⚠️ Увага!\n\nДля "Самовивіз" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
                         return false;
                     }
-                    return false;
-                } else {
+                    isValid = false;
+                } else if (requiresLocationWarning.length > 0 && hasLocations) {
+                    // Якщо Самовивіз вибрано і локації є - приховуємо попередження
                     if (warningBox) {
                         warningBox.style.display = 'none';
                     }
-                    return true;
+                } else if (requiresLocationWarning.length === 0) {
+                    // Якщо Самовивіз не вибрано - приховуємо попередження
+                    if (warningBox) {
+                        warningBox.style.display = 'none';
+                    }
                 }
+                
+                return isValid;
             };
             
             // Додаємо обробники для перевірки локацій
