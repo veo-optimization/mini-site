@@ -2780,12 +2780,135 @@
             updateGeneratedCode();
         });
         
+        // Функція для виконання копіювання (визначена перед copyToClipboard)
+        function performCopy(codeWithoutMarkdown, copyButton, originalText, originalBg) {
+            try {
+                // Створюємо тимчасовий елемент для копіювання
+                const textarea = document.createElement('textarea');
+                textarea.value = codeWithoutMarkdown;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '0';
+                textarea.setAttribute('readonly', '');
+                textarea.style.width = '1px';
+                textarea.style.height = '1px';
+                document.body.appendChild(textarea);
+                
+                // Вибираємо текст
+                textarea.focus();
+                textarea.select();
+                textarea.setSelectionRange(0, 99999); // Для мобільних пристроїв
+                
+                const copyFunction = () => {
+                    // Видаляємо textarea
+                    try {
+                        if (document.body.contains(textarea)) {
+                            document.body.removeChild(textarea);
+                        }
+                    } catch (e) {
+                        console.error('Помилка видалення textarea:', e);
+                    }
+                    
+                    // Повертаємо кнопку до нормального стану через 0.5 сек
+                    setTimeout(() => {
+                        copyButton.style.background = originalBg;
+                        copyButton.textContent = originalText;
+                        copyButton.disabled = false;
+                        
+                        // Показуємо повідомлення про надсилання в Telegram через 0.5 сек
+                        setTimeout(() => {
+                            const sendContainer = document.getElementById('sendToSupportContainer');
+                            if (sendContainer) {
+                                sendContainer.style.display = 'block';
+                                
+                                // Прокручуємо до блоку з повідомленням
+                                sendContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                            
+                            // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
+                            if (window.hasFopRequisites === false) {
+                                setTimeout(() => {
+                                    if (typeof showInfoModal === 'function') {
+                                        showInfoModal();
+                                    }
+                                }, 500);
+                            }
+                        }, 500);
+                    }, 500);
+                };
+                
+                const handleError = (error) => {
+                    console.error('Помилка копіювання:', error);
+                    try {
+                        if (document.body.contains(textarea)) {
+                            document.body.removeChild(textarea);
+                        }
+                    } catch (e) {
+                        // Ігноруємо помилку видалення
+                    }
+                    copyButton.style.background = originalBg;
+                    copyButton.textContent = originalText;
+                    copyButton.disabled = false;
+                    alert('Не вдалося скопіювати автоматично. Скопіюйте вручну з блоку вище.');
+                };
+                
+                // Спробуємо використати Clipboard API (сучасний спосіб)
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
+                        copyFunction();
+                    }).catch((err) => {
+                        console.error('Помилка копіювання через Clipboard API:', err);
+                        // Fallback на старий метод
+                        try {
+                            const successful = document.execCommand('copy');
+                            if (successful) {
+                                copyFunction();
+                            } else {
+                                handleError(err);
+                            }
+                        } catch (e) {
+                            handleError(e);
+                        }
+                    });
+                } else {
+                    // Fallback для старих браузерів
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            copyFunction();
+                        } else {
+                            handleError(new Error('execCommand failed'));
+                        }
+                    } catch (err) {
+                        handleError(err);
+                    }
+                }
+            } catch (error) {
+                console.error('Помилка в performCopy:', error);
+                copyButton.style.background = originalBg;
+                copyButton.textContent = originalText;
+                copyButton.disabled = false;
+                alert('Сталася помилка при копіюванні. Спробуйте ще раз або скопіюйте вручну.');
+            }
+        }
+        
         // Копіювання в буфер обміну
         window.copyToClipboard = function() {
+            let copyButton = null;
+            let originalText = '';
+            let originalBg = '#4CAF50';
+            let codeWithoutMarkdown = '';
+            
             try {
                 // Оновлюємо код перед копіюванням
-                if (typeof updateGeneratedCode === 'function') {
-                    updateGeneratedCode();
+                try {
+                    if (typeof updateGeneratedCode === 'function') {
+                        updateGeneratedCode();
+                    }
+                } catch (updateError) {
+                    console.warn('Помилка оновлення коду:', updateError);
+                    // Продовжуємо, навіть якщо оновлення не вдалося
                 }
                 
                 // Отримуємо код з елемента (найнадійніший спосіб)
@@ -2795,11 +2918,21 @@
                     return;
                 }
                 
-                let codeToCopy = codeElement.textContent || codeElement.innerText || '';
+                let codeToCopy = '';
+                try {
+                    codeToCopy = codeElement.textContent || codeElement.innerText || '';
+                } catch (e) {
+                    console.warn('Помилка читання коду з елемента:', e);
+                }
                 
                 // Якщо код порожній, спробуємо взяти зі змінної
                 if (!codeToCopy || codeToCopy.trim() === '') {
-                    codeToCopy = generatedCode || '';
+                    try {
+                        codeToCopy = (typeof generatedCode !== 'undefined' && generatedCode) ? generatedCode : '';
+                    } catch (e) {
+                        console.warn('Помилка читання generatedCode:', e);
+                        codeToCopy = '';
+                    }
                 }
                 
                 if (!codeToCopy || codeToCopy.trim() === '') {
@@ -2807,14 +2940,15 @@
                     return;
                 }
                 
-                const copyButton = document.getElementById('copyCodeButton');
+                copyButton = document.getElementById('copyCodeButton');
                 if (!copyButton) {
                     console.error('Кнопка копіювання не знайдена');
+                    alert('Кнопка копіювання не знайдена. Спробуйте перезавантажити сторінку.');
                     return;
                 }
                 
-                const originalText = copyButton.textContent;
-                const originalBg = copyButton.style.background;
+                originalText = copyButton.textContent || 'Скопіювати код';
+                originalBg = copyButton.style.background || window.getComputedStyle(copyButton).backgroundColor || '#4CAF50';
                 
                 // Змінюємо кнопку на синій колір
                 copyButton.style.background = '#0088cc';
@@ -2822,7 +2956,7 @@
                 copyButton.disabled = true;
                 
                 // Видаляємо маркдаун для копіювання (копіюємо чистий код)
-                const codeWithoutMarkdown = codeToCopy.replace(/^```\n?/g, '').replace(/\n?```$/g, '').trim();
+                codeWithoutMarkdown = codeToCopy.replace(/^```\n?/g, '').replace(/\n?```$/g, '').trim();
                 
                 if (!codeWithoutMarkdown) {
                     alert('Немає даних для копіювання. Заповніть форму вище.');
@@ -2832,106 +2966,24 @@
                     return;
                 }
                 
+                // Виконуємо копіювання
                 performCopy(codeWithoutMarkdown, copyButton, originalText, originalBg);
+                
             } catch (error) {
                 console.error('Помилка в copyToClipboard:', error);
-                alert('Сталася помилка при копіюванні. Спробуйте ще раз.');
+                // Відновлюємо кнопку при помилці
+                if (copyButton) {
+                    try {
+                        copyButton.style.background = originalBg;
+                        copyButton.textContent = originalText;
+                        copyButton.disabled = false;
+                    } catch (e) {
+                        console.error('Помилка відновлення кнопки:', e);
+                    }
+                }
+                alert('Сталася помилка при копіюванні: ' + (error.message || 'невідома помилка') + '. Спробуйте скопіювати вручну з блоку вище.');
             }
         };
-        
-        // Функція для виконання копіювання
-        function performCopy(codeWithoutMarkdown, copyButton, originalText, originalBg) {
-            
-            // Створюємо тимчасовий елемент для копіювання
-            const textarea = document.createElement('textarea');
-            textarea.value = codeWithoutMarkdown;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            textarea.style.left = '-9999px';
-            textarea.style.top = '0';
-            textarea.setAttribute('readonly', '');
-            document.body.appendChild(textarea);
-            
-            // Вибираємо текст
-            textarea.focus();
-            textarea.select();
-            textarea.setSelectionRange(0, 99999); // Для мобільних пристроїв
-            
-            const copyFunction = () => {
-                // Повертаємо кнопку до нормального стану через 0.5 сек
-                setTimeout(() => {
-                    copyButton.style.background = originalBg;
-                    copyButton.textContent = originalText;
-                    copyButton.disabled = false;
-                    
-                    // Показуємо повідомлення про надсилання в Telegram через 0.5 сек
-                    setTimeout(() => {
-                        const sendContainer = document.getElementById('sendToSupportContainer');
-                        if (sendContainer) {
-                            sendContainer.style.display = 'block';
-                            
-                            // Прокручуємо до блоку з повідомленням
-                            sendContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        }
-                        
-                        // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
-                        if (window.hasFopRequisites === false) {
-                            setTimeout(() => {
-                                if (typeof showInfoModal === 'function') {
-                                    showInfoModal();
-                                }
-                            }, 500);
-                        }
-                    }, 500);
-                }, 500);
-            };
-            
-            const handleError = () => {
-                alert('Не вдалося скопіювати. Скопіюйте вручну.');
-                copyButton.style.background = originalBg;
-                copyButton.textContent = originalText;
-                copyButton.disabled = false;
-                if (document.body.contains(textarea)) {
-                    document.body.removeChild(textarea);
-                }
-            };
-            
-            // Спробуємо використати Clipboard API (сучасний спосіб)
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
-                    copyFunction();
-                    if (document.body.contains(textarea)) {
-                        document.body.removeChild(textarea);
-                    }
-                }).catch((err) => {
-                    console.error('Помилка копіювання через Clipboard API:', err);
-                    // Fallback на старий метод
-                    try {
-                        const successful = document.execCommand('copy');
-                        if (successful) {
-                            copyFunction();
-                        } else {
-                            handleError();
-                        }
-                    } catch (e) {
-                        handleError();
-                    }
-                });
-            } else {
-                // Fallback для старих браузерів
-                try {
-                    const successful = document.execCommand('copy');
-                    if (successful) {
-                        copyFunction();
-                    } else {
-                        handleError();
-                    }
-                } catch (err) {
-                    console.error('Помилка копіювання:', err);
-                    handleError();
-                }
-            }
-        }
         
         // Закриття інструкцій при кліку поза вікном
         document.getElementById('instructionModal').addEventListener('click', function(e) {
