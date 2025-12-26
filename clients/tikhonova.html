@@ -11,7 +11,7 @@
     <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
     
     <!-- ПІДКЛЮЧЕННЯ ЦЕНТРАЛІЗОВАНИХ СТИЛІВ -->
-    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="styles.css">
     
     <!-- ДАНІ КЛІЄНТА -->
     <script>
@@ -23,7 +23,6 @@
         // Якщо якихось даних немає - вони просто не відображатимуться на сайті
         const CLIENT_CONSTANTS = `
         c1 - VEO SHOP
-c1 - VEO SHOP
 c2 - ТікТок-магазин з якісним одягом та аксесуарами
 c3 - Відповідаю щодня з 09:00 до 21:00
 c4a - Жіночий одяг
@@ -75,10 +74,10 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
     </script>
     
     <!-- ПІДКЛЮЧЕННЯ ОБРОБКИ ДАНИХ -->
-    <script src="../assets/data.js"></script>
+    <script src="data.js"></script>
     
     <!-- ПІДКЛЮЧЕННЯ ЦЕНТРАЛІЗОВАНОЇ ЛОГІКИ -->
-    <script src="../assets/script.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <div class="container">
@@ -127,25 +126,31 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                             <div class="data-value" id="paymentPurposeValue"></div>
                             <button class="copy-button" id="copyPurposeButton" onclick="copyPaymentPurpose()">Скопіювати призначення</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Блок оплати на картку (окремий блок, якщо є дані) -->
+            <div class="section" id="cardPaymentSection" style="display: none;">
+                <div class="section-title">
+                    <span>💳</span>
+                    <span>Оплата на картку:</span>
+                </div>
+                
+                <div class="card">
+                    <div class="copy-section">
+                        <div class="data-block">
+                            <div class="data-label">💳 Номер картки:</div>
+                            <div class="data-value" id="cardNumberValue"></div>
+                            <button class="copy-button" id="copyCardNumberButton" onclick="copyCardNumber()">Скопіювати номер</button>
+                        </div>
                         
-                        <!-- Блок оплати на картку (якщо є дані) -->
-                        <div id="cardPaymentBlock" style="display: none;">
-                            <div class="data-block">
-                                <div class="data-label">💳 Номер картки:</div>
-                                <div class="data-value" id="cardNumberValue"></div>
-                                <button class="copy-button" id="copyCardNumberButton" onclick="copyCardNumber()">Скопіювати номер</button>
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="color: #b0b0b0; font-size: 13px; margin-bottom: 5px;">
+                                <strong style="color: #e0e0e0;">👤 Прізвище власника картки:</strong> <span id="cardHolderNameValue"></span>
                             </div>
-                            
-                            <div class="data-block">
-                                <div class="data-label">👤 Прізвище власника картки:</div>
-                                <div class="data-value" id="cardHolderNameValue"></div>
-                                <button class="copy-button" id="copyCardHolderButton" onclick="copyCardHolder()">Скопіювати прізвище</button>
-                            </div>
-                            
-                            <div class="data-block">
-                                <div class="data-label">🏦 Назва банку картки:</div>
-                                <div class="data-value" id="cardBankNameValue"></div>
-                                <button class="copy-button" id="copyCardBankButton" onclick="copyCardBank()">Скопіювати назву банку</button>
+                            <div style="color: #b0b0b0; font-size: 13px;">
+                                <strong style="color: #e0e0e0;">🏦 Назва банку картки:</strong> <span id="cardBankNameValue"></span>
                             </div>
                         </div>
                     </div>
@@ -383,7 +388,7 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
             <!-- Блок з інформацією про незаповнені дані -->
             <div id="missingDataNotice" style="display: none; margin-top: 30px; padding: 20px; background: rgba(255, 215, 0, 0.1); border-left: 4px solid #FFD700; border-radius: 8px;">
                 <p style="margin: 0; color: #e0e0e0; font-size: 13px; line-height: 1.6;">
-                    <strong style="color: #FFD700;">💡 Інформація:</strong> Деякі дані продавця (<span id="missingDataList"></span>) наразі не заповнені. Вони можуть з'явитись на сайті найближчим часом та стати доступними для клієнтів.
+                    <strong style="color: #FFD700;">💡 Інформація:</strong> Продавець не заповнив такі дані: <span id="missingDataList"></span>. Скоро вони з'являться на сайті.
                 </p>
             </div>
             
