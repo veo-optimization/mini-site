@@ -96,11 +96,15 @@ function copyTelegramUsername() {
     }
 }
 
-function copyViberPhone() {
+function copyViberPhone(phone, index) {
     if (!checkSecurity()) return;
-    const formattedNumber = formatPhoneNumber(VIBER_PHONE);
-    copyToClipboard(formattedNumber, 'copyViberPhoneButton', '', true);
-    showCopySuccess('viberCopyBadge');
+    const phoneToCopy = phone || VIBER_PHONE;
+    if (!phoneToCopy) return;
+    const formattedNumber = formatPhoneNumber(phoneToCopy);
+    const buttonId = index !== undefined ? `copyViberPhoneButton${index}` : 'copyViberPhoneButton';
+    const badgeId = index !== undefined ? `viberCopyBadge${index}` : 'viberCopyBadge';
+    copyToClipboard(formattedNumber, buttonId, '', true);
+    showCopySuccess(badgeId);
 }
 
 // ============================================
@@ -181,8 +185,12 @@ function modalCopyContact() {
     if (!currentContactData || !checkSecurity()) return;
     let textToCopy = currentContactData.value;
     
-    // Для BIGGO LIVE копіюємо тільки чистий юзернейм (без @)
-    if (currentContactData.type === 'biggo') {
+    // Для Viber використовуємо збережений номер телефону
+    if (currentContactData.type === 'viber') {
+        const phoneToCopy = window.currentViberPhone || currentContactData.value || VIBER_PHONE;
+        textToCopy = phoneToCopy ? formatPhoneNumber(phoneToCopy) : currentContactData.value;
+    } else if (currentContactData.type === 'biggo') {
+        // Для BIGGO LIVE копіюємо тільки чистий юзернейм (без @)
         const username = getBiggoLiveUsername();
         textToCopy = username || currentContactData.value;
     } else if (currentContactData.type === 'telegram' && (textToCopy.includes('t.me/+') || textToCopy.includes('@'))) {
@@ -215,8 +223,11 @@ function modalOpenContact() {
             window.open('https://t.me/' + currentContactData.value.replace('@', ''), '_blank');
         }
     } else if (currentContactData.type === 'viber') {
-        const viberUrl = createViberUrl(currentContactData.value.replace('+380', '0').replace(/\s/g, ''));
-        window.location.href = viberUrl;
+        const phoneToUse = window.currentViberPhone || currentContactData.value || VIBER_PHONE;
+        if (phoneToUse) {
+            const viberUrl = createViberUrl(phoneToUse.replace('+380', '0').replace(/\s/g, ''));
+            window.location.href = viberUrl;
+        }
     } else if (currentContactData.type === 'instagram') {
         window.open('https://instagram.com/' + currentContactData.value.replace('@', ''), '_blank');
     } else if (currentContactData.type === 'biggo') {
@@ -242,9 +253,11 @@ function openTelegram() {
     }
 }
 
-function openViber() {
+function openViber(phone) {
     if (!checkSecurity()) return;
-    const viberUrl = createViberUrl(VIBER_PHONE.replace('+380', '0').replace(/\s/g, ''));
+    const phoneToUse = phone || VIBER_PHONE;
+    if (!phoneToUse) return;
+    const viberUrl = createViberUrl(phoneToUse.replace('+380', '0').replace(/\s/g, ''));
     window.location.href = viberUrl;
 }
 
@@ -1082,9 +1095,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    const viberPhoneEl = document.getElementById('viberPhone');
-    if (viberPhoneEl && typeof VIBER_PHONE !== 'undefined') {
-        viberPhoneEl.textContent = formatPhoneNumber(VIBER_PHONE);
+    // Viber контакти
+    const viberContactsListEl = document.getElementById('viberContactsList');
+    if (viberContactsListEl) {
+        // Перевіряємо новий формат (масив контактів)
+        if (typeof VIBER_CONTACTS !== 'undefined' && VIBER_CONTACTS && VIBER_CONTACTS.length > 0) {
+            viberContactsListEl.innerHTML = '';
+            VIBER_CONTACTS.forEach((contact, index) => {
+                const phone = contact.phone || '';
+                const name = contact.name || '';
+                const displayName = name ? `Вайбер (${name})` : 'Вайбер';
+                const formattedPhone = formatPhoneNumber(phone);
+                
+                const contactItem = document.createElement('div');
+                contactItem.className = 'contact-item contact-item-viber';
+                contactItem.style.cursor = 'pointer';
+                contactItem.onclick = function() {
+                    window.currentViberPhone = phone; // Зберігаємо номер для відкриття
+                    showContactModal(displayName, formattedPhone, 'viber');
+                };
+                contactItem.innerHTML = `
+                    <div class="contact-icon">
+                        <img src="https://simpleicons.org/icons/viber.svg" alt="Viber" width="24" height="24" style="display: block;">
+                    </div>
+                    <div class="contact-content">
+                        <div class="contact-name">
+                            ${displayName}
+                            <span class="copy-success-badge" id="viberCopyBadge${index}">✓ Скопійовано!</span>
+                        </div>
+                        <div class="contact-value" id="viberPhone${index}">${formattedPhone}</div>
+                    </div>
+                    <div class="contact-actions" onclick="event.stopPropagation();">
+                        <button class="contact-action-btn contact-open-btn" onclick="openViber('${phone}')" title="Відкрити">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                        </button>
+                        <button class="contact-action-btn contact-copy-btn" id="copyViberPhoneButton${index}" onclick="copyViberPhone('${phone}', ${index})" title="Скопіювати">
+                            <i class="bi bi-files"></i>
+                        </button>
+                    </div>
+                `;
+                viberContactsListEl.appendChild(contactItem);
+            });
+        } else if (typeof VIBER_PHONE !== 'undefined' && VIBER_PHONE) {
+            // Зворотна сумісність: якщо є старий формат
+            const viberPhoneEl = document.getElementById('viberPhone');
+            if (viberPhoneEl) {
+                viberPhoneEl.textContent = formatPhoneNumber(VIBER_PHONE);
+            }
+        }
     }
     // Вітрина
     const telegramShowcaseItem = document.getElementById('telegramShowcaseItem');
@@ -1452,7 +1510,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Перевіряємо контакти (хоча б один має бути)
     const hasTelegram = (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME && TELEGRAM_USERNAME.trim() !== '') ||
                         (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE && TELEGRAM_PHONE.trim() !== '');
-    const hasViber = typeof VIBER_PHONE !== 'undefined' && VIBER_PHONE && VIBER_PHONE.trim() !== '';
+    const hasViber = (typeof VIBER_CONTACTS !== 'undefined' && VIBER_CONTACTS && VIBER_CONTACTS.length > 0) ||
+                     (typeof VIBER_PHONE !== 'undefined' && VIBER_PHONE && VIBER_PHONE.trim() !== '');
     if (!hasTelegram && !hasViber) {
         missingDataFields.push('Контакти (Telegram або Viber)');
     }
