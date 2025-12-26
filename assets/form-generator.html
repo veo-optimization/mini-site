@@ -634,6 +634,25 @@
                 margin-left: 0 !important;
                 margin-top: 8px;
             }
+            
+            #workingHoursEverydayTimes {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            #workingHoursEverydayTimes > div {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            #workingHoursEverydayTimes label {
+                width: 100%;
+                text-align: left;
+            }
+            
+            #workingHoursEverydayTimes input[type="time"] {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -652,9 +671,9 @@
             <p style="margin: 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
                 <strong style="color: #4CAF50;">Як користуватися:</strong><br>
                 1️⃣ Заповніть всі поля форми (поля з <span style="color: #ff6b6b;">*</span> обов'язкові)<br>
-                2️⃣ Натисніть кнопку "Згенерувати блок даних" внизу<br>
-                3️⃣ Перевірте результат у спливаючому вікні<br>
-                4️⃣ Натисніть "Скопіювати код" - блок даних скопіюється в буфер обміну
+                2️⃣ Блок даних автоматично генерується внизу сторінки при заповненні полів<br>
+                3️⃣ Натисніть "Скопіювати код" - блок даних скопіюється в буфер обміну<br>
+                4️⃣ Надішліть скопійований блок даних на @veoforce_support
             </p>
         </div>
         
@@ -678,8 +697,20 @@
                     
                     <div style="margin-bottom: 15px;">
                         <div class="checkbox-item" style="margin-bottom: 10px;">
+                            <input type="checkbox" id="workingHours24_7" name="workingHours24_7">
+                            <label for="workingHours24_7" style="font-weight: 600;">Відповідаємо цілодобово 24/7</label>
+                        </div>
+                        <div class="checkbox-item" style="margin-bottom: 10px;">
                             <input type="checkbox" id="workingHoursEveryday" name="workingHoursEveryday">
                             <label for="workingHoursEveryday" style="font-weight: 600;">Відповідаю щодня</label>
+                        </div>
+                        <div id="workingHoursEverydayTimes" style="display: none; margin-left: 30px; margin-top: 10px; margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label for="workingHoursEverydayFrom" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">З:</label>
+                                <input type="time" id="workingHoursEverydayFrom" style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
+                                <label for="workingHoursEverydayTo" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">До:</label>
+                                <input type="time" id="workingHoursEverydayTo" style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
+                            </div>
                         </div>
                     </div>
                     
@@ -1217,28 +1248,26 @@
                 </div>
             </div>
             
-            <button type="submit" class="generate-btn" id="generateBtn">Згенерувати блок даних</button>
         </form>
     </div>
     
-    <!-- Модальне вікно -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>✅ Блок даних згенеровано!</h2>
+    <!-- Блок згенерованого коду (завжди видимий) -->
+    <div class="code-block-container" style="background: #1a1a1a; padding: 30px; margin-top: 30px; border-top: 2px solid #333;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="color: #4CAF50; margin-bottom: 20px; text-align: center;">📋 Згенерований блок даних</h2>
+            <div style="background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative;">
+                <pre id="generatedCode" style="color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; margin: 0; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto;"></pre>
             </div>
-            <div class="modal-body">
-                <pre id="generatedCode"></pre>
-            </div>
-            <div class="copy-success" id="copySuccess">✓ Скопійовано в буфер обміну!</div>
-            <div id="sendToSupportContainer" style="display: none; margin-top: 15px; text-align: center;">
-                <button type="button" class="modal-btn" onclick="window.open('https://t.me/veoforce_support', '_blank')" style="background: #0088cc; color: white; width: 100%;">
-                    Надіслати на @veoforce_support
+            <div class="copy-success" id="copySuccess" style="display: none; text-align: center; color: #4CAF50; margin-bottom: 15px; font-weight: 600;">✓ Скопійовано в буфер обміну!</div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button type="button" class="generate-btn" onclick="copyToClipboard()" style="background: #4CAF50; color: white; border: none; padding: 15px 40px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
+                    Скопіювати код
                 </button>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="modal-btn modal-btn-back" onclick="closeModal()">Назад</button>
-                <button type="button" class="modal-btn modal-btn-copy" onclick="copyToClipboard()">Скопіювати код</button>
+            <div id="sendToSupportContainer" style="display: none; text-align: center; margin-top: 15px;">
+                <button type="button" class="generate-btn" onclick="window.open('https://t.me/veoforce_support', '_blank')" style="background: #0088cc; color: white; border: none; padding: 15px 40px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
+                    Надіслати скопійований блок даних на @veoforce_support
+                </button>
             </div>
         </div>
     </div>
@@ -1308,10 +1337,11 @@
             checks.push({label: 'Назва магазину', filled: !!shopName});
             const shopDescription = document.getElementById('shopDescription')?.value.trim();
             checks.push({label: 'Опис магазину', filled: !!shopDescription});
+            const workingHours24_7 = document.getElementById('workingHours24_7')?.checked;
             const workingHoursEveryday = document.getElementById('workingHoursEveryday')?.checked;
             const workingHoursDays = Array.from(document.querySelectorAll('input[name="workingHoursDay"]:checked'));
             const workingHoursCustom = document.getElementById('workingHoursCustom')?.value.trim();
-            const hasWorkingHours = workingHoursEveryday || workingHoursDays.length > 0 || !!workingHoursCustom;
+            const hasWorkingHours = workingHours24_7 || workingHoursEveryday || workingHoursDays.length > 0 || !!workingHoursCustom;
             checks.push({label: 'Час роботи / Контактний час', filled: hasWorkingHours});
             
             // Асортимент
@@ -1590,8 +1620,232 @@
             }
         }
         
+        // Функція для збереження даних у localStorage
+        function saveFormData() {
+            const formData = {};
+            const form = document.getElementById('clientForm');
+            
+            // Зберігаємо всі поля форми
+            const inputs = form.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    formData[input.id] = input.checked;
+                } else {
+                    formData[input.id] = input.value;
+                }
+            });
+            
+            // Зберігаємо кастомні поля (локації, умови повернення, категорії, шаблон)
+            const customFields = {
+                locations: [],
+                returnConditions: [],
+                categories: [],
+                templateFields: []
+            };
+            
+            // Локації
+            document.querySelectorAll('.location-item').forEach(item => {
+                const name = item.querySelector('.location-name')?.value.trim();
+                const url = item.querySelector('.location-url')?.value.trim();
+                if (name || url) {
+                    customFields.locations.push({name, url});
+                }
+            });
+            
+            // Кастомні умови повернення
+            document.querySelectorAll('.return-custom-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    customFields.returnConditions.push(value);
+                }
+            });
+            
+            // Кастомні категорії
+            document.querySelectorAll('.custom-category-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    customFields.categories.push(value);
+                }
+            });
+            
+            // Кастомні поля шаблону
+            document.querySelectorAll('.template-custom-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    customFields.templateFields.push(value);
+                }
+            });
+            
+            formData._customFields = customFields;
+            
+            localStorage.setItem('formGeneratorData', JSON.stringify(formData));
+        }
+        
+        // Функція для завантаження даних з localStorage
+        function loadFormData() {
+            const savedData = localStorage.getItem('formGeneratorData');
+            if (savedData) {
+                try {
+                    const formData = JSON.parse(savedData);
+                    const form = document.getElementById('clientForm');
+                    
+                    // Завантажуємо базові поля
+                    Object.keys(formData).forEach(id => {
+                        if (id === '_customFields') return; // Пропускаємо кастомні поля
+                        const element = document.getElementById(id);
+                        if (element) {
+                            if (element.type === 'checkbox' || element.type === 'radio') {
+                                element.checked = formData[id];
+                            } else {
+                                element.value = formData[id];
+                            }
+                        }
+                    });
+                    
+                    // Завантажуємо кастомні поля
+                    if (formData._customFields) {
+                        // Локації
+                        if (formData._customFields.locations && formData._customFields.locations.length > 0) {
+                            formData._customFields.locations.forEach((loc, index) => {
+                                if (index === 0) {
+                                    const nameInput = document.querySelector('.location-name');
+                                    const urlInput = document.querySelector('.location-url');
+                                    if (nameInput) nameInput.value = loc.name || '';
+                                    if (urlInput) urlInput.value = loc.url || '';
+                                } else {
+                                    // Додаємо нові локації
+                                    const addBtn = document.querySelector('.add-location-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const items = document.querySelectorAll('.location-item');
+                                            const item = items[items.length - 1];
+                                            if (item) {
+                                                const nameInput = item.querySelector('.location-name');
+                                                const urlInput = item.querySelector('.location-url');
+                                                if (nameInput) nameInput.value = loc.name || '';
+                                                if (urlInput) urlInput.value = loc.url || '';
+                                            }
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Кастомні умови повернення
+                        if (formData._customFields.returnConditions && formData._customFields.returnConditions.length > 0) {
+                            formData._customFields.returnConditions.forEach((cond, index) => {
+                                if (index === 0) {
+                                    const input = document.querySelector('.return-custom-field');
+                                    if (input) input.value = cond;
+                                } else {
+                                    // Додаємо нові поля
+                                    const addBtn = document.querySelector('.add-return-condition-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const inputs = document.querySelectorAll('.return-custom-field');
+                                            const input = inputs[inputs.length - 1];
+                                            if (input) input.value = cond;
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Кастомні категорії
+                        if (formData._customFields.categories && formData._customFields.categories.length > 0) {
+                            formData._customFields.categories.forEach((cat, index) => {
+                                if (index === 0) {
+                                    const input = document.querySelector('.custom-category-field');
+                                    if (input) input.value = cat;
+                                } else {
+                                    // Додаємо нові поля
+                                    const addBtn = document.querySelector('.add-custom-category-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const inputs = document.querySelectorAll('.custom-category-field');
+                                            const input = inputs[inputs.length - 1];
+                                            if (input) input.value = cat;
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Кастомні поля шаблону
+                        if (formData._customFields.templateFields && formData._customFields.templateFields.length > 0) {
+                            formData._customFields.templateFields.forEach((field, index) => {
+                                if (index === 0) {
+                                    const input = document.querySelector('.template-custom-field');
+                                    if (input) input.value = field;
+                                } else {
+                                    // Додаємо нові поля
+                                    const addBtn = document.querySelector('.add-template-field-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const inputs = document.querySelectorAll('.template-custom-field');
+                                            const input = inputs[inputs.length - 1];
+                                            if (input) input.value = field;
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    
+                    // Оновлюємо всі залежні елементи
+                    updateTemplatePreview();
+                    updateDataCheckList();
+                    
+                    // Викликаємо обробники змін для активації залежних полів
+                    setTimeout(() => {
+                        const workingHoursEveryday = document.getElementById('workingHoursEveryday');
+                        if (workingHoursEveryday && workingHoursEveryday.checked) {
+                            workingHoursEveryday.dispatchEvent(new Event('change'));
+                        }
+                        const workingHours24_7 = document.getElementById('workingHours24_7');
+                        if (workingHours24_7 && workingHours24_7.checked) {
+                            workingHours24_7.dispatchEvent(new Event('change'));
+                        }
+                    }, 200);
+                } catch (e) {
+                    console.error('Помилка завантаження даних:', e);
+                }
+            }
+        }
+        
+        // Обробка фокусу для полів exchangeDays та returnDays
+        function setupNumberFieldsFocus() {
+            const exchangeDays = document.getElementById('exchangeDays');
+            const returnDays = document.getElementById('returnDays');
+            
+            [exchangeDays, returnDays].forEach(field => {
+                if (field) {
+                    field.addEventListener('focus', function() {
+                        if (this.value === '0') {
+                            this.value = '';
+                        }
+                    });
+                    field.addEventListener('blur', function() {
+                        if (this.value === '') {
+                            this.value = '0';
+                        }
+                    });
+                }
+            });
+        }
+        
         // Додаємо обробники для оновлення прев'ю
         document.addEventListener('DOMContentLoaded', function() {
+            // Завантажуємо дані з localStorage
+            loadFormData();
+            
+            // Налаштовуємо обробку фокусу для числових полів
+            setupNumberFieldsFocus();
+            
             // Оновлюємо прев'ю при зміні чекбоксів
             document.querySelectorAll('input[name="templateField"]').forEach(cb => {
                 cb.addEventListener('change', updateTemplatePreview);
@@ -1604,6 +1858,12 @@
             // Початкове оновлення
             updateTemplatePreview();
             updateDataCheckList();
+            
+            // Налаштовуємо автоматичне оновлення коду
+            setupAutoUpdate();
+            
+            // Оновлюємо код при завантаженні
+            updateGeneratedCode();
             
             // Додаємо обробники для оновлення перевірки даних
             document.querySelectorAll('input, textarea, select').forEach(element => {
@@ -1620,14 +1880,58 @@
             });
             
             // Обробники для часу роботи
+            const workingHours24_7 = document.getElementById('workingHours24_7');
             const workingHoursEveryday = document.getElementById('workingHoursEveryday');
+            const workingHoursEverydayTimes = document.getElementById('workingHoursEverydayTimes');
+            const workingHoursEverydayFrom = document.getElementById('workingHoursEverydayFrom');
+            const workingHoursEverydayTo = document.getElementById('workingHoursEverydayTo');
             const workingHoursDays = document.querySelectorAll('input[name="workingHoursDay"]');
             const workingHoursCustom = document.getElementById('workingHoursCustom');
+            
+            // Обробка "Відповідаємо цілодобово 24/7"
+            if (workingHours24_7) {
+                workingHours24_7.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Вимкнути всі інші опції
+                        if (workingHoursEveryday) {
+                            workingHoursEveryday.checked = false;
+                            if (workingHoursEverydayTimes) workingHoursEverydayTimes.style.display = 'none';
+                            if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = true;
+                            if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = true;
+                        }
+                        workingHoursDays.forEach(cb => {
+                            cb.checked = false;
+                            const day = cb.value.toLowerCase();
+                            const dayMap = {пн: 'mon', вт: 'tue', ср: 'wed', чт: 'thu', пт: 'fri', сб: 'sat', нд: 'sun'};
+                            const dayKey = dayMap[day];
+                            if (dayKey) {
+                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}From`).disabled = true;
+                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}To`).disabled = true;
+                            }
+                        });
+                        document.getElementById('workingHoursDaysContainer').style.opacity = '0.5';
+                        document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'none';
+                        if (workingHoursCustom) workingHoursCustom.value = '';
+                    } else {
+                        document.getElementById('workingHoursDaysContainer').style.opacity = '1';
+                        document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
+                    }
+                    updateDataCheckList();
+                });
+            }
             
             // Обробка "Відповідаю щодня"
             if (workingHoursEveryday) {
                 workingHoursEveryday.addEventListener('change', function() {
                     if (this.checked) {
+                        // Показати поля для вибору часу
+                        if (workingHoursEverydayTimes) {
+                            workingHoursEverydayTimes.style.display = 'block';
+                            if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = false;
+                            if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = false;
+                        }
+                        // Вимкнути 24/7
+                        if (workingHours24_7) workingHours24_7.checked = false;
                         // Вимкнути всі дні
                         workingHoursDays.forEach(cb => {
                             cb.checked = false;
@@ -1641,7 +1945,20 @@
                         });
                         document.getElementById('workingHoursDaysContainer').style.opacity = '0.5';
                         document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'none';
+                        if (workingHoursCustom) workingHoursCustom.value = '';
                     } else {
+                        // Сховати поля для вибору часу
+                        if (workingHoursEverydayTimes) {
+                            workingHoursEverydayTimes.style.display = 'none';
+                            if (workingHoursEverydayFrom) {
+                                workingHoursEverydayFrom.disabled = true;
+                                workingHoursEverydayFrom.value = '';
+                            }
+                            if (workingHoursEverydayTo) {
+                                workingHoursEverydayTo.disabled = true;
+                                workingHoursEverydayTo.value = '';
+                            }
+                        }
                         document.getElementById('workingHoursDaysContainer').style.opacity = '1';
                         document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
                     }
@@ -1669,7 +1986,13 @@
                         if (this.checked) {
                             fromInput.disabled = false;
                             toInput.disabled = false;
-                            if (workingHoursEveryday) workingHoursEveryday.checked = false;
+                            if (workingHours24_7) workingHours24_7.checked = false;
+                            if (workingHoursEveryday) {
+                                workingHoursEveryday.checked = false;
+                                if (workingHoursEverydayTimes) workingHoursEverydayTimes.style.display = 'none';
+                                if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = true;
+                                if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = true;
+                            }
                             document.getElementById('workingHoursDaysContainer').style.opacity = '1';
                             document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
                         } else {
@@ -1687,7 +2010,13 @@
             if (workingHoursCustom) {
                 workingHoursCustom.addEventListener('input', function() {
                     if (this.value.trim()) {
-                        if (workingHoursEveryday) workingHoursEveryday.checked = false;
+                        if (workingHours24_7) workingHours24_7.checked = false;
+                        if (workingHoursEveryday) {
+                            workingHoursEveryday.checked = false;
+                            if (workingHoursEverydayTimes) workingHoursEverydayTimes.style.display = 'none';
+                            if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = true;
+                            if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = true;
+                        }
                         workingHoursDays.forEach(cb => {
                             cb.checked = false;
                             const day = cb.value.toLowerCase();
@@ -1813,6 +2142,7 @@
             // c3 - workingHours (генеруємо з чекбоксів або кастомного поля)
             let workingHoursText = '';
             const workingHoursCustom = document.getElementById('workingHoursCustom').value.trim();
+            const workingHours24_7 = document.getElementById('workingHours24_7').checked;
             const workingHoursEveryday = document.getElementById('workingHoursEveryday').checked;
             
             // Функція форматування часу з HH:MM до читабельного формату
@@ -1824,9 +2154,11 @@
             
             if (workingHoursCustom) {
                 workingHoursText = workingHoursCustom;
+            } else if (workingHours24_7) {
+                workingHoursText = 'Відповідаємо цілодобово 24/7';
             } else if (workingHoursEveryday) {
-                const everydayTimeFrom = document.getElementById('workingHoursMonFrom').value;
-                const everydayTimeTo = document.getElementById('workingHoursMonTo').value;
+                const everydayTimeFrom = document.getElementById('workingHoursEverydayFrom').value;
+                const everydayTimeTo = document.getElementById('workingHoursEverydayTo').value;
                 if (everydayTimeFrom && everydayTimeTo) {
                     workingHoursText = `Відповідаю щодня з ${formatTime(everydayTimeFrom)} до ${formatTime(everydayTimeTo)}`;
                 } else {
@@ -2384,22 +2716,9 @@
             return true;
         }
         
-        // Обробка форми
-        document.getElementById('clientForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Валідація перед відправкою
-            if (!validateForm()) {
-                alert('Будь ласка, виправте помилки в полях перед генерацією коду.');
-                return;
-            }
-            
-            // Перевірка локацій для перевізників
-            if (!checkDeliveryLocations(true)) {
-                return;
-            }
-            
-            const formData = {
+        // Функція для отримання всіх даних форми
+        function getAllFormData() {
+            return {
                 shopName: document.getElementById('shopName').value.trim(),
                 shopDescription: document.getElementById('shopDescription').value.trim(),
                 workingHours: '', // Генерується автоматично з чекбоксів
@@ -2425,30 +2744,57 @@
                 returnDays: parseInt(document.getElementById('returnDays').value) || 0,
                 deliveryNote: document.getElementById('deliveryNote').value.trim()
             };
-            
-            // Генерація коду
-            generatedCode = generateCode(formData);
-            
-            // Показ модального вікна
-            document.getElementById('generatedCode').textContent = generatedCode;
-            document.getElementById('modalOverlay').classList.add('show');
-            document.getElementById('copySuccess').classList.remove('show');
-            
-            // Зберігаємо інформацію про наявність реквізитів для подальшої перевірки
-            window.hasFopRequisites = hasFopRequisites();
-        });
-        
-        // Закриття модального вікна
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('show');
-            const sendContainer = document.getElementById('sendToSupportContainer');
-            if (sendContainer) {
-                sendContainer.style.display = 'none';
-            }
         }
+        
+        // Функція для автоматичного оновлення коду
+        function updateGeneratedCode() {
+            const formData = getAllFormData();
+            generatedCode = generateCode(formData);
+            const codeElement = document.getElementById('generatedCode');
+            if (codeElement) {
+                codeElement.textContent = generatedCode;
+            }
+            window.hasFopRequisites = hasFopRequisites();
+            // Зберігаємо дані при кожному оновленні
+            saveFormData();
+        }
+        
+        // Додаємо обробники подій для всіх полів форми для автоматичного оновлення
+        function setupAutoUpdate() {
+            const form = document.getElementById('clientForm');
+            const inputs = form.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+                input.addEventListener('change', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+            });
+            
+            // Також для чекбоксів та радіо-кнопок
+            const checkboxes = form.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+            });
+        }
+        
+        // Обробка форми (тепер не потрібна, але залишаємо для сумісності)
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateGeneratedCode();
+        });
         
         // Копіювання в буфер обміну
         function copyToClipboard() {
+            // Оновлюємо код перед копіюванням
+            updateGeneratedCode();
+            
             // Видаляємо маркдаун для копіювання (копіюємо чистий код)
             const codeWithoutMarkdown = generatedCode.replace(/^```\n?/g, '').replace(/\n?```$/g, '');
             // Створюємо тимчасовий елемент для копіювання
@@ -2464,13 +2810,12 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    document.getElementById('copySuccess').classList.add('show');
+                    document.getElementById('copySuccess').style.display = 'block';
                     document.getElementById('sendToSupportContainer').style.display = 'block';
                     setTimeout(() => {
-                        document.getElementById('copySuccess').classList.remove('show');
+                        document.getElementById('copySuccess').style.display = 'none';
                         // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
                         if (window.hasFopRequisites === false) {
-                            closeModal();
                             setTimeout(() => {
                                 showInfoModal();
                             }, 300);
@@ -2479,13 +2824,12 @@
                 } else {
                     // Fallback для сучасних браузерів
                     navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
-                        document.getElementById('copySuccess').classList.add('show');
+                        document.getElementById('copySuccess').style.display = 'block';
                         document.getElementById('sendToSupportContainer').style.display = 'block';
                         setTimeout(() => {
-                            document.getElementById('copySuccess').classList.remove('show');
+                            document.getElementById('copySuccess').style.display = 'none';
                             // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
                             if (window.hasFopRequisites === false) {
-                                closeModal();
                                 setTimeout(() => {
                                     showInfoModal();
                                 }, 300);
@@ -2498,13 +2842,12 @@
             } catch (err) {
                 // Fallback для сучасних браузерів
                 navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
-                    document.getElementById('copySuccess').classList.add('show');
+                    document.getElementById('copySuccess').style.display = 'block';
                     document.getElementById('sendToSupportContainer').style.display = 'block';
                     setTimeout(() => {
-                        document.getElementById('copySuccess').classList.remove('show');
+                        document.getElementById('copySuccess').style.display = 'none';
                         // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
                         if (window.hasFopRequisites === false) {
-                            closeModal();
                             setTimeout(() => {
                                 showInfoModal();
                             }, 300);
@@ -2517,13 +2860,6 @@
             
             document.body.removeChild(textarea);
         }
-        
-        // Закриття модального вікна при кліку поза ним
-        document.getElementById('modalOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
         
         // Закриття інструкцій при кліку поза вікном
         document.getElementById('instructionModal').addEventListener('click', function(e) {
