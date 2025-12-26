@@ -220,9 +220,11 @@ function modalOpenContact() {
     } else if (currentContactData.type === 'instagram') {
         window.open('https://instagram.com/' + currentContactData.value.replace('@', ''), '_blank');
     } else if (currentContactData.type === 'biggo') {
-        // Для BIGGO LIVE не відкриваємо посилання, а показуємо модальне вікно з юзернеймом
-        // Модальне вікно вже відкрите, тому просто не закриваємо його
-        return;
+        // Для BIGGO LIVE відкриваємо URL
+        const fullUrl = getBiggoLiveUrl();
+        if (fullUrl) {
+            window.open(fullUrl, '_blank');
+        }
     }
     
     closeContactModal();
@@ -307,6 +309,13 @@ function copyInstagramUsername() {
 // Функція для витягування юзернейму з URL BIGGO LIVE
 function getBiggoLiveUsername() {
     if (!BIGGO_LIVE_URL) return '';
+    
+    // Якщо це просто username або ID (без URL), повертаємо як є
+    if (!BIGGO_LIVE_URL.includes('http') && !BIGGO_LIVE_URL.includes('/') && !BIGGO_LIVE_URL.includes('.')) {
+        return BIGGO_LIVE_URL;
+    }
+    
+    // Якщо це URL, витягуємо username
     try {
         const url = new URL(BIGGO_LIVE_URL);
         const pathParts = url.pathname.split('/');
@@ -323,18 +332,33 @@ function getBiggoLiveUsername() {
     }
 }
 
+// Функція для отримання повного URL BIGGO LIVE
+function getBiggoLiveUrl() {
+    if (!BIGGO_LIVE_URL) return '';
+    
+    // Якщо це просто username або ID, формуємо URL
+    if (!BIGGO_LIVE_URL.includes('http') && !BIGGO_LIVE_URL.includes('/') && !BIGGO_LIVE_URL.includes('.')) {
+        return `https://biggo.tv/user/${BIGGO_LIVE_URL}`;
+    }
+    
+    // Якщо це вже URL, повертаємо як є
+    return BIGGO_LIVE_URL;
+}
+
 function openBiggoLive() {
     if (!checkSecurity() || !BIGGO_LIVE_URL) return;
     // Для BIGGO LIVE показуємо модальне вікно з можливістю скопіювати юзернейм
     const username = getBiggoLiveUsername();
+    const fullUrl = getBiggoLiveUrl();
     if (username) {
-        showContactModal('BIGGO LIVE', BIGGO_LIVE_URL, 'biggo');
+        showContactModal('BIGGO LIVE', fullUrl, 'biggo');
     }
 }
 
 function copyBiggoLive() {
     if (!checkSecurity() || !BIGGO_LIVE_URL) return;
-    secureCopy(BIGGO_LIVE_URL, 'copyBiggoLiveButton', '', true);
+    const fullUrl = getBiggoLiveUrl();
+    secureCopy(fullUrl, 'copyBiggoLiveButton', '', true);
     showCopySuccess('biggoLiveCopyBadge');
 }
 
