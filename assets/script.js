@@ -976,17 +976,33 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Невелика затримка, щоб переконатися, що всі глобальні константи встановлені
     setTimeout(function() {
+        // Діагностика: перевіряємо, чи дані доступні
+        console.log('🔍 Перевірка даних перед відображенням:', {
+            SHOP_NAME: typeof window.SHOP_NAME !== 'undefined' ? window.SHOP_NAME : 'не визначено',
+            FOP_NAME: typeof window.FOP_NAME !== 'undefined' ? window.FOP_NAME : 'не визначено',
+            CLIENT_DATA: typeof window.CLIENT_DATA !== 'undefined' ? 'визначено' : 'не визначено'
+        });
+        
         // Заповнюємо дані на сторінці
-    // Назва магазину
-    const shopNameHeader = document.getElementById('shopNameHeader');
-    if (shopNameHeader && typeof SHOP_NAME !== 'undefined') {
-        shopNameHeader.textContent = SHOP_NAME;
-    }
+        // Назва магазину
+        const shopNameHeader = document.getElementById('shopNameHeader');
+        if (shopNameHeader) {
+            const shopName = window.SHOP_NAME || (typeof SHOP_NAME !== 'undefined' ? SHOP_NAME : '');
+            if (shopName) {
+                shopNameHeader.textContent = shopName;
+                console.log('✅ Назва магазину встановлено:', shopName);
+            } else {
+                console.warn('⚠️ SHOP_NAME не визначено');
+            }
+        }
     
     // Опис магазину (якщо є)
     const shopDescriptionEl = document.querySelector('.header p');
-    if (shopDescriptionEl && typeof SHOP_DESCRIPTION !== 'undefined' && SHOP_DESCRIPTION) {
-        shopDescriptionEl.textContent = SHOP_DESCRIPTION;
+    if (shopDescriptionEl) {
+        const shopDesc = window.SHOP_DESCRIPTION || (typeof SHOP_DESCRIPTION !== 'undefined' ? SHOP_DESCRIPTION : '');
+        if (shopDesc) {
+            shopDescriptionEl.textContent = shopDesc;
+        }
     }
     
     // Час роботи / Контактний час та Асортимент (показуємо тільки якщо є календар)
@@ -1062,33 +1078,51 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Назва календаря з назвою магазину
     const calendarTitle = document.getElementById('calendarTitle');
-    if (calendarTitle && typeof SHOP_NAME !== 'undefined') {
-        calendarTitle.textContent = SHOP_NAME + ': Розклад прямих ефірів';
+    if (calendarTitle) {
+        const shopName = window.SHOP_NAME || (typeof SHOP_NAME !== 'undefined' ? SHOP_NAME : '');
+        if (shopName) {
+            calendarTitle.textContent = shopName + ': Розклад прямих ефірів';
+        }
     }
     
     const fopNameEl = document.getElementById('fopName');
-    if (fopNameEl && typeof FOP_NAME !== 'undefined') {
-        fopNameEl.textContent = FOP_NAME;
+    if (fopNameEl) {
+        const fopName = window.FOP_NAME || (typeof FOP_NAME !== 'undefined' ? FOP_NAME : '');
+        if (fopName) {
+            fopNameEl.textContent = fopName;
+        }
     }
     
     const edrpouValueEl = document.getElementById('edrpouValue');
-    if (edrpouValueEl && typeof EDRPOU !== 'undefined') {
-        edrpouValueEl.textContent = EDRPOU;
+    if (edrpouValueEl) {
+        const edrpou = window.EDRPOU || (typeof EDRPOU !== 'undefined' ? EDRPOU : '');
+        if (edrpou) {
+            edrpouValueEl.textContent = edrpou;
+        }
     }
     
     const ibanValueEl = document.getElementById('ibanValue');
-    if (ibanValueEl && typeof IBAN !== 'undefined') {
-        ibanValueEl.textContent = IBAN;
+    if (ibanValueEl) {
+        const iban = window.IBAN || (typeof IBAN !== 'undefined' ? IBAN : '');
+        if (iban) {
+            ibanValueEl.textContent = iban;
+        }
     }
     
     const bankNameEl = document.getElementById('bankName');
-    if (bankNameEl && typeof BANK_NAME !== 'undefined') {
-        bankNameEl.textContent = BANK_NAME;
+    if (bankNameEl) {
+        const bankName = window.BANK_NAME || (typeof BANK_NAME !== 'undefined' ? BANK_NAME : '');
+        if (bankName) {
+            bankNameEl.textContent = bankName;
+        }
     }
     
     const paymentPurposeValueEl = document.getElementById('paymentPurposeValue');
-    if (paymentPurposeValueEl && typeof PAYMENT_PURPOSE !== 'undefined') {
-        paymentPurposeValueEl.textContent = PAYMENT_PURPOSE;
+    if (paymentPurposeValueEl) {
+        const paymentPurpose = window.PAYMENT_PURPOSE || (typeof PAYMENT_PURPOSE !== 'undefined' ? PAYMENT_PURPOSE : '');
+        if (paymentPurpose) {
+            paymentPurposeValueEl.textContent = paymentPurpose;
+        }
     }
     
     // Оплата на картку (окремий блок)
