@@ -1818,6 +1818,140 @@ document.addEventListener('DOMContentLoaded', function() {
         missingDataNotice.style.display = 'none';
     }
     
+    // Формуємо та відображаємо публічну оферту
+    generatePublicOffer();
+}
+
+// Допоміжна функція для екранування HTML
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Функція формування публічної оферти
+function generatePublicOffer() {
+    const offerSection = document.getElementById('publicOfferSection');
+    const offerContent = document.getElementById('publicOfferContent');
+    
+    if (!offerSection || !offerContent) {
+        return;
+    }
+    
+    // Перевіряємо, чи є дані для оферти
+    const hasData = (typeof window.SHOP_NAME !== 'undefined' && window.SHOP_NAME) ||
+                   (typeof window.PAYMENT_OPTIONS !== 'undefined' && window.PAYMENT_OPTIONS && window.PAYMENT_OPTIONS.length > 0) ||
+                   (typeof window.DELIVERY_METHOD !== 'undefined' && window.DELIVERY_METHOD) ||
+                   (typeof window.EXCHANGE_DAYS !== 'undefined' && window.EXCHANGE_DAYS > 0) ||
+                   (typeof window.RETURN_DAYS !== 'undefined' && window.RETURN_DAYS > 0);
+    
+    if (!hasData) {
+        offerSection.style.display = 'none';
+        return;
+    }
+    
+    // Формуємо HTML оферти
+    let offerHTML = '<h2>📄 Публічна оферта</h2>';
+    
+    // 1. Загальні положення
+    offerHTML += '<h3>1. Загальні положення</h3>';
+    offerHTML += '<p>Ця публічна оферта (далі - "Оферта") є офіційною пропозицією продавця укласти договір купівлі-продажу товару на умовах, викладених нижче.</p>';
+    
+    if (typeof window.SHOP_NAME !== 'undefined' && window.SHOP_NAME) {
+        offerHTML += `<p><strong>Продавець:</strong> <span class="public-offer-highlight">${escapeHtml(window.SHOP_NAME)}</span></p>`;
+    }
+    
+    // 2. Асортимент товарів
+    if (typeof window.CATEGORIES !== 'undefined' && window.CATEGORIES && window.CATEGORIES.length > 0) {
+        offerHTML += '<h3>2. Асортимент товарів</h3>';
+        offerHTML += '<p>Продавець надає наступні категорії товарів:</p>';
+        offerHTML += '<ul>';
+        window.CATEGORIES.forEach(cat => {
+            offerHTML += `<li>${escapeHtml(cat)}</li>`;
+        });
+        offerHTML += '</ul>';
+    }
+    
+    // 3. Час роботи / Контактний час
+    if (typeof window.WORKING_HOURS !== 'undefined' && window.WORKING_HOURS) {
+        offerHTML += '<h3>3. Час роботи / Контактний час</h3>';
+        offerHTML += `<p>${escapeHtml(window.WORKING_HOURS)}</p>`;
+    }
+    
+    // 4. Умови оплати
+    if (typeof window.PAYMENT_OPTIONS !== 'undefined' && window.PAYMENT_OPTIONS && window.PAYMENT_OPTIONS.length > 0) {
+        offerHTML += '<h3>4. Умови оплати</h3>';
+        offerHTML += '<p>Покупець може здійснити оплату наступними способами:</p>';
+        offerHTML += '<ul>';
+        window.PAYMENT_OPTIONS.forEach(option => {
+            offerHTML += `<li>${escapeHtml(option)}</li>`;
+        });
+        offerHTML += '</ul>';
+    }
+    
+    // 5. Умови доставки
+    if (typeof window.DELIVERY_METHOD !== 'undefined' && window.DELIVERY_METHOD) {
+        offerHTML += '<h3>5. Умови доставки</h3>';
+        offerHTML += `<p><strong>Спосіб доставки:</strong> <span class="public-offer-highlight">${escapeHtml(window.DELIVERY_METHOD)}</span></p>`;
+        
+        if (typeof window.DELIVERY_TIME !== 'undefined' && window.DELIVERY_TIME) {
+            offerHTML += `<p><strong>Термін доставки:</strong> ${escapeHtml(window.DELIVERY_TIME)}</p>`;
+        }
+        
+        if (typeof window.DELIVERY_NOTE !== 'undefined' && window.DELIVERY_NOTE) {
+            offerHTML += `<p><em>${escapeHtml(window.DELIVERY_NOTE)}</em></p>`;
+        }
+    }
+    
+    // 6. Умови обміну та повернення
+    const hasExchange = typeof window.EXCHANGE_DAYS !== 'undefined' && window.EXCHANGE_DAYS > 0;
+    const hasReturn = typeof window.RETURN_DAYS !== 'undefined' && window.RETURN_DAYS > 0;
+    
+    if (hasExchange || hasReturn) {
+        offerHTML += '<h3>6. Умови обміну та повернення</h3>';
+        
+        if (hasExchange) {
+            offerHTML += `<p><strong>Обмін:</strong> відповідно до законодавства України, у вас є право на обмін товару протягом <span class="public-offer-highlight">${window.EXCHANGE_DAYS} днів</span> з моменту отримання (окрім товарів, визначених законодавством).</p>`;
+        }
+        
+        if (hasReturn) {
+            offerHTML += `<p><strong>Повернення:</strong> відповідно до законодавства України, у вас є право на повернення товару протягом <span class="public-offer-highlight">${window.RETURN_DAYS} днів</span> з моменту отримання (окрім товарів, визначених законодавством).</p>`;
+        }
+        
+        if (typeof window.RETURN_CONDITIONS !== 'undefined' && window.RETURN_CONDITIONS && window.RETURN_CONDITIONS.length > 0) {
+            offerHTML += '<p><strong>Умови обміну/повернення:</strong></p>';
+            offerHTML += '<ul>';
+            window.RETURN_CONDITIONS.forEach(condition => {
+                offerHTML += `<li>${escapeHtml(condition)}</li>`;
+            });
+            offerHTML += '</ul>';
+        }
+        
+        if (typeof window.RETURN_MONEY_TIME !== 'undefined' && window.RETURN_MONEY_TIME) {
+            offerHTML += `<p><strong>Термін повернення коштів:</strong> ${escapeHtml(window.RETURN_MONEY_TIME)}</p>`;
+        }
+        
+        if (typeof window.RETURN_DELIVERY_COST !== 'undefined' && window.RETURN_DELIVERY_COST) {
+            offerHTML += `<p><strong>Вартість доставки при поверненні:</strong> ${escapeHtml(window.RETURN_DELIVERY_COST)}</p>`;
+        }
+    }
+    
+    // 7. Особливі умови (якщо є)
+    if (typeof window.OFFER_ADDITIONAL_INFO !== 'undefined' && window.OFFER_ADDITIONAL_INFO) {
+        offerHTML += '<h3>7. Особливі умови</h3>';
+        offerHTML += `<div class="public-offer-note">${escapeHtml(window.OFFER_ADDITIONAL_INFO).replace(/\n/g, '<br>')}</div>`;
+    }
+    
+    // 8. Контактна інформація
+    offerHTML += '<h3>8. Контактна інформація</h3>';
+    offerHTML += '<p>Для отримання додаткової інформації, оформлення замовлення або вирішення питань, звертайтеся до продавця через контакти, вказані на цій сторінці.</p>';
+    
+    // Встановлюємо HTML та показуємо блок
+    offerContent.innerHTML = offerHTML;
+    offerSection.style.display = 'block';
+}
+    
     // Перевірка безпеки після завантаження
     if (!checkSecurity()) {
         return;
