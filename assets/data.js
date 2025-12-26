@@ -85,18 +85,26 @@ function validatePhone(phone) {
  */
 function parseClientConstants(constantsText) {
     const data = {};
-    const lines = constantsText.split('\n').filter(line => line.trim());
+    // Розбиваємо на рядки, фільтруємо порожні та обробляємо пробіли
+    const lines = constantsText.split('\n')
+        .map(line => line.trim())
+        .filter(line => line && !line.startsWith('//')); // Видаляємо порожні рядки та коментарі
     const constants = {};
     
     // Парсимо всі константи
     lines.forEach(line => {
-        const match = line.match(/^c(\d+)([a-z]|_count|_type)?\s*-\s*(.+)$/);
+        // Більш гнучкий регулярний вираз, який обробляє різні формати
+        // Дозволяє пробіли на початку, після "c", перед і після "-"
+        const match = line.match(/^\s*c(\d+)([a-z]|_count|_type)?\s*-\s*(.+)$/);
         if (match) {
             const num = match[1];
             const suffix = match[2] || '';
             const value = match[3].trim();
             const key = `c${num}${suffix}`;
             constants[key] = value;
+        } else {
+            // Додатковий лог для діагностики (можна видалити після тестування)
+            console.warn('Не вдалося розпарсити рядок:', line);
         }
     });
     
