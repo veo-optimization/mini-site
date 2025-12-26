@@ -1352,3 +1352,104 @@ body {
         font-size: 15px;
     }
 }
+
+/* Публічна оферта */
+.public-offer-section {
+    margin-top: 50px;
+    padding: 30px 20px;
+    background: rgba(30, 30, 30, 0.95);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.public-offer-content {
+    max-width: 900px;
+    margin: 0 auto;
+    color: #e0e0e0;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.public-offer-content h2 {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 15px;
+}
+
+.public-offer-content h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    padding-left: 10px;
+    border-left: 3px solid #4CAF50;
+}
+
+.public-offer-content p {
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+.public-offer-content ul, .public-offer-content ol {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.public-offer-content li {
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+
+.public-offer-content strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.public-offer-content em {
+    color: #b0b0b0;
+    font-style: italic;
+}
+
+.public-offer-highlight {
+    background: rgba(76, 175, 80, 0.15);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #a5d6a7;
+    font-weight: 500;
+}
+
+.public-offer-note {
+    background: rgba(255, 193, 7, 0.1);
+    border-left: 3px solid #FFC107;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    color: #ffd54f;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .public-offer-section {
+        padding: 20px 15px;
+        margin-top: 30px;
+    }
+    
+    .public-offer-content {
+        font-size: 13px;
+        line-height: 1.7;
+    }
+    
+    .public-offer-content h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .public-offer-content h3 {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+}
