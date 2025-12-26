@@ -396,6 +396,15 @@ function parseClientConstants(constantsText) {
         data.afterPaymentTemplate = template;
     }
     
+    // c34 - offerAdditionalInfo (особливі умови для оферти)
+    if (constants['c34']) {
+        let additionalInfo = constants['c34'];
+        // Замінюємо \\n на справжні переноси рядків
+        additionalInfo = additionalInfo.replace(/\\\\n/g, '\n');
+        additionalInfo = additionalInfo.replace(/\\n/g, '\n');
+        data.offerAdditionalInfo = additionalInfo;
+    }
+    
     return data;
 }
 
@@ -499,6 +508,7 @@ function processClientData() {
     
     // Шаблон після оплати
     window.AFTER_PAYMENT_TEMPLATE = data.afterPaymentTemplate || '';
+    window.OFFER_ADDITIONAL_INFO = data.offerAdditionalInfo || '';
     
     // Валідація даних (опціонально, можна закоментувати для продакшену)
     if (data.iban && !validateIBAN(data.iban)) {
