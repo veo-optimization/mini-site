@@ -542,14 +542,43 @@ function copyPaymentTemplate() {
             navigator.clipboard.writeText(textToCopy).then(function() {
                 const button = document.getElementById('copyTemplateButton');
                 if (button) {
+                    // Зберігаємо всі оригінальні значення
                     const originalHTML = button.innerHTML;
+                    const originalBackground = button.style.background || '';
+                    const originalColor = button.style.color || '';
+                    
+                    // Зберігаємо всі розміри та стилі
+                    const computedStyle = window.getComputedStyle(button);
+                    const originalWidth = computedStyle.width;
+                    const originalHeight = computedStyle.height;
+                    const originalMinWidth = computedStyle.minWidth;
+                    const originalMinHeight = computedStyle.minHeight;
+                    const originalPadding = computedStyle.padding;
+                    const originalBoxSizing = computedStyle.boxSizing;
+                    
+                    // Змінюємо текст та колір кнопки
                     button.innerHTML = '✓ Шаблон скопійовано';
                     button.style.background = '#2196F3';
                     button.style.color = '#ffffff';
+                    
+                    // Фіксуємо всі розміри, щоб кнопка не змінювалася
+                    button.style.width = originalWidth;
+                    button.style.height = originalHeight;
+                    button.style.minWidth = originalMinWidth;
+                    button.style.minHeight = originalMinHeight;
+                    button.style.padding = originalPadding;
+                    button.style.boxSizing = originalBoxSizing;
+                    
                     setTimeout(function() {
                         button.innerHTML = originalHTML;
-                        button.style.background = '';
-                        button.style.color = '';
+                        button.style.background = originalBackground;
+                        button.style.color = originalColor;
+                        button.style.width = '';
+                        button.style.height = '';
+                        button.style.minWidth = '';
+                        button.style.minHeight = '';
+                        button.style.padding = '';
+                        button.style.boxSizing = '';
                     }, 2000);
                 }
             }).catch(function(err) {
@@ -582,14 +611,43 @@ function fallbackCopyTextToClipboard(text) {
         if (successful) {
             const button = document.getElementById('copyTemplateButton');
             if (button) {
+                // Зберігаємо всі оригінальні значення
                 const originalHTML = button.innerHTML;
+                const originalBackground = button.style.background || '';
+                const originalColor = button.style.color || '';
+                
+                // Зберігаємо всі розміри та стилі
+                const computedStyle = window.getComputedStyle(button);
+                const originalWidth = computedStyle.width;
+                const originalHeight = computedStyle.height;
+                const originalMinWidth = computedStyle.minWidth;
+                const originalMinHeight = computedStyle.minHeight;
+                const originalPadding = computedStyle.padding;
+                const originalBoxSizing = computedStyle.boxSizing;
+                
+                // Змінюємо текст та колір кнопки
                 button.innerHTML = '✓ Шаблон скопійовано';
                 button.style.background = '#2196F3';
                 button.style.color = '#ffffff';
+                
+                // Фіксуємо всі розміри, щоб кнопка не змінювалася
+                button.style.width = originalWidth;
+                button.style.height = originalHeight;
+                button.style.minWidth = originalMinWidth;
+                button.style.minHeight = originalMinHeight;
+                button.style.padding = originalPadding;
+                button.style.boxSizing = originalBoxSizing;
+                
                 setTimeout(function() {
                     button.innerHTML = originalHTML;
-                    button.style.background = '';
-                    button.style.color = '';
+                    button.style.background = originalBackground;
+                    button.style.color = originalColor;
+                    button.style.width = '';
+                    button.style.height = '';
+                    button.style.minWidth = '';
+                    button.style.minHeight = '';
+                    button.style.padding = '';
+                    button.style.boxSizing = '';
                 }, 2000);
             }
         } else {
