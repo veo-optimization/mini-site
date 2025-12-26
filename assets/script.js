@@ -413,6 +413,9 @@ function blockPage() {
     window.copyIBAN = function() { return false; };
     window.copyEDRPOU = function() { return false; };
     window.copyPaymentPurpose = function() { return false; };
+    window.copyCardNumber = function() { return false; };
+    window.copyCardHolder = function() { return false; };
+    window.copyCardBank = function() { return false; };
     window.copyTelegramUsername = function() { return false; };
     window.copyViberPhone = function() { return false; };
     window.openTelegramShowcase = function() { return false; };
@@ -444,6 +447,27 @@ function copyEDRPOU() {
 function copyPaymentPurpose() {
     if (!checkSecurity()) return;
     secureCopy(PAYMENT_PURPOSE, 'copyPurposeButton', '✓ Призначення скопійовано', false);
+}
+
+function copyCardNumber() {
+    if (!checkSecurity()) return;
+    if (typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER) {
+        secureCopy(CARD_NUMBER.replace(/\s/g, ''), 'copyCardNumberButton', '✓ Номер картки скопійовано', false);
+    }
+}
+
+function copyCardHolder() {
+    if (!checkSecurity()) return;
+    if (typeof CARD_HOLDER_NAME !== 'undefined' && CARD_HOLDER_NAME) {
+        secureCopy(CARD_HOLDER_NAME, 'copyCardHolderButton', '✓ Прізвище скопійовано', false);
+    }
+}
+
+function copyCardBank() {
+    if (!checkSecurity()) return;
+    if (typeof CARD_BANK_NAME !== 'undefined' && CARD_BANK_NAME) {
+        secureCopy(CARD_BANK_NAME, 'copyCardBankButton', '✓ Назва банку скопійовано', false);
+    }
 }
 
 function copyPaymentTemplate() {
@@ -998,6 +1022,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const paymentPurposeValueEl = document.getElementById('paymentPurposeValue');
     if (paymentPurposeValueEl && typeof PAYMENT_PURPOSE !== 'undefined') {
         paymentPurposeValueEl.textContent = PAYMENT_PURPOSE;
+    }
+    
+    // Оплата на картку
+    const cardPaymentBlock = document.getElementById('cardPaymentBlock');
+    if (cardPaymentBlock && typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER) {
+        cardPaymentBlock.style.display = 'block';
+        
+        const cardNumberValueEl = document.getElementById('cardNumberValue');
+        if (cardNumberValueEl) {
+            // Форматуємо номер картки з пробілами (групи по 4 цифри)
+            const formattedCardNumber = CARD_NUMBER.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim();
+            cardNumberValueEl.textContent = formattedCardNumber;
+        }
+        
+        const cardHolderNameValueEl = document.getElementById('cardHolderNameValue');
+        if (cardHolderNameValueEl && typeof CARD_HOLDER_NAME !== 'undefined' && CARD_HOLDER_NAME) {
+            cardHolderNameValueEl.textContent = CARD_HOLDER_NAME;
+        }
+        
+        const cardBankNameValueEl = document.getElementById('cardBankNameValue');
+        if (cardBankNameValueEl && typeof CARD_BANK_NAME !== 'undefined' && CARD_BANK_NAME) {
+            cardBankNameValueEl.textContent = CARD_BANK_NAME;
+        }
     }
     
     const telegramUsernameEl = document.getElementById('telegramUsername');
