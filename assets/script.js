@@ -979,53 +979,73 @@ document.addEventListener('DOMContentLoaded', function() {
         shopDescriptionEl.textContent = SHOP_DESCRIPTION;
     }
     
-    // Час роботи / Контактний час
-    if (typeof WORKING_HOURS !== 'undefined' && WORKING_HOURS) {
-        const workingHoursSection = document.createElement('div');
-        workingHoursSection.className = 'section';
-        workingHoursSection.innerHTML = `
-            <div class="card">
-                <div class="section-title">
-                    <span>🕐</span>
-                    <span>Час роботи / Контактний час</span>
+    // Час роботи / Контактний час та Асортимент (показуємо тільки якщо є календар)
+    // Перевіряємо, чи є календар (GOOGLE_CALENDAR_URL_OR_ID)
+    const hasCalendar = typeof GOOGLE_CALENDAR_URL_OR_ID !== 'undefined' && GOOGLE_CALENDAR_URL_OR_ID && GOOGLE_CALENDAR_URL_OR_ID.trim().length > 0;
+    
+    if (hasCalendar) {
+        // Час роботи / Контактний час
+        if (typeof WORKING_HOURS !== 'undefined' && WORKING_HOURS) {
+            const workingHoursSection = document.createElement('div');
+            workingHoursSection.className = 'section';
+            workingHoursSection.innerHTML = `
+                <div class="card">
+                    <div class="section-title">
+                        <span>🕐</span>
+                        <span>Час роботи / Контактний час</span>
+                    </div>
+                    <p style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0;">${WORKING_HOURS}</p>
                 </div>
-                <p style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0;">${WORKING_HOURS}</p>
-            </div>
-        `;
-        const content = document.querySelector('.content');
-        if (content) {
-            const firstSection = content.querySelector('.section');
-            if (firstSection) {
-                content.insertBefore(workingHoursSection, firstSection);
-            } else {
-                content.appendChild(workingHoursSection);
+            `;
+            const calendarSection = document.getElementById('calendarSection');
+            if (calendarSection && calendarSection.parentNode) {
+                // Вставляємо після календаря
+                calendarSection.parentNode.insertBefore(workingHoursSection, calendarSection.nextSibling);
             }
         }
-    }
-    
-    // Асортимент (категорії товарів)
-    if (typeof CATEGORIES !== 'undefined' && CATEGORIES && CATEGORIES.length > 0) {
-        const categoriesSection = document.createElement('div');
-        categoriesSection.className = 'section';
-        const categoriesList = CATEGORIES.map(cat => `<li style="margin-bottom: 8px;">${cat}</li>`).join('');
-        categoriesSection.innerHTML = `
-            <div class="card">
-                <div class="section-title">
-                    <span>🛍️</span>
-                    <span>Асортимент (категорії товарів)</span>
+        
+        // Асортимент (категорії товарів)
+        if (typeof CATEGORIES !== 'undefined' && CATEGORIES && CATEGORIES.length > 0) {
+            const categoriesSection = document.createElement('div');
+            categoriesSection.className = 'section';
+            const categoriesList = CATEGORIES.map(cat => `<li style="margin-bottom: 8px;">${cat}</li>`).join('');
+            categoriesSection.innerHTML = `
+                <div class="card">
+                    <div class="section-title">
+                        <span>🛍️</span>
+                        <span>Асортимент (категорії товарів)</span>
+                    </div>
+                    <ul style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0; padding-left: 20px;">
+                        ${categoriesList}
+                    </ul>
                 </div>
-                <ul style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0; padding-left: 20px;">
-                    ${categoriesList}
-                </ul>
-            </div>
-        `;
-        const content = document.querySelector('.content');
-        if (content) {
-            const firstSection = content.querySelector('.section');
-            if (firstSection) {
-                content.insertBefore(categoriesSection, firstSection);
-            } else {
-                content.appendChild(categoriesSection);
+            `;
+            const calendarSection = document.getElementById('calendarSection');
+            if (calendarSection && calendarSection.parentNode) {
+                // Вставляємо після календаря (або після блоку "Час роботи", якщо він є)
+                const allSections = Array.from(calendarSection.parentNode.querySelectorAll('.section'));
+                const calendarIndex = allSections.indexOf(calendarSection);
+                const workingHoursIndex = allSections.findIndex(section => {
+                    const title = section.querySelector('.section-title');
+                    return title && title.textContent.includes('🕐');
+                });
+                
+                if (workingHoursIndex > calendarIndex && workingHoursIndex !== -1) {
+                    // Якщо є блок "Час роботи" після календаря, вставляємо після нього
+                    const workingHoursSection = allSections[workingHoursIndex];
+                    if (workingHoursSection.nextSibling) {
+                        workingHoursSection.parentNode.insertBefore(categoriesSection, workingHoursSection.nextSibling);
+                    } else {
+                        workingHoursSection.parentNode.appendChild(categoriesSection);
+                    }
+                } else {
+                    // Вставляємо після календаря
+                    if (calendarSection.nextSibling) {
+                        calendarSection.parentNode.insertBefore(categoriesSection, calendarSection.nextSibling);
+                    } else {
+                        calendarSection.parentNode.appendChild(categoriesSection);
+                    }
+                }
             }
         }
     }
@@ -1061,10 +1081,10 @@ document.addEventListener('DOMContentLoaded', function() {
         paymentPurposeValueEl.textContent = PAYMENT_PURPOSE;
     }
     
-    // Оплата на картку
-    const cardPaymentBlock = document.getElementById('cardPaymentBlock');
-    if (cardPaymentBlock && typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER) {
-        cardPaymentBlock.style.display = 'block';
+    // Оплата на картку (окремий блок)
+    const cardPaymentSection = document.getElementById('cardPaymentSection');
+    if (cardPaymentSection && typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER) {
+        cardPaymentSection.style.display = 'block';
         
         const cardNumberValueEl = document.getElementById('cardNumberValue');
         if (cardNumberValueEl) {
@@ -1076,11 +1096,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const cardHolderNameValueEl = document.getElementById('cardHolderNameValue');
         if (cardHolderNameValueEl && typeof CARD_HOLDER_NAME !== 'undefined' && CARD_HOLDER_NAME) {
             cardHolderNameValueEl.textContent = CARD_HOLDER_NAME;
+        } else if (cardHolderNameValueEl) {
+            cardHolderNameValueEl.textContent = '—';
         }
         
         const cardBankNameValueEl = document.getElementById('cardBankNameValue');
         if (cardBankNameValueEl && typeof CARD_BANK_NAME !== 'undefined' && CARD_BANK_NAME) {
             cardBankNameValueEl.textContent = CARD_BANK_NAME;
+        } else if (cardBankNameValueEl) {
+            cardBankNameValueEl.textContent = '—';
         }
     }
     
@@ -1525,21 +1549,46 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!DELIVERY_METHOD || DELIVERY_METHOD.trim() === '') missingDataFields.push(fieldLabels.deliveryMethod);
     if (!DELIVERY_TIME || DELIVERY_TIME.trim() === '') missingDataFields.push(fieldLabels.deliveryTime);
     
-    // Перевіряємо умови повернення
+    // Перевіряємо опціональні поля (всі незаповнені блоки)
+    if (typeof SHOP_DESCRIPTION === 'undefined' || !SHOP_DESCRIPTION || SHOP_DESCRIPTION.trim() === '') {
+        missingDataFields.push(fieldLabels.shopDescription);
+    }
+    if (typeof WORKING_HOURS === 'undefined' || !WORKING_HOURS || WORKING_HOURS.trim() === '') {
+        missingDataFields.push(fieldLabels.workingHours);
+    }
+    if (typeof CATEGORIES === 'undefined' || !CATEGORIES || CATEGORIES.length === 0) {
+        missingDataFields.push(fieldLabels.categories);
+    }
+    if (typeof GOOGLE_CALENDAR_URL_OR_ID === 'undefined' || !GOOGLE_CALENDAR_URL_OR_ID || GOOGLE_CALENDAR_URL_OR_ID.trim() === '') {
+        missingDataFields.push(fieldLabels.googleCalendarUrl);
+    }
+    if (hasCardPayment) {
+        if (typeof CARD_HOLDER_NAME === 'undefined' || !CARD_HOLDER_NAME || CARD_HOLDER_NAME.trim() === '') {
+            missingDataFields.push(fieldLabels.cardHolderName);
+        }
+        if (typeof CARD_BANK_NAME === 'undefined' || !CARD_BANK_NAME || CARD_BANK_NAME.trim() === '') {
+            missingDataFields.push(fieldLabels.cardBankName);
+        }
+    }
+    if (typeof STORE_LOCATIONS === 'undefined' || !STORE_LOCATIONS || STORE_LOCATIONS.length === 0) {
+        missingDataFields.push(fieldLabels.storeLocations);
+    }
+    
+    // Перевіряємо умови повернення (опціональні, але показуємо якщо не заповнені)
     if (typeof EXCHANGE_DAYS === 'undefined' || EXCHANGE_DAYS === 0) {
-        // Не обов'язкове
+        missingDataFields.push(fieldLabels.exchangeDays);
     }
     if (typeof RETURN_DAYS === 'undefined' || RETURN_DAYS === 0) {
-        // Не обов'язкове
+        missingDataFields.push(fieldLabels.returnDays);
     }
     if (typeof RETURN_CONDITIONS === 'undefined' || !RETURN_CONDITIONS || RETURN_CONDITIONS.length === 0) {
-        // Не обов'язкове
+        missingDataFields.push(fieldLabels.returnConditions);
     }
     if (typeof RETURN_MONEY_TIME === 'undefined' || !RETURN_MONEY_TIME || RETURN_MONEY_TIME.trim() === '') {
-        // Не обов'язкове
+        missingDataFields.push(fieldLabels.returnMoneyTime);
     }
     if (typeof RETURN_DELIVERY_COST === 'undefined' || !RETURN_DELIVERY_COST || RETURN_DELIVERY_COST.trim() === '') {
-        // Не обов'язкове
+        missingDataFields.push(fieldLabels.returnDeliveryCost);
     }
     
     // Перевіряємо шаблон після оплати
