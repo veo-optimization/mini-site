@@ -1258,6 +1258,19 @@
                 </div>
             </div>
             
+            <!-- Особливі умови для публічної оферти -->
+            <div class="form-section">
+                <h2>📄 Особливі умови для публічної оферти</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 <strong>Як це працює:</strong> Цей текст буде додано в кінець публічної оферти. Тут можна вказати особливі умови, примітки, гарантії, або будь-яку іншу важливу інформацію для клієнтів. Наприклад: "Гарантія на товар 30 днів", "Можливість індивідуального підбору", "Спеціальні умови для оптових покупців" тощо.
+                </div>
+                <div class="form-group">
+                    <label for="offerAdditionalInfo">Особливі умови та примітки (необов'язково):</label>
+                    <textarea id="offerAdditionalInfo" name="offerAdditionalInfo" rows="5" placeholder="Наприклад: Гарантія на товар 30 днів з моменту покупки. Можливість індивідуального підбору за розміром та кольором. Спеціальні умови для оптових покупців - знижка 10% при замовленні від 5 одиниць товару." style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 8px; background: #2a2a2a; color: #e0e0e0; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.6; resize: vertical;"></textarea>
+                    <div class="help-text">📝 Можна залишити порожнім, якщо особливих умов немає. Текст буде відображатись в кінці публічної оферти.</div>
+                </div>
+            </div>
+            
             <!-- Блок перевірки даних -->
             <div class="form-section" style="background: #2a2a2a; border-left: 4px solid #FFD700;">
                 <div class="warning-box" style="background: rgba(255, 215, 0, 0.1); border-left: 3px solid #FFD700; margin-bottom: 20px;">
@@ -2604,6 +2617,12 @@
                 constants.push(`c33 - ${template.replace(/\n/g, '\\n')}`);
             }
             
+            // c34 - offerAdditionalInfo (особливі умови для оферти)
+            const offerAdditionalInfo = document.getElementById('offerAdditionalInfo')?.value.trim() || '';
+            if (offerAdditionalInfo) {
+                constants.push(`c34 - ${offerAdditionalInfo.replace(/\n/g, '\\n')}`);
+            }
+            
             // Генеруємо простий текст з константами
             return constants.join('\n');
         }
@@ -2887,7 +2906,8 @@
                 googleCalendarUrl: document.getElementById('googleCalendarUrl').value.trim(),
                 exchangeDays: parseInt(document.getElementById('exchangeDays').value) || 0,
                 returnDays: parseInt(document.getElementById('returnDays').value) || 0,
-                deliveryNote: document.getElementById('deliveryNote').value.trim()
+                deliveryNote: document.getElementById('deliveryNote').value.trim(),
+                offerAdditionalInfo: document.getElementById('offerAdditionalInfo')?.value.trim() || ''
             };
         }
         
