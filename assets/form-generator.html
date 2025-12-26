@@ -1534,11 +1534,28 @@
             `;
             container.appendChild(div);
             
+            // Додаємо обробники подій для автоматичного оновлення
+            const nameInput = div.querySelector('.location-name');
+            const urlInput = div.querySelector('.location-url');
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+            }
+            if (urlInput) {
+                urlInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+            }
+            
             // Перевіряємо локації після додавання
             setTimeout(() => {
                 if (typeof checkDeliveryLocations === 'function') {
                     checkDeliveryLocations(false);
                 }
+                updateGeneratedCode();
             }, 100);
         }
         
@@ -1547,6 +1564,7 @@
             const locationItem = button.closest('.location-item');
             if (locationItem) {
                 locationItem.remove();
+                updateGeneratedCode();
             }
             // Перевіряємо локації після видалення
             setTimeout(() => {
@@ -1567,6 +1585,17 @@
                 <button type="button" class="remove-item-btn" onclick="removeReturnCondition(this)" style="width: 100%; margin-top: 10px;">× Видалити умову</button>
             `;
             container.appendChild(div);
+            
+            // Додаємо обробник подій для автоматичного оновлення
+            const textarea = div.querySelector('.return-condition-text');
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+            }
+            
+            updateGeneratedCode();
         }
         
         // Видалення умови обміну/повернення
@@ -1574,6 +1603,7 @@
             const conditionItem = button.closest('.return-condition-item');
             if (conditionItem) {
                 conditionItem.remove();
+                updateGeneratedCode();
             }
         }
         
@@ -1589,9 +1619,17 @@
             `;
             container.appendChild(div);
             
-            // Додаємо обробник для оновлення прев'ю
+            // Додаємо обробник для оновлення прев'ю та коду
             const input = div.querySelector('.template-custom-field');
-            input.addEventListener('input', updateTemplatePreview);
+            if (input) {
+                input.addEventListener('input', function() {
+                    updateTemplatePreview();
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+            }
+            
+            updateGeneratedCode();
         }
         
         // Видалення поля шаблону
@@ -1600,6 +1638,7 @@
             if (fieldItem) {
                 fieldItem.remove();
                 updateTemplatePreview();
+                updateGeneratedCode();
             }
         }
         
@@ -1638,6 +1677,7 @@
                 phoneInput.addEventListener('input', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
                 phoneInput.addEventListener('blur', function() {
                     validateForm();
@@ -1647,8 +1687,11 @@
                 nameInput.addEventListener('input', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
             }
+            
+            updateGeneratedCode();
         }
         
         // Видалення Viber контакту
@@ -1656,6 +1699,8 @@
             const contactItem = button.closest('.viber-contact-item');
             if (contactItem) {
                 contactItem.remove();
+                updateGeneratedCode();
+                updateDataCheckList();
             }
         }
         
@@ -1684,9 +1729,18 @@
             `;
             container.appendChild(div);
             
-            // Додаємо обробник для перевірки ліміту
+            // Додаємо обробник для перевірки ліміту та оновлення коду
             const input = div.querySelector('.custom-category-field');
-            input.addEventListener('input', checkCategoryLimit);
+            if (input) {
+                input.addEventListener('input', function() {
+                    checkCategoryLimit();
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            
+            updateGeneratedCode();
         }
         
         // Видалення категорії
@@ -1695,6 +1749,8 @@
             if (categoryItem) {
                 categoryItem.remove();
                 checkCategoryLimit();
+                updateGeneratedCode();
+                updateDataCheckList();
             }
         }
         
@@ -1945,7 +2001,11 @@
                         if (workingHours24_7 && workingHours24_7.checked) {
                             workingHours24_7.dispatchEvent(new Event('change'));
                         }
-                    }, 200);
+                        // Оновлюємо код після завантаження всіх даних
+                        updateGeneratedCode();
+                        updateTemplatePreview();
+                        updateDataCheckList();
+                    }, 300);
                 } catch (e) {
                     console.error('Помилка завантаження даних:', e);
                 }
@@ -2008,7 +2068,10 @@
             
             // Оновлюємо прев'ю при зміні чекбоксів
             document.querySelectorAll('input[name="templateField"]').forEach(cb => {
-                cb.addEventListener('change', updateTemplatePreview);
+                cb.addEventListener('change', function() {
+                    updateTemplatePreview();
+                    updateGeneratedCode();
+                });
             });
             // Оновлюємо прев'ю при зміні кастомного поля
             const templateCustom = document.getElementById('templateCustom');
@@ -2039,6 +2102,7 @@
                 cb.addEventListener('change', function() {
                     checkCategoryLimit();
                     updateDataCheckList();
+                    updateGeneratedCode();
                 });
             });
             
@@ -2080,6 +2144,7 @@
                         document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
                     }
                     updateDataCheckList();
+                    updateGeneratedCode();
                 });
             }
             
@@ -2126,6 +2191,7 @@
                         document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
                     }
                     updateDataCheckList();
+                    updateGeneratedCode();
                 });
             }
             
@@ -2166,6 +2232,7 @@
                         }
                     }
                     updateDataCheckList();
+                    updateGeneratedCode();
                 });
             });
             
@@ -2922,6 +2989,8 @@
             window.hasFopRequisites = hasFopRequisites();
             // Зберігаємо дані при кожному оновленні
             saveFormData();
+            // Оновлюємо перевірку заповнених полів
+            updateDataCheckList();
         }
         
         // Додаємо обробники подій для всіх полів форми для автоматичного оновлення
@@ -2932,10 +3001,12 @@
                 input.addEventListener('input', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
                 input.addEventListener('change', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
             });
             
@@ -2945,6 +3016,7 @@
                 cb.addEventListener('change', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
             });
         }
