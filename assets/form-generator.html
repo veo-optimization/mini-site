@@ -915,9 +915,27 @@
                     <div class="help-text">📝 Вкажіть або username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ (наприклад: "veoforce_support"), або номер телефону з +380 (наприклад: "+380661112233"). Якщо вкажете номер, буде створено посилання https://t.me/+380661112233</div>
                 </div>
                 <div class="form-group">
-                    <label for="viberPhone">Viber телефон</label>
-                    <input type="text" id="viberPhone" name="viberPhone" placeholder="Наприклад: 0112223344">
-                    <div class="help-text">📝 Номер телефону для Viber у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567", "0678901234" (<span style="color: #FFD700; font-weight: 600;">БЕЗ</span> +380 на початку!). Якщо немає - залиште порожнім</div>
+                    <label>Viber контакти</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте Viber контакти для зв'язку. Можна додати до 5 контактів. Для кожного контакту вкажіть номер телефону та назву (ім'я, напрям, категорія товару, посада тощо).
+                    </div>
+                    <div id="viberContactsContainer">
+                        <div class="viber-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Номер телефону</label>
+                                <input type="text" class="viber-phone" placeholder="Наприклад: 0112223344" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу + та пробілів. Наприклад: "0112223344"</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="viber-name" placeholder="Наприклад: Менеджер, Одяг, Надя" maxlength="20" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Ім'я, напрям, категорія товару, посада тощо</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeViberContact(this)" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addViberContact()" id="addViberContactBtn" style="margin-top: 10px;">+ Додати Viber контакт</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 Viber контактів. Натисніть "+ Додати Viber контакт" для додавання нового контакту.</div>
                 </div>
                 <div class="form-group">
                     <label for="telegramShowcase">Telegram вітрина</label>
@@ -1383,8 +1401,8 @@
             // Контакти
             const telegramContact = document.getElementById('telegramContact')?.value.trim();
             checks.push({label: 'Telegram', filled: !!telegramContact});
-            const viberPhone = document.getElementById('viberPhone')?.value.trim();
-            checks.push({label: 'Viber', filled: !!viberPhone});
+            const viberContacts = getViberContacts();
+            checks.push({label: 'Viber', filled: viberContacts.length > 0});
             const googleCalendarUrl = document.getElementById('googleCalendarUrl')?.value.trim();
             checks.push({label: 'Google Calendar', filled: !!googleCalendarUrl});
             
@@ -1572,6 +1590,62 @@
             }
         }
         
+        // Додавання нового Viber контакту
+        function addViberContact() {
+            const container = document.getElementById('viberContactsContainer');
+            const contactCount = container.querySelectorAll('.viber-contact-item').length;
+            
+            if (contactCount >= 5) {
+                alert('⚠️ Максимальна кількість Viber контактів - 5.');
+                return;
+            }
+            
+            const div = document.createElement('div');
+            div.className = 'viber-contact-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Номер телефону</label>
+                    <input type="text" class="viber-phone" placeholder="Наприклад: 0112223344" style="width: 100%;">
+                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу + та пробілів. Наприклад: "0112223344"</div>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Назва контакту (макс. 20 символів)</label>
+                    <input type="text" class="viber-name" placeholder="Наприклад: Менеджер, Одяг, Надя" maxlength="20" style="width: 100%;">
+                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Ім'я, напрям, категорія товару, посада тощо</div>
+                </div>
+                <button type="button" class="remove-item-btn" onclick="removeViberContact(this)" style="width: 100%;">× Видалити контакт</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробники подій для автоматичного оновлення
+            const phoneInput = div.querySelector('.viber-phone');
+            const nameInput = div.querySelector('.viber-name');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+                phoneInput.addEventListener('blur', function() {
+                    validateForm();
+                });
+            }
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                });
+            }
+        }
+        
+        // Видалення Viber контакту
+        function removeViberContact(button) {
+            const contactItem = button.closest('.viber-contact-item');
+            if (contactItem) {
+                contactItem.remove();
+            }
+        }
+        
         // Додавання нової категорії
         function addCustomCategory() {
             const container = document.getElementById('customCategoriesContainer');
@@ -1648,12 +1722,13 @@
                 }
             });
             
-            // Зберігаємо кастомні поля (локації, умови повернення, категорії, шаблон)
+            // Зберігаємо кастомні поля (локації, умови повернення, категорії, шаблон, Viber контакти)
             const customFields = {
                 locations: [],
                 returnConditions: [],
                 categories: [],
-                templateFields: []
+                templateFields: [],
+                viberContacts: []
             };
             
             // Локації
@@ -1686,6 +1761,15 @@
                 const value = input.value.trim();
                 if (value) {
                     customFields.templateFields.push(value);
+                }
+            });
+            
+            // Viber контакти
+            document.querySelectorAll('.viber-contact-item').forEach(item => {
+                const phone = item.querySelector('.viber-phone')?.value.trim();
+                const name = item.querySelector('.viber-name')?.value.trim();
+                if (phone) {
+                    customFields.viberContacts.push({phone, name: name || ''});
                 }
             });
             
@@ -1807,6 +1891,31 @@
                                 }
                             });
                         }
+                        
+                        // Viber контакти
+                        if (formData._customFields.viberContacts && formData._customFields.viberContacts.length > 0) {
+                            formData._customFields.viberContacts.forEach((contact, index) => {
+                                if (index === 0) {
+                                    const phoneInput = document.querySelector('.viber-phone');
+                                    const nameInput = document.querySelector('.viber-name');
+                                    if (phoneInput) phoneInput.value = contact.phone || '';
+                                    if (nameInput) nameInput.value = contact.name || '';
+                                } else {
+                                    // Додаємо нові контакти
+                                    addViberContact();
+                                    setTimeout(() => {
+                                        const items = document.querySelectorAll('.viber-contact-item');
+                                        const item = items[items.length - 1];
+                                        if (item) {
+                                            const phoneInput = item.querySelector('.viber-phone');
+                                            const nameInput = item.querySelector('.viber-name');
+                                            if (phoneInput) phoneInput.value = contact.phone || '';
+                                            if (nameInput) nameInput.value = contact.name || '';
+                                        }
+                                    }, 100);
+                                }
+                            });
+                        }
                     }
                     
                     // Оновлюємо всі залежні елементи
@@ -1852,6 +1961,31 @@
         }
         
         // Додаємо обробники для оновлення прев'ю
+        // Додаємо обробники подій для існуючих Viber контактів
+        function setupViberContactsEvents() {
+            document.querySelectorAll('.viber-contact-item').forEach(item => {
+                const phoneInput = item.querySelector('.viber-phone');
+                const nameInput = item.querySelector('.viber-name');
+                if (phoneInput && !phoneInput.hasAttribute('data-events-setup')) {
+                    phoneInput.setAttribute('data-events-setup', 'true');
+                    phoneInput.addEventListener('input', function() {
+                        updateGeneratedCode();
+                        saveFormData();
+                    });
+                    phoneInput.addEventListener('blur', function() {
+                        validateForm();
+                    });
+                }
+                if (nameInput && !nameInput.hasAttribute('data-events-setup')) {
+                    nameInput.setAttribute('data-events-setup', 'true');
+                    nameInput.addEventListener('input', function() {
+                        updateGeneratedCode();
+                        saveFormData();
+                    });
+                }
+            });
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Завантажуємо дані з localStorage
             loadFormData();
@@ -1874,6 +2008,9 @@
             
             // Налаштовуємо автоматичне оновлення коду
             setupAutoUpdate();
+            
+            // Налаштовуємо обробники для Viber контактів
+            setupViberContactsEvents();
             
             // Оновлюємо код при завантаженні
             updateGeneratedCode();
@@ -2287,9 +2424,14 @@
                 constants.push(`c13_type - username`);
             }
             
-            // c14 - viberPhone
-            if (formData.viberPhone) {
-                constants.push(`c14 - ${formData.viberPhone}`);
+            // c14 - viberContacts (масив контактів)
+            if (formData.viberContacts && formData.viberContacts.length > 0) {
+                formData.viberContacts.forEach((contact, index) => {
+                    const char = String.fromCharCode(97 + index); // a, b, c, d, e
+                    // Формат: c14a - phone|name
+                    constants.push(`c14${char} - ${contact.phone}|${contact.name || ''}`);
+                });
+                constants.push(`c14_count - ${formData.viberContacts.length}`);
             }
             
             // c15 - telegramShowcase
@@ -2503,13 +2645,21 @@
                 hideError('edrpou');
             }
             
-            // Валідація Viber телефону
-            const viberPhone = document.getElementById('viberPhone').value.trim().replace(/\s|-/g, '');
-            if (viberPhone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(viberPhone)) {
-                showError('viberPhone', 'Номер має бути 10 цифр, починається з 0 (наприклад: 0112223344)');
-                isValid = false;
-            } else {
-                hideError('viberPhone');
+            // Валідація Viber контактів
+            const viberContacts = getViberContacts();
+            const viberContainer = document.getElementById('viberContactsContainer');
+            if (viberContainer) {
+                const items = viberContainer.querySelectorAll('.viber-contact-item');
+                items.forEach((item, index) => {
+                    const phoneInput = item.querySelector('.viber-phone');
+                    const phone = phoneInput?.value.trim().replace(/\s|-/g, '');
+                    if (phone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(phone)) {
+                        phoneInput.style.borderColor = '#f44336';
+                        isValid = false;
+                    } else if (phoneInput) {
+                        phoneInput.style.borderColor = '';
+                    }
+                });
             }
             
             // Валідація WhatsApp телефону
@@ -2590,7 +2740,12 @@
         // Додавання обробників валідації
         document.getElementById('iban').addEventListener('blur', validateForm);
         document.getElementById('edrpou').addEventListener('blur', validateForm);
-        document.getElementById('viberPhone').addEventListener('blur', validateForm);
+        // Валідація Viber контактів при втраті фокусу
+        document.addEventListener('blur', function(e) {
+            if (e.target.classList.contains('viber-phone')) {
+                validateForm();
+            }
+        }, true);
         document.getElementById('whatsappPhone').addEventListener('blur', validateForm);
         document.getElementById('shopDescription').addEventListener('input', function() {
             const maxLength = 100;
@@ -2721,7 +2876,7 @@
                 cardHolderName: document.getElementById('cardHolderName').value.trim(),
                 cardBankName: document.getElementById('cardBankName').value.trim(),
                 telegramContact: document.getElementById('telegramContact').value.trim(),
-                viberPhone: document.getElementById('viberPhone').value.trim(),
+                viberContacts: getViberContacts(), // Збираємо всі Viber контакти
                 telegramShowcase: document.getElementById('telegramShowcase').value.trim(),
                 instagramUsername: document.getElementById('instagramUsername').value.trim(),
                 biggoLiveUrl: document.getElementById('biggoLiveUrl').value.trim(),
