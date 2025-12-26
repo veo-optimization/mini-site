@@ -188,9 +188,28 @@ function parseClientConstants(constantsText) {
         }
     }
     
-    // c14 - viberPhone
-    if (constants['c14']) {
-        data.viberPhone = constants['c14'];
+    // c14 - viberContacts (масив контактів)
+    if (constants['c14_count']) {
+        const count = parseInt(constants['c14_count']);
+        data.viberContacts = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, d, e
+            if (constants[`c14${char}`]) {
+                const contactData = constants[`c14${char}`].split('|');
+                if (contactData.length >= 1) {
+                    data.viberContacts.push({
+                        phone: contactData[0],
+                        name: contactData[1] || ''
+                    });
+                }
+            }
+        }
+    } else if (constants['c14']) {
+        // Зворотна сумісність: якщо є старий формат c14 без _count
+        data.viberContacts = [{
+            phone: constants['c14'],
+            name: ''
+        }];
     }
     
     // c15 - telegramShowcase
@@ -365,7 +384,16 @@ function processClientData() {
         window.TELEGRAM_USERNAME = data.telegramUsername || '';
         window.TELEGRAM_PHONE = '';
     }
-    window.VIBER_PHONE = data.viberPhone || '';
+    // Viber контакти (масив)
+    window.VIBER_CONTACTS = data.viberContacts || [];
+    // Зворотна сумісність: якщо є старі дані viberPhone
+    if (data.viberPhone && (!data.viberContacts || data.viberContacts.length === 0)) {
+        window.VIBER_CONTACTS = [{
+            phone: data.viberPhone,
+            name: ''
+        }];
+    }
+    window.VIBER_PHONE = (window.VIBER_CONTACTS.length > 0) ? window.VIBER_CONTACTS[0].phone : ''; // Для зворотної сумісності
     window.TELEGRAM_SHOWCASE = data.telegramShowcase || '';
     window.INSTAGRAM_USERNAME = data.instagramUsername || '';
     window.BIGGO_LIVE_URL = data.biggoLiveUrl || '';
