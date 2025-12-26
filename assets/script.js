@@ -509,17 +509,98 @@ function copyCardBank() {
 
 function copyPaymentTemplate() {
     if (!checkSecurity()) return;
-    const templateElement = document.getElementById('paymentTemplateDisplay');
-    if (!templateElement) {
-        console.error('Шаблон не знайдено');
-        return;
+    
+    // Використовуємо оригінальне значення з глобальної константи, щоб зберегти переноси рядків
+    let templateText = (typeof window.AFTER_PAYMENT_TEMPLATE !== 'undefined' && window.AFTER_PAYMENT_TEMPLATE) 
+        ? window.AFTER_PAYMENT_TEMPLATE 
+        : (typeof AFTER_PAYMENT_TEMPLATE !== 'undefined' && AFTER_PAYMENT_TEMPLATE) 
+            ? AFTER_PAYMENT_TEMPLATE 
+            : '';
+    
+    // Якщо не знайшли в глобальних константах, спробуємо взяти з DOM елемента
+    if (!templateText) {
+        const templateElement = document.getElementById('paymentTemplateDisplay');
+        if (templateElement) {
+            // Використовуємо textContent, який зберігає переноси рядків краще, ніж innerText
+            templateText = templateElement.textContent || templateElement.innerText || '';
+        }
     }
-    const templateText = templateElement.innerText || templateElement.textContent || (typeof AFTER_PAYMENT_TEMPLATE !== 'undefined' ? AFTER_PAYMENT_TEMPLATE : '');
+    
     if (templateText) {
-        copyToClipboard(templateText, 'copyTemplateButton', '✓ Шаблон скопійовано', false);
+        // Переконуємося, що переноси рядків зберігаються
+        // Якщо в тексті є \n як текст (екранований), замінюємо на справжній перенос
+        let textToCopy = templateText;
+        // Замінюємо екрановані \n на справжні переноси (якщо вони є як текст)
+        textToCopy = textToCopy.replace(/\\n/g, '\n');
+        
+        // Діагностика
+        console.log('📋 Копіювання шаблону, довжина:', textToCopy.length);
+        console.log('📋 Кількість переносів рядків:', (textToCopy.match(/\n/g) || []).length);
+        
+        // Використовуємо Clipboard API з fallback
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                const button = document.getElementById('copyTemplateButton');
+                if (button) {
+                    const originalHTML = button.innerHTML;
+                    button.innerHTML = '✓ Шаблон скопійовано';
+                    button.style.background = '#2196F3';
+                    button.style.color = '#ffffff';
+                    setTimeout(function() {
+                        button.innerHTML = originalHTML;
+                        button.style.background = '';
+                        button.style.color = '';
+                    }, 2000);
+                }
+            }).catch(function(err) {
+                console.error('Помилка копіювання через Clipboard API:', err);
+                // Fallback для старих браузерів
+                fallbackCopyTextToClipboard(textToCopy);
+            });
+        } else {
+            // Fallback для старих браузерів
+            fallbackCopyTextToClipboard(textToCopy);
+        }
     } else {
         alert('Шаблон порожній');
     }
+}
+
+// Fallback функція для копіювання тексту в старих браузерах
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            const button = document.getElementById('copyTemplateButton');
+            if (button) {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '✓ Шаблон скопійовано';
+                button.style.background = '#2196F3';
+                button.style.color = '#ffffff';
+                setTimeout(function() {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            }
+        } else {
+            alert('Не вдалося скопіювати шаблон');
+        }
+    } catch (err) {
+        console.error('Помилка fallback копіювання:', err);
+        alert('Не вдалося скопіювати шаблон');
+    }
+    
+    document.body.removeChild(textArea);
 }
 
 // ============================================
