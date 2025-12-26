@@ -1248,22 +1248,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const isTikTok = ua.includes("TikTok") || ua.includes("Musical.ly") || ua.includes("Bytedance");
     
     if (isTikTok) {
-        // Знаходимо перший видимий елемент контакту
+        // Знаходимо всі видимі елементи контактів
         const contactItems = document.querySelectorAll('.contact-item');
-        let firstVisibleContact = null;
+        let visibleContacts = [];
         
-        // Шукаємо перший елемент, який відображається (не прихований)
+        // Шукаємо всі елементи, які відображаються (не приховані)
         for (let i = 0; i < contactItems.length; i++) {
             const item = contactItems[i];
             const style = window.getComputedStyle(item);
             if (style.display !== 'none' && style.visibility !== 'hidden' && item.offsetParent !== null) {
-                firstVisibleContact = item;
-                break;
+                visibleContacts.push(item);
             }
         }
         
+        // Вибираємо другий контакт (якщо він є), інакше перший
+        const targetContact = visibleContacts.length >= 2 ? visibleContacts[1] : (visibleContacts.length >= 1 ? visibleContacts[0] : null);
+        
         // Якщо знайшли елемент, налаштовуємо Intersection Observer
-        if (firstVisibleContact) {
+        if (targetContact) {
             let popupShown = false;
             
             const observer = new IntersectionObserver(function(entries) {
@@ -1291,8 +1293,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 rootMargin: '0px'
             });
             
-            // Починаємо спостерігати за першим елементом контакту
-            observer.observe(firstVisibleContact);
+            // Починаємо спостерігати за другим (або першим, якщо другого немає) елементом контакту
+            observer.observe(targetContact);
         } else {
             // Якщо не знайшли елемент, показуємо popup одразу (fallback)
             document.getElementById('tiktok-popup').style.display = 'flex';
