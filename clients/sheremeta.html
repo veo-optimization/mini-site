@@ -13,192 +13,84 @@
     <!-- ПІДКЛЮЧЕННЯ ЦЕНТРАЛІЗОВАНИХ СТИЛІВ -->
     <link rel="stylesheet" href="../assets/styles.css">
     
+    <!-- ДАНІ КЛІЄНТА -->
     <script>
         // ============================================
-        // КОНФІГУРАЦІЯ - ДАНІ КЛІЄНТА
+        // ДАНІ КЛІЄНТА - ЗАПОВНІТЬ ЦІ ПОЛЯ
         // ============================================
-        // Всі константи зібрані тут для зручності редагування
-        // Кожна константа має детальні коментарі про те, як її заповнювати
-        // ============================================
+        // Вставте дані, отримані від клієнта, у відповідні поля
+        // Всі поля обов'язкові, якщо не вказано інакше
         
-        // ──────────────────────────────────────────────────────────────────
-        // 1. НАЗВА МАГАЗИНУ
-        // ──────────────────────────────────────────────────────────────────
-        // Інструкція: Вкажіть назву магазину або бренду, яка буде відображатися в заголовку сторінки
-        // Приклад: "Назва магазину", "Мій Магазин", "Бренд Name"
-        const SHOP_NAME = "VEO SHOP";
-        
-        // ──────────────────────────────────────────────────────────────────
-        // 2. РЕКВІЗИТИ ФОП (Фізичної особи-підприємця)
-        // ──────────────────────────────────────────────────────────────────
-        
-        // Інструкція: Повне ПІБ фізичної особи-підприємця
-        // Приклад: "ФОП Шеремета Василь Анатолійович", "ФОП Іванов Іван Іванович"
-        const FOP_NAME = "ФОП Шеремета Василь Анатолійович";
-        
-        // Інструкція: ЄДРПОУ (Єдиний державний реєстр підприємств та організацій України)
-        // Формат: 10 цифр без пробілів та дефісів
-        // Приклад: "3361708913", "1234567890"
-        const EDRPOU = "3361708913";
-        
-        // Інструкція: IBAN (Міжнародний номер банківського рахунку)
-        // Формат: UA + 2 цифри + 4 літери + 19 цифр (всього 29 символів)
-        // Приклад: "UA273220010000026009330077981", "UA123456789012345678901234567"
-        const IBAN = "UA273220010000026009330077981";
-        
-        // Інструкція: Назва банку, де відкритий рахунок
-        // Приклад: "Universal bank", "ПриватБанк", "Монобанк"
-        const BANK_NAME = "Universal bank";
-        
-        // Інструкція: Призначення платежу (текст, який буде вказаний при оплаті)
-        // Приклад: "Послуга оптимізації реклами", "Оплата за товар", "Оплата за послуги"
-        const PAYMENT_PURPOSE = "Послуга оптимізації реклами";
-        
-        // ──────────────────────────────────────────────────────────────────
-        // 3. КОНТАКТИ (Соціальні мережі та месенджери)
-        // ──────────────────────────────────────────────────────────────────
-        
-        // Інструкція: Telegram username для особистого контакту (без символу @)
-        // Якщо немає - закоментуйте рядок (додайте // на початку)
-        // Приклад: "username", "my_username"
-        const TELEGRAM_USERNAME = "veoforce_support";
-        
-        // Інструкція: Номер телефону для Viber (10 цифр, починається з 0)
-        // Формат: 0XXXXXXXXX (10 цифр)
-        // Якщо немає - закоментуйте рядок (додайте // на початку)
-        // Приклад: "0968344329", "0501234567"
-        const VIBER_PHONE = "0112223344";
-        
-        // Інструкція: Telegram вітрина/канал/група
-        // Може бути: username (без @) або повне посилання (invite link)
-        // Якщо це invite link (починається з https://t.me/+), система автоматично визначить це
-        // Якщо немає - закоментуйте рядок (додайте // на початку)
-        // Приклад username: "username", "my_channel"
-        // Приклад invite link: "https://t.me/+Z-iCu_n0QYdmYTJi"
-        const TELEGRAM_SHOWCASE = "veoforce_chat";
-        
-        // Інструкція: Instagram username (без символу @)
-        // Якщо немає - закоментуйте рядок (додайте // на початку) або залиште порожнім ""
-        // Приклад: "username", "my_instagram"
-        const INSTAGRAM_USERNAME = "";
-        
-        // Інструкція: Посилання на профіль BIGGO LIVE
-        // Формат: повне посилання на профіль користувача
-        // Якщо немає - закоментуйте рядок (додайте // на початку)
-        // Приклад: "https://www.biggo.tv/user/username", "https://biggo.live/user/username"
-        // const BIGGO_LIVE_URL = "";
-        
-        // ──────────────────────────────────────────────────────────────────
-        // 4. КАЛЕНДАР ПРЯМИХ ЕФІРІВ (Google Calendar)
-        // ──────────────────────────────────────────────────────────────────
-        
-        // Інструкція: Посилання на Google Calendar
-        // Може бути: iCal URL, embed URL або Calendar ID
-        // Система автоматично витягне необхідні дані з будь-якого формату
-        // Якщо немає - закоментуйте рядок (додайте // на початку)
-        // Приклад iCal URL: "https://calendar.google.com/calendar/ical/.../public/basic.ics"
-        // Приклад embed URL: "https://calendar.google.com/calendar/embed?src=..."
-        // Приклад Calendar ID: "calendar-id@group.calendar.google.com"
-        const GOOGLE_CALENDAR_URL_OR_ID = "https://calendar.google.com/calendar/ical/f1a82555ed6c28b6c4552f637cc150ae2ee0fa9f2d3f587e14e6819ea33a2da0%40group.calendar.google.com/public/basic.ics";
-        
-        // Інструкція: API ключ Google Calendar (опціонально)
-        // Потрібен тільки для приватних календарів. Для публічних календарів не обов'язково
-        // Якщо не використовуєте - закоментуйте рядок (додайте // на початку)
-        // const GOOGLE_CALENDAR_API_KEY = "";
-        
-        // ──────────────────────────────────────────────────────────────────
-        // 5. УМОВИ ОПЛАТИ
-        // ──────────────────────────────────────────────────────────────────
-        
-        // Інструкція: Масив варіантів оплати (може бути кілька варіантів)
-        // Кожен елемент масиву - окремий варіант оплати
-        // Додавайте нові варіанти, додаючи нові рядки в масив
-        // Приклад: ["🔷 Повна передоплата 100%", "🔷 Накладний платіж"]
-        const PAYMENT_OPTIONS = [
-            "🔷 Повна передоплата 100%",
-            "🔷 Накладний платіж з передоплатою 200 грн"
-        ];
-        
-        // ──────────────────────────────────────────────────────────────────
-        // 6. УМОВИ ДОСТАВКИ
-        // ──────────────────────────────────────────────────────────────────
-        
-        // Інструкція: Спосіб доставки (назва служби доставки)
-        // Приклад: "Нова пошта", "Укрпошта", "Нова пошта, Укрпошта"
-        const DELIVERY_METHOD = "Нова пошта";
-        
-        // Інструкція: Термін доставки (текстовий опис)
-        // Приклад: "1-3 робочі дні після отримання оплати", "2-5 днів"
-        const DELIVERY_TIME = "1-3 робочі дні після отримання оплати";
-        
-        // Інструкція: Додаткові примітки про доставку
-        // Може містити інформацію про хто сплачує доставку, обмеження тощо
-        // Приклад: "Термін доставки залежить від регіону отримувача", "Доставку сплачує отримувач"
-        const DELIVERY_NOTE = "Термін доставки залежить від регіону отримувача";
-        
-        // ──────────────────────────────────────────────────────────────────
-        // 7. УМОВИ ОБМІНУ ТА ПОВЕРНЕННЯ
-        // ──────────────────────────────────────────────────────────────────
-        
-        // Інструкція: Кількість днів для обміну товару
-        // Вкажіть кількість днів (число), якщо обмін недоступний - встановіть 0
-        // Приклад: 14 (обмін доступний 14 днів), 0 (обмін недоступний)
-        const EXCHANGE_DAYS = 14;
-        
-        // Інструкція: Кількість днів для повернення товару
-        // Вкажіть кількість днів (число), якщо повернення недоступне - встановіть 0
-        // Приклад: 14 (повернення доступне 14 днів), 0 (повернення недоступне)
-        const RETURN_DAYS = 14;
-        
-        // Інструкція: Умови обміну/повернення товару (масив умов)
-        // Кожен елемент масиву - окрема умова
-        // Додавайте нові умови, додаючи нові рядки в масив
-        // Приклад: ["Товар повинен бути в оригінальному стані", "Збережені всі етикетки"]
-        const RETURN_CONDITIONS = [
-            "Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)",
-            "Збережені всі етикетки, бирки та упаковка",
-            "Товар не повинен бути пошкоджений або забруднений"
-        ];
-        
-        // Інструкція: Термін повернення коштів (текстовий опис)
-        // Приклад: "3-5 робочих днів", "Протягом 7 днів", "Негайно після отримання товару назад"
-        const RETURN_MONEY_TIME = "3-5 робочих днів";
-        
-        // Інструкція: Вартість доставки при поверненні (текстовий опис)
-        // Може містити інформацію про хто сплачує, умови тощо
-        // Приклад: "відповідно до тарифів перевізника. Сплачує отримувач"
-        const RETURN_DELIVERY_COST = "відповідно до тарифів перевізника. Сплачує отримувач. При поверненні товару через невідповідність розміру або інші причини з боку покупця, вартість доставки не повертається";
-        
-        // ──────────────────────────────────────────────────────────────────
-        // 8. ШАБЛОН ПОВІДОМЛЕННЯ ПІСЛЯ ОПЛАТИ
-        // ──────────────────────────────────────────────────────────────────
-        
-        // Інструкція: Шаблон тексту, який клієнт має надіслати після оплати
-        // Використовуйте символ переносу рядка \n або багаторядковий текст з ``
-        // Цей текст буде відображатися на сторінці та можна буде скопіювати
-        // Приклад: багаторядковий текст з полями для заповнення
-        const AFTER_PAYMENT_TEMPLATE = `👤 ПІБ: 
-📍 Населений пункт: 
-📦 Відділення НП: 
-📱 Телефон отримувача: `;
-        
-        // ============================================
-        // КІНЕЦЬ КОНФІГУРАЦІЇ
-        // ============================================
+        const CLIENT_DATA = {
+            // Назва магазину
+            shopName: "VEO SHOP",
+            
+            // Реквізити ФОП
+            fopName: "ФОП Шеремета Василь Анатолійович",
+            edrpou: "3361708913",
+            iban: "UA273220010000026009330077981",
+            bankName: "Universal bank",
+            paymentPurpose: "Послуга оптимізації реклами",
+            
+            // Контакти (залиште порожнім "", якщо немає)
+            telegramUsername: "veoforce_support",        // Без @
+            viberPhone: "0112223344",                   // 10 цифр, починається з 0
+            telegramShowcase: "veoforce_chat",          // Без @ або повне посилання
+            instagramUsername: "",                      // Без @, порожньо якщо немає
+            biggoLiveUrl: "",                           // Повне посилання, порожньо якщо немає
+            
+            // Календар (залиште порожнім "", якщо немає)
+            googleCalendarUrl: "https://calendar.google.com/calendar/ical/f1a82555ed6c28b6c4552f637cc150ae2ee0fa9f2d3f587e14e6819ea33a2da0%40group.calendar.google.com/public/basic.ics",
+            googleCalendarApiKey: "",                    // Опціонально
+            
+            // Умови оплати (масив рядків)
+            paymentOptions: [
+                "🔷 Повна передоплата 100%",
+                "🔷 Накладний платіж з передоплатою 200 грн"
+            ],
+            
+            // Умови доставки
+            deliveryMethod: "Нова пошта",
+            deliveryTime: "1-3 робочі дні після отримання оплати",
+            deliveryNote: "Термін доставки залежить від регіону отримувача",
+            
+            // Умови обміну та повернення
+            exchangeDays: 14,                           // 0 якщо недоступно
+            returnDays: 14,                              // 0 якщо недоступно
+            returnConditions: [                         // Масив умов
+                "Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)",
+                "Збережені всі етикетки, бирки та упаковка",
+                "Товар не повинен бути пошкоджений або забруднений"
+            ],
+            returnMoneyTime: "3-5 робочих днів",
+            returnDeliveryCost: "відповідно до тарифів перевізника. Сплачує отримувач. При поверненні товару через невідповідність розміру або інші причини з боку покупця, вартість доставки не повертається",
+            
+            // Шаблон після оплати (використовуйте \n для переносу рядка)
+            afterPaymentTemplate: "👤 ПІБ: \n📍 Населений пункт: \n📦 Відділення НП: \n📱 Телефон отримувача: "
+        };
     </script>
+    
+    <!-- ПІДКЛЮЧЕННЯ ОБРОБКИ ДАНИХ -->
+    <script src="../assets/data.js"></script>
     
     <!-- ПІДКЛЮЧЕННЯ ЦЕНТРАЛІЗОВАНОЇ ЛОГІКИ -->
     <script src="../assets/script.js"></script>
 </head>
 <body>
     <div class="container">
+        <!-- Прихований якір захисту 1 -->
+        <span id="veoAnchor1" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
         
         <div class="header">
             <h1 id="shopNameHeader"></h1>
             <p style="text-align: center; font-size: 16px; color: white; margin-top: 8px; font-weight: 500;">ТікТок-магазин</p>
+            <!-- Прихований якір захисту 2 -->
+            <span id="veoAnchor2" class="veo-anchor veo-anchor-bg-gray">VEO FORCE</span>
         </div>
         
         <div class="content">
+            <!-- Прихований якір захисту 3 -->
+            <span id="veoAnchor3" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
             
             <div class="section">
                 <div class="section-title">
@@ -212,24 +104,46 @@
                     </div>
                     
                     <div class="copy-section">
-                    <h3>👇 Скопіюйте для оплати 👇</h3>
-                    
-                    <div class="data-block">
-                        <div class="data-label">💳 IBAN <span id="bankName"></span>:</div>
-                        <div class="data-value" id="ibanValue"></div>
-                        <button class="copy-button" id="copyIbanButton" onclick="copyIBAN()">Скопіювати IBAN</button>
-                    </div>
-                    
-                    <div class="data-block">
-                        <div class="data-label">🏢 ЄДРПОУ:</div>
-                        <div class="data-value" id="edrpouValue"></div>
-                        <button class="copy-button" id="copyEdrpouButton" onclick="copyEDRPOU()">Скопіювати ЄДРПОУ</button>
-                    </div>
-                    
-                    <div class="data-block">
-                        <div class="data-label">📝 Призначення платежу:</div>
-                        <div class="data-value" id="paymentPurposeValue"></div>
-                        <button class="copy-button" id="copyPurposeButton" onclick="copyPaymentPurpose()">Скопіювати призначення</button>
+                        <h3>👇 Скопіюйте для оплати 👇</h3>
+                        
+                        <div class="data-block">
+                            <div class="data-label">💳 IBAN <span id="bankName"></span>:</div>
+                            <div class="data-value" id="ibanValue"></div>
+                            <button class="copy-button" id="copyIbanButton" onclick="copyIBAN()">Скопіювати IBAN</button>
+                        </div>
+                        
+                        <div class="data-block">
+                            <div class="data-label">🏢 ЄДРПОУ:</div>
+                            <div class="data-value" id="edrpouValue"></div>
+                            <button class="copy-button" id="copyEdrpouButton" onclick="copyEDRPOU()">Скопіювати ЄДРПОУ</button>
+                        </div>
+                        
+                        <div class="data-block">
+                            <div class="data-label">📝 Призначення платежу:</div>
+                            <div class="data-value" id="paymentPurposeValue"></div>
+                            <button class="copy-button" id="copyPurposeButton" onclick="copyPaymentPurpose()">Скопіювати призначення</button>
+                        </div>
+                        
+                        <!-- Блок оплати на картку (якщо є дані) -->
+                        <div id="cardPaymentBlock" style="display: none;">
+                            <div class="data-block">
+                                <div class="data-label">💳 Номер картки:</div>
+                                <div class="data-value" id="cardNumberValue"></div>
+                                <button class="copy-button" id="copyCardNumberButton" onclick="copyCardNumber()">Скопіювати номер</button>
+                            </div>
+                            
+                            <div class="data-block">
+                                <div class="data-label">👤 Прізвище власника картки:</div>
+                                <div class="data-value" id="cardHolderNameValue"></div>
+                                <button class="copy-button" id="copyCardHolderButton" onclick="copyCardHolder()">Скопіювати прізвище</button>
+                            </div>
+                            
+                            <div class="data-block">
+                                <div class="data-label">🏦 Назва банку картки:</div>
+                                <div class="data-value" id="cardBankNameValue"></div>
+                                <button class="copy-button" id="copyCardBankButton" onclick="copyCardBank()">Скопіювати назву банку</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -261,9 +175,13 @@
             <div class="divider"></div>
             
             <div class="section">
+                <!-- Прихований якір захисту 4 -->
+                <span id="veoAnchor4" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
                 
                 <div class="contact-section">
                     <h3>📞 Зв'язок з магазином:</h3>
+                    <!-- Прихований якір захисту 5 -->
+                    <span id="veoAnchor5" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
                     
                     <!-- Інструкція для TikTok -->
                     <div class="tiktok-instruction">
@@ -280,8 +198,6 @@
                         <!-- Telegram -->
                         <div class="contact-item contact-item-telegram" onclick="showContactModal('Телеграм', '@' + TELEGRAM_USERNAME, 'telegram')" style="cursor: pointer;">
                             <div class="contact-icon">
-                                <!-- Telegram logo from SimpleIcons: https://simpleicons.org/icons/telegram.svg -->
-                                <!-- Official brand resources: https://brandfetch.com/telegram.org -->
                                 <img src="https://simpleicons.org/icons/telegram.svg" alt="Telegram" width="24" height="24" style="display: block;">
                             </div>
                             <div class="contact-content">
@@ -304,8 +220,6 @@
                         <!-- Viber -->
                         <div class="contact-item contact-item-viber" onclick="showContactModal('Вайбер', formatPhoneNumber(VIBER_PHONE), 'viber')" style="cursor: pointer;">
                             <div class="contact-icon">
-                                <!-- Viber logo from SimpleIcons: https://simpleicons.org/icons/viber.svg -->
-                                <!-- Official brand profile: https://brandfetch.com/viber.com -->
                                 <img src="https://simpleicons.org/icons/viber.svg" alt="Viber" width="24" height="24" style="display: block;">
                             </div>
                             <div class="contact-content">
@@ -328,8 +242,6 @@
                         <!-- Telegram Showcase -->
                         <div class="contact-item contact-item-showcase" id="telegramShowcaseItem" onclick="if(TELEGRAM_SHOWCASE) { const link = getTelegramShowcaseLink(); const displayText = isTelegramInviteLink(TELEGRAM_SHOWCASE) ? link : '@' + TELEGRAM_SHOWCASE; showContactModal('Вітрина', displayText, 'telegram'); }" style="cursor: pointer;">
                             <div class="contact-icon">
-                                <!-- Telegram logo from SimpleIcons: https://simpleicons.org/icons/telegram.svg -->
-                                <!-- Official brand resources: https://brandfetch.com/telegram.org -->
                                 <img src="https://simpleicons.org/icons/telegram.svg" alt="Telegram" width="24" height="24" style="display: block;">
                             </div>
                             <div class="contact-content">
@@ -356,8 +268,6 @@
                         <!-- Instagram -->
                         <div class="contact-item contact-item-instagram" id="instagramItem" onclick="if(INSTAGRAM_USERNAME) showContactModal('Інстаграм', '@' + INSTAGRAM_USERNAME, 'instagram');" style="cursor: pointer;">
                             <div class="contact-icon">
-                                <!-- Instagram logo from SimpleIcons: https://simpleicons.org/icons/instagram.svg -->
-                                <!-- Official brand resources Meta: https://www.meta.com/brand/resources/instagram -->
                                 <img src="https://simpleicons.org/icons/instagram.svg" alt="Instagram" width="24" height="24" style="display: block;">
                             </div>
                             <div class="contact-content">
@@ -384,7 +294,6 @@
                         <!-- BIGGO LIVE -->
                         <div class="contact-item contact-item-biggo" id="biggoLiveItem" onclick="if(BIGGO_LIVE_URL) { const username = getBiggoLiveUsername(); showContactModal('BIGGO LIVE', BIGGO_LIVE_URL, 'biggo'); }" style="cursor: pointer;">
                             <div class="contact-icon">
-                                <!-- BIGGO LIVE icon - буква "B" -->
                                 <span style="display: block; font-weight: 700; font-size: 18px; font-family: Arial, sans-serif; color: currentColor;">B</span>
                             </div>
                             <div class="contact-content">
@@ -413,7 +322,7 @@
             
             <div class="divider"></div>
             
-            <!-- БЛОК КАЛЕНДАРЯ ПРЯМИХ ЕФІРІВ (під контактами, над умовами) -->
+            <!-- БЛОК КАЛЕНДАРЯ ПРЯМИХ ЕФІРІВ -->
             <div class="section" id="calendarSection" style="display: none;">
                 <div class="section-title">
                     <span>📅</span>
@@ -421,7 +330,6 @@
                 </div>
                 
                 <div class="calendar-container">
-                    <!-- Google Calendar Agenda View -->
                     <div style="border: 1px solid #dee2e6; border-radius: 15px; overflow: hidden; margin-bottom: 25px; background: white; position: relative;">
                         <iframe 
                             id="calendarIframe"
@@ -447,22 +355,22 @@
                     </div>
                     
                     <h3 style="margin: 0 0 12px 0; color: #ffffff; font-size: 14px; font-weight: 600;">🔄 Варіанти оплати:</h3>
-                <div class="payment-options" id="paymentOptions">
-                    <!-- Заповнюється автоматично з константи PAYMENT_OPTIONS -->
-                </div>
-                
+                    <div class="payment-options" id="paymentOptions">
+                        <!-- Заповнюється автоматично -->
+                    </div>
+                    
                     <h3 style="margin: 0 0 12px 0; color: #ffffff; font-size: 14px; font-weight: 600;">🚚 Доставка по Україні:</h3>
-                <ul class="delivery-list">
-                    <li>🔷 <strong id="deliveryMethod"></strong> ✅</li>
-                    <li>🔷 Відправка: <strong id="deliveryTime"></strong></li>
-                    <li>🔷 <span id="deliveryNote"></span></li>
-                    <li>🔷 <strong>Вартість доставки:</strong> відповідно до тарифів перевізника. Сплачує отримувач.</li>
-                </ul>
-                
+                    <ul class="delivery-list">
+                        <li>🔷 <strong id="deliveryMethod"></strong> ✅</li>
+                        <li>🔷 Відправка: <strong id="deliveryTime"></strong></li>
+                        <li>🔷 <span id="deliveryNote"></span></li>
+                        <li>🔷 <strong>Вартість доставки:</strong> відповідно до тарифів перевізника. Сплачує отримувач.</li>
+                    </ul>
+                    
                     <div id="exchangeReturnSection" style="margin-top: 20px;">
                         <h3 style="margin: 0 0 12px 0; color: #ffffff; font-size: 14px; font-weight: 600;">📋 Умови обміну та повернення:</h3>
-                    <ul id="exchangeReturnList">
-                        <!-- Заповнюється автоматично з констант EXCHANGE_DAYS та RETURN_DAYS -->
+                        <ul id="exchangeReturnList">
+                            <!-- Заповнюється автоматично -->
                         </ul>
                     </div>
                 </div>
@@ -473,19 +381,21 @@
             </div>
             
             <div class="footer-credit" id="footerCreditBlock">
+                <!-- Прихований якір захисту 6 -->
+                <span id="veoAnchor6" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
                 
                 <div class="footer-credit-text">
-                    Розроблено командою<br><strong><script>var _f1=String.fromCharCode(86,69,79,32,70,79,82,67,69,32,50,48,50,53);document.write(_f1);</script></strong>
+                    Розроблено командою<br><strong>VEO FORCE 2025</strong>
                 </div>
                 <div style="font-size: 14px; color: #6B7A8F; margin-top: 8px;">
                     Замовити таку сторінку:
                 </div>
                 <div class="footer-credit-links">
-                    <a href="#" id="footerTelegramLink" target="_blank" class="footer-link footer-link-telegram">
-                        Телеграм<br><script>var _t1=String.fromCharCode(118,101,111,102,111,114,99,101,95,115,117,112,112,111,114,116);document.write('@' + _t1);var _ftl=document.getElementById('footerTelegramLink');if(_ftl){_ftl.href='https://t.me/'+_t1;}</script>
+                    <a href="https://t.me/veoforce_support" id="footerTelegramLink" target="_blank" class="footer-link footer-link-telegram">
+                        Телеграм<br>@veoforce_support
                     </a>
-                    <a href="#" target="_blank" class="footer-link footer-link-tiktok" id="footerTikTokLink">
-                        ТікТок-сторінка<br><script>var _t2=String.fromCharCode(118,97,115,105,108,95,118,101,111);document.write('@' + _t2);var _ftk=document.getElementById('footerTikTokLink');if(_ftk){_ftk.href='https://tiktok.com/@'+_t2;}</script>
+                    <a href="https://tiktok.com/@vasil_veo" target="_blank" class="footer-link footer-link-tiktok">
+                        ТікТок-сторінка<br>@vasil_veo
                     </a>
                 </div>
                 
@@ -534,7 +444,6 @@
     <div id="tiktok-popup" onclick="if(event.target === this) closeTikTokPopup()">
         <div class="tiktok-popup-content" onclick="event.stopPropagation()">
             <div class="tiktok-popup-icon">
-                <!-- TikTok logo from SimpleIcons: https://simpleicons.org/icons/tiktok.svg -->
                 <img src="https://simpleicons.org/icons/tiktok.svg" alt="TikTok" width="40" height="40">
             </div>
             <h2>
@@ -573,58 +482,6 @@
             document.getElementById('tiktok-popup').style.display = 'none';
         }
     </script>
-    
-    <!-- 
-    ============================================
-    ОФІЦІЙНІ ДЖЕРЕЛА ЛОГОТИПІВ СОЦІАЛЬНИХ МЕРЕЖ
-    ============================================
-    
-    🔵 Telegram:
-    - SimpleIcons SVG: https://simpleicons.org/icons/telegram.svg
-    - Official brand resources: https://brandfetch.com/telegram.org
-    
-    🟣 Instagram:
-    - SimpleIcons SVG: https://simpleicons.org/icons/instagram.svg
-    - Official Meta resources: https://www.meta.com/brand/resources/instagram
-    
-    🟣 Viber:
-    - SimpleIcons SVG: https://simpleicons.org/icons/viber.svg
-    - Official brand profile: https://brandfetch.com/viber.com
-    
-    🔵 Facebook (закоментовано):
-    - SimpleIcons SVG: https://simpleicons.org/icons/facebook.svg
-    - Official Meta resources: https://www.meta.com/brand/resources/facebook
-    
-    🔴 YouTube (закоментовано):
-    - SimpleIcons SVG: https://simpleicons.org/icons/youtube.svg
-    - Official Google resources: https://www.youtube.com/howyoutubeworks/resources/brand-resources/
-    
-    🔴 TikTok (закоментовано):
-    - SimpleIcons SVG: https://simpleicons.org/icons/tiktok.svg
-    - Official brand resources: https://www.tiktok.com/about/brand-resources
-    
-    🟢 WhatsApp (закоментовано):
-    - SimpleIcons SVG: https://simpleicons.org/icons/whatsapp.svg
-    - Official Meta resources: https://www.meta.com/brand/resources/whatsapp/
-    
-    💬 Messenger (закоментовано):
-    - SimpleIcons SVG: https://simpleicons.org/icons/messenger.svg
-    - Official Meta resources: https://www.meta.com/brand/resources/messenger/
-    
-    🔵 LinkedIn (закоментовано):
-    - SimpleIcons SVG: https://simpleicons.org/icons/linkedin.svg
-    - Official brand resources: https://brand.linkedin.com/downloads
-    
-    🟢 Google Calendar (закоментовано):
-    - SimpleIcons SVG: https://simpleicons.org/icons/googlecalendar.svg
-    - Official Google Workspace: https://developers.google.com/identity/branding-guidelines
-    
-    🦕 BIGGO LIVE:
-    - Офіційна іконка відсутня в SimpleIcons, використовується буква "B"
-    - Посилання на сервіс: https://biggo.live
-    
-    📦 Універсальна бібліотека: https://simpleicons.org (2500+ SVG іконок брендів)
-    ============================================
-    -->
 </body>
 </html>
+
