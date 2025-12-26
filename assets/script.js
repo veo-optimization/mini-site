@@ -1363,6 +1363,120 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Перевірка незаповнених полів та відображення повідомлення
+    const missingDataFields = [];
+    const fieldLabels = {
+        shopName: 'Назва магазину',
+        shopDescription: 'Опис магазину',
+        workingHours: 'Час роботи',
+        fopName: 'ПІБ ФОП',
+        edrpou: 'ЄДРПОУ',
+        iban: 'IBAN',
+        bankName: 'Назва банку',
+        paymentPurpose: 'Призначення платежу',
+        cardNumber: 'Номер картки',
+        cardHolderName: 'Прізвище власника картки',
+        cardBankName: 'Назва банку картки',
+        telegramUsername: 'Telegram',
+        telegramPhone: 'Telegram (телефон)',
+        viberPhone: 'Viber',
+        googleCalendarUrl: 'Google Calendar',
+        paymentOptions: 'Умови оплати',
+        deliveryMethod: 'Спосіб доставки',
+        deliveryTime: 'Термін доставки',
+        exchangeDays: 'Термін обміну',
+        returnDays: 'Термін повернення',
+        returnConditions: 'Умови обміну та повернення',
+        returnMoneyTime: 'Термін повернення коштів',
+        returnDeliveryCost: 'Вартість доставки при поверненні',
+        afterPaymentTemplate: 'Шаблон після оплати',
+        storeLocations: 'Локації магазинів',
+        categories: 'Категорії товарів'
+    };
+    
+    // Перевіряємо основні поля
+    if (typeof SHOP_NAME === 'undefined' || !SHOP_NAME || SHOP_NAME.trim() === '') {
+        missingDataFields.push(fieldLabels.shopName);
+    }
+    
+    // Перевіряємо FOP реквізити (якщо немає оплати на картку)
+    const hasCardPayment = typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER && CARD_NUMBER.trim() !== '';
+    if (!hasCardPayment) {
+        // Якщо немає оплати на картку, FOP реквізити обов'язкові
+        if (typeof FOP_NAME === 'undefined' || !FOP_NAME || FOP_NAME.trim() === '') {
+            missingDataFields.push(fieldLabels.fopName);
+        }
+        if (typeof EDRPOU === 'undefined' || !EDRPOU || EDRPOU.trim() === '') {
+            missingDataFields.push(fieldLabels.edrpou);
+        }
+        if (typeof IBAN === 'undefined' || !IBAN || IBAN.trim() === '') {
+            missingDataFields.push(fieldLabels.iban);
+        }
+        if (typeof BANK_NAME === 'undefined' || !BANK_NAME || BANK_NAME.trim() === '') {
+            missingDataFields.push(fieldLabels.bankName);
+        }
+        if (typeof PAYMENT_PURPOSE === 'undefined' || !PAYMENT_PURPOSE || PAYMENT_PURPOSE.trim() === '') {
+            missingDataFields.push(fieldLabels.paymentPurpose);
+        }
+    } else {
+        // Якщо є оплата на картку, FOP реквізити не обов'язкові, але перевіряємо картку
+        if (typeof CARD_NUMBER === 'undefined' || !CARD_NUMBER || CARD_NUMBER.trim() === '') {
+            missingDataFields.push(fieldLabels.cardNumber);
+        }
+    }
+    
+    // Перевіряємо контакти (хоча б один має бути)
+    const hasTelegram = (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME && TELEGRAM_USERNAME.trim() !== '') ||
+                        (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE && TELEGRAM_PHONE.trim() !== '');
+    const hasViber = typeof VIBER_PHONE !== 'undefined' && VIBER_PHONE && VIBER_PHONE.trim() !== '';
+    if (!hasTelegram && !hasViber) {
+        missingDataFields.push('Контакти (Telegram або Viber)');
+    }
+    
+    // Перевіряємо умови оплати
+    if (typeof PAYMENT_OPTIONS === 'undefined' || !PAYMENT_OPTIONS || PAYMENT_OPTIONS.length === 0) {
+        missingDataFields.push(fieldLabels.paymentOptions);
+    }
+    
+    // Перевіряємо умови доставки
+    if (!DELIVERY_METHOD || DELIVERY_METHOD.trim() === '') missingDataFields.push(fieldLabels.deliveryMethod);
+    if (!DELIVERY_TIME || DELIVERY_TIME.trim() === '') missingDataFields.push(fieldLabels.deliveryTime);
+    
+    // Перевіряємо умови повернення
+    if (typeof EXCHANGE_DAYS === 'undefined' || EXCHANGE_DAYS === 0) {
+        // Не обов'язкове
+    }
+    if (typeof RETURN_DAYS === 'undefined' || RETURN_DAYS === 0) {
+        // Не обов'язкове
+    }
+    if (typeof RETURN_CONDITIONS === 'undefined' || !RETURN_CONDITIONS || RETURN_CONDITIONS.length === 0) {
+        // Не обов'язкове
+    }
+    if (typeof RETURN_MONEY_TIME === 'undefined' || !RETURN_MONEY_TIME || RETURN_MONEY_TIME.trim() === '') {
+        // Не обов'язкове
+    }
+    if (typeof RETURN_DELIVERY_COST === 'undefined' || !RETURN_DELIVERY_COST || RETURN_DELIVERY_COST.trim() === '') {
+        // Не обов'язкове
+    }
+    
+    // Перевіряємо шаблон після оплати
+    if (typeof AFTER_PAYMENT_TEMPLATE === 'undefined' || !AFTER_PAYMENT_TEMPLATE || AFTER_PAYMENT_TEMPLATE.trim() === '') {
+        missingDataFields.push(fieldLabels.afterPaymentTemplate);
+    }
+    
+    // Відображаємо повідомлення про незаповнені дані
+    const missingDataNotice = document.getElementById('missingDataNotice');
+    if (missingDataNotice && missingDataFields.length > 0) {
+        const missingDataList = missingDataFields.join(', ');
+        const missingDataListEl = document.getElementById('missingDataList');
+        if (missingDataListEl) {
+            missingDataListEl.textContent = missingDataList;
+        }
+        missingDataNotice.style.display = 'block';
+    } else if (missingDataNotice) {
+        missingDataNotice.style.display = 'none';
+    }
+    
     // Перевірка безпеки після завантаження
     if (!checkSecurity()) {
         return;
