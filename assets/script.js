@@ -1435,15 +1435,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Заповнюємо шаблон
     const templateDisplay = document.getElementById('paymentTemplateDisplay');
-    if (templateDisplay && typeof AFTER_PAYMENT_TEMPLATE !== 'undefined' && AFTER_PAYMENT_TEMPLATE) {
-        // Використовуємо textContent та забезпечуємо правильне відображення переносів рядків
-        templateDisplay.textContent = AFTER_PAYMENT_TEMPLATE;
-        // Переконуємося, що елемент має клас template-text для правильного CSS
-        if (!templateDisplay.classList.contains('template-text')) {
-            templateDisplay.classList.add('template-text');
+    if (templateDisplay) {
+        const template = window.AFTER_PAYMENT_TEMPLATE || (typeof AFTER_PAYMENT_TEMPLATE !== 'undefined' ? AFTER_PAYMENT_TEMPLATE : '');
+        if (template) {
+            // Використовуємо textContent та забезпечуємо правильне відображення переносів рядків
+            templateDisplay.textContent = template;
+            // Переконуємося, що елемент має клас template-text для правильного CSS
+            if (!templateDisplay.classList.contains('template-text')) {
+                templateDisplay.classList.add('template-text');
+            }
+            // Переконуємося, що CSS white-space: pre-line застосовується
+            templateDisplay.style.whiteSpace = 'pre-line';
+            // Діагностика
+            console.log('✅ Шаблон встановлено, довжина:', template.length, 'символів');
+            console.log('✅ Кількість переносів рядків:', (template.match(/\n/g) || []).length);
+        } else {
+            console.warn('⚠️ AFTER_PAYMENT_TEMPLATE не визначено або порожній');
         }
-        // Переконуємося, що CSS white-space: pre-line застосовується
-        templateDisplay.style.whiteSpace = 'pre-line';
     }
     
     // Налаштовуємо Google Calendar iframe та кнопку підписки
