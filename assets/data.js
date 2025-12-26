@@ -101,160 +101,138 @@ function parseClientConstants(constantsText) {
     });
     
     // Мапінг констант на поля CLIENT_DATA
-    let counter = 1;
+    // Кожна константа закріплена за конкретним полем за фіксованим номером
     
     // c1 - shopName
-    if (constants[`c${counter}`]) {
-        data.shopName = constants[`c${counter}`];
-        counter++;
+    if (constants['c1']) {
+        data.shopName = constants['c1'];
     }
     
     // c2 - shopDescription
-    if (constants[`c${counter}`]) {
-        data.shopDescription = constants[`c${counter}`];
-        counter++;
+    if (constants['c2']) {
+        data.shopDescription = constants['c2'];
     }
     
     // c3 - workingHours
-    if (constants[`c${counter}`]) {
-        data.workingHours = constants[`c${counter}`];
-        counter++;
+    if (constants['c3']) {
+        data.workingHours = constants['c3'];
     }
     
     // c4 - categories (масив)
-    if (constants[`c${counter}_count`]) {
-        const count = parseInt(constants[`c${counter}_count`]);
+    if (constants['c4_count']) {
+        const count = parseInt(constants['c4_count']);
         data.categories = [];
         for (let i = 0; i < count; i++) {
             const char = String.fromCharCode(97 + i); // a, b, c, ...
-            if (constants[`c${counter}${char}`]) {
-                data.categories.push(constants[`c${counter}${char}`]);
+            if (constants[`c4${char}`]) {
+                data.categories.push(constants[`c4${char}`]);
             }
         }
-        counter++;
     }
     
     // c5 - fopName
-    if (constants[`c${counter}`]) {
-        data.fopName = constants[`c${counter}`];
-        counter++;
+    if (constants['c5']) {
+        data.fopName = constants['c5'];
     }
     
-    // c4 - edrpou
-    if (constants[`c${counter}`]) {
-        data.edrpou = constants[`c${counter}`];
-        counter++;
+    // c6 - edrpou
+    if (constants['c6']) {
+        data.edrpou = constants['c6'];
     }
     
-    // c5 - iban
-    if (constants[`c${counter}`]) {
-        data.iban = constants[`c${counter}`];
-        counter++;
+    // c7 - iban
+    if (constants['c7']) {
+        data.iban = constants['c7'];
     }
     
-    // c6 - bankName
-    if (constants[`c${counter}`]) {
-        data.bankName = constants[`c${counter}`];
-        counter++;
+    // c8 - bankName
+    if (constants['c8']) {
+        data.bankName = constants['c8'];
     }
     
-    // c7 - paymentPurpose
-    if (constants[`c${counter}`]) {
-        data.paymentPurpose = constants[`c${counter}`];
-        counter++;
+    // c9 - paymentPurpose
+    if (constants['c9']) {
+        data.paymentPurpose = constants['c9'];
     }
     
-    // c8 - cardNumber
-    if (constants[`c${counter}`]) {
-        data.cardNumber = constants[`c${counter}`];
-        counter++;
+    // c10 - cardNumber
+    if (constants['c10']) {
+        data.cardNumber = constants['c10'];
     }
     
-    // c9 - cardHolderName
-    if (constants[`c${counter}`]) {
-        data.cardHolderName = constants[`c${counter}`];
-        counter++;
+    // c11 - cardHolderName
+    if (constants['c11']) {
+        data.cardHolderName = constants['c11'];
     }
     
-    // c10 - cardBankName
-    if (constants[`c${counter}`]) {
-        data.cardBankName = constants[`c${counter}`];
-        counter++;
+    // c12 - cardBankName
+    if (constants['c12']) {
+        data.cardBankName = constants['c12'];
     }
     
-    // c10 - telegramUsername або telegramPhone
-    if (constants[`c${counter}`]) {
-        const telegramType = constants[`c${counter}_type`];
+    // c13 - telegramUsername або telegramPhone
+    if (constants['c13']) {
+        const telegramType = constants['c13_type'];
         if (telegramType === 'phone') {
-            data.telegramPhone = constants[`c${counter}`];
+            data.telegramPhone = constants['c13'];
         } else {
-            data.telegramUsername = constants[`c${counter}`];
+            data.telegramUsername = constants['c13'];
         }
-        counter++;
     }
     
-    // c11 - viberPhone
-    if (constants[`c${counter}`]) {
-        data.viberPhone = constants[`c${counter}`];
-        counter++;
+    // c14 - viberPhone
+    if (constants['c14']) {
+        data.viberPhone = constants['c14'];
     }
     
-    // c12 - telegramShowcase
-    if (constants[`c${counter}`]) {
-        data.telegramShowcase = constants[`c${counter}`];
-        counter++;
+    // c15 - telegramShowcase
+    if (constants['c15']) {
+        data.telegramShowcase = constants['c15'];
     }
     
-    // c13 - instagramUsername
-    if (constants[`c${counter}`]) {
-        data.instagramUsername = constants[`c${counter}`];
-        counter++;
+    // c16 - instagramUsername
+    if (constants['c16']) {
+        data.instagramUsername = constants['c16'];
     }
     
-    // c14 - biggoLiveUrl
-    if (constants[`c${counter}`]) {
-        data.biggoLiveUrl = constants[`c${counter}`];
-        counter++;
+    // c17 - biggoLiveUrl
+    if (constants['c17']) {
+        data.biggoLiveUrl = constants['c17'];
     }
     
-    // c15 - facebookPage
-    if (constants[`c${counter}`]) {
-        data.facebookPage = constants[`c${counter}`];
-        counter++;
+    // c18 - facebookPage
+    if (constants['c18']) {
+        data.facebookPage = constants['c18'];
     }
     
-    // c16 - tiktokUsername
-    if (constants[`c${counter}`]) {
-        data.tiktokUsername = constants[`c${counter}`];
-        counter++;
+    // c19 - tiktokUsername
+    if (constants['c19']) {
+        data.tiktokUsername = constants['c19'];
     }
     
-    // c17 - youtubeChannel
-    if (constants[`c${counter}`]) {
-        data.youtubeChannel = constants[`c${counter}`];
-        counter++;
+    // c20 - youtubeChannel
+    if (constants['c20']) {
+        data.youtubeChannel = constants['c20'];
     }
     
-    // c18 - whatsappPhone
-    if (constants[`c${counter}`]) {
-        data.whatsappPhone = constants[`c${counter}`];
-        counter++;
+    // c21 - whatsappPhone
+    if (constants['c21']) {
+        data.whatsappPhone = constants['c21'];
     }
     
-    // c19 - googleCalendarUrl
-    if (constants[`c${counter}`]) {
-        data.googleCalendarUrl = constants[`c${counter}`];
-        counter++;
+    // c22 - googleCalendarUrl
+    if (constants['c22']) {
+        data.googleCalendarUrl = constants['c22'];
     }
     
-    // c20+ - storeLocations (масив локацій)
-    if (constants[`c${counter}_count`]) {
-        const count = parseInt(constants[`c${counter}_count`]);
+    // c23 - storeLocations (масив локацій)
+    if (constants['c23_count']) {
+        const count = parseInt(constants['c23_count']);
         data.storeLocations = [];
         for (let i = 0; i < count; i++) {
             const char = String.fromCharCode(97 + i); // a, b, c, ...
-            if (constants[`c${counter}${char}`]) {
-                const locationData = constants[`c${counter}${char}`].split('|');
+            if (constants[`c23${char}`]) {
+                const locationData = constants[`c23${char}`].split('|');
                 if (locationData.length === 2) {
                     data.storeLocations.push({
                         name: locationData[0],
@@ -263,81 +241,70 @@ function parseClientConstants(constantsText) {
                 }
             }
         }
-        counter++;
     }
     
-    // paymentOptions (масив)
-    if (constants[`c${counter}_count`]) {
-        const count = parseInt(constants[`c${counter}_count`]);
+    // c24 - paymentOptions (масив)
+    if (constants['c24_count']) {
+        const count = parseInt(constants['c24_count']);
         data.paymentOptions = [];
         for (let i = 0; i < count; i++) {
             const char = String.fromCharCode(97 + i); // a, b, c, ...
-            if (constants[`c${counter}${char}`]) {
-                data.paymentOptions.push(constants[`c${counter}${char}`]);
+            if (constants[`c24${char}`]) {
+                data.paymentOptions.push(constants[`c24${char}`]);
             }
         }
-        counter++;
     }
     
-    // deliveryMethod
-    if (constants[`c${counter}`]) {
-        data.deliveryMethod = constants[`c${counter}`];
-        counter++;
+    // c25 - deliveryMethod
+    if (constants['c25']) {
+        data.deliveryMethod = constants['c25'];
     }
     
-    // deliveryTime
-    if (constants[`c${counter}`]) {
-        data.deliveryTime = constants[`c${counter}`];
-        counter++;
+    // c26 - deliveryTime
+    if (constants['c26']) {
+        data.deliveryTime = constants['c26'];
     }
     
-    // deliveryNote
-    if (constants[`c${counter}`]) {
-        data.deliveryNote = constants[`c${counter}`];
-        counter++;
+    // c27 - deliveryNote
+    if (constants['c27']) {
+        data.deliveryNote = constants['c27'];
     }
     
-    // exchangeDays
-    if (constants[`c${counter}`]) {
-        data.exchangeDays = parseInt(constants[`c${counter}`]) || 0;
-        counter++;
+    // c28 - exchangeDays
+    if (constants['c28']) {
+        data.exchangeDays = parseInt(constants['c28']) || 0;
     }
     
-    // returnDays
-    if (constants[`c${counter}`]) {
-        data.returnDays = parseInt(constants[`c${counter}`]) || 0;
-        counter++;
+    // c29 - returnDays
+    if (constants['c29']) {
+        data.returnDays = parseInt(constants['c29']) || 0;
     }
     
-    // returnConditions (масив)
-    if (constants[`c${counter}_count`]) {
-        const count = parseInt(constants[`c${counter}_count`]);
+    // c30 - returnConditions (масив)
+    if (constants['c30_count']) {
+        const count = parseInt(constants['c30_count']);
         data.returnConditions = [];
         for (let i = 0; i < count; i++) {
             const char = String.fromCharCode(97 + i); // a, b, c, ...
-            if (constants[`c${counter}${char}`]) {
-                data.returnConditions.push(constants[`c${counter}${char}`]);
+            if (constants[`c30${char}`]) {
+                data.returnConditions.push(constants[`c30${char}`]);
             }
         }
-        counter++;
     }
     
-    // returnMoneyTime
-    if (constants[`c${counter}`]) {
-        data.returnMoneyTime = constants[`c${counter}`];
-        counter++;
+    // c31 - returnMoneyTime
+    if (constants['c31']) {
+        data.returnMoneyTime = constants['c31'];
     }
     
-    // returnDeliveryCost
-    if (constants[`c${counter}`]) {
-        data.returnDeliveryCost = constants[`c${counter}`];
-        counter++;
+    // c32 - returnDeliveryCost
+    if (constants['c32']) {
+        data.returnDeliveryCost = constants['c32'];
     }
     
-    // afterPaymentTemplate
-    if (constants[`c${counter}`]) {
-        data.afterPaymentTemplate = constants[`c${counter}`].replace(/\\n/g, '\n');
-        counter++;
+    // c33 - afterPaymentTemplate
+    if (constants['c33']) {
+        data.afterPaymentTemplate = constants['c33'].replace(/\\n/g, '\n');
     }
     
     return data;
