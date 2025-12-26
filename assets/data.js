@@ -343,7 +343,7 @@ function parseClientConstants(constantsText) {
  */
 function processClientData() {
     // Перевіряємо, чи є CLIENT_CONSTANTS (простий текст з псевдонімами)
-    if (typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS) {
+    if (typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS && CLIENT_CONSTANTS.trim().length > 0) {
         // Якщо є простий текст з константами, парсимо його
         const parsedData = parseClientConstants(CLIENT_CONSTANTS);
         window.CLIENT_DATA = parsedData;
@@ -440,17 +440,33 @@ function processClientData() {
 }
 
 // Автоматично обробляємо дані при завантаженні скрипта
-// Якщо CLIENT_DATA вже визначено, обробляємо одразу
-if (typeof CLIENT_DATA !== 'undefined') {
-    processClientData();
+// Функція для перевірки та обробки даних
+function initClientData() {
+    const hasConstants = typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS && CLIENT_CONSTANTS.trim().length > 0;
+    const hasData = typeof CLIENT_DATA !== 'undefined';
+    
+    if (hasConstants || hasData) {
+        processClientData();
+    }
+}
+
+// Перевіряємо, чи є CLIENT_CONSTANTS (простий текст з псевдонімами) або CLIENT_DATA
+if (typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS && CLIENT_CONSTANTS.trim().length > 0) {
+    // Якщо є CLIENT_CONSTANTS, обробляємо одразу
+    initClientData();
+} else if (typeof CLIENT_DATA !== 'undefined') {
+    // Якщо є CLIENT_DATA, обробляємо одразу
+    initClientData();
 } else {
     // Якщо дані ще не завантажені, чекаємо на DOMContentLoaded
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof CLIENT_DATA !== 'undefined') {
-                processClientData();
-            }
+            // Перевіряємо знову після завантаження DOM
+            initClientData();
         });
+    } else {
+        // Якщо DOM вже завантажений, перевіряємо одразу
+        initClientData();
     }
 }
 
