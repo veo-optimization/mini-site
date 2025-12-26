@@ -1,1668 +1,502 @@
-// Функція для форматування номера
+// ============================================
+// ОБРОБКА ТА ВАЛІДАЦІЯ ДАНИХ КЛІЄНТА
+// ============================================
+// Цей файл містить функції для обробки простих даних клієнта
+// та перетворення їх у правильні формати для використання на сторінці
+
+/**
+ * Форматує номер телефону для відображення
+ * @param {string} phone - Номер телефону (10 цифр, починається з 0)
+ * @returns {string} - Відформатований номер (+380XXXXXXXXX)
+ */
 function formatPhoneNumber(phoneNumber) {
-    if (phoneNumber.length === 10 && phoneNumber.startsWith('0')) {
-        return "+380" + phoneNumber.substring(1);
+    if (!phoneNumber) return '';
+    // Видаляємо всі пробіли та дефіси
+    const cleaned = phoneNumber.replace(/\s|-/g, '');
+    // Якщо номер починається з 0 і має 10 цифр, додаємо +380
+    if (cleaned.length === 10 && cleaned.startsWith('0')) {
+        return "+380" + cleaned.substring(1);
+    }
+    // Якщо вже є +380, повертаємо як є
+    if (cleaned.startsWith('+380')) {
+        return cleaned;
+    }
+    // Якщо починається з 380, додаємо +
+    if (cleaned.startsWith('380') && cleaned.length === 12) {
+        return '+' + cleaned;
     }
     return phoneNumber;
 }
 
-// Функція для створення Viber URL
+/**
+ * Створює Viber URL з номера телефону
+ * @param {string} phoneNumber - Номер телефону
+ * @returns {string} - Viber URL
+ */
 function createViberUrl(phoneNumber) {
     const formattedNumber = formatPhoneNumber(phoneNumber);
     return `viber://chat?number=${encodeURIComponent(formattedNumber)}`;
 }
 
-// Функція для копіювання в буфер обміну
-function copyToClipboard(text, buttonId, successMessage, skipButtonChange) {
-    if (!checkSecurity()) return;
-    navigator.clipboard.writeText(text).then(function() {
-        // Якщо skipButtonChange = true, не змінюємо кнопку (для соціальних мереж, де є бейдж)
-        if (!skipButtonChange) {
-            const button = document.getElementById(buttonId);
-            if (button) {
-                // Зберігаємо всі оригінальні значення
-                const originalHTML = button.innerHTML;
-                const originalBackground = button.style.background || '';
-                const originalColor = button.style.color || '';
-                
-                // Зберігаємо всі розміри та стилі
-                const computedStyle = window.getComputedStyle(button);
-                const originalWidth = computedStyle.width;
-                const originalHeight = computedStyle.height;
-                const originalMinWidth = computedStyle.minWidth;
-                const originalMinHeight = computedStyle.minHeight;
-                const originalPadding = computedStyle.padding;
-                const originalBoxSizing = computedStyle.boxSizing;
-                
-                // Змінюємо текст та колір кнопки
-                if (successMessage) {
-                    button.innerHTML = successMessage;
-                } else {
-                    button.innerHTML = '✓ Скопійовано!';
-                }
-                button.style.background = '#2196F3';
-                button.style.color = '#ffffff';
-                
-                // Фіксуємо всі розміри, щоб кнопка не змінювалася
-                button.style.width = originalWidth;
-                button.style.height = originalHeight;
-                button.style.minWidth = originalMinWidth;
-                button.style.minHeight = originalMinHeight;
-                button.style.padding = originalPadding;
-                button.style.boxSizing = originalBoxSizing;
-                
-                // Повертаємо оригінальний вигляд через 2 секунди
-                setTimeout(function() {
-                    button.innerHTML = originalHTML;
-                    button.style.background = originalBackground;
-                    button.style.color = originalColor;
-                    button.style.width = '';
-                    button.style.height = '';
-                    button.style.minWidth = '';
-                    button.style.minHeight = '';
-                    button.style.padding = '';
-                    button.style.boxSizing = '';
-                }, 2000);
-            }
+/**
+ * Валідує IBAN
+ * @param {string} iban - IBAN для перевірки
+ * @returns {boolean} - true якщо валідний
+ */
+function validateIBAN(iban) {
+    if (!iban) return false;
+    // Видаляємо пробіли
+    const cleaned = iban.replace(/\s/g, '');
+    // Перевіряємо формат: UA + 2 цифри (контрольна сума) + 4 символи (код банку, може бути літери або цифри) + 19 або 21 цифра (номер рахунку)
+    // Формат: UA + 2 цифри + 4 символи (літери або цифри) + 19 або 21 цифра
+    // Перевіряємо обидва варіанти: 19 або 21 цифра після коду банку
+    return /^UA\d{2}[A-Z0-9]{4}\d{19}$/i.test(cleaned) || /^UA\d{2}[A-Z0-9]{4}\d{21}$/i.test(cleaned);
+}
+
+/**
+ * Валідує ЄДРПОУ
+ * @param {string} edrpou - ЄДРПОУ для перевірки
+ * @returns {boolean} - true якщо валідний
+ */
+function validateEDRPOU(edrpou) {
+    if (!edrpou) return false;
+    // Видаляємо пробіли та дефіси
+    const cleaned = edrpou.replace(/\s|-/g, '');
+    // ЄДРПОУ має бути 8 або 10 цифр
+    return /^\d{8}(\d{2})?$/.test(cleaned);
+}
+
+/**
+ * Валідує номер телефону
+ * @param {string} phone - Номер телефону
+ * @returns {boolean} - true якщо валідний
+ */
+function validatePhone(phone) {
+    if (!phone) return false;
+    const cleaned = phone.replace(/\s|-/g, '');
+    // Може бути: 10 цифр (починається з 0), 12 цифр (починається з 380), або 13 символів (починається з +380)
+    return /^(0\d{9}|380\d{9}|\+380\d{9})$/.test(cleaned);
+}
+
+/**
+ * Парсить прості рядки з псевдонімами (c1 - значення) і конвертує їх у CLIENT_DATA
+ * @param {string} constantsText - Текст з константами у форматі "c1 - значення\nc2 - значення"
+ * @returns {object} - Об'єкт CLIENT_DATA
+ */
+function parseClientConstants(constantsText) {
+    const data = {};
+    // Розбиваємо на рядки, фільтруємо порожні та обробляємо пробіли
+    const lines = constantsText.split('\n')
+        .map(line => line.trim())
+        .filter(line => line && !line.startsWith('//')); // Видаляємо порожні рядки та коментарі
+    
+    console.log('📝 Розпарсено рядків:', lines.length);
+    if (lines.length > 0) {
+        console.log('📝 Перші 3 рядки:', lines.slice(0, 3));
+    }
+    
+    const constants = {};
+    
+    // Парсимо всі константи
+    lines.forEach(line => {
+        // Більш гнучкий регулярний вираз, який обробляє різні формати
+        // Дозволяє пробіли на початку, після "c", перед і після "-"
+        const match = line.match(/^\s*c(\d+)([a-z]|_count|_type)?\s*-\s*(.+)$/);
+        if (match) {
+            const num = match[1];
+            const suffix = match[2] || '';
+            const value = match[3].trim();
+            const key = `c${num}${suffix}`;
+            constants[key] = value;
+        } else {
+            // Додатковий лог для діагностики (можна видалити після тестування)
+            console.warn('⚠️ Не вдалося розпарсити рядок:', line);
         }
-    }).catch(function(err) {
-        alert('Не вдалося скопіювати');
     });
-}
-
-function copyIBAN() {
-    copyToClipboard(IBAN, 'copyIbanButton', '✓ IBAN скопійовано', false);
-}
-
-function copyEDRPOU() {
-    copyToClipboard(EDRPOU, 'copyEdrpouButton', '✓ ЄДРПОУ скопійовано', false);
-}
-
-function copyPaymentPurpose() {
-    copyToClipboard(PAYMENT_PURPOSE, 'copyPurposeButton', '✓ Призначення скопійовано');
-}
-
-function copyTelegramUsername() {
-    if (!checkSecurity()) return;
-    if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
-        // Якщо є номер телефону, копіюємо номер
-        const phone = formatPhoneNumber(TELEGRAM_PHONE);
-        copyToClipboard(phone, 'copyTelegramButton', '', true);
-        showCopySuccess('telegramCopyBadge');
-    } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
-        // Якщо є username, копіюємо username
-        copyToClipboard('@' + TELEGRAM_USERNAME, 'copyTelegramButton', '', true);
-        showCopySuccess('telegramCopyBadge');
-    }
-}
-
-function copyViberPhone(phone, index) {
-    if (!checkSecurity()) return;
-    const phoneToCopy = phone || VIBER_PHONE;
-    if (!phoneToCopy) return;
-    const formattedNumber = formatPhoneNumber(phoneToCopy);
-    const buttonId = index !== undefined ? `copyViberPhoneButton${index}` : 'copyViberPhoneButton';
-    const badgeId = index !== undefined ? `viberCopyBadge${index}` : 'viberCopyBadge';
-    copyToClipboard(formattedNumber, buttonId, '', true);
-    showCopySuccess(badgeId);
-}
-
-// ============================================
-// МОДАЛЬНЕ ВІКНО ДЛЯ КОНТАКТІВ
-// ============================================
-
-let currentContactData = null;
-
-function showContactModal(messengerName, contactValue, contactType) {
-    if (!checkSecurity()) return;
     
-    // Для BIGGO LIVE показуємо юзернейм замість повного URL
-    let displayValue = contactValue;
-    if (contactType === 'biggo' && BIGGO_LIVE_URL) {
-        const username = getBiggoLiveUsername();
-        displayValue = username || contactValue;
-    }
-    
-    currentContactData = {
-        name: messengerName,
-        value: contactValue, // Зберігаємо повне посилання для копіювання/відкриття
-        displayValue: displayValue, // Для відображення
-        type: contactType
-    };
-    
-    const modal = document.getElementById('contactModal');
-    const modalTitle = document.getElementById('modalMessengerName');
-    const modalValue = document.getElementById('modalContactValue');
-    const modalIcon = document.getElementById('modalIcon');
-    const modalOpenBtn = document.querySelector('.modal-open-btn');
-    
-    modalTitle.textContent = messengerName;
-    
-    // Для BIGGO LIVE показуємо юзернейм та інструкцію
-    if (contactType === 'biggo' && BIGGO_LIVE_URL) {
-        const username = getBiggoLiveUsername();
-        modalValue.innerHTML = '<div style="text-align: center;"><div style="font-size: 18px; font-weight: 600; color: #ffffff; margin-bottom: 12px;">' + (username || '') + '</div><div style="font-size: 13px; color: #b0b0b0; line-height: 1.5;">Скопіюйте юзернейм та знайдіть користувача в додатку BIGGO LIVE</div></div>';
-        // Приховуємо кнопку "Відкрити" для BIGGO LIVE
-        if (modalOpenBtn) {
-            modalOpenBtn.style.display = 'none';
-        }
+    console.log('📦 Розпарсено констант:', Object.keys(constants).length);
+    if (constants['c1']) {
+        console.log('✅ c1 знайдено:', constants['c1']);
     } else {
-        modalValue.textContent = displayValue;
-        // Показуємо кнопку "Відкрити" для інших типів
-        if (modalOpenBtn) {
-            modalOpenBtn.style.display = 'flex';
-        }
+        console.warn('❌ c1 не знайдено!');
     }
     
-    // Встановлюємо іконку в залежності від типу
-    if (contactType === 'telegram') {
-        modalIcon.innerHTML = '<img src="https://simpleicons.org/icons/telegram.svg" alt="Telegram" width="32" height="32">';
-    } else if (contactType === 'viber') {
-        modalIcon.innerHTML = '<img src="https://simpleicons.org/icons/viber.svg" alt="Viber" width="32" height="32">';
-    } else if (contactType === 'instagram') {
-        modalIcon.innerHTML = '<img src="https://simpleicons.org/icons/instagram.svg" alt="Instagram" width="32" height="32">';
-    } else if (contactType === 'biggo') {
-        // Використовуємо букву "B" для BIGGO LIVE
-        modalIcon.innerHTML = '<div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #FF6B35; border-radius: 8px; color: white; font-weight: 700; font-size: 20px; font-family: Arial, sans-serif;">B</div>';
+    // Мапінг констант на поля CLIENT_DATA
+    // Кожна константа закріплена за конкретним полем за фіксованим номером
+    
+    // c1 - shopName
+    if (constants['c1']) {
+        data.shopName = constants['c1'];
     }
     
-    modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('show'), 10);
-    document.body.style.overflow = 'hidden';
-}
-
-function closeContactModal() {
-    const modal = document.getElementById('contactModal');
-    modal.classList.remove('show');
-    setTimeout(() => {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-        currentContactData = null;
-    }, 300);
-}
-
-function modalCopyContact() {
-    if (!currentContactData || !checkSecurity()) return;
-    let textToCopy = currentContactData.value;
+    // c2 - shopDescription
+    if (constants['c2']) {
+        data.shopDescription = constants['c2'];
+    }
     
-    // Для Viber використовуємо збережений номер телефону
-    if (currentContactData.type === 'viber') {
-        const phoneToCopy = window.currentViberPhone || currentContactData.value || VIBER_PHONE;
-        textToCopy = phoneToCopy ? formatPhoneNumber(phoneToCopy) : currentContactData.value;
-    } else if (currentContactData.type === 'biggo') {
-        // Для BIGGO LIVE копіюємо тільки чистий юзернейм (без @)
-        const username = getBiggoLiveUsername();
-        textToCopy = username || currentContactData.value;
-    } else if (currentContactData.type === 'telegram' && (textToCopy.includes('t.me/+') || textToCopy.includes('@'))) {
-        // Для Telegram invite links копіюємо повне посилання
-        if (textToCopy.includes('t.me/+')) {
-            // Це invite link - переконуємося, що це повне посилання
-            if (!textToCopy.startsWith('http')) {
-                textToCopy = 'https://' + textToCopy.replace(/^t\.me/, 't.me');
+    // c3 - workingHours
+    if (constants['c3']) {
+        data.workingHours = constants['c3'];
+    }
+    
+    // c4 - categories (масив)
+    if (constants['c4_count']) {
+        const count = parseInt(constants['c4_count']);
+        data.categories = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, ...
+            if (constants[`c4${char}`]) {
+                data.categories.push(constants[`c4${char}`]);
             }
         }
     }
-    secureCopy(textToCopy, 'modalCopyButton', '✓ Скопійовано!', false);
-}
-
-function modalOpenContact() {
-    if (!currentContactData || !checkSecurity()) return;
     
-    if (currentContactData.type === 'telegram') {
-        // Перевіряємо, чи це invite link, номер телефону або username
-        if (currentContactData.value.includes('t.me/') || currentContactData.value.startsWith('http')) {
-            // Це посилання (invite link або повне посилання)
-            const link = currentContactData.value.startsWith('http') ? currentContactData.value : 'https://' + currentContactData.value;
-            window.open(link, '_blank');
-        } else if (currentContactData.value.match(/^\+?\d{10,}$/)) {
-            // Це номер телефону
-            const phone = formatPhoneNumber(currentContactData.value);
-            window.open('https://t.me/+' + phone.replace('+', ''), '_blank');
+    // c5 - fopName
+    if (constants['c5']) {
+        data.fopName = constants['c5'];
+    }
+    
+    // c6 - edrpou
+    if (constants['c6']) {
+        data.edrpou = constants['c6'];
+    }
+    
+    // c7 - iban
+    if (constants['c7']) {
+        data.iban = constants['c7'];
+    }
+    
+    // c8 - bankName
+    if (constants['c8']) {
+        data.bankName = constants['c8'];
+    }
+    
+    // c9 - paymentPurpose
+    if (constants['c9']) {
+        data.paymentPurpose = constants['c9'];
+    }
+    
+    // c10 - cardNumber
+    if (constants['c10']) {
+        data.cardNumber = constants['c10'];
+    }
+    
+    // c11 - cardHolderName
+    if (constants['c11']) {
+        data.cardHolderName = constants['c11'];
+    }
+    
+    // c12 - cardBankName
+    if (constants['c12']) {
+        data.cardBankName = constants['c12'];
+    }
+    
+    // c13 - telegramUsername або telegramPhone
+    if (constants['c13']) {
+        const telegramType = constants['c13_type'];
+        if (telegramType === 'phone') {
+            data.telegramPhone = constants['c13'];
         } else {
-            // Це username
-            window.open('https://t.me/' + currentContactData.value.replace('@', ''), '_blank');
-        }
-    } else if (currentContactData.type === 'viber') {
-        const phoneToUse = window.currentViberPhone || currentContactData.value || VIBER_PHONE;
-        if (phoneToUse) {
-            const viberUrl = createViberUrl(phoneToUse.replace('+380', '0').replace(/\s/g, ''));
-            window.location.href = viberUrl;
-        }
-    } else if (currentContactData.type === 'instagram') {
-        window.open('https://instagram.com/' + currentContactData.value.replace('@', ''), '_blank');
-    } else if (currentContactData.type === 'biggo') {
-        // Для BIGGO LIVE відкриваємо URL
-        const fullUrl = getBiggoLiveUrl();
-        if (fullUrl) {
-            window.open(fullUrl, '_blank');
+            data.telegramUsername = constants['c13'];
         }
     }
     
-    closeContactModal();
-}
-
-function openTelegram() {
-    if (!checkSecurity()) return;
-    if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
-        // Якщо є номер телефону, використовуємо посилання з номером
-        const phone = formatPhoneNumber(TELEGRAM_PHONE);
-        window.open('https://t.me/+' + phone.replace('+', ''), '_blank');
-    } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
-        // Якщо є username, використовуємо стандартне посилання
-        window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
-    }
-}
-
-function openViber(phone) {
-    if (!checkSecurity()) return;
-    const phoneToUse = phone || VIBER_PHONE;
-    if (!phoneToUse) return;
-    const viberUrl = createViberUrl(phoneToUse.replace('+380', '0').replace(/\s/g, ''));
-    window.location.href = viberUrl;
-}
-
-// Функція для визначення, чи є посилання invite link
-function isTelegramInviteLink(link) {
-    if (!link) return false;
-    return link.includes('t.me/+') || link.startsWith('https://t.me/+') || link.startsWith('t.me/+');
-}
-
-// Функція для отримання повного посилання Telegram
-function getTelegramShowcaseLink() {
-    if (!TELEGRAM_SHOWCASE) return null;
-    if (isTelegramInviteLink(TELEGRAM_SHOWCASE)) {
-        // Якщо це вже повне посилання, повертаємо як є
-        if (TELEGRAM_SHOWCASE.startsWith('http')) {
-            return TELEGRAM_SHOWCASE;
-        }
-        // Якщо без https://, додаємо
-        return 'https://' + TELEGRAM_SHOWCASE.replace(/^t\.me/, 't.me');
-    }
-    // Якщо це username, формуємо стандартне посилання
-    return 'https://t.me/' + TELEGRAM_SHOWCASE;
-}
-
-// Функція для отримання тексту для відображення/копіювання
-function getTelegramShowcaseDisplayText() {
-    if (!TELEGRAM_SHOWCASE) return null;
-    if (isTelegramInviteLink(TELEGRAM_SHOWCASE)) {
-        return getTelegramShowcaseLink();
-    }
-    return '@' + TELEGRAM_SHOWCASE;
-}
-
-function openTelegramShowcase() {
-    if (!checkSecurity() || !TELEGRAM_SHOWCASE) return;
-    const link = getTelegramShowcaseLink();
-    if (link) {
-        window.open(link, '_blank');
-    }
-}
-
-function copyTelegramShowcase() {
-    if (!checkSecurity() || !TELEGRAM_SHOWCASE) return;
-    const textToCopy = getTelegramShowcaseLink();
-    if (textToCopy) {
-        secureCopy(textToCopy, 'copyTelegramShowcaseButton', '', true);
-        showCopySuccess('showcaseCopyBadge');
-    }
-}
-
-function openInstagram() {
-    if (!checkSecurity() || !INSTAGRAM_USERNAME) return;
-    window.open('https://instagram.com/' + INSTAGRAM_USERNAME, '_blank');
-}
-
-function copyInstagramUsername() {
-    if (!checkSecurity() || !INSTAGRAM_USERNAME) return;
-    secureCopy('@' + INSTAGRAM_USERNAME, 'copyInstagramButton', '', true);
-    showCopySuccess('instagramCopyBadge');
-}
-
-// Функція для витягування юзернейму з URL BIGGO LIVE
-function getBiggoLiveUsername() {
-    if (!BIGGO_LIVE_URL) return '';
-    
-    // Якщо це просто username або ID (без URL), повертаємо як є
-    if (!BIGGO_LIVE_URL.includes('http') && !BIGGO_LIVE_URL.includes('/') && !BIGGO_LIVE_URL.includes('.')) {
-        return BIGGO_LIVE_URL;
-    }
-    
-    // Якщо це URL, витягуємо username
-    try {
-        const url = new URL(BIGGO_LIVE_URL);
-        const pathParts = url.pathname.split('/');
-        const userIndex = pathParts.indexOf('user');
-        if (userIndex !== -1 && pathParts[userIndex + 1]) {
-            return pathParts[userIndex + 1];
-        }
-        // Якщо формат інший, спробуємо витягти останню частину
-        return pathParts[pathParts.length - 1] || '';
-    } catch (e) {
-        // Якщо не вдалося розпарсити URL, спробуємо регулярний вираз
-        const match = BIGGO_LIVE_URL.match(/\/user\/([^\/\?]+)/);
-        return match ? match[1] : '';
-    }
-}
-
-// Функція для отримання повного URL BIGGO LIVE
-function getBiggoLiveUrl() {
-    if (!BIGGO_LIVE_URL) return '';
-    
-    // Якщо це просто username або ID, формуємо URL
-    if (!BIGGO_LIVE_URL.includes('http') && !BIGGO_LIVE_URL.includes('/') && !BIGGO_LIVE_URL.includes('.')) {
-        return `https://biggo.tv/user/${BIGGO_LIVE_URL}`;
-    }
-    
-    // Якщо це вже URL, повертаємо як є
-    return BIGGO_LIVE_URL;
-}
-
-function openBiggoLive() {
-    if (!checkSecurity() || !BIGGO_LIVE_URL) return;
-    // Для BIGGO LIVE показуємо модальне вікно з можливістю скопіювати юзернейм
-    const username = getBiggoLiveUsername();
-    const fullUrl = getBiggoLiveUrl();
-    if (username) {
-        showContactModal('BIGGO LIVE', fullUrl, 'biggo');
-    }
-}
-
-function copyBiggoLive() {
-    if (!checkSecurity() || !BIGGO_LIVE_URL) return;
-    const fullUrl = getBiggoLiveUrl();
-    secureCopy(fullUrl, 'copyBiggoLiveButton', '', true);
-    showCopySuccess('biggoLiveCopyBadge');
-}
-
-function showCopySuccess(badgeId) {
-    const badge = document.getElementById(badgeId);
-    if (badge) {
-        badge.classList.add('show');
-        setTimeout(function() {
-            badge.classList.remove('show');
-        }, 2000);
-    }
-}
-
-// ============================================
-// СИСТЕМА ЗАХИСТУ КОДУ
-// ============================================
-
-// Функція перевірки безпеки
-function checkSecurity() {
-    try {
-        // Перевірка footer
-        const footerCredit = document.getElementById('footerCreditBlock');
-        if (!footerCredit || footerCredit.offsetParent === null) {
-            blockPage();
-            return false;
-        }
-        
-        // Перевірка наявності тексту про автора
-        const footerText = footerCredit.textContent || '';
-        if (!footerText.includes('VEO FORCE') || !footerText.includes('2025')) {
-            blockPage();
-            return false;
-        }
-        
-        // Перевірка якорів
-        const anchors = [
-            'veoAnchor1', 'veoAnchor2', 'veoAnchor3', 
-            'veoAnchor4', 'veoAnchor5', 'veoAnchor6'
-        ];
-        
-        for (let i = 0; i < anchors.length; i++) {
-            const anchor = document.getElementById(anchors[i]);
-            if (!anchor) {
-                blockPage();
-                return false;
-            }
-            
-            // Перевірка тексту якоря
-            const anchorText = anchor.textContent || anchor.innerText || '';
-            if (anchorText.trim() !== 'VEO FORCE') {
-                blockPage();
-                return false;
-            }
-            
-            // Перевірка, що елемент не прихований через display:none
-            const style = window.getComputedStyle(anchor);
-            if (style.display === 'none' || style.visibility === 'hidden') {
-                blockPage();
-                return false;
-            }
-        }
-        
-        return true;
-    } catch (e) {
-        blockPage();
-        return false;
-    }
-}
-
-// Блокування сторінки
-function blockPage() {
-    // Блокуємо всі функції
-    window.copyToClipboard = function() { return false; };
-    window.openTelegram = function() { return false; };
-    window.openViber = function() { return false; };
-    window.copyIBAN = function() { return false; };
-    window.copyEDRPOU = function() { return false; };
-    window.copyPaymentPurpose = function() { return false; };
-    window.copyCardNumber = function() { return false; };
-    window.copyCardHolder = function() { return false; };
-    window.copyCardBank = function() { return false; };
-    window.copyTelegramUsername = function() { return false; };
-    window.copyViberPhone = function() { return false; };
-    window.openTelegramShowcase = function() { return false; };
-    window.copyTelegramShowcase = function() { return false; };
-    window.openInstagram = function() { return false; };
-    window.copyInstagramUsername = function() { return false; };
-    
-    // Показуємо повідомлення про помилку
-    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#E8E8E8;font-family:Montserrat,sans-serif;"><div style="text-align:center;padding:40px;background:white;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,0.2);"><h1 style="color:#d32f2f;margin-bottom:20px;">⚠️ Помилка завантаження</h1><p style="color:#666;font-size:18px;">Сторінка пошкоджена або модифікована.<br>Будь ласка, використовуйте оригінальну версію.</p></div></div>';
-}
-
-// Перевірка безпеки перед виконанням функцій
-function secureCopy(text, buttonId, successMessage, skipButtonChange) {
-    if (!checkSecurity()) return;
-    copyToClipboard(text, buttonId, successMessage, skipButtonChange);
-}
-
-// Оригінальні функції копіювання з захистом
-function copyIBAN() {
-    if (!checkSecurity()) return;
-    secureCopy(IBAN, 'copyIbanButton');
-}
-
-function copyEDRPOU() {
-    if (!checkSecurity()) return;
-    secureCopy(EDRPOU, 'copyEdrpouButton');
-}
-
-function copyPaymentPurpose() {
-    if (!checkSecurity()) return;
-    secureCopy(PAYMENT_PURPOSE, 'copyPurposeButton', '✓ Призначення скопійовано', false);
-}
-
-function copyCardNumber() {
-    if (!checkSecurity()) return;
-    if (typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER) {
-        secureCopy(CARD_NUMBER.replace(/\s/g, ''), 'copyCardNumberButton', '✓ Номер картки скопійовано', false);
-    }
-}
-
-function copyCardHolder() {
-    if (!checkSecurity()) return;
-    if (typeof CARD_HOLDER_NAME !== 'undefined' && CARD_HOLDER_NAME) {
-        secureCopy(CARD_HOLDER_NAME, 'copyCardHolderButton', '✓ Прізвище скопійовано', false);
-    }
-}
-
-function copyCardBank() {
-    if (!checkSecurity()) return;
-    if (typeof CARD_BANK_NAME !== 'undefined' && CARD_BANK_NAME) {
-        secureCopy(CARD_BANK_NAME, 'copyCardBankButton', '✓ Назва банку скопійовано', false);
-    }
-}
-
-function copyPaymentTemplate() {
-    if (!checkSecurity()) return;
-    const templateElement = document.getElementById('paymentTemplateDisplay');
-    if (!templateElement) {
-        console.error('Шаблон не знайдено');
-        return;
-    }
-    const templateText = templateElement.innerText || templateElement.textContent || (typeof AFTER_PAYMENT_TEMPLATE !== 'undefined' ? AFTER_PAYMENT_TEMPLATE : '');
-    if (templateText) {
-        copyToClipboard(templateText, 'copyTemplateButton', '✓ Шаблон скопійовано', false);
-    } else {
-        alert('Шаблон порожній');
-    }
-}
-
-// ============================================
-// КАЛЕНДАР ПРЯМИХ ЕФІРІВ
-// ============================================
-
-// Функція витягування Calendar ID з URL
-function extractCalendarId(urlOrId) {
-    if (!urlOrId) {
-        console.error('extractCalendarId: URL не надано');
-        return null;
-    }
-    
-    console.log('extractCalendarId: обробка URL:', urlOrId);
-    
-    // Якщо це вже Calendar ID (містить @), повертаємо як є
-    if (urlOrId.includes('@') && !urlOrId.startsWith('http')) {
-        console.log('extractCalendarId: знайдено Calendar ID без URL');
-        return urlOrId;
-    }
-    
-    // Якщо це URL, витягуємо Calendar ID
-    try {
-        // Для embed URL: https://calendar.google.com/calendar/embed?src=...
-        if (urlOrId.includes('/embed?')) {
-            const url = new URL(urlOrId);
-            const src = url.searchParams.get('src');
-            if (src) {
-                const calendarId = decodeURIComponent(src);
-                console.log('extractCalendarId: витягнуто з embed URL:', calendarId);
-                return calendarId;
-            }
-        }
-        
-        // Для iCal URL: https://calendar.google.com/calendar/ical/.../public/basic.ics
-        if (urlOrId.includes('/ical/')) {
-            // Витягуємо Calendar ID з URL (між /ical/ та /public/)
-            // Може бути закодований (%40 замість @)
-            const match = urlOrId.match(/\/ical\/([^\/]+)\//);
-            if (match && match[1]) {
-                // Декодуємо URL-кодування
-                let calendarId = decodeURIComponent(match[1]);
-                console.log('extractCalendarId: витягнуто з iCal URL (після декодування):', calendarId);
-                
-                // Перевіряємо, чи містить @ (якщо ні, можливо потрібно додати @group.calendar.google.com)
-                if (!calendarId.includes('@')) {
-                    console.warn('extractCalendarId: Calendar ID не містить @, можливо неповний');
-                }
-                
-                return calendarId;
-            } else {
-                console.error('extractCalendarId: не вдалося знайти Calendar ID в iCal URL');
-            }
-        }
-        
-        // Якщо це простий Calendar ID
-        console.log('extractCalendarId: повертаємо як простий Calendar ID');
-        return urlOrId;
-    } catch (e) {
-        console.error('extractCalendarId: помилка парсингу URL:', e);
-        console.error('extractCalendarId: stack:', e.stack);
-        return null;
-    }
-}
-
-// Завантаження подій з Google Calendar
-async function loadCalendarEvents() {
-    // Завжди показуємо блок календаря
-    const calendarSection = document.getElementById('calendarSection');
-    if (calendarSection) {
-        calendarSection.style.display = 'block';
-    }
-    
-    if (!GOOGLE_CALENDAR_URL_OR_ID || GOOGLE_CALENDAR_URL_OR_ID.trim() === '') {
-        console.log('Calendar URL не вказано');
-        showCalendarNotSynced();
-        return;
-    }
-    
-    const calendarIdRaw = extractCalendarId(GOOGLE_CALENDAR_URL_OR_ID);
-    if (!calendarIdRaw) {
-        console.error('Не вдалося витягти Calendar ID з:', GOOGLE_CALENDAR_URL_OR_ID);
-        showCalendarNotSynced();
-        return;
-    }
-    
-    console.log('✅ Calendar ID витягнуто:', calendarIdRaw);
-    
-    // Перевіряємо, чи Calendar ID містить @ (повинен бути формат: id@group.calendar.google.com)
-    if (!calendarIdRaw.includes('@')) {
-        console.warn('⚠️ Calendar ID не містить @, можливо неповний:', calendarIdRaw);
-    }
-    
-    const calendarId = encodeURIComponent(calendarIdRaw);
-    console.log('📝 Calendar ID закодовано:', calendarId);
-    
-    try {
-        // Спочатку спробуємо через Google Calendar API (якщо є ключ)
-        if (GOOGLE_CALENDAR_API_KEY) {
-            const now = new Date();
-            const fiveDaysLater = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000);
-            
-            const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?` +
-                `timeMin=${now.toISOString()}&` +
-                `timeMax=${fiveDaysLater.toISOString()}&` +
-                `singleEvents=true&` +
-                `orderBy=startTime&` +
-                `maxResults=50&` +
-                `key=${GOOGLE_CALENDAR_API_KEY}`;
-            
-            const response = await fetch(apiUrl);
-            
-            if (response.ok) {
-                const data = await response.json();
-                
-                if (data.items && data.items.length > 0) {
-                    displayCalendarEvents(data.items);
-                    document.getElementById('calendarSection').style.display = 'block';
-                    
-                    return;
-                }
-            }
-        }
-        
-        // Якщо API не працює або немає ключа, використовуємо iCal feed
-        // Використовуємо оригінальний URL, якщо він вже iCal, інакше формуємо
-        let icalUrl;
-        if (GOOGLE_CALENDAR_URL_OR_ID.includes('/ical/') && GOOGLE_CALENDAR_URL_OR_ID.includes('/public/basic.ics')) {
-            // Використовуємо оригінальний URL без змін
-            icalUrl = GOOGLE_CALENDAR_URL_OR_ID;
-            console.log('Використовуємо оригінальний iCal URL:', icalUrl);
-        } else {
-            // Формуємо iCal URL з Calendar ID
-            icalUrl = `https://calendar.google.com/calendar/ical/${calendarId}/public/basic.ics`;
-            console.log('Сформовано iCal URL:', icalUrl);
-        }
-        await loadCalendarFromICal(icalUrl, calendarIdRaw);
-        
-    } catch (error) {
-        console.error('Помилка завантаження календаря:', error);
-        console.error('Деталі помилки:', error.message, error.stack);
-        // Спробуємо завантажити через iCal як fallback
-        try {
-            // Використовуємо оригінальний URL, якщо він вже iCal, інакше формуємо
-            let icalUrl;
-            if (GOOGLE_CALENDAR_URL_OR_ID.includes('/ical/') && GOOGLE_CALENDAR_URL_OR_ID.includes('/public/basic.ics')) {
-                icalUrl = GOOGLE_CALENDAR_URL_OR_ID;
-            } else {
-                icalUrl = `https://calendar.google.com/calendar/ical/${calendarId}/public/basic.ics`;
-            }
-            console.log('Спроба завантажити через iCal fallback:', icalUrl);
-            await loadCalendarFromICal(icalUrl, calendarIdRaw);
-        } catch (icalError) {
-            console.error('Помилка завантаження через iCal fallback:', icalError);
-            console.error('Деталі помилки iCal:', icalError.message);
-            showCalendarNotSynced();
-        }
-    }
-}
-
-// Завантаження через iCal feed
-async function loadCalendarFromICal(icalUrl, calendarIdRaw) {
-    try {
-        console.log('Завантаження iCal з URL:', icalUrl);
-        
-        // Використовуємо прямий запит до публічного календаря Google
-        // Публічні календарі доступні без CORS обмежень
-        const response = await fetch(icalUrl, {
-            method: 'GET',
-            mode: 'cors',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'text/calendar, text/plain, */*'
-            }
-        });
-        
-        console.log('Відповідь отримано, статус:', response.status, response.statusText);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Помилка відповіді:', errorText);
-            throw new Error('Не вдалося завантажити календар. Статус: ' + response.status + ', ' + response.statusText);
-        }
-        
-        const icalText = await response.text();
-        console.log('iCal завантажено, розмір:', icalText.length);
-        console.log('Перші 500 символів iCal:', icalText.substring(0, 500));
-        
-        const events = parseICal(icalText);
-        console.log('Подій знайдено:', events.length);
-        if (events.length > 0) {
-            console.log('Перша подія:', events[0]);
-        }
-        
-        const calendarSection = document.getElementById('calendarSection');
-        if (!calendarSection) {
-            console.error('Блок календаря не знайдено в DOM');
-            showCalendarNotSynced();
-            return;
-        }
-        
-        // Завжди показуємо блок календаря
-        calendarSection.style.display = 'block';
-        
-        if (events.length > 0) {
-            displayCalendarEvents(events);
-        } else {
-            // Показуємо повідомлення якщо подій немає
-            const container = document.getElementById('calendarEvents');
-            if (container) {
-                container.innerHTML = '<div class="calendar-empty" style="text-align: center; padding: 30px; color: #8B6F47; font-size: 16px;">На найближчі 5 днів ефірів не заплановано</div>';
-            }
-        }
-        
-    } catch (error) {
-        console.error('Помилка завантаження iCal:', error);
-        console.error('Деталі помилки:', error.message);
-        console.error('Stack trace:', error.stack);
-        
-        // Показуємо повідомлення про помилку
-        const calendarSection = document.getElementById('calendarSection');
-        const container = document.getElementById('calendarEvents');
-        if (calendarSection) {
-            calendarSection.style.display = 'block';
-        }
-        if (container) {
-            container.innerHTML = '<div class="calendar-not-synced" style="text-align: center; padding: 30px; color: #8B6F47; font-size: 18px; font-weight: 600;">📅 Календар LIVE-трансляцій не синхронізовано<br><small style="font-size: 14px; color: #999; margin-top: 10px; display: block;">Помилка: ' + error.message + '</small></div>';
-        }
-        showCalendarNotSynced();
-    }
-}
-
-// Парсинг iCal формату
-function parseICal(icalText) {
-    const events = [];
-    const lines = icalText.split('\n');
-    let currentEvent = null;
-    let inEvent = false;
-    
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        
-        if (line === 'BEGIN:VEVENT') {
-            inEvent = true;
-            currentEvent = {};
-        } else if (line === 'END:VEVENT') {
-            if (currentEvent && currentEvent.start) {
-                try {
-                    // Створюємо Date об'єкт з UTC дати
-                    const startDate = new Date(currentEvent.start);
-                    const now = new Date();
-                    
-                    console.log('Обробка події:', {
-                        summary: currentEvent.summary,
-                        start: currentEvent.start,
-                        startDate: startDate,
-                        now: now
+    // c14 - viberContacts (масив контактів)
+    if (constants['c14_count']) {
+        const count = parseInt(constants['c14_count']);
+        data.viberContacts = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, d, e
+            if (constants[`c14${char}`]) {
+                const contactData = constants[`c14${char}`].split('|');
+                if (contactData.length >= 1) {
+                    data.viberContacts.push({
+                        phone: contactData[0],
+                        name: contactData[1] || ''
                     });
-                    
-                    // Перевіряємо, чи дата валідна
-                    if (isNaN(startDate.getTime())) {
-                        console.warn('Невалідна дата події:', currentEvent.start);
-                    } else {
-                        // Встановлюємо час на початок дня для правильної фільтрації (локальний час)
-                        const nowLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-                        const fiveDaysLater = new Date(nowLocal.getTime() + 5 * 24 * 60 * 60 * 1000);
-                        fiveDaysLater.setHours(23, 59, 59, 999);
-                        
-                        // Конвертуємо startDate в локальний час для порівняння
-                        const startDateLocal = new Date(startDate.getTime());
-                        
-                        console.log('Перевірка діапазону:', {
-                            startDateLocal: startDateLocal,
-                            nowLocal: nowLocal,
-                            fiveDaysLater: fiveDaysLater,
-                            вДіапазоні: startDateLocal >= nowLocal && startDateLocal <= fiveDaysLater
-                        });
-                        
-                        // Перевіряємо, чи подія в межах 5 днів (включаючи сьогодні)
-                        // Також показуємо події, які вже почалися сьогодні
-                        if (startDateLocal <= fiveDaysLater) {
-                            events.push({
-                                summary: currentEvent.summary || 'Подія',
-                                start: { dateTime: currentEvent.start },
-                                end: { dateTime: currentEvent.end || currentEvent.start }
-                            });
-                            console.log('Подія додана:', currentEvent.summary);
-                        } else {
-                            console.log('Подія не в діапазоні 5 днів:', currentEvent.summary);
-                        }
-                    }
-                } catch (e) {
-                    console.error('Помилка обробки події:', e, currentEvent);
                 }
             }
-            inEvent = false;
-            currentEvent = null;
-        } else if (inEvent && currentEvent) {
-            if (line.startsWith('SUMMARY:')) {
-                currentEvent.summary = line.substring(8).trim();
-            } else if (line.startsWith('DTSTART')) {
-                // Може бути DTSTART;VALUE=DATE або DTSTART:...
-                const dateStr = line.includes(':') ? line.substring(line.indexOf(':') + 1) : '';
-                if (dateStr) {
-                    currentEvent.start = parseICalDate(dateStr);
+        }
+    } else if (constants['c14']) {
+        // Зворотна сумісність: якщо є старий формат c14 без _count
+        data.viberContacts = [{
+            phone: constants['c14'],
+            name: ''
+        }];
+    }
+    
+    // c15 - telegramShowcase
+    if (constants['c15']) {
+        data.telegramShowcase = constants['c15'];
+    }
+    
+    // c16 - instagramUsername
+    if (constants['c16']) {
+        data.instagramUsername = constants['c16'];
+    }
+    
+    // c17 - biggoLiveUrl
+    if (constants['c17']) {
+        data.biggoLiveUrl = constants['c17'];
+    }
+    
+    // c18 - facebookPage
+    if (constants['c18']) {
+        data.facebookPage = constants['c18'];
+    }
+    
+    // c19 - tiktokUsername
+    if (constants['c19']) {
+        data.tiktokUsername = constants['c19'];
+    }
+    
+    // c20 - youtubeChannel
+    if (constants['c20']) {
+        data.youtubeChannel = constants['c20'];
+    }
+    
+    // c21 - whatsappPhone
+    if (constants['c21']) {
+        data.whatsappPhone = constants['c21'];
+    }
+    
+    // c22 - googleCalendarUrl
+    if (constants['c22']) {
+        data.googleCalendarUrl = constants['c22'];
+    }
+    
+    // c23 - storeLocations (масив локацій)
+    if (constants['c23_count']) {
+        const count = parseInt(constants['c23_count']);
+        data.storeLocations = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, ...
+            if (constants[`c23${char}`]) {
+                const locationData = constants[`c23${char}`].split('|');
+                if (locationData.length === 2) {
+                    data.storeLocations.push({
+                        name: locationData[0],
+                        url: locationData[1]
+                    });
                 }
-            } else if (line.startsWith('DTEND')) {
-                // Може бути DTEND;VALUE=DATE або DTEND:...
-                const dateStr = line.includes(':') ? line.substring(line.indexOf(':') + 1) : '';
-                if (dateStr) {
-                    currentEvent.end = parseICalDate(dateStr);
-                }
-            } else if (line.startsWith('DESCRIPTION:')) {
-                currentEvent.description = line.substring(12).trim();
             }
         }
     }
     
-    return events.sort((a, b) => new Date(a.start.dateTime) - new Date(b.start.dateTime));
-}
-
-// Парсинг дати з iCal формату
-function parseICalDate(dateStr) {
-    // Формат: 20240115T120000Z або 20240115
-    if (dateStr.length >= 15 && dateStr.includes('T')) {
-        const year = dateStr.substring(0, 4);
-        const month = dateStr.substring(4, 6);
-        const day = dateStr.substring(6, 8);
-        const hour = dateStr.substring(9, 11);
-        const minute = dateStr.substring(11, 13);
-        // Якщо дата в UTC (закінчується на Z), конвертуємо в ISO формат з Z
-        if (dateStr.endsWith('Z')) {
-            return `${year}-${month}-${day}T${hour}:${minute}:00Z`;
+    // c24 - paymentOptions (масив)
+    if (constants['c24_count']) {
+        const count = parseInt(constants['c24_count']);
+        data.paymentOptions = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, ...
+            if (constants[`c24${char}`]) {
+                data.paymentOptions.push(constants[`c24${char}`]);
+            }
         }
-        return `${year}-${month}-${day}T${hour}:${minute}:00`;
-    } else if (dateStr.length === 8) {
-        const year = dateStr.substring(0, 4);
-        const month = dateStr.substring(4, 6);
-        const day = dateStr.substring(6, 8);
-        return `${year}-${month}-${day}T00:00:00`;
     }
-    return dateStr;
+    
+    // c25 - deliveryMethod
+    if (constants['c25']) {
+        data.deliveryMethod = constants['c25'];
+    }
+    
+    // c26 - deliveryTime
+    if (constants['c26']) {
+        data.deliveryTime = constants['c26'];
+    }
+    
+    // c27 - deliveryNote
+    if (constants['c27']) {
+        data.deliveryNote = constants['c27'];
+    }
+    
+    // c28 - exchangeDays
+    if (constants['c28']) {
+        data.exchangeDays = parseInt(constants['c28']) || 0;
+    }
+    
+    // c29 - returnDays
+    if (constants['c29']) {
+        data.returnDays = parseInt(constants['c29']) || 0;
+    }
+    
+    // c30 - returnConditions (масив)
+    if (constants['c30_count']) {
+        const count = parseInt(constants['c30_count']);
+        data.returnConditions = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, ...
+            if (constants[`c30${char}`]) {
+                data.returnConditions.push(constants[`c30${char}`]);
+            }
+        }
+    }
+    
+    // c31 - returnMoneyTime
+    if (constants['c31']) {
+        data.returnMoneyTime = constants['c31'];
+    }
+    
+    // c32 - returnDeliveryCost
+    if (constants['c32']) {
+        data.returnDeliveryCost = constants['c32'];
+    }
+    
+    // c33 - afterPaymentTemplate
+    if (constants['c33']) {
+        // Замінюємо \\n на справжні переноси рядків
+        // Також обробляємо випадки, коли \n вже є в рядку
+        let template = constants['c33'];
+        // Спочатку замінюємо \\n (екрановані) на \n
+        template = template.replace(/\\n/g, '\n');
+        // Якщо є \n без екранування, залишаємо як є
+        data.afterPaymentTemplate = template;
+    }
+    
+    return data;
 }
 
-// Відображення подій календаря
-function displayCalendarEvents(events) {
-    const container = document.getElementById('calendarEvents');
-    container.innerHTML = '';
+/**
+ * Обробляє дані клієнта та встановлює глобальні константи
+ * Викликається автоматично при завантаженні сторінки
+ */
+function processClientData() {
+    // Перевіряємо, чи є CLIENT_CONSTANTS (простий текст з псевдонімами)
+    if (typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS && CLIENT_CONSTANTS.trim().length > 0) {
+        // Якщо є простий текст з константами, парсимо його
+        const parsedData = parseClientConstants(CLIENT_CONSTANTS);
+        window.CLIENT_DATA = parsedData;
+        // Діагностика: виводимо в консоль для перевірки
+        console.log('✅ CLIENT_CONSTANTS оброблено, розпарсено даних:', Object.keys(parsedData).length);
+        console.log('📦 Приклад даних:', { shopName: parsedData.shopName, fopName: parsedData.fopName });
+    }
     
-    if (events.length === 0) {
-        container.innerHTML = '<div class="calendar-empty">На найближчі 5 днів ефірів не заплановано</div>';
+    // Перевіряємо, чи дані клієнта визначені (перевіряємо window.CLIENT_DATA)
+    if (typeof window.CLIENT_DATA === 'undefined' && typeof CLIENT_DATA === 'undefined') {
+        console.error('❌ CLIENT_DATA не визначено. Переконайтеся, що дані клієнта завантажені.');
         return;
     }
     
-    events.forEach(event => {
-        const eventDiv = document.createElement('div');
-        eventDiv.className = 'calendar-event';
-        
-        const startDate = new Date(event.start.dateTime || event.start.date);
-        const endDate = event.end ? new Date(event.end.dateTime || event.end.date) : null;
-        
-        const dateStr = formatEventDate(startDate);
-        const timeStr = formatEventTime(startDate, endDate);
-        
-        eventDiv.innerHTML = `
-            <div class="calendar-event-date">${dateStr}</div>
-            <div class="calendar-event-time">${timeStr}</div>
-            <div class="calendar-event-title">${event.summary || 'Подія'}</div>
-        `;
-        
-        container.appendChild(eventDiv);
+    // Використовуємо window.CLIENT_DATA або CLIENT_DATA
+    const data = window.CLIENT_DATA || CLIENT_DATA;
+    
+    // Встановлюємо глобальні константи з даних клієнта
+    window.SHOP_NAME = data.shopName || '';
+    window.SHOP_DESCRIPTION = data.shopDescription || '';
+    window.WORKING_HOURS = data.workingHours || '';
+    window.CATEGORIES = data.categories || [];
+    window.FOP_NAME = data.fopName || '';
+    window.EDRPOU = data.edrpou || '';
+    window.IBAN = data.iban || '';
+    window.BANK_NAME = data.bankName || '';
+    window.PAYMENT_PURPOSE = data.paymentPurpose || '';
+    
+    // Діагностика: перевіряємо, чи дані встановлені
+    console.log('✅ Глобальні константи встановлено:', {
+        SHOP_NAME: window.SHOP_NAME,
+        FOP_NAME: window.FOP_NAME,
+        IBAN: window.IBAN ? 'встановлено' : 'порожньо'
     });
-}
-
-// Показ повідомлення про відсутність синхронізації
-function showCalendarNotSynced() {
-    const calendarSection = document.getElementById('calendarSection');
-    const calendarIframe = document.getElementById('calendarIframe');
-    const calendarContainer = document.querySelector('.calendar-container');
     
-    if (!calendarSection) {
-        console.error('Блок календаря не знайдено');
-        return;
-    }
+    // Оплата на картку
+    window.CARD_NUMBER = data.cardNumber || '';
+    window.CARD_HOLDER_NAME = data.cardHolderName || '';
+    window.CARD_BANK_NAME = data.cardBankName || '';
     
-    calendarSection.style.display = 'block';
-    
-    // Приховуємо iframe та показуємо повідомлення
-    if (calendarIframe) {
-        calendarIframe.style.display = 'none';
-    }
-    
-    if (calendarContainer) {
-        // Створюємо повідомлення про помилку
-        let errorDiv = calendarContainer.querySelector('.calendar-error-message');
-        if (!errorDiv) {
-            errorDiv = document.createElement('div');
-            errorDiv.className = 'calendar-error-message';
-            errorDiv.style.cssText = 'text-align: center; padding: 30px; color: #8B6F47; font-size: 18px; font-weight: 600; border: 1px solid #FFD89B; border-radius: 15px; background: rgba(255, 243, 205, 0.8); margin-bottom: 25px;';
-            calendarContainer.insertBefore(errorDiv, calendarContainer.firstChild);
-        }
-        errorDiv.innerHTML = '📅 Календар LIVE-трансляцій не синхронізовано';
-    }
-    
-}
-
-// Форматування дати події
-function formatEventDate(date) {
-    const days = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота'];
-    const months = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 
-                  'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
-    
-    const dayName = days[date.getDay()];
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    
-    return `${dayName}, ${day} ${month}`;
-}
-
-// Форматування часу події
-function formatEventTime(startDate, endDate) {
-    const formatTime = (date) => {
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        return `${hours}:${minutes}`;
-    };
-    
-    const startTime = formatTime(startDate);
-    
-    if (endDate) {
-        const endTime = formatTime(endDate);
-        return `${startTime} - ${endTime}`;
-    }
-    
-    return startTime;
-}
-
-        // Ініціалізація при завантаженні
-document.addEventListener('DOMContentLoaded', function() {
-    // Перевірка безпеки перед ініціалізацією (після завантаження DOM)
-    setTimeout(function() {
-        if (!checkSecurity()) {
-            return;
-        }
-    }, 200);
-    
-    // Заповнюємо дані на сторінці
-    // Назва магазину
-    const shopNameHeader = document.getElementById('shopNameHeader');
-    if (shopNameHeader && typeof SHOP_NAME !== 'undefined') {
-        shopNameHeader.textContent = SHOP_NAME;
-    }
-    
-    // Опис магазину (якщо є)
-    const shopDescriptionEl = document.querySelector('.header p');
-    if (shopDescriptionEl && typeof SHOP_DESCRIPTION !== 'undefined' && SHOP_DESCRIPTION) {
-        shopDescriptionEl.textContent = SHOP_DESCRIPTION;
-    }
-    
-    // Час роботи / Контактний час та Асортимент (показуємо тільки якщо є календар)
-    // Перевіряємо, чи є календар (GOOGLE_CALENDAR_URL_OR_ID)
-    const hasCalendar = typeof GOOGLE_CALENDAR_URL_OR_ID !== 'undefined' && GOOGLE_CALENDAR_URL_OR_ID && GOOGLE_CALENDAR_URL_OR_ID.trim().length > 0;
-    
-    if (hasCalendar) {
-        // Час роботи / Контактний час
-        if (typeof WORKING_HOURS !== 'undefined' && WORKING_HOURS) {
-            const workingHoursSection = document.createElement('div');
-            workingHoursSection.className = 'section';
-            workingHoursSection.innerHTML = `
-                <div class="card">
-                    <div class="section-title">
-                        <span>🕐</span>
-                        <span>Час роботи / Контактний час</span>
-                    </div>
-                    <p style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0;">${WORKING_HOURS}</p>
-                </div>
-            `;
-            const calendarSection = document.getElementById('calendarSection');
-            if (calendarSection && calendarSection.parentNode) {
-                // Вставляємо після календаря
-                calendarSection.parentNode.insertBefore(workingHoursSection, calendarSection.nextSibling);
-            }
-        }
-        
-        // Асортимент (категорії товарів)
-        if (typeof CATEGORIES !== 'undefined' && CATEGORIES && CATEGORIES.length > 0) {
-            const categoriesSection = document.createElement('div');
-            categoriesSection.className = 'section';
-            const categoriesList = CATEGORIES.map(cat => `<li style="margin-bottom: 8px;">${cat}</li>`).join('');
-            categoriesSection.innerHTML = `
-                <div class="card">
-                    <div class="section-title">
-                        <span>🛍️</span>
-                        <span>Асортимент (категорії товарів)</span>
-                    </div>
-                    <ul style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0; padding-left: 20px;">
-                        ${categoriesList}
-                    </ul>
-                </div>
-            `;
-            const calendarSection = document.getElementById('calendarSection');
-            if (calendarSection && calendarSection.parentNode) {
-                // Вставляємо після календаря (або після блоку "Час роботи", якщо він є)
-                const allSections = Array.from(calendarSection.parentNode.querySelectorAll('.section'));
-                const calendarIndex = allSections.indexOf(calendarSection);
-                const workingHoursIndex = allSections.findIndex(section => {
-                    const title = section.querySelector('.section-title');
-                    return title && title.textContent.includes('🕐');
-                });
-                
-                if (workingHoursIndex > calendarIndex && workingHoursIndex !== -1) {
-                    // Якщо є блок "Час роботи" після календаря, вставляємо після нього
-                    const workingHoursSection = allSections[workingHoursIndex];
-                    if (workingHoursSection.nextSibling) {
-                        workingHoursSection.parentNode.insertBefore(categoriesSection, workingHoursSection.nextSibling);
-                    } else {
-                        workingHoursSection.parentNode.appendChild(categoriesSection);
-                    }
-                } else {
-                    // Вставляємо після календаря
-                    if (calendarSection.nextSibling) {
-                        calendarSection.parentNode.insertBefore(categoriesSection, calendarSection.nextSibling);
-                    } else {
-                        calendarSection.parentNode.appendChild(categoriesSection);
-                    }
-                }
-            }
-        }
-    }
-    
-    // Назва календаря з назвою магазину
-    const calendarTitle = document.getElementById('calendarTitle');
-    if (calendarTitle && typeof SHOP_NAME !== 'undefined') {
-        calendarTitle.textContent = SHOP_NAME + ': Розклад прямих ефірів';
-    }
-    
-    const fopNameEl = document.getElementById('fopName');
-    if (fopNameEl && typeof FOP_NAME !== 'undefined') {
-        fopNameEl.textContent = FOP_NAME;
-    }
-    
-    const edrpouValueEl = document.getElementById('edrpouValue');
-    if (edrpouValueEl && typeof EDRPOU !== 'undefined') {
-        edrpouValueEl.textContent = EDRPOU;
-    }
-    
-    const ibanValueEl = document.getElementById('ibanValue');
-    if (ibanValueEl && typeof IBAN !== 'undefined') {
-        ibanValueEl.textContent = IBAN;
-    }
-    
-    const bankNameEl = document.getElementById('bankName');
-    if (bankNameEl && typeof BANK_NAME !== 'undefined') {
-        bankNameEl.textContent = BANK_NAME;
-    }
-    
-    const paymentPurposeValueEl = document.getElementById('paymentPurposeValue');
-    if (paymentPurposeValueEl && typeof PAYMENT_PURPOSE !== 'undefined') {
-        paymentPurposeValueEl.textContent = PAYMENT_PURPOSE;
-    }
-    
-    // Оплата на картку (окремий блок)
-    const cardPaymentSection = document.getElementById('cardPaymentSection');
-    if (cardPaymentSection && typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER) {
-        cardPaymentSection.style.display = 'block';
-        
-        const cardNumberValueEl = document.getElementById('cardNumberValue');
-        if (cardNumberValueEl) {
-            // Форматуємо номер картки з пробілами (групи по 4 цифри)
-            const formattedCardNumber = CARD_NUMBER.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim();
-            cardNumberValueEl.textContent = formattedCardNumber;
-        }
-        
-        const cardHolderNameValueEl = document.getElementById('cardHolderNameValue');
-        if (cardHolderNameValueEl && typeof CARD_HOLDER_NAME !== 'undefined' && CARD_HOLDER_NAME) {
-            cardHolderNameValueEl.textContent = CARD_HOLDER_NAME;
-        } else if (cardHolderNameValueEl) {
-            cardHolderNameValueEl.textContent = '—';
-        }
-        
-        const cardBankNameValueEl = document.getElementById('cardBankNameValue');
-        if (cardBankNameValueEl && typeof CARD_BANK_NAME !== 'undefined' && CARD_BANK_NAME) {
-            cardBankNameValueEl.textContent = CARD_BANK_NAME;
-        } else if (cardBankNameValueEl) {
-            cardBankNameValueEl.textContent = '—';
-        }
-    }
-    
-    const telegramUsernameEl = document.getElementById('telegramUsername');
-    if (telegramUsernameEl) {
-        if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
-            // Якщо є номер телефону, показуємо його
-            telegramUsernameEl.textContent = formatPhoneNumber(TELEGRAM_PHONE);
-        } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
-            // Якщо є username, показуємо його
-            telegramUsernameEl.textContent = '@' + TELEGRAM_USERNAME;
-        }
-    }
-    
-    // Viber контакти
-    const viberContactsListEl = document.getElementById('viberContactsList');
-    if (viberContactsListEl) {
-        // Перевіряємо новий формат (масив контактів)
-        if (typeof VIBER_CONTACTS !== 'undefined' && VIBER_CONTACTS && VIBER_CONTACTS.length > 0) {
-            viberContactsListEl.innerHTML = '';
-            VIBER_CONTACTS.forEach((contact, index) => {
-                const phone = contact.phone || '';
-                const name = contact.name || '';
-                const displayName = name ? `Вайбер (${name})` : 'Вайбер';
-                const formattedPhone = formatPhoneNumber(phone);
-                
-                const contactItem = document.createElement('div');
-                contactItem.className = 'contact-item contact-item-viber';
-                contactItem.style.cursor = 'pointer';
-                contactItem.onclick = function() {
-                    window.currentViberPhone = phone; // Зберігаємо номер для відкриття
-                    showContactModal(displayName, formattedPhone, 'viber');
-                };
-                contactItem.innerHTML = `
-                    <div class="contact-icon">
-                        <img src="https://simpleicons.org/icons/viber.svg" alt="Viber" width="24" height="24" style="display: block;">
-                    </div>
-                    <div class="contact-content">
-                        <div class="contact-name">
-                            ${displayName}
-                            <span class="copy-success-badge" id="viberCopyBadge${index}">✓ Скопійовано!</span>
-                        </div>
-                        <div class="contact-value" id="viberPhone${index}">${formattedPhone}</div>
-                    </div>
-                    <div class="contact-actions" onclick="event.stopPropagation();">
-                        <button class="contact-action-btn contact-open-btn" onclick="openViber('${phone}')" title="Відкрити">
-                            <i class="bi bi-box-arrow-up-right"></i>
-                        </button>
-                        <button class="contact-action-btn contact-copy-btn" id="copyViberPhoneButton${index}" onclick="copyViberPhone('${phone}', ${index})" title="Скопіювати">
-                            <i class="bi bi-files"></i>
-                        </button>
-                    </div>
-                `;
-                viberContactsListEl.appendChild(contactItem);
-            });
-        } else if (typeof VIBER_PHONE !== 'undefined' && VIBER_PHONE) {
-            // Зворотна сумісність: якщо є старий формат
-            const viberPhoneEl = document.getElementById('viberPhone');
-            if (viberPhoneEl) {
-                viberPhoneEl.textContent = formatPhoneNumber(VIBER_PHONE);
-            }
-        }
-    }
-    // Вітрина
-    const telegramShowcaseItem = document.getElementById('telegramShowcaseItem');
-    if (telegramShowcaseItem) {
-        if (typeof TELEGRAM_SHOWCASE !== 'undefined' && TELEGRAM_SHOWCASE) {
-            // Визначаємо, чи це invite link
-            const telegramShowcaseEl = document.getElementById('telegramShowcase');
-            if (telegramShowcaseEl) {
-                if (isTelegramInviteLink(TELEGRAM_SHOWCASE)) {
-                    telegramShowcaseEl.textContent = 'Телеграм-спільнота';
-                } else {
-                    telegramShowcaseEl.textContent = '@' + TELEGRAM_SHOWCASE;
-                }
-            }
-            telegramShowcaseItem.style.display = 'flex';
-            const telegramShowcaseButtonsEl = document.getElementById('telegramShowcaseButtons');
-            if (telegramShowcaseButtonsEl) {
-                telegramShowcaseButtonsEl.style.display = 'flex';
-            }
-            const telegramShowcaseUnavailableEl = document.getElementById('telegramShowcaseUnavailable');
-            if (telegramShowcaseUnavailableEl) {
-                telegramShowcaseUnavailableEl.style.display = 'none';
-            }
-        } else {
-            // Приховуємо блок, якщо немає даних
-            telegramShowcaseItem.style.display = 'none';
-        }
-    }
-    
-    // Instagram
-    const instagramItem = document.getElementById('instagramItem');
-    if (instagramItem) {
-        if (typeof INSTAGRAM_USERNAME !== 'undefined' && INSTAGRAM_USERNAME) {
-            const instagramUsernameEl = document.getElementById('instagramUsername');
-            if (instagramUsernameEl) {
-                instagramUsernameEl.textContent = '@' + INSTAGRAM_USERNAME;
-            }
-            const instagramButtonsEl = document.getElementById('instagramButtons');
-            if (instagramButtonsEl) {
-                instagramButtonsEl.style.display = 'flex';
-            }
-            const instagramUnavailableEl = document.getElementById('instagramUnavailable');
-            if (instagramUnavailableEl) {
-                instagramUnavailableEl.style.display = 'none';
-            }
-            instagramItem.style.display = 'flex';
-        } else {
-            // Приховуємо блок, якщо немає даних
-            instagramItem.style.display = 'none';
-        }
-    }
-    
-    // BIGGO LIVE
-    const biggoLiveItem = document.getElementById('biggoLiveItem');
-    if (biggoLiveItem) {
-        if (typeof BIGGO_LIVE_URL !== 'undefined' && BIGGO_LIVE_URL) {
-            const username = getBiggoLiveUsername();
-            const biggoLiveValueEl = document.getElementById('biggoLiveValue');
-            if (biggoLiveValueEl) {
-                biggoLiveValueEl.textContent = username ? '@' + username : BIGGO_LIVE_URL;
-            }
-            const biggoLiveButtonsEl = document.getElementById('biggoLiveButtons');
-            if (biggoLiveButtonsEl) {
-                biggoLiveButtonsEl.style.display = 'flex';
-            }
-            const biggoLiveUnavailableEl = document.getElementById('biggoLiveUnavailable');
-            if (biggoLiveUnavailableEl) {
-                biggoLiveUnavailableEl.style.display = 'none';
-            }
-            biggoLiveItem.style.display = 'flex';
-        } else {
-            // Приховуємо блок, якщо немає даних
-            biggoLiveItem.style.display = 'none';
-        }
-    }
-    
-    // Перевірка TikTok-браузера та налаштування Intersection Observer для показу popup
-    const ua = navigator.userAgent || navigator.vendor || window.opera || '';
-    const isTikTok = ua.includes("TikTok") || ua.includes("Musical.ly") || ua.includes("Bytedance");
-    
-    if (isTikTok) {
-        // Знаходимо перший видимий елемент контакту
-        const contactItems = document.querySelectorAll('.contact-item');
-        let firstVisibleContact = null;
-        
-        // Шукаємо перший елемент, який відображається (не прихований)
-        for (let i = 0; i < contactItems.length; i++) {
-            const item = contactItems[i];
-            const style = window.getComputedStyle(item);
-            if (style.display !== 'none' && style.visibility !== 'hidden' && item.offsetParent !== null) {
-                firstVisibleContact = item;
-                break;
-            }
-        }
-        
-        // Якщо знайшли елемент, налаштовуємо Intersection Observer
-        if (firstVisibleContact) {
-            let popupShown = false;
-            
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (!popupShown && entry.isIntersecting) {
-                        const rect = entry.boundingClientRect;
-                        const viewportHeight = window.innerHeight;
-                        
-                        // Перевіряємо, чи елемент повністю з'явився внизу екрану
-                        // Елемент вважається видимим, коли його нижня частина видно на екрані
-                        const isVisibleAtBottom = rect.bottom <= viewportHeight && rect.bottom > 0;
-                        const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
-                        
-                        // Показуємо popup, коли елемент стає видимим (особливо внизу екрану)
-                        if ((isVisibleAtBottom || isFullyVisible) && entry.intersectionRatio >= 0.3) {
-                            popupShown = true;
-                            document.getElementById('tiktok-popup').style.display = 'flex';
-                            // Відключаємо observer після показу popup
-                            observer.disconnect();
-                        }
-                    }
-                });
-            }, {
-                threshold: [0, 0.1, 0.3, 0.5, 0.7, 1.0], // Різні рівні видимості
-                rootMargin: '0px'
-            });
-            
-            // Починаємо спостерігати за першим елементом контакту
-            observer.observe(firstVisibleContact);
-        } else {
-            // Якщо не знайшли елемент, показуємо popup одразу (fallback)
-            document.getElementById('tiktok-popup').style.display = 'flex';
-        }
-    }
-    
-    // Заповнюємо умови оплати
-    const paymentOptionsContainer = document.getElementById('paymentOptions');
-    if (paymentOptionsContainer && typeof PAYMENT_OPTIONS !== 'undefined' && Array.isArray(PAYMENT_OPTIONS)) {
-        paymentOptionsContainer.innerHTML = '';
-        PAYMENT_OPTIONS.forEach(function(option) {
-            const div = document.createElement('div');
-            div.className = 'payment-option';
-            div.innerHTML = '<strong>' + option + '</strong>';
-            paymentOptionsContainer.appendChild(div);
-        });
-    }
-    
-    // Заповнюємо умови доставки
-    const deliveryMethodEl = document.getElementById('deliveryMethod');
-    if (deliveryMethodEl && typeof DELIVERY_METHOD !== 'undefined') {
-        deliveryMethodEl.textContent = DELIVERY_METHOD;
-    }
-    const deliveryTimeEl = document.getElementById('deliveryTime');
-    if (deliveryTimeEl && typeof DELIVERY_TIME !== 'undefined') {
-        deliveryTimeEl.textContent = DELIVERY_TIME;
-    }
-    const deliveryNoteEl = document.getElementById('deliveryNote');
-    if (deliveryNoteEl && typeof DELIVERY_NOTE !== 'undefined') {
-        deliveryNoteEl.textContent = DELIVERY_NOTE;
-    }
-    
-    // Заповнюємо умови обміну та повернення
-    const exchangeReturnList = document.getElementById('exchangeReturnList');
-    if (!exchangeReturnList) {
-        console.warn('Елемент exchangeReturnList не знайдено');
+    // Контакти
+    // Telegram може бути username або номер телефону
+    if (data.telegramPhone) {
+        // Якщо є номер телефону, використовуємо його
+        window.TELEGRAM_PHONE = data.telegramPhone;
+        window.TELEGRAM_USERNAME = ''; // Очищаємо username
     } else {
-        exchangeReturnList.innerHTML = '';
-        
-        // Додаємо інформацію про обмін, якщо він доступний
-        if (typeof EXCHANGE_DAYS !== 'undefined' && EXCHANGE_DAYS > 0) {
-            const exchangeLi = document.createElement('li');
-            exchangeLi.innerHTML = `🔄 <strong>Обмін:</strong> відповідно до законодавства України, у вас є право на обмін товару протягом <strong>${EXCHANGE_DAYS} днів</strong> з моменту отримання (окрім товарів, визначених законодавством)`;
-            exchangeReturnList.appendChild(exchangeLi);
-        }
-        
-        // Додаємо інформацію про повернення, якщо воно доступне
-        if (typeof RETURN_DAYS !== 'undefined' && RETURN_DAYS > 0) {
-            const returnLi = document.createElement('li');
-            returnLi.innerHTML = `↩️ <strong>Повернення:</strong> відповідно до законодавства України, у вас є право на повернення товару протягом <strong>${RETURN_DAYS} днів</strong> з моменту отримання (окрім товарів, визначених законодавством)`;
-            exchangeReturnList.appendChild(returnLi);
-        }
-        
-        // Якщо обмін або повернення доступні, додаємо умови
-        if ((typeof EXCHANGE_DAYS !== 'undefined' && EXCHANGE_DAYS > 0) || (typeof RETURN_DAYS !== 'undefined' && RETURN_DAYS > 0)) {
-            const conditionsLi = document.createElement('li');
-            conditionsLi.innerHTML = `👕 <strong>Умови обміну/повернення одягу та аксесуарів:</strong>`;
-            const conditionsUl = document.createElement('ul');
-            conditionsUl.style.marginTop = '8px';
-            conditionsUl.style.paddingLeft = '20px';
-            conditionsUl.style.fontSize = '15px';
-            if (typeof RETURN_CONDITIONS !== 'undefined' && Array.isArray(RETURN_CONDITIONS)) {
-                RETURN_CONDITIONS.forEach(function(condition) {
-                    const conditionLi = document.createElement('li');
-                    conditionLi.textContent = condition;
-                    conditionsUl.appendChild(conditionLi);
-                });
-            }
-            conditionsLi.appendChild(conditionsUl);
-            exchangeReturnList.appendChild(conditionsLi);
-            
-            const contactLi = document.createElement('li');
-            contactLi.innerHTML = `📞 <strong>Для обміну/повернення:</strong> зв'яжіться з менеджером через Viber або Telegram`;
-            exchangeReturnList.appendChild(contactLi);
-            
-            if (typeof RETURN_MONEY_TIME !== 'undefined') {
-                const moneyLi = document.createElement('li');
-                moneyLi.innerHTML = `💰 <strong>Повернення коштів:</strong> здійснюється на ті самі реквізити, з яких була здійснена оплата, протягом <strong>${RETURN_MONEY_TIME}</strong> після отримання товару назад`;
-                exchangeReturnList.appendChild(moneyLi);
-            }
-            
-            if (typeof RETURN_DELIVERY_COST !== 'undefined') {
-                const deliveryCostLi = document.createElement('li');
-                deliveryCostLi.innerHTML = `🚚 <strong>Вартість доставки:</strong> ${RETURN_DELIVERY_COST}`;
-                exchangeReturnList.appendChild(deliveryCostLi);
-            }
-        } else {
-            // Якщо обмін та повернення недоступні
-            const noReturnLi = document.createElement('li');
-            noReturnLi.innerHTML = `ℹ️ <strong>Обмін та повернення товару недоступні згідно з умовами продавця.</strong>`;
-            exchangeReturnList.appendChild(noReturnLi);
-        }
+        // Якщо є username, використовуємо його
+        window.TELEGRAM_USERNAME = data.telegramUsername || '';
+        window.TELEGRAM_PHONE = '';
     }
-    
-    // Заповнюємо шаблон
-    const templateDisplay = document.getElementById('paymentTemplateDisplay');
-    if (templateDisplay && typeof AFTER_PAYMENT_TEMPLATE !== 'undefined' && AFTER_PAYMENT_TEMPLATE) {
-        // Використовуємо textContent та забезпечуємо правильне відображення переносів рядків
-        templateDisplay.textContent = AFTER_PAYMENT_TEMPLATE;
-        // Переконуємося, що елемент має клас template-text для правильного CSS
-        if (!templateDisplay.classList.contains('template-text')) {
-            templateDisplay.classList.add('template-text');
-        }
-        // Переконуємося, що CSS white-space: pre-line застосовується
-        templateDisplay.style.whiteSpace = 'pre-line';
+    // Viber контакти (масив)
+    window.VIBER_CONTACTS = data.viberContacts || [];
+    // Зворотна сумісність: якщо є старі дані viberPhone
+    if (data.viberPhone && (!data.viberContacts || data.viberContacts.length === 0)) {
+        window.VIBER_CONTACTS = [{
+            phone: data.viberPhone,
+            name: ''
+        }];
     }
+    window.VIBER_PHONE = (window.VIBER_CONTACTS.length > 0) ? window.VIBER_CONTACTS[0].phone : ''; // Для зворотної сумісності
+    window.TELEGRAM_SHOWCASE = data.telegramShowcase || '';
+    window.INSTAGRAM_USERNAME = data.instagramUsername || '';
+    window.BIGGO_LIVE_URL = data.biggoLiveUrl || '';
+    window.FACEBOOK_PAGE = data.facebookPage || '';
+    window.TIKTOK_USERNAME = data.tiktokUsername || '';
+    window.YOUTUBE_CHANNEL = data.youtubeChannel || '';
+    window.WHATSAPP_PHONE = data.whatsappPhone || '';
     
-    // Налаштовуємо Google Calendar iframe та кнопку підписки
-    if (typeof GOOGLE_CALENDAR_URL_OR_ID !== 'undefined' && GOOGLE_CALENDAR_URL_OR_ID && GOOGLE_CALENDAR_URL_OR_ID.trim() !== '') {
-        const calendarIdRaw = extractCalendarId(GOOGLE_CALENDAR_URL_OR_ID);
-        if (calendarIdRaw) {
-            const calendarSection = document.getElementById('calendarSection');
-            const calendarIframe = document.getElementById('calendarIframe');
-            const calendarContainer = document.querySelector('.calendar-container');
-            
-            if (calendarSection) {
-                calendarSection.style.display = 'block';
-            }
-            
-            // Видаляємо повідомлення про помилку, якщо воно є
-            if (calendarContainer) {
-                const errorDiv = calendarContainer.querySelector('.calendar-error-message');
-                if (errorDiv) {
-                    errorDiv.remove();
-                }
-            }
-            
-            // Налаштовуємо iframe з Google Calendar Agenda View
-            if (calendarIframe) {
-                const calendarIdEncoded = encodeURIComponent(calendarIdRaw);
-                const iframeUrl = `https://calendar.google.com/calendar/embed?src=${calendarIdEncoded}&ctz=Europe%2FKiev&mode=AGENDA&showNav=0&showTitle=0&showPrint=0&showCalendars=0&showTabs=0`;
-                calendarIframe.src = iframeUrl;
-                calendarIframe.style.display = 'block';
-                console.log('✅ Google Calendar iframe налаштовано:', iframeUrl);
-            }
-            
-            // Завантажуємо події календаря
-            loadCalendarEvents();
-        } else {
-            console.error('❌ Не вдалося витягти Calendar ID');
-            showCalendarNotSynced();
-        }
+    // Календар
+    window.GOOGLE_CALENDAR_URL_OR_ID = data.googleCalendarUrl || '';
+    window.GOOGLE_CALENDAR_API_KEY = data.googleCalendarApiKey || '';
+    
+    // Локації магазинів на Google Maps
+    window.STORE_LOCATIONS = data.storeLocations || [];
+    
+    // Умови оплати
+    window.PAYMENT_OPTIONS = data.paymentOptions || [];
+    
+    // Умови доставки
+    window.DELIVERY_METHOD = data.deliveryMethod || '';
+    window.DELIVERY_TIME = data.deliveryTime || '';
+    window.DELIVERY_NOTE = data.deliveryNote || '';
+    
+    // Умови повернення
+    window.EXCHANGE_DAYS = data.exchangeDays || 0;
+    window.RETURN_DAYS = data.returnDays || 0;
+    window.RETURN_CONDITIONS = data.returnConditions || [];
+    window.RETURN_MONEY_TIME = data.returnMoneyTime || '';
+    window.RETURN_DELIVERY_COST = data.returnDeliveryCost || '';
+    
+    // Шаблон після оплати
+    window.AFTER_PAYMENT_TEMPLATE = data.afterPaymentTemplate || '';
+    
+    // Валідація даних (опціонально, можна закоментувати для продакшену)
+    if (data.iban && !validateIBAN(data.iban)) {
+        console.warn('⚠️ IBAN може бути невалідним:', data.iban);
+    }
+    if (data.edrpou && !validateEDRPOU(data.edrpou)) {
+        console.warn('⚠️ ЄДРПОУ може бути невалідним:', data.edrpou);
+    }
+    if (data.viberPhone && !validatePhone(data.viberPhone)) {
+        console.warn('⚠️ Номер телефону може бути невалідним:', data.viberPhone);
+    }
+}
+
+// Автоматично обробляємо дані при завантаженні скрипта
+// Функція для перевірки та обробки даних
+function initClientData() {
+    const hasConstants = typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS && CLIENT_CONSTANTS.trim().length > 0;
+    const hasData = typeof CLIENT_DATA !== 'undefined';
+    
+    if (hasConstants || hasData) {
+        processClientData();
+    }
+}
+
+// Перевіряємо, чи є CLIENT_CONSTANTS (простий текст з псевдонімами) або CLIENT_DATA
+if (typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS && CLIENT_CONSTANTS.trim().length > 0) {
+    // Якщо є CLIENT_CONSTANTS, обробляємо одразу
+    initClientData();
+} else if (typeof CLIENT_DATA !== 'undefined') {
+    // Якщо є CLIENT_DATA, обробляємо одразу
+    initClientData();
+} else {
+    // Якщо дані ще не завантажені, чекаємо на DOMContentLoaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Перевіряємо знову після завантаження DOM
+            initClientData();
+        });
     } else {
-        // Показуємо повідомлення про відсутність синхронізації
-        console.log('⚠️ Calendar URL не вказано');
-        showCalendarNotSynced();
+        // Якщо DOM вже завантажений, перевіряємо одразу
+        initClientData();
     }
-    
-    // Заповнюємо умови повернення (якщо елементи існують)
-    const returnDaysEl = document.getElementById('returnDays');
-    if (returnDaysEl && typeof RETURN_DAYS !== 'undefined') {
-        returnDaysEl.textContent = RETURN_DAYS;
-    }
-    const returnMoneyTimeEl = document.getElementById('returnMoneyTime');
-    if (returnMoneyTimeEl && typeof RETURN_MONEY_TIME !== 'undefined') {
-        returnMoneyTimeEl.textContent = RETURN_MONEY_TIME;
-    }
-    const returnDeliveryCostEl = document.getElementById('returnDeliveryCost');
-    if (returnDeliveryCostEl && typeof RETURN_DELIVERY_COST !== 'undefined') {
-        returnDeliveryCostEl.textContent = RETURN_DELIVERY_COST;
-    }
-    
-    const returnConditionsList = document.getElementById('returnConditionsList');
-    if (returnConditionsList && typeof RETURN_CONDITIONS !== 'undefined' && Array.isArray(RETURN_CONDITIONS)) {
-        returnConditionsList.innerHTML = '';
-        RETURN_CONDITIONS.forEach(function(condition) {
-            const li = document.createElement('li');
-            li.textContent = condition;
-            returnConditionsList.appendChild(li);
-        });
-    }
-    
-    // Заповнюємо footer посилання
-    const footerTelegramLink = document.getElementById('footerTelegramLink');
-    if (footerTelegramLink) {
-        if (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE) {
-            const phone = formatPhoneNumber(TELEGRAM_PHONE);
-            footerTelegramLink.href = 'https://t.me/+' + phone.replace('+', '');
-        } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
-            footerTelegramLink.href = 'https://t.me/' + TELEGRAM_USERNAME;
-        }
-    }
-    
-    // Перевірка незаповнених полів та відображення повідомлення
-    const missingDataFields = [];
-    const fieldLabels = {
-        shopName: 'Назва магазину',
-        shopDescription: 'Опис магазину',
-        workingHours: 'Час роботи',
-        fopName: 'ПІБ ФОП',
-        edrpou: 'ЄДРПОУ',
-        iban: 'IBAN',
-        bankName: 'Назва банку',
-        paymentPurpose: 'Призначення платежу',
-        cardNumber: 'Номер картки',
-        cardHolderName: 'Прізвище власника картки',
-        cardBankName: 'Назва банку картки',
-        telegramUsername: 'Telegram',
-        telegramPhone: 'Telegram (телефон)',
-        viberPhone: 'Viber',
-        googleCalendarUrl: 'Google Calendar',
-        paymentOptions: 'Умови оплати',
-        deliveryMethod: 'Спосіб доставки',
-        deliveryTime: 'Термін доставки',
-        exchangeDays: 'Термін обміну',
-        returnDays: 'Термін повернення',
-        returnConditions: 'Умови обміну та повернення',
-        returnMoneyTime: 'Термін повернення коштів',
-        returnDeliveryCost: 'Вартість доставки при поверненні',
-        afterPaymentTemplate: 'Шаблон після оплати',
-        storeLocations: 'Локації магазинів',
-        categories: 'Категорії товарів'
-    };
-    
-    // Перевіряємо основні поля
-    if (typeof SHOP_NAME === 'undefined' || !SHOP_NAME || SHOP_NAME.trim() === '') {
-        missingDataFields.push(fieldLabels.shopName);
-    }
-    
-    // Перевіряємо FOP реквізити (якщо немає оплати на картку)
-    const hasCardPayment = typeof CARD_NUMBER !== 'undefined' && CARD_NUMBER && CARD_NUMBER.trim() !== '';
-    if (!hasCardPayment) {
-        // Якщо немає оплати на картку, FOP реквізити обов'язкові
-        if (typeof FOP_NAME === 'undefined' || !FOP_NAME || FOP_NAME.trim() === '') {
-            missingDataFields.push(fieldLabels.fopName);
-        }
-        if (typeof EDRPOU === 'undefined' || !EDRPOU || EDRPOU.trim() === '') {
-            missingDataFields.push(fieldLabels.edrpou);
-        }
-        if (typeof IBAN === 'undefined' || !IBAN || IBAN.trim() === '') {
-            missingDataFields.push(fieldLabels.iban);
-        }
-        if (typeof BANK_NAME === 'undefined' || !BANK_NAME || BANK_NAME.trim() === '') {
-            missingDataFields.push(fieldLabels.bankName);
-        }
-        if (typeof PAYMENT_PURPOSE === 'undefined' || !PAYMENT_PURPOSE || PAYMENT_PURPOSE.trim() === '') {
-            missingDataFields.push(fieldLabels.paymentPurpose);
-        }
-    } else {
-        // Якщо є оплата на картку, FOP реквізити не обов'язкові, але перевіряємо картку
-        if (typeof CARD_NUMBER === 'undefined' || !CARD_NUMBER || CARD_NUMBER.trim() === '') {
-            missingDataFields.push(fieldLabels.cardNumber);
-        }
-    }
-    
-    // Перевіряємо контакти (хоча б один має бути)
-    const hasTelegram = (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME && TELEGRAM_USERNAME.trim() !== '') ||
-                        (typeof TELEGRAM_PHONE !== 'undefined' && TELEGRAM_PHONE && TELEGRAM_PHONE.trim() !== '');
-    const hasViber = (typeof VIBER_CONTACTS !== 'undefined' && VIBER_CONTACTS && VIBER_CONTACTS.length > 0) ||
-                     (typeof VIBER_PHONE !== 'undefined' && VIBER_PHONE && VIBER_PHONE.trim() !== '');
-    if (!hasTelegram && !hasViber) {
-        missingDataFields.push('Контакти (Telegram або Viber)');
-    }
-    
-    // Перевіряємо умови оплати
-    if (typeof PAYMENT_OPTIONS === 'undefined' || !PAYMENT_OPTIONS || PAYMENT_OPTIONS.length === 0) {
-        missingDataFields.push(fieldLabels.paymentOptions);
-    }
-    
-    // Перевіряємо умови доставки
-    if (!DELIVERY_METHOD || DELIVERY_METHOD.trim() === '') missingDataFields.push(fieldLabels.deliveryMethod);
-    if (!DELIVERY_TIME || DELIVERY_TIME.trim() === '') missingDataFields.push(fieldLabels.deliveryTime);
-    
-    // Перевіряємо опціональні поля (всі незаповнені блоки)
-    if (typeof SHOP_DESCRIPTION === 'undefined' || !SHOP_DESCRIPTION || SHOP_DESCRIPTION.trim() === '') {
-        missingDataFields.push(fieldLabels.shopDescription);
-    }
-    if (typeof WORKING_HOURS === 'undefined' || !WORKING_HOURS || WORKING_HOURS.trim() === '') {
-        missingDataFields.push(fieldLabels.workingHours);
-    }
-    if (typeof CATEGORIES === 'undefined' || !CATEGORIES || CATEGORIES.length === 0) {
-        missingDataFields.push(fieldLabels.categories);
-    }
-    if (typeof GOOGLE_CALENDAR_URL_OR_ID === 'undefined' || !GOOGLE_CALENDAR_URL_OR_ID || GOOGLE_CALENDAR_URL_OR_ID.trim() === '') {
-        missingDataFields.push(fieldLabels.googleCalendarUrl);
-    }
-    if (hasCardPayment) {
-        if (typeof CARD_HOLDER_NAME === 'undefined' || !CARD_HOLDER_NAME || CARD_HOLDER_NAME.trim() === '') {
-            missingDataFields.push(fieldLabels.cardHolderName);
-        }
-        if (typeof CARD_BANK_NAME === 'undefined' || !CARD_BANK_NAME || CARD_BANK_NAME.trim() === '') {
-            missingDataFields.push(fieldLabels.cardBankName);
-        }
-    }
-    if (typeof STORE_LOCATIONS === 'undefined' || !STORE_LOCATIONS || STORE_LOCATIONS.length === 0) {
-        missingDataFields.push(fieldLabels.storeLocations);
-    }
-    
-    // Перевіряємо умови повернення (опціональні, але показуємо якщо не заповнені)
-    if (typeof EXCHANGE_DAYS === 'undefined' || EXCHANGE_DAYS === 0) {
-        missingDataFields.push(fieldLabels.exchangeDays);
-    }
-    if (typeof RETURN_DAYS === 'undefined' || RETURN_DAYS === 0) {
-        missingDataFields.push(fieldLabels.returnDays);
-    }
-    if (typeof RETURN_CONDITIONS === 'undefined' || !RETURN_CONDITIONS || RETURN_CONDITIONS.length === 0) {
-        missingDataFields.push(fieldLabels.returnConditions);
-    }
-    if (typeof RETURN_MONEY_TIME === 'undefined' || !RETURN_MONEY_TIME || RETURN_MONEY_TIME.trim() === '') {
-        missingDataFields.push(fieldLabels.returnMoneyTime);
-    }
-    if (typeof RETURN_DELIVERY_COST === 'undefined' || !RETURN_DELIVERY_COST || RETURN_DELIVERY_COST.trim() === '') {
-        missingDataFields.push(fieldLabels.returnDeliveryCost);
-    }
-    
-    // Перевіряємо шаблон після оплати
-    if (typeof AFTER_PAYMENT_TEMPLATE === 'undefined' || !AFTER_PAYMENT_TEMPLATE || AFTER_PAYMENT_TEMPLATE.trim() === '') {
-        missingDataFields.push(fieldLabels.afterPaymentTemplate);
-    }
-    
-    // Відображаємо повідомлення про незаповнені дані
-    const missingDataNotice = document.getElementById('missingDataNotice');
-    if (missingDataNotice && missingDataFields.length > 0) {
-        const missingDataList = missingDataFields.join(', ');
-        const missingDataListEl = document.getElementById('missingDataList');
-        if (missingDataListEl) {
-            missingDataListEl.textContent = missingDataList;
-        }
-        missingDataNotice.style.display = 'block';
-    } else if (missingDataNotice) {
-        missingDataNotice.style.display = 'none';
-    }
-    
-    // Перевірка безпеки після завантаження
-    if (!checkSecurity()) {
-        return;
-    }
-    
-    // Постійний моніторинг безпеки
-    setInterval(function() {
-        if (!checkSecurity()) {
-            return;
-        }
-    }, 1000);
-    
-    // Відстеження змін в DOM (MutationObserver)
-    const observer = new MutationObserver(function(mutations) {
-        if (!checkSecurity()) {
-            observer.disconnect();
-            return;
-        }
-    });
-    
-    // Спостереження за змінами в документі
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class', 'hidden']
-    });
-    
-    // Захист функцій від зміни
-    try {
-        Object.defineProperty(window, 'checkSecurity', {
-            writable: false,
-            configurable: false
-        });
-        Object.defineProperty(window, 'blockPage', {
-            writable: false,
-            configurable: false
-        });
-    } catch(e) {
-        // Якщо не вдалося захистити - блокуємо сторінку
-        blockPage();
-    }
-    
-    // Обробник клавіші Escape для закриття модального вікна
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            closeContactModal();
-        }
-    });
-});
+}
+
