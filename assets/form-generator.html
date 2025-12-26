@@ -20,6 +20,7 @@
             color: #ffffff;
             padding: 20px;
             line-height: 1.6;
+            overflow-x: hidden; /* Запобігаємо горизонтальному скролу */
         }
         
         .container {
@@ -29,6 +30,8 @@
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            width: 100%;
+            box-sizing: border-box;
         }
         
         h1 {
@@ -568,17 +571,132 @@
             background: #777;
         }
         
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
             .container {
                 padding: 15px;
+                border-radius: 8px;
+            }
+            
+            h1 {
+                font-size: 22px;
+                margin-bottom: 20px;
             }
             
             .form-section {
                 padding: 15px;
+                margin-bottom: 20px;
             }
             
+            .form-section h2 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            label {
+                font-size: 13px;
+            }
+            
+            input[type="text"],
+            input[type="number"],
+            textarea,
+            select {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .help-text {
+                font-size: 12px;
+                padding: 10px;
+                margin-top: 6px;
+            }
+            
+            .add-item-btn,
+            .remove-item-btn {
+                font-size: 12px;
+                padding: 8px 14px;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .generate-btn {
+                padding: 14px;
+                font-size: 15px;
+            }
+            
+            /* Модальні вікна */
             .modal-content {
                 padding: 20px;
+                max-width: 95%;
+                border-radius: 12px;
+            }
+            
+            .modal-header h2 {
+                font-size: 20px;
+            }
+            
+            .instruction-content,
+            .info-modal-content {
+                padding: 20px;
+                max-width: 95%;
+            }
+            
+            .instruction-content h3,
+            .info-modal-content h3 {
+                font-size: 18px;
+            }
+            
+            /* Блок перевірки даних */
+            #dataCheckList {
+                grid-template-columns: 1fr !important;
+                gap: 8px;
+            }
+            
+            #dataCheckList > div {
+                padding: 10px;
+                font-size: 13px;
+            }
+            
+            /* Блок згенерованого коду */
+            .code-block-container {
+                padding: 20px 15px !important;
+                margin-top: 20px !important;
+            }
+            
+            .code-block-container h2 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            #generatedCode {
+                font-size: 11px !important;
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            #copyCodeButton {
+                padding: 12px 30px;
+                font-size: 14px;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            /* Чекбокси та радіо-кнопки */
+            .checkbox-item {
+                padding: 10px;
+                flex-wrap: wrap;
+            }
+            
+            .checkbox-item label {
+                font-size: 13px;
+                word-break: break-word;
             }
             
             /* Стилі для мобільних пристроїв - накладний платіж з передплатою */
@@ -591,7 +709,7 @@
             #payment2custom + label + div {
                 flex: 1 1 100%;
                 width: 100%;
-                margin-left: 30px; /* Відступ для вирівнювання з іншими елементами */
+                margin-left: 30px;
             }
             
             #codAmount {
@@ -607,6 +725,7 @@
             
             #telegramContact + .instruction-btn {
                 width: 100%;
+                margin-top: 8px;
             }
             
             /* Google Calendar URL і кнопка на два рядки */
@@ -617,6 +736,7 @@
             
             #googleCalendarUrl + .instruction-btn {
                 width: 100%;
+                margin-top: 8px;
             }
             
             /* Час роботи - мобільна версія */
@@ -652,6 +772,198 @@
             
             #workingHoursEverydayTimes input[type="time"] {
                 width: 100%;
+            }
+            
+            /* Локації магазинів */
+            .location-item {
+                padding: 12px !important;
+            }
+            
+            .location-item .form-group {
+                margin-bottom: 10px;
+            }
+            
+            /* Viber контакти */
+            .viber-contact-item {
+                padding: 12px !important;
+            }
+            
+            /* Кастомні поля */
+            .custom-input-wrapper {
+                padding: 12px;
+            }
+            
+            .custom-input-wrapper::before {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+            
+            /* Інформаційні блоки */
+            .warning-box {
+                padding: 12px;
+                font-size: 13px;
+            }
+            
+            /* Блок TikTok */
+            div[style*="background: rgba(255, 0, 242"] {
+                padding: 12px !important;
+                font-size: 13px !important;
+            }
+            
+            /* Блок інструкцій */
+            div[style*="background: #333"] {
+                padding: 12px !important;
+                font-size: 13px !important;
+            }
+            
+            /* Кнопки інструкцій */
+            .instruction-btn {
+                width: 100%;
+                margin-top: 10px;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+            
+            /* Прев'ю шаблону */
+            .template-preview {
+                font-size: 12px;
+                padding: 12px;
+            }
+            
+            /* Блоки згенерованого коду - повідомлення */
+            #sendToSupportContainer {
+                padding: 15px !important;
+            }
+            
+            #sendToSupportContainer p {
+                font-size: 13px;
+            }
+            
+            #sendToSupportContainer button {
+                width: 100%;
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .form-section {
+                padding: 12px;
+            }
+            
+            .form-section h2 {
+                font-size: 15px;
+            }
+            
+            input[type="text"],
+            input[type="number"],
+            textarea,
+            select {
+                font-size: 16px; /* Збільшуємо для мобільних, щоб не збільшувався zoom */
+                padding: 12px;
+            }
+            
+            #generatedCode {
+                font-size: 10px !important;
+                padding: 12px;
+            }
+            
+            .checkbox-item {
+                padding: 8px;
+            }
+            
+            .checkbox-item label {
+                font-size: 12px;
+            }
+            
+            /* Всі інпути на повну ширину */
+            input[type="text"],
+            input[type="number"],
+            input[type="tel"],
+            input[type="url"],
+            textarea,
+            select {
+                width: 100% !important;
+            }
+            
+            /* Кнопки інструкцій для всіх соцмереж */
+            .form-group .instruction-btn {
+                width: 100%;
+                margin-top: 10px;
+                display: block;
+            }
+            
+            /* Блоки з полями та кнопками */
+            .form-group > div {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            /* BIGGO LIVE, YouTube та інші поля */
+            #biggoLiveUrl,
+            #youtubeChannel,
+            #facebookPage,
+            #tiktokUsername,
+            #instagramUsername,
+            #whatsappPhone {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            /* Контейнери з кнопками */
+            .location-item,
+            .viber-contact-item,
+            .return-condition-item,
+            .template-custom-field-item,
+            .custom-category-item {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            /* Запобігання горизонтальному скролу */
+            * {
+                max-width: 100%;
+            }
+            
+            /* Текстові блоки */
+            pre, code {
+                word-break: break-all;
+                overflow-wrap: break-word;
+                white-space: pre-wrap;
+            }
+            
+            /* Модальні вікна на мобільних */
+            .modal-overlay {
+                padding: 10px;
+            }
+            
+            .instruction-modal {
+                padding: 10px;
+            }
+            
+            /* Блоки з попередженнями */
+            .warning-box {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            
+            /* Довгі тексти в чекбоксах */
+            .checkbox-item label {
+                word-break: break-word;
+                overflow-wrap: break-word;
             }
         }
     </style>
