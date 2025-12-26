@@ -930,9 +930,12 @@
                     <div class="help-text">📝 Ім'я користувача Instagram <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "instagram.com/my_shop_ua", то впишіть "my_shop_ua". Якщо немає Instagram - залиште порожнім</div>
                 </div>
                 <div class="form-group">
-                    <label for="biggoLiveUrl">BIGGO LIVE URL</label>
-                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="Наприклад: https://biggo.tv/user/veo_me">
-                    <div class="help-text">📝 Повне посилання на профіль у BIGGO LIVE. Наприклад: "https://biggo.tv/user/veo_me" або "https://biggo.live/user/shop_name". Якщо немає - залиште порожнім</div>
+                    <label for="biggoLiveUrl">BIGGO LIVE</label>
+                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="Наприклад: veo_me або 123456789">
+                    <div class="help-text">📝 Username або ID профілю у BIGGO LIVE <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @ та <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> посилання. Наприклад: якщо посилання "https://biggo.tv/user/veo_me", то впишіть "veo_me". Якщо username не встановлено, впишіть цифровий ID. Якщо немає - залиште порожнім</div>
+                    <button type="button" class="instruction-btn" onclick="showInstruction('biggo')" style="margin-top: 10px; padding: 8px 16px; background: rgba(76, 175, 80, 0.2); border: 1px solid #4CAF50; border-radius: 6px; color: #4CAF50; cursor: pointer; font-size: 13px; font-weight: 600;">
+                        Як знайти username або ID у BIGGO LIVE?
+                    </button>
                 </div>
                 <div class="form-group">
                     <label for="facebookPage">Facebook сторінка/група</label>
@@ -2645,6 +2648,22 @@
                         <p><strong>Альтернатива:</strong> Можна також вставити Calendar ID (виглядає як <code>abc123@group.calendar.google.com</code>)</p>
                     `;
                     break;
+                case 'biggo':
+                    html = `
+                        <h3>📺 Як знайти username або ID у BIGGO LIVE?</h3>
+                        <ol>
+                            <li>Відкрийте додаток BIGGO LIVE на телефоні</li>
+                            <li>Внизу екрану натисніть на іконку <strong>"Я"</strong> (профіль)</li>
+                            <li>Вгорі праворуч натисніть на іконку з <strong>людинкою</strong> (налаштування профілю)</li>
+                            <li>Прокрутіть вниз до розділу з вашим ім'ям</li>
+                            <li>Під ім'ям ви побачите рядок з <strong>ID</strong> (виглядає як цифри, наприклад: <code>123456789</code>)</li>
+                            <li>Поруч з ID є іконка <strong>двох аркушів</strong> (копіювати) - натисніть на неї</li>
+                            <li>Скопійований ID вставте в поле форми</li>
+                        </ol>
+                        <p><strong>Якщо у вас є username:</strong> Вкажіть username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @ та <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> повного посилання. Наприклад: якщо посилання "https://biggo.tv/user/veo_me", то впишіть "veo_me".</p>
+                        <p><strong>Якщо username не встановлено:</strong> Використайте цифровий ID, який ви скопіювали з профілю.</p>
+                    `;
+                    break;
                 default:
                     html = '<h3>Інструкція</h3><p>Інструкція буде додана найближчим часом.</p>';
             }
@@ -2763,39 +2782,65 @@
         
         // Копіювання в буфер обміну
         window.copyToClipboard = function() {
-            // Оновлюємо код перед копіюванням
-            updateGeneratedCode();
-            
-            // Перевіряємо, чи є код для копіювання
-            if (!generatedCode || generatedCode.trim() === '') {
-                alert('Немає даних для копіювання. Заповніть форму вище.');
-                return;
+            try {
+                // Оновлюємо код перед копіюванням
+                if (typeof updateGeneratedCode === 'function') {
+                    updateGeneratedCode();
+                }
+                
+                // Отримуємо код з елемента (найнадійніший спосіб)
+                const codeElement = document.getElementById('generatedCode');
+                if (!codeElement) {
+                    alert('Блок з кодом не знайдено. Спробуйте перезавантажити сторінку.');
+                    return;
+                }
+                
+                let codeToCopy = codeElement.textContent || codeElement.innerText || '';
+                
+                // Якщо код порожній, спробуємо взяти зі змінної
+                if (!codeToCopy || codeToCopy.trim() === '') {
+                    codeToCopy = generatedCode || '';
+                }
+                
+                if (!codeToCopy || codeToCopy.trim() === '') {
+                    alert('Немає даних для копіювання. Заповніть форму вище.');
+                    return;
+                }
+                
+                const copyButton = document.getElementById('copyCodeButton');
+                if (!copyButton) {
+                    console.error('Кнопка копіювання не знайдена');
+                    return;
+                }
+                
+                const originalText = copyButton.textContent;
+                const originalBg = copyButton.style.background;
+                
+                // Змінюємо кнопку на синій колір
+                copyButton.style.background = '#0088cc';
+                copyButton.textContent = '✓ Скопійовано!';
+                copyButton.disabled = true;
+                
+                // Видаляємо маркдаун для копіювання (копіюємо чистий код)
+                const codeWithoutMarkdown = codeToCopy.replace(/^```\n?/g, '').replace(/\n?```$/g, '').trim();
+                
+                if (!codeWithoutMarkdown) {
+                    alert('Немає даних для копіювання. Заповніть форму вище.');
+                    copyButton.style.background = originalBg;
+                    copyButton.textContent = originalText;
+                    copyButton.disabled = false;
+                    return;
+                }
+                
+                performCopy(codeWithoutMarkdown, copyButton, originalText, originalBg);
+            } catch (error) {
+                console.error('Помилка в copyToClipboard:', error);
+                alert('Сталася помилка при копіюванні. Спробуйте ще раз.');
             }
-            
-            const copyButton = document.getElementById('copyCodeButton');
-            if (!copyButton) {
-                console.error('Кнопка копіювання не знайдена');
-                return;
-            }
-            
-            const originalText = copyButton.textContent;
-            const originalBg = copyButton.style.background;
-            
-            // Змінюємо кнопку на синій колір
-            copyButton.style.background = '#0088cc';
-            copyButton.textContent = '✓ Скопійовано!';
-            copyButton.disabled = true;
-            
-            // Видаляємо маркдаун для копіювання (копіюємо чистий код)
-            const codeWithoutMarkdown = generatedCode.replace(/^```\n?/g, '').replace(/\n?```$/g, '').trim();
-            
-            if (!codeWithoutMarkdown) {
-                alert('Немає даних для копіювання. Заповніть форму вище.');
-                copyButton.style.background = originalBg;
-                copyButton.textContent = originalText;
-                copyButton.disabled = false;
-                return;
-            }
+        };
+        
+        // Функція для виконання копіювання
+        function performCopy(codeWithoutMarkdown, copyButton, originalText, originalBg) {
             
             // Створюємо тимчасовий елемент для копіювання
             const textarea = document.createElement('textarea');
@@ -2804,7 +2849,10 @@
             textarea.style.opacity = '0';
             textarea.style.left = '-9999px';
             textarea.style.top = '0';
+            textarea.setAttribute('readonly', '');
             document.body.appendChild(textarea);
+            
+            // Вибираємо текст
             textarea.focus();
             textarea.select();
             textarea.setSelectionRange(0, 99999); // Для мобільних пристроїв
@@ -2843,13 +2891,18 @@
                 copyButton.style.background = originalBg;
                 copyButton.textContent = originalText;
                 copyButton.disabled = false;
+                if (document.body.contains(textarea)) {
+                    document.body.removeChild(textarea);
+                }
             };
             
             // Спробуємо використати Clipboard API (сучасний спосіб)
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
                     copyFunction();
-                    document.body.removeChild(textarea);
+                    if (document.body.contains(textarea)) {
+                        document.body.removeChild(textarea);
+                    }
                 }).catch((err) => {
                     console.error('Помилка копіювання через Clipboard API:', err);
                     // Fallback на старий метод
@@ -2863,7 +2916,6 @@
                     } catch (e) {
                         handleError();
                     }
-                    document.body.removeChild(textarea);
                 });
             } else {
                 // Fallback для старих браузерів
@@ -2878,9 +2930,8 @@
                     console.error('Помилка копіювання:', err);
                     handleError();
                 }
-                document.body.removeChild(textarea);
             }
-        };
+        }
         
         // Закриття інструкцій при кліку поза вікном
         document.getElementById('instructionModal').addEventListener('click', function(e) {
