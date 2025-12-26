@@ -1389,8 +1389,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Заповнюємо шаблон
     const templateDisplay = document.getElementById('paymentTemplateDisplay');
-    if (templateDisplay && typeof AFTER_PAYMENT_TEMPLATE !== 'undefined') {
-        templateDisplay.innerText = AFTER_PAYMENT_TEMPLATE; // Use innerText to preserve line breaks
+    if (templateDisplay && typeof AFTER_PAYMENT_TEMPLATE !== 'undefined' && AFTER_PAYMENT_TEMPLATE) {
+        // Використовуємо textContent та забезпечуємо правильне відображення переносів рядків
+        templateDisplay.textContent = AFTER_PAYMENT_TEMPLATE;
+        // Переконуємося, що елемент має клас template-text для правильного CSS
+        if (!templateDisplay.classList.contains('template-text')) {
+            templateDisplay.classList.add('template-text');
+        }
+        // Переконуємося, що CSS white-space: pre-line застосовується
+        templateDisplay.style.whiteSpace = 'pre-line';
     }
     
     // Налаштовуємо Google Calendar iframe та кнопку підписки
