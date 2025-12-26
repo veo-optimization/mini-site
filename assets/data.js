@@ -115,7 +115,26 @@ function parseClientConstants(constantsText) {
         counter++;
     }
     
-    // c3 - fopName
+    // c3 - workingHours
+    if (constants[`c${counter}`]) {
+        data.workingHours = constants[`c${counter}`];
+        counter++;
+    }
+    
+    // c4 - categories (масив)
+    if (constants[`c${counter}_count`]) {
+        const count = parseInt(constants[`c${counter}_count`]);
+        data.categories = [];
+        for (let i = 0; i < count; i++) {
+            const char = String.fromCharCode(97 + i); // a, b, c, ...
+            if (constants[`c${counter}${char}`]) {
+                data.categories.push(constants[`c${counter}${char}`]);
+            }
+        }
+        counter++;
+    }
+    
+    // c5 - fopName
     if (constants[`c${counter}`]) {
         data.fopName = constants[`c${counter}`];
         counter++;
@@ -341,6 +360,8 @@ function processClientData() {
     // Встановлюємо глобальні константи з даних клієнта
     window.SHOP_NAME = data.shopName || '';
     window.SHOP_DESCRIPTION = data.shopDescription || '';
+    window.WORKING_HOURS = data.workingHours || '';
+    window.CATEGORIES = data.categories || [];
     window.FOP_NAME = data.fopName || '';
     window.EDRPOU = data.edrpou || '';
     window.IBAN = data.iban || '';
