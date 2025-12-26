@@ -170,7 +170,13 @@ function parseClientConstants(constantsText) {
         counter++;
     }
     
-    // c9 - cardBankName
+    // c9 - cardHolderName
+    if (constants[`c${counter}`]) {
+        data.cardHolderName = constants[`c${counter}`];
+        counter++;
+    }
+    
+    // c10 - cardBankName
     if (constants[`c${counter}`]) {
         data.cardBankName = constants[`c${counter}`];
         counter++;
@@ -367,6 +373,11 @@ function processClientData() {
     window.IBAN = data.iban || '';
     window.BANK_NAME = data.bankName || '';
     window.PAYMENT_PURPOSE = data.paymentPurpose || '';
+    
+    // Оплата на картку
+    window.CARD_NUMBER = data.cardNumber || '';
+    window.CARD_HOLDER_NAME = data.cardHolderName || '';
+    window.CARD_BANK_NAME = data.cardBankName || '';
     
     // Контакти
     // Telegram може бути username або номер телефону
