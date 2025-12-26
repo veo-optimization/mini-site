@@ -598,6 +598,26 @@
                 width: 100% !important;
                 max-width: 150px;
             }
+            
+            /* Telegram username і кнопка на два рядки */
+            #telegramContact {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            #telegramContact + .instruction-btn {
+                width: 100%;
+            }
+            
+            /* Google Calendar URL і кнопка на два рядки */
+            #googleCalendarUrl {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            #googleCalendarUrl + .instruction-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -605,13 +625,20 @@
     <div class="container">
         <h1>📋 Стандарт-форма: дані продавця</h1>
         
+        <div style="background: rgba(255, 0, 242, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #FF00F2;">
+            <p style="margin: 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
+                <strong style="color: #FF00F2;">⚠️ Важливо про TikTok:</strong><br>
+                Міні-сайт, який розміщується на TikTok-профілі продавця (бізнесу), повинен містити інформацію, яка не суперечить правилам спільноти TikTok та відповідає вимогам TikTok до офіційних бізнесів. TikTok особливо звертає увагу на відповідність тематиці, наявність умов про повернення і обмін (відповідно до законодавства та прав споживачів - дуже бажано і великий плюс), прозорість контактної інформації та інші вимоги до бізнес-профілів. TikTok-браузер зчитує міні-сайт і бачить всю інформацію. TikTok - за прозорість і чесність на платформі.<br><br>
+                <em style="color: #b0b0b0;">Це лише рекомендації для бізнесу від команди VEO FORCE. Відповідальність за реакцію платформи на внесені дані несе тільки продавець.</em>
+            </p>
+        </div>
         <div style="background: #333; padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #4CAF50;">
             <p style="margin: 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
                 <strong style="color: #4CAF50;">Як користуватися:</strong><br>
                 1️⃣ Заповніть всі поля форми (поля з <span style="color: #ff6b6b;">*</span> обов'язкові)<br>
                 2️⃣ Натисніть кнопку "Згенерувати блок даних" внизу<br>
                 3️⃣ Перевірте результат у спливаючому вікні<br>
-                4️⃣ Натисніть "Скопіювати" - блок даних скопіюється в буфер обміну
+                4️⃣ Натисніть "Скопіювати код" - блок даних скопіюється в буфер обміну
             </p>
         </div>
         
@@ -628,6 +655,89 @@
                     <label for="shopDescription">Опис магазину</label>
                     <input type="text" id="shopDescription" name="shopDescription" maxlength="100" placeholder="Наприклад: ТікТок-магазин модного одягу">
                     <div class="help-text">📝 Короткий опис магазину (максимум 100 символів, 1 речення). Наприклад: "ТікТок-магазин модного одягу" або "Онлайн-магазин косметики та парфумерії"</div>
+                </div>
+                <div class="form-group">
+                    <label for="workingHours">Час роботи / Контактний час</label>
+                    <input type="text" id="workingHours" name="workingHours" placeholder="Наприклад: Пн-Пт: 9:00-18:00, Сб-Нд: 10:00-16:00 або Відповідаю на повідомлення щодня з 10:00 до 20:00">
+                    <div class="help-text">📝 Коли продавець відповідає на повідомлення/дзвінки. Наприклад: "Пн-Пт: 9:00-18:00, Сб-Нд: 10:00-16:00" або "Відповідаю на повідомлення щодня з 10:00 до 20:00"</div>
+                </div>
+            </div>
+            
+            <!-- Асортимент -->
+            <div class="form-section">
+                <h2>🛍️ Асортимент (категорії товарів)</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 Оберіть до 10 категорій товарів. Це допоможе клієнтам швидше зрозуміти вашу пропозицію.
+                </div>
+                <div class="form-group">
+                    <label>Оберіть категорії (максимум 10):</label>
+                    <div class="checkbox-group" id="categoriesCheckboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat1" name="category" value="Жіночий одяг">
+                            <label for="cat1">Жіночий одяг</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat2" name="category" value="Чоловічий одяг">
+                            <label for="cat2">Чоловічий одяг</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat3" name="category" value="Дитячий одяг">
+                            <label for="cat3">Дитячий одяг</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat4" name="category" value="Взуття">
+                            <label for="cat4">Взуття</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat5" name="category" value="Аксесуари">
+                            <label for="cat5">Аксесуари</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat6" name="category" value="Косметика та парфумерія">
+                            <label for="cat6">Косметика та парфумерія</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat7" name="category" value="Товари для дому">
+                            <label for="cat7">Товари для дому</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat8" name="category" value="Електроніка">
+                            <label for="cat8">Електроніка</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat9" name="category" value="Спорт та відпочинок">
+                            <label for="cat9">Спорт та відпочинок</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat10" name="category" value="Книги та навчальні матеріали">
+                            <label for="cat10">Книги та навчальні матеріали</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat11" name="category" value="Іграшки та розваги">
+                            <label for="cat11">Іграшки та розваги</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat12" name="category" value="Продукти харчування">
+                            <label for="cat12">Продукти харчування</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat13" name="category" value="Здоров'я та медицина">
+                            <label for="cat13">Здоров'я та медицина</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat14" name="category" value="Автотовари">
+                            <label for="cat14">Автотовари</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat15" name="category" value="Інше">
+                            <label for="cat15">Інше</label>
+                        </div>
+                    </div>
+                    <div id="customCategoriesContainer" style="margin-top: 15px;">
+                        <!-- Динамічно додані категорії будуть тут -->
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addCustomCategory()" style="margin-top: 10px;" id="addCategoryBtn">+ Додати свою категорію</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 своїх категорій. Загальна кількість категорій не повинна перевищувати 10.</div>
                 </div>
             </div>
             
@@ -647,7 +757,7 @@
                 <div class="form-group">
                     <label for="iban">IBAN</label>
                     <input type="text" id="iban" name="iban" placeholder="Наприклад: UA273220010000026009330077981">
-                    <div class="help-text">📝 Міжнародний номер банківського рахунку. Завжди починається з "UA", потім 2 цифри, 4 символи (літери або цифри), 19 або 21 цифра. Всього 27 або 29 символів. Наприклад: "UA273220010000026009330077981"<br><strong>IBAN має бути у форматі: UA + 2 цифри + 4 символи (літери або цифри) + 19 або 21 цифра</strong></div>
+                    <div class="help-text">📝 Міжнародний номер банківського рахунку. Наприклад: "UA273220010000026009330077981"</div>
                 </div>
                 <div class="form-group">
                     <label for="bankName">Назва банку</label>
@@ -688,22 +798,22 @@
                         <input type="text" id="telegramContact" name="telegramContact" placeholder="Username (наприклад: veoforce_support) або номер телефону (наприклад: +380661112233)" style="flex: 1;">
                         <button type="button" class="instruction-btn" onclick="showInstruction('telegram')">Як створити username</button>
                     </div>
-                    <div class="help-text">📝 Вкажіть або username БЕЗ @ (наприклад: "veoforce_support"), або номер телефону з +380 (наприклад: "+380661112233"). Якщо вкажете номер, буде створено посилання https://t.me/+380661112233</div>
+                    <div class="help-text">📝 Вкажіть або username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ (наприклад: "veoforce_support"), або номер телефону з +380 (наприклад: "+380661112233"). Якщо вкажете номер, буде створено посилання https://t.me/+380661112233</div>
                 </div>
                 <div class="form-group">
                     <label for="viberPhone">Viber телефон</label>
                     <input type="text" id="viberPhone" name="viberPhone" placeholder="Наприклад: 0112223344">
-                    <div class="help-text">📝 Номер телефону для Viber у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567", "0678901234" (БЕЗ +380 на початку!). Якщо немає - залиште порожнім</div>
+                    <div class="help-text">📝 Номер телефону для Viber у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567", "0678901234" (<span style="color: #FFD700; font-weight: 600;">БЕЗ</span> +380 на початку!). Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="telegramShowcase">Telegram вітрина</label>
                     <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="Наприклад: veoforce_chat або https://t.me/+Z-iCu_n0QYdmYTJi">
-                    <div class="help-text">📝 Якщо є Telegram-вітрина (канал/група), вкажіть username БЕЗ @ або повне посилання. Наприклад: "veoforce_chat" або "https://t.me/+Z-iCu_n0QYdmYTJi". Якщо немає - залиште порожнім</div>
+                    <div class="help-text">📝 Якщо є Telegram-вітрина (канал/група), вкажіть username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "veoforce_chat" або "https://t.me/+Z-iCu_n0QYdmYTJi". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="instagramUsername">Instagram username</label>
                     <input type="text" id="instagramUsername" name="instagramUsername" placeholder="Наприклад: my_shop_ua">
-                    <div class="help-text">📝 Ім'я користувача Instagram БЕЗ символу @. Наприклад: якщо посилання "instagram.com/my_shop_ua", то впишіть "my_shop_ua". Якщо немає Instagram - залиште порожнім</div>
+                    <div class="help-text">📝 Ім'я користувача Instagram <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "instagram.com/my_shop_ua", то впишіть "my_shop_ua". Якщо немає Instagram - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="biggoLiveUrl">BIGGO LIVE URL</label>
@@ -713,17 +823,17 @@
                 <div class="form-group">
                     <label for="facebookPage">Facebook сторінка/група</label>
                     <input type="text" id="facebookPage" name="facebookPage" placeholder="Наприклад: my_shop_ua або https://facebook.com/my_shop_ua">
-                    <div class="help-text">📝 Username Facebook сторінки БЕЗ @ або повне посилання. Наприклад: "my_shop_ua" або "https://facebook.com/my_shop_ua". Якщо немає - залиште порожнім</div>
+                    <div class="help-text">📝 Username Facebook сторінки <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "my_shop_ua" або "https://facebook.com/my_shop_ua". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="tiktokUsername">TikTok username</label>
                     <input type="text" id="tiktokUsername" name="tiktokUsername" placeholder="Наприклад: my_shop_ua">
-                    <div class="help-text">📝 Ім'я користувача TikTok БЕЗ символу @. Наприклад: якщо посилання "tiktok.com/@my_shop_ua", то впишіть "my_shop_ua". Якщо немає - залиште порожнім</div>
+                    <div class="help-text">📝 Ім'я користувача TikTok <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "tiktok.com/@my_shop_ua", то впишіть "my_shop_ua". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="youtubeChannel">YouTube канал</label>
-                    <input type="text" id="youtubeChannel" name="youtubeChannel" placeholder="Наприклад: @MyShopUA або https://youtube.com/@MyShopUA">
-                    <div class="help-text">📝 Username YouTube каналу з @ або повне посилання. Наприклад: "@MyShopUA" або "https://youtube.com/@MyShopUA". Якщо немає - залиште порожнім</div>
+                    <input type="text" id="youtubeChannel" name="youtubeChannel" placeholder="Наприклад: MyShopUA або https://youtube.com/@MyShopUA">
+                    <div class="help-text">📝 Username YouTube каналу <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "MyShopUA" або "https://youtube.com/@MyShopUA". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="whatsappPhone">WhatsApp телефон</label>
@@ -776,17 +886,17 @@
                 </div>
                 <div class="checkbox-group" id="paymentOptionsCheckboxes">
                     <div class="checkbox-item">
-                        <input type="checkbox" id="payment1" name="paymentOption" value="🔷 Повна передоплата 100%">
-                        <label for="payment1">🔷 Повна передоплата 100%</label>
+                        <input type="checkbox" id="payment1" name="paymentOption" value="Повна передоплата 100%">
+                        <label for="payment1">Повна передоплата 100%</label>
                     </div>
                     <div class="checkbox-item">
-                        <input type="checkbox" id="payment2" name="paymentOption" value="🔷 Накладний платіж з передоплатою 200 грн" data-payment-type="cod-200">
-                        <label for="payment2">🔷 Накладний платіж з передоплатою 200 грн</label>
+                        <input type="checkbox" id="payment2" name="paymentOption" value="Накладний платіж з передоплатою 200 грн" data-payment-type="cod-200">
+                        <label for="payment2">Накладний платіж з передоплатою 200 грн</label>
                     </div>
                     <div class="checkbox-item" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <input type="checkbox" id="payment2custom" name="paymentOption" data-payment-type="cod-custom">
+                        <input type="checkbox" id="payment2custom" name="paymentOption" data-payment-type="cod-custom" style="align-self: center;">
                         <label for="payment2custom" style="flex: 1 1 auto; min-width: 0; margin: 0; cursor: pointer; word-break: break-word;">
-                            🔷 Накладний платіж із передплатою
+                            Накладний платіж із передплатою
                         </label>
                         <div style="display: flex; align-items: center; gap: 5px; flex: 0 0 auto;">
                             <input type="number" id="codAmount" placeholder="сума" min="1" style="width: 80px; padding: 4px 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 14px;" disabled>
@@ -865,7 +975,7 @@
                 </div>
                 <div class="form-group">
                     <label for="deliveryNote">Примітка про доставку</label>
-                    <input type="text" id="deliveryNote" name="deliveryNote" placeholder="Наприклад: Термін доставки залежить від регіону отримувача">
+                    <textarea id="deliveryNote" name="deliveryNote" placeholder="Наприклад: Термін доставки залежить від регіону отримувача" rows="5"></textarea>
                     <div class="help-text">📝 Додаткова інформація про доставку. Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="warning-box">
@@ -906,9 +1016,10 @@
                             <label for="returnCond4">Товар не повинен бути в експлуатації</label>
                         </div>
                     </div>
-                    <div class="custom-input-wrapper" data-label="return-condition">
-                        <input type="text" id="returnConditionCustom" name="returnConditionCustom" placeholder="Наприклад: Товар не повинен мати запах тютюну">
+                    <div id="returnConditionsContainer" style="margin-top: 15px;">
+                        <!-- Динамічно додані умови будуть тут -->
                     </div>
+                    <button type="button" class="add-item-btn" onclick="addReturnCondition()" style="margin-top: 10px;">+ Додати свою умову</button>
                 </div>
                 <div class="form-group">
                     <label>Термін повернення коштів</label>
@@ -934,20 +1045,20 @@
                     <label>Вартість доставки при поверненні</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" id="returnDelivery1" name="returnDeliveryCost" value="відповідно до тарифів перевізника. Сплачує отримувач">
-                            <label for="returnDelivery1">відповідно до тарифів перевізника. Сплачує отримувач</label>
+                            <input type="radio" id="returnDelivery1" name="returnDeliveryCost" value="Легке повернення">
+                            <label for="returnDelivery1">Легке повернення</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="radio" id="returnDelivery2" name="returnDeliveryCost" value="Доставку при поверненні оплачує продавець">
                             <label for="returnDelivery2">Доставку при поверненні оплачує продавець</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" id="returnDelivery3" name="returnDeliveryCost" value="Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця">
-                            <label for="returnDelivery3">Вартість доставки не повертається при поверненні товару через невідповідність розміру або інші причини з боку покупця</label>
+                            <input type="radio" id="returnDelivery3" name="returnDeliveryCost" value="Доставку при поверненні оплачує покупець">
+                            <label for="returnDelivery3">Доставку при поверненні оплачує покупець</label>
                         </div>
                     </div>
                     <div class="custom-input-wrapper" data-label="return-delivery">
-                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Наприклад: Доставку при поверненні оплачує покупець, якщо товар не має дефектів"></textarea>
+                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Наприклад: Доставку при поверненні оплачує покупець, якщо товар не має дефектів" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="warning-box">
@@ -965,46 +1076,61 @@
                     <label>Оберіть поля для шаблону:</label>
                     <div class="checkbox-group" id="templateFieldsCheckboxes">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="template1" name="templateField" value="👤 ПІБ: " checked>
-                            <label for="template1">👤 ПІБ</label>
+                            <input type="checkbox" id="template1" name="templateField" value="👤 ПІБ отримувача: " checked>
+                            <label for="template1">👤 ПІБ отримувача</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="template2" name="templateField" value="📍 Населений пункт: " checked>
-                            <label for="template2">📍 Населений пункт</label>
+                            <input type="checkbox" id="template2" name="templateField" value="📱 Телефон отримувача: " checked>
+                            <label for="template2">📱 Телефон отримувача</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="template3" name="templateField" value="📦 Відділення НП: " checked>
-                            <label for="template3">📦 Відділення Нова Пошта</label>
+                            <input type="checkbox" id="template3" name="templateField" value="📍 Населений пункт: " checked>
+                            <label for="template3">📍 Населений пункт</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="template4" name="templateField" value="📱 Телефон отримувача: " checked>
-                            <label for="template4">📱 Телефон отримувача</label>
+                            <input type="checkbox" id="template4" name="templateField" value="📦 Відділення НП: ">
+                            <label for="template4">📦 Нова пошта</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="template5" name="templateField" value="📮 Відділення Укрпошти: ">
-                            <label for="template5">📮 Відділення Укрпошти</label>
+                            <label for="template5">📮 Укрпошта</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="template6" name="templateField" value="🏠 Адреса доставки: ">
-                            <label for="template6">🏠 Адреса доставки (для кур'єра)</label>
+                            <label for="template6">🏠 Адреса доставки (кур'єр)</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="template7" name="templateField" value="📝 Коментар до замовлення: ">
-                            <label for="template7">📝 Коментар до замовлення</label>
+                            <label for="template7">📝 Коментар для замовлення</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template8" name="templateField" value="🔢 4 останні цифри номера телефону отримувача: ">
+                            <label for="template8">🔢 4 останні цифри номера телефону отримувача</label>
                         </div>
                     </div>
-                    <div class="custom-input-wrapper" data-label="template">
-                        <input type="text" id="templateCustom" name="templateCustom" placeholder="Наприклад: 🎁 Подарункова упаковка:  або 📞 Додатковий контакт: ">
+                    <div id="templateCustomFieldsContainer" style="margin-top: 15px;">
+                        <!-- Динамічно додані поля будуть тут -->
                     </div>
+                    <button type="button" class="add-item-btn" onclick="addTemplateCustomField()" style="margin-top: 10px;">+ Додати своє поле</button>
                 </div>
                 <div class="form-group">
                     <label>Прев'ю шаблону (як його скопіює кінцевий клієнт для вставки в месенджер для подальшого заповнення індивідуальних даних на отримання товару і посилки):</label>
                     <div class="template-preview" id="templatePreview">
-👤 ПІБ: 
-📍 Населений пункт: 
-📦 Відділення НП: 
+👤 ПІБ отримувача: 
 📱 Телефон отримувача: 
+📍 Населений пункт: 
                     </div>
+                </div>
+            </div>
+            
+            <!-- Блок перевірки даних -->
+            <div class="form-section" style="background: #2a2a2a; border-left: 4px solid #FFD700;">
+                <div class="warning-box" style="background: rgba(255, 215, 0, 0.1); border-left: 3px solid #FFD700; margin-bottom: 20px;">
+                    <strong>⚠️ Увага:</strong> Будь ласка, уважно перевірте правильність введених даних, орфографію та пунктуацію. Ті поля, які не введені - не будуть відображатись на міні-сайті.
+                </div>
+                <h2 style="color: #FFD700; margin-bottom: 15px;">✅ Перевірка заповнених полів</h2>
+                <div id="dataCheckList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
+                    <!-- Динамічно заповнюється -->
                 </div>
             </div>
             
@@ -1022,9 +1148,14 @@
                 <pre id="generatedCode"></pre>
             </div>
             <div class="copy-success" id="copySuccess">✓ Скопійовано в буфер обміну!</div>
+            <div id="sendToSupportContainer" style="display: none; margin-top: 15px; text-align: center;">
+                <button type="button" class="modal-btn" onclick="window.open('https://t.me/veoforce_support', '_blank')" style="background: #0088cc; color: white; width: 100%;">
+                    Надіслати на @veoforce_support
+                </button>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="modal-btn modal-btn-back" onclick="closeModal()">Назад</button>
-                <button type="button" class="modal-btn modal-btn-copy" onclick="copyToClipboard()">Скопіювати</button>
+                <button type="button" class="modal-btn modal-btn-copy" onclick="copyToClipboard()">Скопіювати код</button>
             </div>
         </div>
     </div>
@@ -1069,14 +1200,88 @@
             Array.from(document.querySelectorAll('input[name="templateField"]:checked')).forEach(cb => {
                 templateFields.push(cb.value);
             });
-            const templateCustom = document.getElementById('templateCustom').value.trim();
-            if (templateCustom) {
-                templateFields.push(templateCustom);
-            }
+            // Додаємо кастомні поля
+            document.querySelectorAll('.template-custom-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    templateFields.push(value);
+                }
+            });
             const preview = document.getElementById('templatePreview');
             if (preview) {
                 preview.textContent = templateFields.join('\n') || '(шаблон порожній)';
             }
+        }
+        
+        // Функція перевірки даних
+        function updateDataCheckList() {
+            const checkList = document.getElementById('dataCheckList');
+            if (!checkList) return;
+            
+            const checks = [];
+            
+            // Основна інформація
+            const shopName = document.getElementById('shopName')?.value.trim();
+            checks.push({label: 'Назва магазину', filled: !!shopName});
+            const shopDescription = document.getElementById('shopDescription')?.value.trim();
+            checks.push({label: 'Опис магазину', filled: !!shopDescription});
+            const workingHours = document.getElementById('workingHours')?.value.trim();
+            checks.push({label: 'Час роботи / Контактний час', filled: !!workingHours});
+            
+            // Асортимент
+            const categories = Array.from(document.querySelectorAll('input[name="category"]:checked'));
+            const customCategories = Array.from(document.querySelectorAll('.custom-category-field')).some(input => input.value.trim());
+            checks.push({label: 'Асортимент (категорії)', filled: categories.length > 0 || customCategories});
+            
+            // FOP реквізити
+            const fopName = document.getElementById('fopName')?.value.trim();
+            checks.push({label: 'ПІБ ФОП', filled: !!fopName});
+            const edrpou = document.getElementById('edrpou')?.value.trim();
+            checks.push({label: 'ЄДРПОУ', filled: !!edrpou});
+            const iban = document.getElementById('iban')?.value.trim();
+            checks.push({label: 'IBAN', filled: !!iban});
+            const bankName = document.getElementById('bankName')?.value.trim();
+            checks.push({label: 'Назва банку', filled: !!bankName});
+            
+            // Картка
+            const cardNumber = document.getElementById('cardNumber')?.value.trim();
+            checks.push({label: 'Номер картки', filled: !!cardNumber});
+            const cardBankName = document.getElementById('cardBankName')?.value.trim();
+            checks.push({label: 'Назва банку картки', filled: !!cardBankName});
+            
+            // Контакти
+            const telegramContact = document.getElementById('telegramContact')?.value.trim();
+            checks.push({label: 'Telegram', filled: !!telegramContact});
+            const viberPhone = document.getElementById('viberPhone')?.value.trim();
+            checks.push({label: 'Viber', filled: !!viberPhone});
+            const googleCalendarUrl = document.getElementById('googleCalendarUrl')?.value.trim();
+            checks.push({label: 'Google Calendar', filled: !!googleCalendarUrl});
+            
+            // Умови оплати
+            const paymentOptions = Array.from(document.querySelectorAll('input[name="paymentOption"]:checked'));
+            checks.push({label: 'Умови оплати', filled: paymentOptions.length > 0});
+            
+            // Умови доставки
+            const deliveryMethods = Array.from(document.querySelectorAll('input[name="deliveryMethod"]:checked'));
+            checks.push({label: 'Спосіб доставки', filled: deliveryMethods.length > 0});
+            
+            // Умови обміну/повернення
+            const returnConditions = Array.from(document.querySelectorAll('input[name="returnCondition"]:checked'));
+            const customReturnConditions = Array.from(document.querySelectorAll('.return-condition-text')).some(ta => ta.value.trim());
+            checks.push({label: 'Умови обміну/повернення', filled: returnConditions.length > 0 || customReturnConditions});
+            
+            // Шаблон
+            const templateFields = Array.from(document.querySelectorAll('input[name="templateField"]:checked'));
+            const customTemplateFields = Array.from(document.querySelectorAll('.template-custom-field')).some(input => input.value.trim());
+            checks.push({label: 'Шаблон після оплати', filled: templateFields.length > 0 || customTemplateFields});
+            
+            // Генеруємо HTML
+            checkList.innerHTML = checks.map(check => `
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: ${check.filled ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 107, 107, 0.1)'}; border-radius: 6px; border-left: 3px solid ${check.filled ? '#4CAF50' : '#ff6b6b'};">
+                    <span style="font-size: 18px;">${check.filled ? '✅' : '❌'}</span>
+                    <span style="color: #e0e0e0; font-size: 14px;">${check.label}</span>
+                </div>
+            `).join('');
         }
         
         // Обробка взаємовиключності накладеного платежу
@@ -1181,6 +1386,120 @@
             if (locationItem) {
                 locationItem.remove();
             }
+            // Перевіряємо локації після видалення
+            setTimeout(() => {
+                if (typeof checkDeliveryLocations === 'function') {
+                    checkDeliveryLocations(false);
+                }
+            }, 100);
+        }
+        
+        // Додавання нової умови обміну/повернення
+        function addReturnCondition() {
+            const container = document.getElementById('returnConditionsContainer');
+            const div = document.createElement('div');
+            div.className = 'return-condition-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <textarea class="return-condition-text" placeholder="Наприклад: Товар не повинен мати запах тютюну" rows="2" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px; resize: vertical;"></textarea>
+                <button type="button" class="remove-item-btn" onclick="removeReturnCondition(this)" style="width: 100%; margin-top: 10px;">× Видалити умову</button>
+            `;
+            container.appendChild(div);
+        }
+        
+        // Видалення умови обміну/повернення
+        function removeReturnCondition(button) {
+            const conditionItem = button.closest('.return-condition-item');
+            if (conditionItem) {
+                conditionItem.remove();
+            }
+        }
+        
+        // Додавання нового поля шаблону
+        function addTemplateCustomField() {
+            const container = document.getElementById('templateCustomFieldsContainer');
+            const div = document.createElement('div');
+            div.className = 'template-custom-field-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <input type="text" class="template-custom-field" placeholder="Наприклад: 🎁 Подарункова упаковка:  або 📞 Додатковий контакт: " style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
+                <button type="button" class="remove-item-btn" onclick="removeTemplateCustomField(this)" style="width: 100%; margin-top: 10px;">× Видалити поле</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробник для оновлення прев'ю
+            const input = div.querySelector('.template-custom-field');
+            input.addEventListener('input', updateTemplatePreview);
+        }
+        
+        // Видалення поля шаблону
+        function removeTemplateCustomField(button) {
+            const fieldItem = button.closest('.template-custom-field-item');
+            if (fieldItem) {
+                fieldItem.remove();
+                updateTemplatePreview();
+            }
+        }
+        
+        // Додавання нової категорії
+        function addCustomCategory() {
+            const container = document.getElementById('customCategoriesContainer');
+            const selectedCount = document.querySelectorAll('input[name="category"]:checked').length;
+            const customCount = container.querySelectorAll('.custom-category-item').length;
+            
+            if (selectedCount + customCount >= 10) {
+                alert('⚠️ Максимальна кількість категорій - 10. Будь ласка, видаліть одну з існуючих категорій перед додаванням нової.');
+                return;
+            }
+            
+            if (customCount >= 5) {
+                alert('⚠️ Максимальна кількість своїх категорій - 5.');
+                return;
+            }
+            
+            const div = document.createElement('div');
+            div.className = 'custom-category-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <input type="text" class="custom-category-field" placeholder="Наприклад: Білизна або Ювелірні вироби" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
+                <button type="button" class="remove-item-btn" onclick="removeCustomCategory(this)" style="width: 100%; margin-top: 10px;">× Видалити категорію</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробник для перевірки ліміту
+            const input = div.querySelector('.custom-category-field');
+            input.addEventListener('input', checkCategoryLimit);
+        }
+        
+        // Видалення категорії
+        function removeCustomCategory(button) {
+            const categoryItem = button.closest('.custom-category-item');
+            if (categoryItem) {
+                categoryItem.remove();
+                checkCategoryLimit();
+            }
+        }
+        
+        // Перевірка ліміту категорій
+        function checkCategoryLimit() {
+            const selectedCount = document.querySelectorAll('input[name="category"]:checked').length;
+            const customCount = document.getElementById('customCategoriesContainer').querySelectorAll('.custom-category-item').length;
+            const totalCount = selectedCount + customCount;
+            const addBtn = document.getElementById('addCategoryBtn');
+            
+            if (totalCount >= 10) {
+                if (addBtn) addBtn.disabled = true;
+                // Вимкнути всі невибрані чекбокси
+                document.querySelectorAll('input[name="category"]:not(:checked)').forEach(cb => {
+                    cb.disabled = true;
+                });
+            } else {
+                if (addBtn) addBtn.disabled = false;
+                // Увімкнути всі чекбокси
+                document.querySelectorAll('input[name="category"]').forEach(cb => {
+                    cb.disabled = false;
+                });
+            }
         }
         
         // Додаємо обробники для оновлення прев'ю
@@ -1196,6 +1515,21 @@
             }
             // Початкове оновлення
             updateTemplatePreview();
+            updateDataCheckList();
+            
+            // Додаємо обробники для оновлення перевірки даних
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('input', updateDataCheckList);
+                element.addEventListener('change', updateDataCheckList);
+            });
+            
+            // Обробники для категорій
+            document.querySelectorAll('input[name="category"]').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    checkCategoryLimit();
+                    updateDataCheckList();
+                });
+            });
             
             // Обробка взаємовиключності накладеного платежу
             handleCodPaymentExclusivity();
@@ -1304,7 +1638,36 @@
                 counter++;
             }
             
-            // c3 - fopName
+            // c3 - workingHours
+            if (formData.workingHours) {
+                constants.push(`c${counter} - ${formData.workingHours}`);
+                counter++;
+            }
+            
+            // c4 - categories (масив)
+            const categories = [];
+            Array.from(document.querySelectorAll('input[name="category"]:checked')).forEach(cb => {
+                categories.push(cb.value);
+            });
+            // Додаємо кастомні категорії
+            Array.from(document.querySelectorAll('.custom-category-field')).forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    categories.push(value);
+                }
+            });
+            const categoriesCounter = counter;
+            categories.forEach((category, index) => {
+                if (index < 10) { // Максимум 10 категорій
+                    constants.push(`c${categoriesCounter}${String.fromCharCode(97 + index)} - ${category}`);
+                }
+            });
+            if (categories.length > 0) {
+                constants.push(`c${categoriesCounter}_count - ${Math.min(categories.length, 10)}`);
+                counter++;
+            }
+            
+            // c5 - fopName
             if (formData.fopName) {
                 constants.push(`c${counter} - ${formData.fopName}`);
                 counter++;
@@ -1507,10 +1870,13 @@
             Array.from(document.querySelectorAll('input[name="returnCondition"]:checked')).forEach(cb => {
                 returnConditions.push(cb.value);
             });
-            const returnConditionCustom = document.getElementById('returnConditionCustom').value.trim();
-            if (returnConditionCustom) {
-                returnConditions.push(returnConditionCustom);
-            }
+            // Додаємо кастомні умови
+            Array.from(document.querySelectorAll('.return-condition-text')).forEach(textarea => {
+                const value = textarea.value.trim();
+                if (value) {
+                    returnConditions.push(value);
+                }
+            });
             returnConditions.forEach((condition, index) => {
                 constants.push(`c${counter}${String.fromCharCode(97 + index)} - ${condition}`);
             });
@@ -1546,10 +1912,13 @@
             Array.from(document.querySelectorAll('input[name="templateField"]:checked')).forEach(cb => {
                 templateFields.push(cb.value);
             });
-            const templateCustom = document.getElementById('templateCustom').value.trim();
-            if (templateCustom) {
-                templateFields.push(templateCustom);
-            }
+            // Додаємо кастомні поля
+            Array.from(document.querySelectorAll('.template-custom-field')).forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    templateFields.push(value);
+                }
+            });
             if (templateFields.length > 0) {
                 const template = templateFields.join('\n');
                 constants.push(`c${counter} - ${template.replace(/\n/g, '\\n')}`);
@@ -1723,7 +2092,7 @@
                             <li>Натисніть <strong>"Готово"</strong></li>
                             <li>Якщо username вільний, він буде встановлений</li>
                         </ol>
-                        <p><strong>Важливо:</strong> Username має бути унікальним і може містити лише латинські літери, цифри та підкреслення. Вказуйте username БЕЗ символу @.</p>
+                        <p><strong>Важливо:</strong> Username має бути унікальним і може містити лише латинські літери, цифри та підкреслення. Вказуйте username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @.</p>
                     `;
                     break;
                 case 'calendar':
@@ -1802,6 +2171,7 @@
             const formData = {
                 shopName: document.getElementById('shopName').value.trim(),
                 shopDescription: document.getElementById('shopDescription').value.trim(),
+                workingHours: document.getElementById('workingHours').value.trim(),
                 fopName: document.getElementById('fopName').value.trim(),
                 edrpou: document.getElementById('edrpou').value.trim(),
                 iban: document.getElementById('iban').value.trim(),
@@ -1839,13 +2209,19 @@
         // Закриття модального вікна
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('show');
+            const sendContainer = document.getElementById('sendToSupportContainer');
+            if (sendContainer) {
+                sendContainer.style.display = 'none';
+            }
         }
         
         // Копіювання в буфер обміну
         function copyToClipboard() {
+            // Видаляємо маркдаун для копіювання (копіюємо чистий код)
+            const codeWithoutMarkdown = generatedCode.replace(/^```\n?/g, '').replace(/\n?```$/g, '');
             // Створюємо тимчасовий елемент для копіювання
             const textarea = document.createElement('textarea');
-            textarea.value = generatedCode;
+            textarea.value = codeWithoutMarkdown;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
             textarea.style.left = '-9999px';
@@ -1857,6 +2233,7 @@
                 const successful = document.execCommand('copy');
                 if (successful) {
                     document.getElementById('copySuccess').classList.add('show');
+                    document.getElementById('sendToSupportContainer').style.display = 'block';
                     setTimeout(() => {
                         document.getElementById('copySuccess').classList.remove('show');
                         // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
@@ -1869,8 +2246,9 @@
                     }, 3000);
                 } else {
                     // Fallback для сучасних браузерів
-                    navigator.clipboard.writeText(generatedCode).then(() => {
+                    navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
                         document.getElementById('copySuccess').classList.add('show');
+                        document.getElementById('sendToSupportContainer').style.display = 'block';
                         setTimeout(() => {
                             document.getElementById('copySuccess').classList.remove('show');
                             // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
@@ -1887,8 +2265,9 @@
                 }
             } catch (err) {
                 // Fallback для сучасних браузерів
-                navigator.clipboard.writeText(generatedCode).then(() => {
+                navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
                     document.getElementById('copySuccess').classList.add('show');
+                    document.getElementById('sendToSupportContainer').style.display = 'block';
                     setTimeout(() => {
                         document.getElementById('copySuccess').classList.remove('show');
                         // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
