@@ -2123,20 +2123,18 @@
         });
         
         // Генерація коду у простому форматі з псевдонімами
+        // Кожна константа закріплена за конкретним полем
         function generateCode(formData) {
-            let counter = 1;
             const constants = [];
             
             // c1 - shopName
             if (formData.shopName) {
-                constants.push(`c${counter} - ${formData.shopName}`);
-                counter++;
+                constants.push(`c1 - ${formData.shopName}`);
             }
             
             // c2 - shopDescription
             if (formData.shopDescription) {
-                constants.push(`c${counter} - ${formData.shopDescription}`);
-                counter++;
+                constants.push(`c2 - ${formData.shopDescription}`);
             }
             
             // c3 - workingHours (генеруємо з чекбоксів або кастомного поля)
@@ -2196,9 +2194,9 @@
                 }
             }
             
+            // c3 - workingHours
             if (workingHoursText) {
-                constants.push(`c${counter} - ${workingHoursText}`);
-                counter++;
+                constants.push(`c3 - ${workingHoursText}`);
             }
             
             // c4 - categories (масив)
@@ -2213,136 +2211,115 @@
                     categories.push(value);
                 }
             });
-            const categoriesCounter = counter;
-            categories.forEach((category, index) => {
-                if (index < 10) { // Максимум 10 категорій
-                    constants.push(`c${categoriesCounter}${String.fromCharCode(97 + index)} - ${category}`);
-                }
-            });
             if (categories.length > 0) {
-                constants.push(`c${categoriesCounter}_count - ${Math.min(categories.length, 10)}`);
-                counter++;
+                categories.forEach((category, index) => {
+                    if (index < 10) { // Максимум 10 категорій
+                        constants.push(`c4${String.fromCharCode(97 + index)} - ${category}`);
+                    }
+                });
+                constants.push(`c4_count - ${Math.min(categories.length, 10)}`);
             }
             
             // c5 - fopName
             if (formData.fopName) {
-                constants.push(`c${counter} - ${formData.fopName}`);
-                counter++;
+                constants.push(`c5 - ${formData.fopName}`);
             }
             
-            // c4 - edrpou
+            // c6 - edrpou
             if (formData.edrpou) {
-                constants.push(`c${counter} - ${formData.edrpou}`);
-                counter++;
+                constants.push(`c6 - ${formData.edrpou}`);
             }
             
-            // c5 - iban
+            // c7 - iban
             if (formData.iban) {
-                constants.push(`c${counter} - ${formData.iban}`);
-                counter++;
+                constants.push(`c7 - ${formData.iban}`);
             }
             
-            // c6 - bankName
+            // c8 - bankName
             if (formData.bankName) {
-                constants.push(`c${counter} - ${formData.bankName}`);
-                counter++;
+                constants.push(`c8 - ${formData.bankName}`);
             }
             
-            // c7 - paymentPurpose
+            // c9 - paymentPurpose
             if (formData.paymentPurpose) {
-                constants.push(`c${counter} - ${formData.paymentPurpose}`);
-                counter++;
+                constants.push(`c9 - ${formData.paymentPurpose}`);
             }
             
-            // c8 - cardNumber
+            // c10 - cardNumber
             if (formData.cardNumber) {
-                constants.push(`c${counter} - ${formData.cardNumber}`);
-                counter++;
+                constants.push(`c10 - ${formData.cardNumber}`);
             }
             
-            // c9 - cardHolderName
+            // c11 - cardHolderName
             if (formData.cardHolderName) {
-                constants.push(`c${counter} - ${formData.cardHolderName}`);
-                counter++;
+                constants.push(`c11 - ${formData.cardHolderName}`);
             }
             
-            // c10 - cardBankName
+            // c12 - cardBankName
             if (formData.cardBankName) {
-                constants.push(`c${counter} - ${formData.cardBankName}`);
-                counter++;
+                constants.push(`c12 - ${formData.cardBankName}`);
             }
             
-            // c10 - telegramUsername або telegramPhone
+            // c13 - telegramUsername або telegramPhone
             const telegramContact = formData.telegramContact || '';
             const cleanTelegramContact = telegramContact.replace(/\s|-/g, '');
             if (telegramContact && (telegramContact.startsWith('+') || cleanTelegramContact.startsWith('0') || cleanTelegramContact.startsWith('380')) && /^\d{10,}$/.test(cleanTelegramContact.replace(/^\+?380/, '0'))) {
                 let phone = cleanTelegramContact.replace(/^\+?380/, '0');
                 if (!phone.startsWith('0')) phone = '0' + phone;
-                constants.push(`c${counter} - ${phone}`);
-                constants.push(`c${counter}_type - phone`);
-                counter++;
+                constants.push(`c13 - ${phone}`);
+                constants.push(`c13_type - phone`);
             } else if (telegramContact) {
                 const username = telegramContact.replace('@', '').trim();
-                constants.push(`c${counter} - ${username}`);
-                constants.push(`c${counter}_type - username`);
-                counter++;
+                constants.push(`c13 - ${username}`);
+                constants.push(`c13_type - username`);
             }
             
-            // c11 - viberPhone
+            // c14 - viberPhone
             if (formData.viberPhone) {
-                constants.push(`c${counter} - ${formData.viberPhone}`);
-                counter++;
+                constants.push(`c14 - ${formData.viberPhone}`);
             }
             
-            // c12 - telegramShowcase
+            // c15 - telegramShowcase
             if (formData.telegramShowcase) {
-                constants.push(`c${counter} - ${formData.telegramShowcase}`);
-                counter++;
+                constants.push(`c15 - ${formData.telegramShowcase}`);
             }
             
-            // c13 - instagramUsername
+            // c16 - instagramUsername
             if (formData.instagramUsername) {
-                constants.push(`c${counter} - ${formData.instagramUsername}`);
-                counter++;
+                constants.push(`c16 - ${formData.instagramUsername}`);
             }
             
-            // c14 - biggoLiveUrl
+            // c17 - biggoLiveUrl
             if (formData.biggoLiveUrl) {
-                constants.push(`c${counter} - ${formData.biggoLiveUrl}`);
-                counter++;
+                constants.push(`c17 - ${formData.biggoLiveUrl}`);
             }
             
-            // c15 - facebookPage
+            // c18 - facebookPage
             if (formData.facebookPage) {
-                constants.push(`c${counter} - ${formData.facebookPage}`);
-                counter++;
+                constants.push(`c18 - ${formData.facebookPage}`);
             }
             
-            // c16 - tiktokUsername
+            // c19 - tiktokUsername
             if (formData.tiktokUsername) {
-                constants.push(`c${counter} - ${formData.tiktokUsername}`);
-                counter++;
+                constants.push(`c19 - ${formData.tiktokUsername}`);
             }
             
-            // c17 - youtubeChannel
+            // c20 - youtubeChannel
             if (formData.youtubeChannel) {
-                constants.push(`c${counter} - ${formData.youtubeChannel}`);
-                counter++;
+                constants.push(`c20 - ${formData.youtubeChannel}`);
             }
             
-            // c18 - whatsappPhone
+            // c21 - whatsappPhone
             if (formData.whatsappPhone) {
-                constants.push(`c${counter} - ${formData.whatsappPhone}`);
-                counter++;
+                constants.push(`c21 - ${formData.whatsappPhone}`);
             }
             
-            // c19 - googleCalendarUrl
+            // c22 - googleCalendarUrl
             if (formData.googleCalendarUrl) {
-                constants.push(`c${counter} - ${formData.googleCalendarUrl}`);
-                counter++;
+                constants.push(`c22 - ${formData.googleCalendarUrl}`);
             }
             
-            // c20+ - storeLocations (масив локацій)
+            // c23 - storeLocations (масив локацій)
             const storeLocations = [];
             document.querySelectorAll('.location-item').forEach(item => {
                 const name = item.querySelector('.location-name').value.trim();
@@ -2351,16 +2328,14 @@
                     storeLocations.push(`${name}|${url}`);
                 }
             });
-            const locationsCounter = counter;
-            storeLocations.forEach((location, index) => {
-                constants.push(`c${locationsCounter}${String.fromCharCode(97 + index)} - ${location}`);
-            });
             if (storeLocations.length > 0) {
-                constants.push(`c${locationsCounter}_count - ${storeLocations.length}`);
-                counter++;
+                storeLocations.forEach((location, index) => {
+                    constants.push(`c23${String.fromCharCode(97 + index)} - ${location}`);
+                });
+                constants.push(`c23_count - ${storeLocations.length}`);
             }
             
-            // paymentOptions (масив)
+            // c24 - paymentOptions (масив)
             const paymentOptions = [];
             Array.from(document.querySelectorAll('input[name="paymentOption"]:checked')).forEach(cb => {
                 if (cb.id === 'payment2custom') {
@@ -2376,16 +2351,14 @@
             if (paymentCustom) {
                 paymentOptions.push(paymentCustom);
             }
-            const paymentCounter = counter;
-            paymentOptions.forEach((option, index) => {
-                constants.push(`c${paymentCounter}${String.fromCharCode(97 + index)} - ${option}`);
-            });
             if (paymentOptions.length > 0) {
-                constants.push(`c${paymentCounter}_count - ${paymentOptions.length}`);
-                counter++;
+                paymentOptions.forEach((option, index) => {
+                    constants.push(`c24${String.fromCharCode(97 + index)} - ${option}`);
+                });
+                constants.push(`c24_count - ${paymentOptions.length}`);
             }
             
-            // deliveryMethod
+            // c25 - deliveryMethod
             const deliveryMethods = [];
             Array.from(document.querySelectorAll('input[name="deliveryMethod"]:checked')).forEach(cb => {
                 deliveryMethods.push(cb.value);
@@ -2395,40 +2368,34 @@
                 deliveryMethods.push(deliveryMethodCustom);
             }
             if (deliveryMethods.length > 0) {
-                constants.push(`c${counter} - ${deliveryMethods.join(', ')}`);
-                counter++;
+                constants.push(`c25 - ${deliveryMethods.join(', ')}`);
             }
             
-            // deliveryTime (радіо-кнопка - тільки один варіант)
+            // c26 - deliveryTime (радіо-кнопка - тільки один варіант)
             const deliveryTimeRadio = document.querySelector('input[name="deliveryTime"]:checked');
             const deliveryTimeCustom = document.getElementById('deliveryTimeCustom').value.trim();
             if (deliveryTimeRadio) {
-                constants.push(`c${counter} - ${deliveryTimeRadio.value}`);
-                counter++;
+                constants.push(`c26 - ${deliveryTimeRadio.value}`);
             } else if (deliveryTimeCustom) {
-                constants.push(`c${counter} - ${deliveryTimeCustom}`);
-                counter++;
+                constants.push(`c26 - ${deliveryTimeCustom}`);
             }
             
-            // deliveryNote
+            // c27 - deliveryNote
             if (formData.deliveryNote) {
-                constants.push(`c${counter} - ${formData.deliveryNote}`);
-                counter++;
+                constants.push(`c27 - ${formData.deliveryNote}`);
             }
             
-            // exchangeDays
-            if (formData.exchangeDays) {
-                constants.push(`c${counter} - ${formData.exchangeDays}`);
-                counter++;
+            // c28 - exchangeDays
+            if (formData.exchangeDays && formData.exchangeDays > 0) {
+                constants.push(`c28 - ${formData.exchangeDays}`);
             }
             
-            // returnDays
-            if (formData.returnDays) {
-                constants.push(`c${counter} - ${formData.returnDays}`);
-                counter++;
+            // c29 - returnDays
+            if (formData.returnDays && formData.returnDays > 0) {
+                constants.push(`c29 - ${formData.returnDays}`);
             }
             
-            // returnConditions (масив)
+            // c30 - returnConditions (масив)
             const returnConditions = [];
             Array.from(document.querySelectorAll('input[name="returnCondition"]:checked')).forEach(cb => {
                 returnConditions.push(cb.value);
@@ -2440,37 +2407,32 @@
                     returnConditions.push(value);
                 }
             });
-            returnConditions.forEach((condition, index) => {
-                constants.push(`c${counter}${String.fromCharCode(97 + index)} - ${condition}`);
-            });
             if (returnConditions.length > 0) {
-                constants.push(`c${counter}_count - ${returnConditions.length}`);
-                counter++;
+                returnConditions.forEach((condition, index) => {
+                    constants.push(`c30${String.fromCharCode(97 + index)} - ${condition}`);
+                });
+                constants.push(`c30_count - ${returnConditions.length}`);
             }
             
-            // returnMoneyTime (радіо-кнопка - тільки один варіант)
+            // c31 - returnMoneyTime (радіо-кнопка - тільки один варіант)
             const returnMoneyTimeRadio = document.querySelector('input[name="returnMoneyTime"]:checked');
             const returnMoneyTimeCustom = document.getElementById('returnMoneyTimeCustom').value.trim();
             if (returnMoneyTimeRadio) {
-                constants.push(`c${counter} - ${returnMoneyTimeRadio.value}`);
-                counter++;
+                constants.push(`c31 - ${returnMoneyTimeRadio.value}`);
             } else if (returnMoneyTimeCustom) {
-                constants.push(`c${counter} - ${returnMoneyTimeCustom}`);
-                counter++;
+                constants.push(`c31 - ${returnMoneyTimeCustom}`);
             }
             
-            // returnDeliveryCost (радіо-кнопка - тільки один варіант)
+            // c32 - returnDeliveryCost (радіо-кнопка - тільки один варіант)
             const returnDeliveryCostRadio = document.querySelector('input[name="returnDeliveryCost"]:checked');
             const returnDeliveryCostCustom = document.getElementById('returnDeliveryCostCustom').value.trim();
             if (returnDeliveryCostRadio) {
-                constants.push(`c${counter} - ${returnDeliveryCostRadio.value}`);
-                counter++;
+                constants.push(`c32 - ${returnDeliveryCostRadio.value}`);
             } else if (returnDeliveryCostCustom) {
-                constants.push(`c${counter} - ${returnDeliveryCostCustom}`);
-                counter++;
+                constants.push(`c32 - ${returnDeliveryCostCustom}`);
             }
             
-            // afterPaymentTemplate
+            // c33 - afterPaymentTemplate
             const templateFields = [];
             Array.from(document.querySelectorAll('input[name="templateField"]:checked')).forEach(cb => {
                 templateFields.push(cb.value);
@@ -2484,8 +2446,7 @@
             });
             if (templateFields.length > 0) {
                 const template = templateFields.join('\n');
-                constants.push(`c${counter} - ${template.replace(/\n/g, '\\n')}`);
-                counter++;
+                constants.push(`c33 - ${template.replace(/\n/g, '\\n')}`);
             }
             
             // Генеруємо простий текст з константами
