@@ -91,8 +91,8 @@ function copyTelegramUsername() {
         showCopySuccess('telegramCopyBadge');
     } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
         // Якщо є username, копіюємо username
-        copyToClipboard('@' + TELEGRAM_USERNAME, 'copyTelegramButton', '', true);
-        showCopySuccess('telegramCopyBadge');
+    copyToClipboard('@' + TELEGRAM_USERNAME, 'copyTelegramButton', '', true);
+    showCopySuccess('telegramCopyBadge');
     }
 }
 
@@ -190,7 +190,7 @@ function modalCopyContact() {
         const phoneToCopy = window.currentViberPhone || currentContactData.value || VIBER_PHONE;
         textToCopy = phoneToCopy ? formatPhoneNumber(phoneToCopy) : currentContactData.value;
     } else if (currentContactData.type === 'biggo') {
-        // Для BIGGO LIVE копіюємо тільки чистий юзернейм (без @)
+    // Для BIGGO LIVE копіюємо тільки чистий юзернейм (без @)
         const username = getBiggoLiveUsername();
         textToCopy = username || currentContactData.value;
     } else if (currentContactData.type === 'telegram' && (textToCopy.includes('t.me/+') || textToCopy.includes('@'))) {
@@ -226,7 +226,7 @@ function modalOpenContact() {
         const phoneToUse = window.currentViberPhone || currentContactData.value || VIBER_PHONE;
         if (phoneToUse) {
             const viberUrl = createViberUrl(phoneToUse.replace('+380', '0').replace(/\s/g, ''));
-            window.location.href = viberUrl;
+        window.location.href = viberUrl;
         }
     } else if (currentContactData.type === 'instagram') {
         window.open('https://instagram.com/' + currentContactData.value.replace('@', ''), '_blank');
@@ -249,7 +249,7 @@ function openTelegram() {
         window.open('https://t.me/+' + phone.replace('+', ''), '_blank');
     } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
         // Якщо є username, використовуємо стандартне посилання
-        window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
+    window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
     }
 }
 
@@ -668,16 +668,21 @@ function extractCalendarId(urlOrId) {
 
 // Завантаження подій з Google Calendar
 async function loadCalendarEvents() {
-    // Завжди показуємо блок календаря
     const calendarSection = document.getElementById('calendarSection');
-    if (calendarSection) {
-        calendarSection.style.display = 'block';
+    
+    // Перевіряємо, чи є посилання на календар
+    if (!GOOGLE_CALENDAR_URL_OR_ID || GOOGLE_CALENDAR_URL_OR_ID.trim() === '') {
+        console.log('Calendar URL не вказано - приховуємо блок календаря');
+        // Приховуємо блок, якщо посилання немає
+        if (calendarSection) {
+            calendarSection.style.display = 'none';
+        }
+        return;
     }
     
-    if (!GOOGLE_CALENDAR_URL_OR_ID || GOOGLE_CALENDAR_URL_OR_ID.trim() === '') {
-        console.log('Calendar URL не вказано');
-        showCalendarNotSynced();
-        return;
+    // Показуємо блок календаря тільки якщо є посилання
+    if (calendarSection) {
+        calendarSection.style.display = 'block';
     }
     
     const calendarIdRaw = extractCalendarId(GOOGLE_CALENDAR_URL_OR_ID);
@@ -986,7 +991,11 @@ function showCalendarNotSynced() {
         return;
     }
     
+    // Показуємо блок тільки якщо є посилання (якщо функція викликана, значить є помилка, але посилання було)
+    // Але якщо посилання немає взагалі, блок вже приховано в loadCalendarEvents()
+    if (GOOGLE_CALENDAR_URL_OR_ID && GOOGLE_CALENDAR_URL_OR_ID.trim() !== '') {
     calendarSection.style.display = 'block';
+    }
     
     // Приховуємо iframe та показуємо повідомлення
     if (calendarIframe) {
@@ -1038,7 +1047,7 @@ function formatEventTime(startDate, endDate) {
     return startTime;
 }
 
-        // Ініціалізація при завантаженні
+// Ініціалізація при завантаженні
 document.addEventListener('DOMContentLoaded', function() {
     // Перевірка безпеки перед ініціалізацією (після завантаження DOM)
     setTimeout(function() {
@@ -1063,11 +1072,11 @@ document.addEventListener('DOMContentLoaded', function() {
             FOP_NAME: typeof window.FOP_NAME !== 'undefined' ? window.FOP_NAME : 'не визначено',
             CLIENT_DATA: typeof window.CLIENT_DATA !== 'undefined' ? 'визначено' : 'не визначено'
         });
-        
-        // Заповнюємо дані на сторінці
-        // Назва магазину
-        const shopNameHeader = document.getElementById('shopNameHeader');
-        if (shopNameHeader) {
+    
+    // Заповнюємо дані на сторінці
+    // Назва магазину
+    const shopNameHeader = document.getElementById('shopNameHeader');
+    if (shopNameHeader) {
             const shopName = window.SHOP_NAME || (typeof SHOP_NAME !== 'undefined' ? SHOP_NAME : '');
             if (shopName) {
                 shopNameHeader.textContent = shopName;
@@ -1297,16 +1306,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const telegramShowcaseItem = document.getElementById('telegramShowcaseItem');
     if (telegramShowcaseItem) {
         if (typeof TELEGRAM_SHOWCASE !== 'undefined' && TELEGRAM_SHOWCASE) {
-            // Визначаємо, чи це invite link
+        // Визначаємо, чи це invite link
             const telegramShowcaseEl = document.getElementById('telegramShowcase');
             if (telegramShowcaseEl) {
-                if (isTelegramInviteLink(TELEGRAM_SHOWCASE)) {
+        if (isTelegramInviteLink(TELEGRAM_SHOWCASE)) {
                     telegramShowcaseEl.textContent = 'Телеграм-спільнота';
-                } else {
+        } else {
                     telegramShowcaseEl.textContent = '@' + TELEGRAM_SHOWCASE;
                 }
-            }
-            telegramShowcaseItem.style.display = 'flex';
+        }
+        telegramShowcaseItem.style.display = 'flex';
             const telegramShowcaseButtonsEl = document.getElementById('telegramShowcaseButtons');
             if (telegramShowcaseButtonsEl) {
                 telegramShowcaseButtonsEl.style.display = 'flex';
@@ -1315,9 +1324,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (telegramShowcaseUnavailableEl) {
                 telegramShowcaseUnavailableEl.style.display = 'none';
             }
-        } else {
-            // Приховуємо блок, якщо немає даних
-            telegramShowcaseItem.style.display = 'none';
+    } else {
+        // Приховуємо блок, якщо немає даних
+        telegramShowcaseItem.style.display = 'none';
         }
     }
     
@@ -1429,13 +1438,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Заповнюємо умови оплати
     const paymentOptionsContainer = document.getElementById('paymentOptions');
     if (paymentOptionsContainer && typeof PAYMENT_OPTIONS !== 'undefined' && Array.isArray(PAYMENT_OPTIONS)) {
-        paymentOptionsContainer.innerHTML = '';
-        PAYMENT_OPTIONS.forEach(function(option) {
-            const div = document.createElement('div');
-            div.className = 'payment-option';
-            div.innerHTML = '<strong>' + option + '</strong>';
-            paymentOptionsContainer.appendChild(div);
-        });
+    paymentOptionsContainer.innerHTML = '';
+    PAYMENT_OPTIONS.forEach(function(option) {
+        const div = document.createElement('div');
+        div.className = 'payment-option';
+        div.innerHTML = '<strong>' + option + '</strong>';
+        paymentOptionsContainer.appendChild(div);
+    });
     }
     
     // Заповнюємо умови доставки
@@ -1457,60 +1466,60 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!exchangeReturnList) {
         console.warn('Елемент exchangeReturnList не знайдено');
     } else {
-        exchangeReturnList.innerHTML = '';
-        
-        // Додаємо інформацію про обмін, якщо він доступний
+    exchangeReturnList.innerHTML = '';
+    
+    // Додаємо інформацію про обмін, якщо він доступний
         if (typeof EXCHANGE_DAYS !== 'undefined' && EXCHANGE_DAYS > 0) {
-            const exchangeLi = document.createElement('li');
-            exchangeLi.innerHTML = `🔄 <strong>Обмін:</strong> відповідно до законодавства України, у вас є право на обмін товару протягом <strong>${EXCHANGE_DAYS} днів</strong> з моменту отримання (окрім товарів, визначених законодавством)`;
-            exchangeReturnList.appendChild(exchangeLi);
-        }
-        
-        // Додаємо інформацію про повернення, якщо воно доступне
+        const exchangeLi = document.createElement('li');
+        exchangeLi.innerHTML = `🔄 <strong>Обмін:</strong> відповідно до законодавства України, у вас є право на обмін товару протягом <strong>${EXCHANGE_DAYS} днів</strong> з моменту отримання (окрім товарів, визначених законодавством)`;
+        exchangeReturnList.appendChild(exchangeLi);
+    }
+    
+    // Додаємо інформацію про повернення, якщо воно доступне
         if (typeof RETURN_DAYS !== 'undefined' && RETURN_DAYS > 0) {
-            const returnLi = document.createElement('li');
-            returnLi.innerHTML = `↩️ <strong>Повернення:</strong> відповідно до законодавства України, у вас є право на повернення товару протягом <strong>${RETURN_DAYS} днів</strong> з моменту отримання (окрім товарів, визначених законодавством)`;
-            exchangeReturnList.appendChild(returnLi);
-        }
-        
-        // Якщо обмін або повернення доступні, додаємо умови
+        const returnLi = document.createElement('li');
+        returnLi.innerHTML = `↩️ <strong>Повернення:</strong> відповідно до законодавства України, у вас є право на повернення товару протягом <strong>${RETURN_DAYS} днів</strong> з моменту отримання (окрім товарів, визначених законодавством)`;
+        exchangeReturnList.appendChild(returnLi);
+    }
+    
+    // Якщо обмін або повернення доступні, додаємо умови
         if ((typeof EXCHANGE_DAYS !== 'undefined' && EXCHANGE_DAYS > 0) || (typeof RETURN_DAYS !== 'undefined' && RETURN_DAYS > 0)) {
-            const conditionsLi = document.createElement('li');
-            conditionsLi.innerHTML = `👕 <strong>Умови обміну/повернення одягу та аксесуарів:</strong>`;
-            const conditionsUl = document.createElement('ul');
-            conditionsUl.style.marginTop = '8px';
-            conditionsUl.style.paddingLeft = '20px';
-            conditionsUl.style.fontSize = '15px';
+        const conditionsLi = document.createElement('li');
+        conditionsLi.innerHTML = `👕 <strong>Умови обміну/повернення одягу та аксесуарів:</strong>`;
+        const conditionsUl = document.createElement('ul');
+        conditionsUl.style.marginTop = '8px';
+        conditionsUl.style.paddingLeft = '20px';
+        conditionsUl.style.fontSize = '15px';
             if (typeof RETURN_CONDITIONS !== 'undefined' && Array.isArray(RETURN_CONDITIONS)) {
-                RETURN_CONDITIONS.forEach(function(condition) {
-                    const conditionLi = document.createElement('li');
-                    conditionLi.textContent = condition;
-                    conditionsUl.appendChild(conditionLi);
-                });
+        RETURN_CONDITIONS.forEach(function(condition) {
+            const conditionLi = document.createElement('li');
+            conditionLi.textContent = condition;
+            conditionsUl.appendChild(conditionLi);
+        });
             }
-            conditionsLi.appendChild(conditionsUl);
-            exchangeReturnList.appendChild(conditionsLi);
-            
-            const contactLi = document.createElement('li');
-            contactLi.innerHTML = `📞 <strong>Для обміну/повернення:</strong> зв'яжіться з менеджером через Viber або Telegram`;
-            exchangeReturnList.appendChild(contactLi);
-            
+        conditionsLi.appendChild(conditionsUl);
+        exchangeReturnList.appendChild(conditionsLi);
+        
+        const contactLi = document.createElement('li');
+        contactLi.innerHTML = `📞 <strong>Для обміну/повернення:</strong> зв'яжіться з менеджером через Viber або Telegram`;
+        exchangeReturnList.appendChild(contactLi);
+        
             if (typeof RETURN_MONEY_TIME !== 'undefined') {
-                const moneyLi = document.createElement('li');
-                moneyLi.innerHTML = `💰 <strong>Повернення коштів:</strong> здійснюється на ті самі реквізити, з яких була здійснена оплата, протягом <strong>${RETURN_MONEY_TIME}</strong> після отримання товару назад`;
-                exchangeReturnList.appendChild(moneyLi);
+        const moneyLi = document.createElement('li');
+        moneyLi.innerHTML = `💰 <strong>Повернення коштів:</strong> здійснюється на ті самі реквізити, з яких була здійснена оплата, протягом <strong>${RETURN_MONEY_TIME}</strong> після отримання товару назад`;
+        exchangeReturnList.appendChild(moneyLi);
             }
-            
+        
             if (typeof RETURN_DELIVERY_COST !== 'undefined') {
-                const deliveryCostLi = document.createElement('li');
-                deliveryCostLi.innerHTML = `🚚 <strong>Вартість доставки:</strong> ${RETURN_DELIVERY_COST}`;
-                exchangeReturnList.appendChild(deliveryCostLi);
+        const deliveryCostLi = document.createElement('li');
+        deliveryCostLi.innerHTML = `🚚 <strong>Вартість доставки:</strong> ${RETURN_DELIVERY_COST}`;
+        exchangeReturnList.appendChild(deliveryCostLi);
             }
-        } else {
-            // Якщо обмін та повернення недоступні
-            const noReturnLi = document.createElement('li');
-            noReturnLi.innerHTML = `ℹ️ <strong>Обмін та повернення товару недоступні згідно з умовами продавця.</strong>`;
-            exchangeReturnList.appendChild(noReturnLi);
+    } else {
+        // Якщо обмін та повернення недоступні
+        const noReturnLi = document.createElement('li');
+        noReturnLi.innerHTML = `ℹ️ <strong>Обмін та повернення товару недоступні згідно з умовами продавця.</strong>`;
+        exchangeReturnList.appendChild(noReturnLi);
         }
     }
     
@@ -1592,12 +1601,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const returnConditionsList = document.getElementById('returnConditionsList');
     if (returnConditionsList && typeof RETURN_CONDITIONS !== 'undefined' && Array.isArray(RETURN_CONDITIONS)) {
-        returnConditionsList.innerHTML = '';
-        RETURN_CONDITIONS.forEach(function(condition) {
-            const li = document.createElement('li');
-            li.textContent = condition;
-            returnConditionsList.appendChild(li);
-        });
+    returnConditionsList.innerHTML = '';
+    RETURN_CONDITIONS.forEach(function(condition) {
+        const li = document.createElement('li');
+        li.textContent = condition;
+        returnConditionsList.appendChild(li);
+    });
     }
     
     // Заповнюємо footer посилання
@@ -1607,7 +1616,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const phone = formatPhoneNumber(TELEGRAM_PHONE);
             footerTelegramLink.href = 'https://t.me/+' + phone.replace('+', '');
         } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
-            footerTelegramLink.href = 'https://t.me/' + TELEGRAM_USERNAME;
+    footerTelegramLink.href = 'https://t.me/' + TELEGRAM_USERNAME;
         }
     }
     
