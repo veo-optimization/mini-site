@@ -1266,15 +1266,17 @@
             <div style="background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative;">
                 <pre id="generatedCode" style="color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; margin: 0; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto;"></pre>
             </div>
-            <div class="copy-success" id="copySuccess" style="display: none; text-align: center; color: #4CAF50; margin-bottom: 15px; font-weight: 600;">✓ Скопійовано в буфер обміну!</div>
             <div style="text-align: center; margin-bottom: 15px;">
-                <button type="button" class="generate-btn" onclick="copyToClipboard()" style="background: #4CAF50; color: white; border: none; padding: 15px 40px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
+                <button type="button" id="copyCodeButton" class="generate-btn" onclick="copyToClipboard()" style="background: #4CAF50; color: white; border: none; padding: 15px 40px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
                     Скопіювати код
                 </button>
             </div>
-            <div id="sendToSupportContainer" style="display: none; text-align: center; margin-top: 15px;">
+            <div id="sendToSupportContainer" style="display: none; text-align: center; margin-top: 20px; padding: 20px; background: rgba(0, 136, 204, 0.1); border-left: 4px solid #0088cc; border-radius: 6px;">
+                <p style="margin: 0 0 15px 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
+                    Тепер надішліть скопійований код в чат Telegram на <strong style="color: #0088cc;">@veoforce_support</strong>
+                </p>
                 <button type="button" class="generate-btn" onclick="window.open('https://t.me/veoforce_support', '_blank')" style="background: #0088cc; color: white; border: none; padding: 15px 40px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
-                    Надіслати скопійований блок даних на @veoforce_support
+                    Відкрити чат @veoforce_support
                 </button>
             </div>
         </div>
@@ -2760,75 +2762,125 @@
         });
         
         // Копіювання в буфер обміну
-        function copyToClipboard() {
+        window.copyToClipboard = function() {
             // Оновлюємо код перед копіюванням
             updateGeneratedCode();
             
+            // Перевіряємо, чи є код для копіювання
+            if (!generatedCode || generatedCode.trim() === '') {
+                alert('Немає даних для копіювання. Заповніть форму вище.');
+                return;
+            }
+            
+            const copyButton = document.getElementById('copyCodeButton');
+            if (!copyButton) {
+                console.error('Кнопка копіювання не знайдена');
+                return;
+            }
+            
+            const originalText = copyButton.textContent;
+            const originalBg = copyButton.style.background;
+            
+            // Змінюємо кнопку на синій колір
+            copyButton.style.background = '#0088cc';
+            copyButton.textContent = '✓ Скопійовано!';
+            copyButton.disabled = true;
+            
             // Видаляємо маркдаун для копіювання (копіюємо чистий код)
-            const codeWithoutMarkdown = generatedCode.replace(/^```\n?/g, '').replace(/\n?```$/g, '');
+            const codeWithoutMarkdown = generatedCode.replace(/^```\n?/g, '').replace(/\n?```$/g, '').trim();
+            
+            if (!codeWithoutMarkdown) {
+                alert('Немає даних для копіювання. Заповніть форму вище.');
+                copyButton.style.background = originalBg;
+                copyButton.textContent = originalText;
+                copyButton.disabled = false;
+                return;
+            }
+            
             // Створюємо тимчасовий елемент для копіювання
             const textarea = document.createElement('textarea');
             textarea.value = codeWithoutMarkdown;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
             textarea.style.left = '-9999px';
+            textarea.style.top = '0';
             document.body.appendChild(textarea);
+            textarea.focus();
             textarea.select();
             textarea.setSelectionRange(0, 99999); // Для мобільних пристроїв
             
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    document.getElementById('copySuccess').style.display = 'block';
-                    document.getElementById('sendToSupportContainer').style.display = 'block';
+            const copyFunction = () => {
+                // Повертаємо кнопку до нормального стану через 0.5 сек
+                setTimeout(() => {
+                    copyButton.style.background = originalBg;
+                    copyButton.textContent = originalText;
+                    copyButton.disabled = false;
+                    
+                    // Показуємо повідомлення про надсилання в Telegram через 0.5 сек
                     setTimeout(() => {
-                        document.getElementById('copySuccess').style.display = 'none';
+                        const sendContainer = document.getElementById('sendToSupportContainer');
+                        if (sendContainer) {
+                            sendContainer.style.display = 'block';
+                            
+                            // Прокручуємо до блоку з повідомленням
+                            sendContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                        
                         // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
                         if (window.hasFopRequisites === false) {
                             setTimeout(() => {
-                                showInfoModal();
-                            }, 300);
-                        }
-                    }, 3000);
-                } else {
-                    // Fallback для сучасних браузерів
-                    navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
-                        document.getElementById('copySuccess').style.display = 'block';
-                        document.getElementById('sendToSupportContainer').style.display = 'block';
-                        setTimeout(() => {
-                            document.getElementById('copySuccess').style.display = 'none';
-                            // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
-                            if (window.hasFopRequisites === false) {
-                                setTimeout(() => {
+                                if (typeof showInfoModal === 'function') {
                                     showInfoModal();
-                                }, 300);
-                            }
-                        }, 3000);
-                    }).catch(() => {
-                        alert('Не вдалося скопіювати. Скопіюйте вручну.');
-                    });
-                }
-            } catch (err) {
-                // Fallback для сучасних браузерів
-                navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
-                    document.getElementById('copySuccess').style.display = 'block';
-                    document.getElementById('sendToSupportContainer').style.display = 'block';
-                    setTimeout(() => {
-                        document.getElementById('copySuccess').style.display = 'none';
-                        // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
-                        if (window.hasFopRequisites === false) {
-                            setTimeout(() => {
-                                showInfoModal();
-                            }, 300);
+                                }
+                            }, 500);
                         }
-                    }, 3000);
-                }).catch(() => {
-                    alert('Не вдалося скопіювати. Скопіюйте вручну.');
-                });
-            }
+                    }, 500);
+                }, 500);
+            };
             
-            document.body.removeChild(textarea);
-        }
+            const handleError = () => {
+                alert('Не вдалося скопіювати. Скопіюйте вручну.');
+                copyButton.style.background = originalBg;
+                copyButton.textContent = originalText;
+                copyButton.disabled = false;
+            };
+            
+            // Спробуємо використати Clipboard API (сучасний спосіб)
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
+                    copyFunction();
+                    document.body.removeChild(textarea);
+                }).catch((err) => {
+                    console.error('Помилка копіювання через Clipboard API:', err);
+                    // Fallback на старий метод
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            copyFunction();
+                        } else {
+                            handleError();
+                        }
+                    } catch (e) {
+                        handleError();
+                    }
+                    document.body.removeChild(textarea);
+                });
+            } else {
+                // Fallback для старих браузерів
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        copyFunction();
+                    } else {
+                        handleError();
+                    }
+                } catch (err) {
+                    console.error('Помилка копіювання:', err);
+                    handleError();
+                }
+                document.body.removeChild(textarea);
+            }
+        };
         
         // Закриття інструкцій при кліку поза вікном
         document.getElementById('instructionModal').addEventListener('click', function(e) {
