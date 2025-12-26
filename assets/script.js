@@ -966,7 +966,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 200);
     
-    // Заповнюємо дані на сторінці
+    // Переконуємося, що дані оброблені перед використанням
+    // Якщо є CLIENT_CONSTANTS, але дані ще не оброблені, обробляємо їх
+    if (typeof CLIENT_CONSTANTS !== 'undefined' && CLIENT_CONSTANTS && CLIENT_CONSTANTS.trim().length > 0) {
+        if (typeof processClientData === 'function') {
+            processClientData();
+        }
+    }
+    
+    // Невелика затримка, щоб переконатися, що всі глобальні константи встановлені
+    setTimeout(function() {
+        // Заповнюємо дані на сторінці
     // Назва магазину
     const shopNameHeader = document.getElementById('shopNameHeader');
     if (shopNameHeader && typeof SHOP_NAME !== 'undefined') {
@@ -1667,4 +1677,5 @@ document.addEventListener('DOMContentLoaded', function() {
             closeContactModal();
         }
     });
+    }, 100); // Закриваємо setTimeout
 });
