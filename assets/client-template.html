@@ -173,9 +173,26 @@
                             </div>
                         </div>
                         
-                        <!-- Viber контакти (динамічно генеруються) -->
-                        <div id="viberContactsList">
-                            <!-- Заповнюється автоматично -->
+                        <!-- Viber -->
+                        <div class="contact-item contact-item-viber" onclick="showContactModal('Вайбер', formatPhoneNumber(VIBER_PHONE), 'viber')" style="cursor: pointer;">
+                            <div class="contact-icon">
+                                <img src="https://simpleicons.org/icons/viber.svg" alt="Viber" width="24" height="24" style="display: block;">
+                            </div>
+                            <div class="contact-content">
+                                <div class="contact-name">
+                                    Вайбер
+                                    <span class="copy-success-badge" id="viberCopyBadge">✓ Скопійовано!</span>
+                                </div>
+                                <div class="contact-value" id="viberPhone"></div>
+                            </div>
+                            <div class="contact-actions" onclick="event.stopPropagation();">
+                                <button class="contact-action-btn contact-open-btn" onclick="openViber()" title="Відкрити">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </button>
+                                <button class="contact-action-btn contact-copy-btn" id="copyViberPhoneButton" onclick="copyViberPhone()" title="Скопіювати">
+                                    <i class="bi bi-files"></i>
+                                </button>
+                            </div>
                         </div>
                         
                         <!-- Telegram Showcase -->
