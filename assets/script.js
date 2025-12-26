@@ -918,6 +918,57 @@ document.addEventListener('DOMContentLoaded', function() {
         shopDescriptionEl.textContent = SHOP_DESCRIPTION;
     }
     
+    // Час роботи / Контактний час
+    if (typeof WORKING_HOURS !== 'undefined' && WORKING_HOURS) {
+        const workingHoursSection = document.createElement('div');
+        workingHoursSection.className = 'section';
+        workingHoursSection.innerHTML = `
+            <div class="card">
+                <div class="section-title">
+                    <span>🕐</span>
+                    <span>Час роботи / Контактний час</span>
+                </div>
+                <p style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0;">${WORKING_HOURS}</p>
+            </div>
+        `;
+        const content = document.querySelector('.content');
+        if (content) {
+            const firstSection = content.querySelector('.section');
+            if (firstSection) {
+                content.insertBefore(workingHoursSection, firstSection);
+            } else {
+                content.appendChild(workingHoursSection);
+            }
+        }
+    }
+    
+    // Асортимент (категорії товарів)
+    if (typeof CATEGORIES !== 'undefined' && CATEGORIES && CATEGORIES.length > 0) {
+        const categoriesSection = document.createElement('div');
+        categoriesSection.className = 'section';
+        const categoriesList = CATEGORIES.map(cat => `<li style="margin-bottom: 8px;">${cat}</li>`).join('');
+        categoriesSection.innerHTML = `
+            <div class="card">
+                <div class="section-title">
+                    <span>🛍️</span>
+                    <span>Асортимент (категорії товарів)</span>
+                </div>
+                <ul style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin: 0; padding-left: 20px;">
+                    ${categoriesList}
+                </ul>
+            </div>
+        `;
+        const content = document.querySelector('.content');
+        if (content) {
+            const firstSection = content.querySelector('.section');
+            if (firstSection) {
+                content.insertBefore(categoriesSection, firstSection);
+            } else {
+                content.appendChild(categoriesSection);
+            }
+        }
+    }
+    
     // Назва календаря з назвою магазину
     const calendarTitle = document.getElementById('calendarTitle');
     if (calendarTitle && typeof SHOP_NAME !== 'undefined') {
