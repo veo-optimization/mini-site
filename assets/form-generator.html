@@ -2986,7 +2986,7 @@
                                   /\/ical\//i.test(googleCalendarUrl) ||
                                   /\.ics/i.test(googleCalendarUrl);
                 if (!isICalUrl) {
-                    showError('googleCalendarUrl', '⚠️ Це не iCal посилання! Будь ласка, перевірте інструкцію "Як дістати iCal посилання" та знайдіть правильне посилання, яке закінчується на /public/basic.ics');
+                    showError('googleCalendarUrl', '⚠️ Це не iCal посилання! Будь ласка, уважно перевірте інструкцію "Як дістати iCal посилання" та знайдіть правильне посилання, яке закінчується на /public/basic.ics');
                     isValid = false;
                 } else {
                     hideError('googleCalendarUrl');
@@ -3075,6 +3075,21 @@
         if (googleCalendarUrlInput) {
             googleCalendarUrlInput.addEventListener('blur', validateForm);
             googleCalendarUrlInput.addEventListener('input', function() {
+                // Валідація Google Calendar URL при введенні
+                const url = this.value.trim();
+                if (url) {
+                    // Перевіряємо, чи це iCal посилання
+                    const isICalUrl = /\/public\/basic\.ics/i.test(url) || 
+                                      /\/ical\//i.test(url) ||
+                                      /\.ics/i.test(url);
+                    if (!isICalUrl) {
+                        showError('googleCalendarUrl', '⚠️ Це не iCal посилання! Будь ласка, перевірте інструкцію "Як дістати iCal посилання" та знайдіть правильне посилання, яке закінчується на /public/basic.ics');
+                    } else {
+                        hideError('googleCalendarUrl');
+                    }
+                } else {
+                    hideError('googleCalendarUrl');
+                }
                 updateGeneratedCode();
                 saveFormData();
                 updateDataCheckList();
