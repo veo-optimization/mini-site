@@ -1820,7 +1820,58 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Формуємо та відображаємо публічну оферту
     generatePublicOffer();
-}
+    
+    // Перевірка безпеки після завантаження
+    if (!checkSecurity()) {
+        return;
+    }
+    
+    // Постійний моніторинг безпеки
+    setInterval(function() {
+        if (!checkSecurity()) {
+            return;
+        }
+    }, 1000);
+    
+    // Відстеження змін в DOM (MutationObserver)
+    const observer = new MutationObserver(function(mutations) {
+        if (!checkSecurity()) {
+            observer.disconnect();
+            return;
+        }
+    });
+    
+    // Спостереження за змінами в документі
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style', 'class', 'hidden']
+    });
+    
+    // Захист функцій від зміни
+    try {
+        Object.defineProperty(window, 'checkSecurity', {
+            writable: false,
+            configurable: false
+        });
+        Object.defineProperty(window, 'blockPage', {
+            writable: false,
+            configurable: false
+        });
+    } catch(e) {
+        // Якщо не вдалося захистити - блокуємо сторінку
+        blockPage();
+    }
+    
+    // Обробник клавіші Escape для закриття модального вікна
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeContactModal();
+        }
+    });
+    }, 100); // Закриваємо setTimeout
+});
 
 // Допоміжна функція для екранування HTML
 function escapeHtml(text) {
@@ -1951,55 +2002,3 @@ function generatePublicOffer() {
     offerContent.innerHTML = offerHTML;
     offerSection.style.display = 'block';
 }
-    
-    // Перевірка безпеки після завантаження
-    if (!checkSecurity()) {
-        return;
-    }
-    
-    // Постійний моніторинг безпеки
-    setInterval(function() {
-        if (!checkSecurity()) {
-            return;
-        }
-    }, 1000);
-    
-    // Відстеження змін в DOM (MutationObserver)
-    const observer = new MutationObserver(function(mutations) {
-        if (!checkSecurity()) {
-            observer.disconnect();
-            return;
-        }
-    });
-    
-    // Спостереження за змінами в документі
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class', 'hidden']
-    });
-    
-    // Захист функцій від зміни
-    try {
-        Object.defineProperty(window, 'checkSecurity', {
-            writable: false,
-            configurable: false
-        });
-        Object.defineProperty(window, 'blockPage', {
-            writable: false,
-            configurable: false
-        });
-    } catch(e) {
-        // Якщо не вдалося захистити - блокуємо сторінку
-        blockPage();
-    }
-    
-    // Обробник клавіші Escape для закриття модального вікна
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            closeContactModal();
-        }
-    });
-    }, 100); // Закриваємо setTimeout
-});
