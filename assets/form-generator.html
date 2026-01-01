@@ -983,12 +983,12 @@
                 <h2>🏪 Основна інформація</h2>
                 <div class="form-group">
                     <label for="shopName">Назва магазину <span class="required">*</span></label>
-                    <input type="text" id="shopName" name="shopName" placeholder="Наприклад: VEO SHOP або Модний Бутік" required>
+                    <input type="text" id="shopName" name="shopName" placeholder="Введіть назву магазину" required>
                     <div class="help-text">📝 Це назва, яка буде відображатися в шапці сайту. Наприклад: "VEO SHOP", "Модний Бутік", "Одяг від А до Я"</div>
                 </div>
                 <div class="form-group">
                     <label for="shopDescription">Опис магазину</label>
-                    <input type="text" id="shopDescription" name="shopDescription" maxlength="100" placeholder="Наприклад: ТікТок-магазин модного одягу">
+                    <input type="text" id="shopDescription" name="shopDescription" maxlength="100" placeholder="Введіть опис магазину">
                     <div class="help-text">📝 Короткий опис магазину (максимум 100 символів, 1 речення). Наприклад: "ТікТок-магазин модного одягу" або "Онлайн-магазин косметики та парфумерії"</div>
                 </div>
                 <div class="form-group">
@@ -1003,7 +1003,7 @@
                         
                         <div class="checkbox-item" style="margin-bottom: 15px;">
                             <input type="checkbox" id="workingHoursTimeRange" name="workingHoursTimeRange">
-                            <label for="workingHoursTimeRange" style="font-weight: 600;">Відповідаємо з __ до __</label>
+                            <label for="workingHoursTimeRange" style="font-weight: 600;">Відповідаємо в робочі дні з __ до __</label>
                         </div>
                         <div id="workingHoursTimeRangeContainer" style="display: none; margin-left: 30px; margin-top: 10px; margin-bottom: 15px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
                             <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
@@ -1134,27 +1134,27 @@
                 <h2>💳 Реквізити ФОП</h2>
                 <div class="form-group">
                     <label for="fopName">ПІБ ФОП</label>
-                    <input type="text" id="fopName" name="fopName" placeholder="Наприклад: ФОП Іванов Іван Іванович">
+                    <input type="text" id="fopName" name="fopName" placeholder="Введіть ПІБ ФОП">
                     <div class="help-text">📝 Повне ім'я фізичної особи-підприємця. Наприклад: "ФОП Іванов Іван Іванович" або "ФОП Петренко Марія Олександрівна"</div>
                 </div>
                 <div class="form-group">
                     <label for="edrpou">ЄДРПОУ</label>
-                    <input type="text" id="edrpou" name="edrpou" placeholder="Наприклад: 3361708913">
+                    <input type="text" id="edrpou" name="edrpou" placeholder="Введіть ЄДРПОУ">
                     <div class="help-text">📝 Єдиний державний реєстр підприємств та організацій. Має 8 або 10 цифр. Наприклад: "3361708913" або "12345678"</div>
                 </div>
                 <div class="form-group">
                     <label for="iban">IBAN</label>
-                    <input type="text" id="iban" name="iban" placeholder="Наприклад: UA273220010000026009330077981">
+                    <input type="text" id="iban" name="iban" placeholder="Введіть IBAN">
                     <div class="help-text">📝 Міжнародний номер банківського рахунку. Наприклад: "UA273220010000026009330077981"</div>
                 </div>
                 <div class="form-group">
                     <label for="bankName">Назва банку</label>
-                    <input type="text" id="bankName" name="bankName" placeholder="Наприклад: Universal bank або ПриватБанк">
+                    <input type="text" id="bankName" name="bankName" placeholder="Введіть назву банку">
                     <div class="help-text">📝 Повна назва банку, де відкритий рахунок. Наприклад: "Universal bank", "ПриватБанк", "Ощадбанк", "Райффайзен Банк Аваль"</div>
                 </div>
                 <div class="form-group">
                     <label for="paymentPurpose">Призначення платежу</label>
-                    <input type="text" id="paymentPurpose" name="paymentPurpose" placeholder="Наприклад: Послуга оптимізації реклами">
+                    <input type="text" id="paymentPurpose" name="paymentPurpose" placeholder="Введіть призначення платежу">
                     <div class="help-text">📝 Короткий опис, що буде вказано в призначенні платежу. Наприклад: "Послуга оптимізації реклами", "Оплата товару", "Передоплата за замовлення"</div>
                 </div>
             </div>
@@ -1167,17 +1167,17 @@
                 </div>
                 <div class="form-group">
                     <label for="cardNumber">Номер картки</label>
-                    <input type="text" id="cardNumber" name="cardNumber" placeholder="Наприклад: 5169 3305 1234 5678" maxlength="19">
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="Введіть номер картки" maxlength="19">
                     <div class="help-text">📝 Номер банківської картки (16 цифр). Можна вводити з пробілами для зручності. Наприклад: "5169 3305 1234 5678" або "5169330512345678"</div>
                 </div>
                 <div class="form-group">
                     <label for="cardHolderName">Прізвище власника картки</label>
-                    <input type="text" id="cardHolderName" name="cardHolderName" placeholder="Наприклад: ІВАНОВ">
+                    <input type="text" id="cardHolderName" name="cardHolderName" placeholder="Введіть прізвище власника картки">
                     <div class="help-text">📝 Прізвище власника картки (як вказано на картці). Наприклад: "ІВАНОВ", "ПЕТРЕНКО"</div>
                 </div>
                 <div class="form-group">
                     <label for="cardBankName">Назва банку картки</label>
-                    <input type="text" id="cardBankName" name="cardBankName" placeholder="Наприклад: ПАТ КБ ПриватБанк">
+                    <input type="text" id="cardBankName" name="cardBankName" placeholder="Введіть назву банку картки">
                     <div class="help-text">📝 Назва банку, який видав картку. Наприклад: "ПАТ КБ ПриватБанк", "АТ КБ Укргазбанк"</div>
                 </div>
             </div>
@@ -1188,7 +1188,7 @@
                 <div class="form-group">
                     <label for="telegramContact">Telegram</label>
                     <div style="display: flex; gap: 10px; align-items: flex-start;">
-                        <input type="text" id="telegramContact" name="telegramContact" placeholder="Username (наприклад: veoforce_support) або номер телефону (наприклад: +380661112233)" style="flex: 1;">
+                        <input type="text" id="telegramContact" name="telegramContact" placeholder="Введіть Telegram username або номер телефону" style="flex: 1;">
                         <button type="button" class="instruction-btn" onclick="showInstruction('telegram')">Як створити username</button>
                     </div>
                     <div class="help-text">📝 Вкажіть або username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ (наприклад: "veoforce_support"), або номер телефону з +380 (наприклад: "+380661112233"). Якщо вкажете номер, буде створено посилання https://t.me/+380661112233</div>
@@ -1202,12 +1202,12 @@
                         <div class="viber-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
                             <div class="form-group" style="margin-bottom: 10px;">
                                 <label>Номер телефону</label>
-                                <input type="text" class="viber-phone" placeholder="Наприклад: 0112223344" style="width: 100%;">
+                                <input type="text" class="viber-phone" placeholder="Введіть номер телефону" style="width: 100%;">
                                 <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу + та пробілів. Наприклад: "0112223344"</div>
                             </div>
                             <div class="form-group" style="margin-bottom: 10px;">
                                 <label>Назва контакту (макс. 20 символів)</label>
-                                <input type="text" class="viber-name" placeholder="Наприклад: Менеджер, Одяг, Надя" maxlength="20" style="width: 100%;">
+                                <input type="text" class="viber-name" placeholder="Введіть назву контакту" maxlength="20" style="width: 100%;">
                                 <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Ім'я, напрям, категорія товару, посада тощо</div>
                             </div>
                             <button type="button" class="remove-item-btn" onclick="removeViberContact(this)" style="width: 100%;">× Видалити контакт</button>
@@ -1218,40 +1218,40 @@
                 </div>
                 <div class="form-group">
                     <label for="telegramShowcase">Telegram вітрина</label>
-                    <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="Наприклад: veoforce_chat або https://t.me/+Z-iCu_n0QYdmYTJi">
+                    <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="Введіть Telegram вітрину">
                     <div class="help-text">📝 Якщо є Telegram-вітрина (канал/група), вкажіть username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "veoforce_chat" або "https://t.me/+Z-iCu_n0QYdmYTJi". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="instagramUsername">Instagram username</label>
-                    <input type="text" id="instagramUsername" name="instagramUsername" placeholder="Наприклад: my_shop_ua">
+                    <input type="text" id="instagramUsername" name="instagramUsername" placeholder="Введіть Instagram username">
                     <div class="help-text">📝 Ім'я користувача Instagram <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "instagram.com/my_shop_ua", то впишіть "my_shop_ua". Якщо немає Instagram - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="biggoLiveUrl">BIGGO LIVE</label>
-                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="Наприклад: veo_me або 123456789">
+                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="Введіть BIGGO LIVE username або ID">
                     <div class="help-text">📝 Username або ID профілю у BIGGO LIVE <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @ та <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> посилання. Наприклад: якщо посилання "https://biggo.tv/user/veo_me", то впишіть "veo_me". Якщо username не встановлено, впишіть цифровий ID. Якщо немає - залиште порожнім</div>
-                    <button type="button" class="instruction-btn" onclick="showInstruction('biggo')" style="margin-top: 10px; padding: 8px 16px; background: rgba(76, 175, 80, 0.2); border: 1px solid #4CAF50; border-radius: 6px; color: #4CAF50; cursor: pointer; font-size: 13px; font-weight: 600;">
+                    <button type="button" class="instruction-btn" onclick="showInstruction('biggo')" style="margin-top: 10px; padding: 8px 16px; background: rgba(0, 136, 204, 0.2); border: 1px solid #0088cc; border-radius: 6px; color: #0088cc; cursor: pointer; font-size: 13px; font-weight: 600;">
                         Як знайти username або ID у BIGGO LIVE?
                     </button>
                 </div>
                 <div class="form-group">
                     <label for="facebookPage">Facebook сторінка/група</label>
-                    <input type="text" id="facebookPage" name="facebookPage" placeholder="Наприклад: my_shop_ua або https://facebook.com/my_shop_ua">
+                    <input type="text" id="facebookPage" name="facebookPage" placeholder="Введіть Facebook сторінку/групу">
                     <div class="help-text">📝 Username Facebook сторінки <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "my_shop_ua" або "https://facebook.com/my_shop_ua". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="tiktokUsername">TikTok username</label>
-                    <input type="text" id="tiktokUsername" name="tiktokUsername" placeholder="Наприклад: my_shop_ua">
+                    <input type="text" id="tiktokUsername" name="tiktokUsername" placeholder="Введіть TikTok username">
                     <div class="help-text">📝 Ім'я користувача TikTok <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "tiktok.com/@my_shop_ua", то впишіть "my_shop_ua". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="youtubeChannel">YouTube канал</label>
-                    <input type="text" id="youtubeChannel" name="youtubeChannel" placeholder="Наприклад: MyShopUA або https://youtube.com/@MyShopUA">
+                    <input type="text" id="youtubeChannel" name="youtubeChannel" placeholder="Введіть YouTube канал">
                     <div class="help-text">📝 Username YouTube каналу <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "MyShopUA" або "https://youtube.com/@MyShopUA". Якщо немає - залиште порожнім</div>
                 </div>
                 <div class="form-group">
                     <label for="whatsappPhone">WhatsApp телефон</label>
-                    <input type="text" id="whatsappPhone" name="whatsappPhone" placeholder="Наприклад: 0112223344">
+                    <input type="text" id="whatsappPhone" name="whatsappPhone" placeholder="Введіть WhatsApp номер">
                     <div class="help-text">📝 Номер телефону для WhatsApp у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567". Якщо немає - залиште порожнім</div>
                 </div>
             </div>
@@ -1262,7 +1262,7 @@
                 <div class="form-group">
                     <label for="googleCalendarUrl">Google Calendar URL</label>
                     <div style="display: flex; gap: 10px; align-items: flex-start;">
-                        <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="Наприклад: https://calendar.google.com/calendar/ical/.../public/basic.ics" style="flex: 1;">
+                        <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="Введіть Google Calendar iCal посилання" style="flex: 1;">
                         <button type="button" class="instruction-btn" onclick="showInstruction('calendar')">Як дістати iCal посилання</button>
                     </div>
                     <div class="help-text">📝 Посилання на Google Calendar для відображення розкладу ефірів. Може бути iCal URL (закінчується на /public/basic.ics) або Calendar ID. Якщо немає календаря - залиште порожнім</div>
@@ -1279,11 +1279,11 @@
                     <div class="location-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
                         <div class="form-group" style="margin-bottom: 10px;">
                             <label>Назва локації</label>
-                            <input type="text" class="location-name" placeholder="Наприклад: Магазин на Хрещатику або Склад №1" style="width: 100%;">
+                            <input type="text" class="location-name" placeholder="Введіть назву локації" style="width: 100%;">
                         </div>
                         <div class="form-group" style="margin-bottom: 10px;">
                             <label>Посилання на Google Maps</label>
-                            <input type="text" class="location-url" placeholder="Наприклад: https://maps.google.com/?q=50.4501,30.5234 або https://goo.gl/maps/..." style="width: 100%;">
+                            <input type="text" class="location-url" placeholder="Введіть посилання на Google Maps" style="width: 100%;">
                         </div>
                         <button type="button" class="remove-item-btn" onclick="removeLocation(this)" style="width: 100%;">× Видалити локацію</button>
                     </div>
@@ -1320,7 +1320,7 @@
                 </div>
                 <div class="custom-input-wrapper" data-label="payment">
                     <div class="form-group" style="margin: 0;">
-                        <input type="text" id="paymentCustom" name="paymentCustom" placeholder="Наприклад: 🔷 Оплата через Приват24 або 🔷 Безготівковий розрахунок">
+                        <input type="text" id="paymentCustom" name="paymentCustom" placeholder="Введіть свій варіант оплати">
                         <div class="help-text" style="margin-top: 8px;">📝 Якщо потрібен інший варіант оплати, впишіть його тут</div>
                     </div>
                 </div>
@@ -1357,10 +1357,10 @@
                         </div>
                     </div>
                     <div id="deliveryLocationWarning" class="warning-box" style="display: none; margin-top: 10px;">
-                        <strong>⚠️ Увага:</strong> Для "Самовивіз" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps". Будь ласка, заповніть цей блок перед генерацією даних.
+                        <strong>⚠️ Увага:</strong> Самовивіз можливий лише за умови, якщо вказана хоча б одна локація магазину на Google Maps у блоці "📍 Локації магазинів на Google Maps". Будь ласка, заповніть цей блок перед генерацією даних.
                     </div>
                     <div class="custom-input-wrapper" data-label="delivery-method">
-                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Наприклад: Justin або Делівері">
+                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Введіть свій спосіб доставки">
                     </div>
                 </div>
                 <div class="form-group">
@@ -1384,7 +1384,7 @@
                         </div>
                     </div>
                     <div class="custom-input-wrapper" data-label="delivery-time">
-                        <input type="text" id="deliveryTimeCustom" name="deliveryTimeCustom" placeholder="Наприклад: Відправка щопонеділка та четверга">
+                        <input type="text" id="deliveryTimeCustom" name="deliveryTimeCustom" placeholder="Введіть термін доставки">
                     </div>
                 </div>
                 <div class="form-group">
@@ -1452,7 +1452,7 @@
                         </div>
                     </div>
                     <div class="custom-input-wrapper" data-label="return-money">
-                        <input type="text" id="returnMoneyTimeCustom" name="returnMoneyTimeCustom" placeholder="Наприклад: 5-7 робочих днів">
+                        <input type="text" id="returnMoneyTimeCustom" name="returnMoneyTimeCustom" placeholder="Введіть термін повернення коштів">
                     </div>
                 </div>
                 <div class="form-group">
@@ -1472,7 +1472,7 @@
                         </div>
                     </div>
                     <div class="custom-input-wrapper" data-label="return-delivery">
-                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Наприклад: Доставку при поверненні оплачує покупець, якщо товар не має дефектів" rows="2"></textarea>
+                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Введіть вартість доставки при поверненні" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="warning-box">
@@ -1629,6 +1629,28 @@
     <script>
         let generatedCode = '';
         
+        // Функція для збору Viber контактів
+        function getViberContacts() {
+            const contacts = [];
+            const container = document.getElementById('viberContactsContainer');
+            if (container) {
+                const items = container.querySelectorAll('.viber-contact-item');
+                items.forEach(item => {
+                    const phoneInput = item.querySelector('.viber-phone');
+                    const nameInput = item.querySelector('.viber-name');
+                    const phone = phoneInput?.value.trim();
+                    const name = nameInput?.value.trim();
+                    if (phone) {
+                        contacts.push({
+                            phone: phone,
+                            name: name || ''
+                        });
+                    }
+                });
+            }
+            return contacts;
+        }
+        
         // Оновлення прев'ю шаблону
         function updateTemplatePreview() {
             const templateFields = [];
@@ -1773,8 +1795,17 @@
                 // Обробка кліку безпосередньо на поле введення
                 if (codAmount) {
                     codAmount.addEventListener('click', function() {
-                        if (codCustom.checked && this.disabled) {
+                        if (!codCustom.checked) {
+                            codCustom.checked = true;
                             codAmount.disabled = false;
+                            codAmount.removeAttribute('readonly');
+                            setTimeout(() => {
+                                codAmount.focus();
+                                codAmount.select();
+                            }, 50);
+                        } else if (this.disabled) {
+                            codAmount.disabled = false;
+                            codAmount.removeAttribute('readonly');
                             codAmount.focus();
                         }
                     });
@@ -1862,7 +1893,7 @@
             div.className = 'return-condition-item';
             div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
             div.innerHTML = `
-                <textarea class="return-condition-text" placeholder="Наприклад: Товар не повинен мати запах тютюну" rows="2" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px; resize: vertical;"></textarea>
+                <textarea class="return-condition-text" placeholder="Введіть умову обміну/повернення" rows="2" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px; resize: vertical;"></textarea>
                 <button type="button" class="remove-item-btn" onclick="removeReturnCondition(this)" style="width: 100%; margin-top: 10px;">× Видалити умову</button>
             `;
             container.appendChild(div);
@@ -1898,7 +1929,7 @@
             div.className = 'template-custom-field-item';
             div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
             div.innerHTML = `
-                <input type="text" class="template-custom-field" placeholder="Наприклад: 🎁 Подарункова упаковка:  або 📞 Додатковий контакт: " style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
+                <input type="text" class="template-custom-field" placeholder="Введіть своє поле шаблону" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
                 <button type="button" class="remove-item-btn" onclick="removeTemplateCustomField(this)" style="width: 100%; margin-top: 10px;">× Видалити поле</button>
             `;
             container.appendChild(div);
@@ -2011,7 +2042,7 @@
             div.className = 'custom-category-item';
             div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
             div.innerHTML = `
-                <input type="text" class="custom-category-field" placeholder="Наприклад: Білизна або Ювелірні вироби" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
+                <input type="text" class="custom-category-field" placeholder="Введіть назву категорії" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
                 <button type="button" class="remove-item-btn" onclick="removeCustomCategory(this)" style="width: 100%; margin-top: 10px;">× Видалити категорію</button>
             `;
             container.appendChild(div);
@@ -2591,10 +2622,10 @@
             
             if (workingHours24_7) {
                 workingHoursText = 'Відповідаємо цілодобово 24/7';
-            } else if (workingHoursTimeRange && workingHoursFrom && workingHoursTo) {
-                workingHoursText = `Відповідаємо з ${formatTime(workingHoursFrom)} до ${formatTime(workingHoursTo)}`;
+            } else             if (workingHoursTimeRange && workingHoursFrom && workingHoursTo) {
+                workingHoursText = `Відповідаємо в робочі дні з ${formatTime(workingHoursFrom)} до ${formatTime(workingHoursTo)}`;
             } else if (workingHoursTimeRange) {
-                workingHoursText = 'Відповідаємо з __ до __';
+                workingHoursText = 'Відповідаємо в робочі дні з __ до __';
             }
             
             // Додаємо вихідні дні, якщо є
