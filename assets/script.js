@@ -1439,6 +1439,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Локації магазинів
+    const storeLocationsSection = document.getElementById('storeLocationsSection');
+    const storeLocationsList = document.getElementById('storeLocationsList');
+    if (storeLocationsSection && storeLocationsList) {
+        if (typeof STORE_LOCATIONS !== 'undefined' && STORE_LOCATIONS && STORE_LOCATIONS.length > 0) {
+            storeLocationsList.innerHTML = '';
+            STORE_LOCATIONS.forEach((location, index) => {
+                const locationItem = document.createElement('div');
+                locationItem.className = 'card';
+                locationItem.style.marginBottom = '15px';
+                locationItem.innerHTML = `
+                    <div style="padding: 15px;">
+                        <div style="font-weight: 600; color: #ffffff; font-size: 16px; margin-bottom: 10px;">
+                            📍 ${location.name || 'Локація ' + (index + 1)}
+                        </div>
+                        <a href="${location.url}" target="_blank" rel="noopener noreferrer" 
+                           style="color: #4CAF50; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            Відкрити на Google Maps
+                        </a>
+                    </div>
+                `;
+                storeLocationsList.appendChild(locationItem);
+            });
+            storeLocationsSection.style.display = 'block';
+        } else {
+            storeLocationsSection.style.display = 'none';
+        }
+    }
+    
     // Перевірка TikTok-браузера та налаштування Intersection Observer для показу popup
     const ua = navigator.userAgent || navigator.vendor || window.opera || '';
     const isTikTok = ua.includes("TikTok") || ua.includes("Musical.ly") || ua.includes("Bytedance");
