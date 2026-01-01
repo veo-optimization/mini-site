@@ -1166,6 +1166,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Час роботи / Контактний час та Асортимент (показуємо тільки якщо є календар)
+    // ЗАКОМЕНТОВАНО: ці блоки дублюються в публічній оферті
+    /*
     // Перевіряємо, чи є календар (GOOGLE_CALENDAR_URL_OR_ID)
     const hasCalendar = typeof GOOGLE_CALENDAR_URL_OR_ID !== 'undefined' && GOOGLE_CALENDAR_URL_OR_ID && GOOGLE_CALENDAR_URL_OR_ID.trim().length > 0;
     
@@ -1235,6 +1237,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+    */
     
     // Назва календаря з назвою магазину
     const calendarTitle = document.getElementById('calendarTitle');
