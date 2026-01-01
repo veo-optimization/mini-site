@@ -1,3 +1,6 @@
+// Глобальні налаштування
+const FORM_GENERATOR_URL = 'https://veo-optimization.github.io/mini-site/assets/form-generator.html';
+
 // Функція для форматування номера
 function formatPhoneNumber(phoneNumber) {
     if (phoneNumber.length === 10 && phoneNumber.startsWith('0')) {
@@ -1678,6 +1681,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Заповнюємо посилання на форму-генератор
+    const footerCreatePageLink = document.getElementById('footerCreatePageLink');
+    if (footerCreatePageLink && typeof FORM_GENERATOR_URL !== 'undefined') {
+        footerCreatePageLink.href = FORM_GENERATOR_URL;
+    }
+    
     // Перевірка незаповнених полів та відображення повідомлення
     const missingDataFields = [];
     const fieldLabels = {
@@ -1695,7 +1704,15 @@ document.addEventListener('DOMContentLoaded', function() {
         telegramUsername: 'Telegram',
         telegramPhone: 'Telegram (телефон)',
         viberPhone: 'Viber',
-        googleCalendarUrl: 'Google Calendar',
+        viberContacts: 'Viber контакти',
+        telegramShowcase: 'Telegram вітрина',
+        instagramUsername: 'Instagram',
+        facebookPage: 'Facebook',
+        tiktokUsername: 'TikTok',
+        youtubeChannel: 'YouTube',
+        whatsappPhone: 'WhatsApp',
+        biggoLiveUrl: 'BIGGO LIVE',
+        googleCalendarUrl: 'Графік ефірів',
         paymentOptions: 'Умови оплати',
         deliveryMethod: 'Спосіб доставки',
         deliveryTime: 'Термін доставки',
@@ -1705,7 +1722,7 @@ document.addEventListener('DOMContentLoaded', function() {
         returnMoneyTime: 'Термін повернення коштів',
         returnDeliveryCost: 'Вартість доставки при поверненні',
         afterPaymentTemplate: 'Шаблон після оплати',
-        storeLocations: 'Локації магазинів',
+        storeLocations: 'Локацію магазину',
         categories: 'Категорії товарів'
     };
     
@@ -1747,6 +1764,29 @@ document.addEventListener('DOMContentLoaded', function() {
                      (typeof VIBER_PHONE !== 'undefined' && VIBER_PHONE && VIBER_PHONE.trim() !== '');
     if (!hasTelegram && !hasViber) {
         missingDataFields.push('Контакти (Telegram або Viber)');
+    }
+    
+    // Перевіряємо інші соціальні мережі
+    if (typeof TELEGRAM_SHOWCASE === 'undefined' || !TELEGRAM_SHOWCASE || TELEGRAM_SHOWCASE.trim() === '') {
+        missingDataFields.push(fieldLabels.telegramShowcase);
+    }
+    if (typeof INSTAGRAM_USERNAME === 'undefined' || !INSTAGRAM_USERNAME || INSTAGRAM_USERNAME.trim() === '') {
+        missingDataFields.push(fieldLabels.instagramUsername);
+    }
+    if (typeof FACEBOOK_PAGE === 'undefined' || !FACEBOOK_PAGE || FACEBOOK_PAGE.trim() === '') {
+        missingDataFields.push(fieldLabels.facebookPage);
+    }
+    if (typeof TIKTOK_USERNAME === 'undefined' || !TIKTOK_USERNAME || TIKTOK_USERNAME.trim() === '') {
+        missingDataFields.push(fieldLabels.tiktokUsername);
+    }
+    if (typeof YOUTUBE_CHANNEL === 'undefined' || !YOUTUBE_CHANNEL || YOUTUBE_CHANNEL.trim() === '') {
+        missingDataFields.push(fieldLabels.youtubeChannel);
+    }
+    if (typeof WHATSAPP_PHONE === 'undefined' || !WHATSAPP_PHONE || WHATSAPP_PHONE.trim() === '') {
+        missingDataFields.push(fieldLabels.whatsappPhone);
+    }
+    if (typeof BIGGO_LIVE_URL === 'undefined' || !BIGGO_LIVE_URL || BIGGO_LIVE_URL.trim() === '') {
+        missingDataFields.push(fieldLabels.biggoLiveUrl);
     }
     
     // Перевіряємо умови оплати
