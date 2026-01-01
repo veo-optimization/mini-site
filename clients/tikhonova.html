@@ -165,21 +165,19 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                 </div>
             </div>
             
-            <!-- Приховані якорі захисту 4 та 5 (необхідні для системи безпеки) -->
-            <span id="veoAnchor4" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
-            <span id="veoAnchor5" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
-            
-            <!-- ============================================ -->
-            <!-- СТАРІ БЛОКИ (ЗАКОМЕНТОВАНІ) - ПОТЕНЦІЙНО МОЖУТЬ БУТИ ВИКОРИСТАНІ В МАЙБУТНЬОМУ -->
-            <!-- ============================================ -->
-            
-            <!--
             <div class="divider"></div>
             
+            <!-- БЛОК КОНТАКТІВ ПРОДАВЦЯ -->
             <div class="section">
+                <!-- Прихований якір захисту 4 -->
+                <span id="veoAnchor4" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
+                
                 <div class="contact-section">
                     <h3>📞 Зв'язок з магазином:</h3>
+                    <!-- Прихований якір захисту 5 -->
+                    <span id="veoAnchor5" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
                     
+                    <!-- Інструкція для TikTok -->
                     <div class="tiktok-instruction">
                         <div class="tiktok-instruction-title">
                             <span>📱</span>
@@ -191,6 +189,7 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                     </div>
                     
                     <div class="contact-list">
+                        <!-- Telegram -->
                         <div class="contact-item contact-item-telegram" onclick="showContactModal('Телеграм', '@' + TELEGRAM_USERNAME, 'telegram')" style="cursor: pointer;">
                             <div class="contact-icon">
                                 <img src="https://simpleicons.org/icons/telegram.svg" alt="Telegram" width="24" height="24" style="display: block;">
@@ -212,9 +211,12 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                             </div>
                         </div>
                         
+                        <!-- Viber контакти (динамічно генеруються) -->
                         <div id="viberContactsList">
+                            <!-- Заповнюється автоматично -->
                         </div>
                         
+                        <!-- Telegram Showcase -->
                         <div class="contact-item contact-item-showcase" id="telegramShowcaseItem" onclick="if(TELEGRAM_SHOWCASE) { const link = getTelegramShowcaseLink(); const displayText = isTelegramInviteLink(TELEGRAM_SHOWCASE) ? link : '@' + TELEGRAM_SHOWCASE; showContactModal('Вітрина', displayText, 'telegram'); }" style="cursor: pointer;">
                             <div class="contact-icon">
                                 <img src="https://simpleicons.org/icons/telegram.svg" alt="Telegram" width="24" height="24" style="display: block;">
@@ -240,6 +242,7 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                             </div>
                         </div>
                         
+                        <!-- Instagram -->
                         <div class="contact-item contact-item-instagram" id="instagramItem" onclick="if(INSTAGRAM_USERNAME) showContactModal('Інстаграм', '@' + INSTAGRAM_USERNAME, 'instagram');" style="cursor: pointer;">
                             <div class="contact-icon">
                                 <img src="https://simpleicons.org/icons/instagram.svg" alt="Instagram" width="24" height="24" style="display: block;">
@@ -265,6 +268,7 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                             </div>
                         </div>
                         
+                        <!-- BIGGO LIVE -->
                         <div class="contact-item contact-item-biggo" id="biggoLiveItem" onclick="if(BIGGO_LIVE_URL) { const username = getBiggoLiveUsername(); const fullUrl = getBiggoLiveUrl(); showContactModal('BIGGO LIVE', fullUrl, 'biggo'); }" style="cursor: pointer;">
                             <div class="contact-icon">
                                 <span style="display: block; font-weight: 700; font-size: 18px; font-family: Arial, sans-serif; color: currentColor;">B</span>
@@ -295,6 +299,20 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
             
             <div class="divider"></div>
             
+            <!-- БЛОК ЛОКАЦІЙ МАГАЗИНІВ -->
+            <div class="section" id="storeLocationsSection" style="display: none;">
+                <div class="section-title">
+                    <span>📍</span>
+                    <span>Локації магазинів</span>
+                </div>
+                <div id="storeLocationsList">
+                    <!-- Заповнюється автоматично через JavaScript -->
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- БЛОК КАЛЕНДАРЯ ПРЯМИХ ЕФІРІВ -->
             <div class="section" id="calendarSection" style="display: none;">
                 <div class="section-title">
                     <span>📅</span>
@@ -303,6 +321,7 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                 
                 <div class="calendar-container">
                     <div id="calendarEvents" style="display: none;">
+                        <!-- Події календаря будуть відображатись тут -->
                     </div>
                     <div style="border: 1px solid #dee2e6; border-radius: 15px; overflow: hidden; margin-bottom: 25px; background: white; position: relative;">
                         <iframe 
@@ -318,6 +337,11 @@ c33 - 👤 ПІБ отримувача:\n📱 Телефон отримувач�
                 </div>
             </div>
             
+            <!-- ============================================ -->
+            <!-- СТАРІ БЛОКИ (ЗАКОМЕНТОВАНІ) - ДУБЛЮЮТЬ ІНФОРМАЦІЮ З ПУБЛІЧНОЇ ОФЕРТИ -->
+            <!-- ============================================ -->
+            
+            <!--
             <div class="divider"></div>
             
             <div class="section">
