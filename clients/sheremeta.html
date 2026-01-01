@@ -16,58 +16,25 @@
     <!-- ДАНІ КЛІЄНТА -->
     <script>
         // ============================================
-        // ДАНІ КЛІЄНТА - ЗАПОВНІТЬ ЦІ ПОЛЯ
+        // 📋 ВСТАВТЕ БЛОК ДАНИХ ТУТ
         // ============================================
-        // Вставте дані, отримані від клієнта, у відповідні поля
-        // Всі поля обов'язкові, якщо не вказано інакше
-        
-        const CLIENT_DATA = {
-            // Назва магазину
-            shopName: "VEO SHOP",
-            
-            // Реквізити ФОП
-            fopName: "ФОП Шеремета Василь Анатолійович",
-            edrpou: "3361708913",
-            iban: "UA273220010000026009330077981",
-            bankName: "Universal bank",
-            paymentPurpose: "Послуга оптимізації реклами",
-            
-            // Контакти (залиште порожнім "", якщо немає)
-            telegramUsername: "veoforce_support",        // Без @
-            viberPhone: "0112223344",                   // 10 цифр, починається з 0
-            telegramShowcase: "veoforce_chat",          // Без @ або повне посилання
-            instagramUsername: "",                      // Без @, порожньо якщо немає
-            biggoLiveUrl: "",                           // Повне посилання, порожньо якщо немає
-            
-            // Календар (залиште порожнім "", якщо немає)
-            googleCalendarUrl: "https://calendar.google.com/calendar/ical/f1a82555ed6c28b6c4552f637cc150ae2ee0fa9f2d3f587e14e6819ea33a2da0%40group.calendar.google.com/public/basic.ics",
-            googleCalendarApiKey: "",                    // Опціонально
-            
-            // Умови оплати (масив рядків)
-            paymentOptions: [
-                "🔷 Повна передоплата 100%",
-                "🔷 Накладний платіж з передоплатою 200 грн"
-            ],
-            
-            // Умови доставки
-            deliveryMethod: "Нова пошта",
-            deliveryTime: "1-3 робочі дні після отримання оплати",
-            deliveryNote: "Термін доставки залежить від регіону отримувача",
-            
-            // Умови обміну та повернення
-            exchangeDays: 14,                           // 0 якщо недоступно
-            returnDays: 14,                              // 0 якщо недоступно
-            returnConditions: [                         // Масив умов
-                "Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)",
-                "Збережені всі етикетки, бирки та упаковка",
-                "Товар не повинен бути пошкоджений або забруднений"
-            ],
-            returnMoneyTime: "3-5 робочих днів",
-            returnDeliveryCost: "відповідно до тарифів перевізника. Сплачує отримувач. При поверненні товару через невідповідність розміру або інші причини з боку покупця, вартість доставки не повертається",
-            
-            // Шаблон після оплати (використовуйте \n для переносу рядка)
-            afterPaymentTemplate: "👤 ПІБ: \n📍 Населений пункт: \n📦 Відділення НП: \n📱 Телефон отримувача: "
-        };
+        // Просто скопіюйте та вставте блок даних від продавця (рядки типу "c1 - значення")
+        // Файл автоматично зчитає та правильно підставить всі дані
+        // Якщо якихось даних немає - вони просто не відображатимуться на сайті
+        const CLIENT_CONSTANTS = `
+        c1 - VEO SHOP
+c2 - 
+c3 - 
+c5 - ФОП Шеремета Василь Анатолійович
+c6 - 3361708913
+c7 - UA273220010000026009330077981
+c8 - Universal bank
+c9 - Послуга оптимізації реклами
+c13 - veoforce_support
+c13_type - username
+c15 - veoforce_chat
+c22 - https://calendar.google.com/calendar/ical/f1a82555ed6c28b6c4552f637cc150ae2ee0fa9f2d3f587e14e6819ea33a2da0%40group.calendar.google.com/public/basic.ics
+        `.trim();
     </script>
     
     <!-- ПІДКЛЮЧЕННЯ ОБРОБКИ ДАНИХ -->
@@ -123,25 +90,31 @@
                             <div class="data-value" id="paymentPurposeValue"></div>
                             <button class="copy-button" id="copyPurposeButton" onclick="copyPaymentPurpose()">Скопіювати призначення</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Блок оплати на картку (окремий блок, якщо є дані) -->
+            <div class="section" id="cardPaymentSection" style="display: none;">
+                <div class="section-title">
+                    <span>💳</span>
+                    <span>Оплата на картку:</span>
+                </div>
+                
+                <div class="card">
+                    <div class="copy-section">
+                        <div class="data-block">
+                            <div class="data-label">💳 Номер картки:</div>
+                            <div class="data-value" id="cardNumberValue"></div>
+                            <button class="copy-button" id="copyCardNumberButton" onclick="copyCardNumber()">Скопіювати номер</button>
+                        </div>
                         
-                        <!-- Блок оплати на картку (якщо є дані) -->
-                        <div id="cardPaymentBlock" style="display: none;">
-                            <div class="data-block">
-                                <div class="data-label">💳 Номер картки:</div>
-                                <div class="data-value" id="cardNumberValue"></div>
-                                <button class="copy-button" id="copyCardNumberButton" onclick="copyCardNumber()">Скопіювати номер</button>
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="color: #b0b0b0; font-size: 13px; margin-bottom: 5px;">
+                                <strong style="color: #e0e0e0;">👤 Прізвище власника картки:</strong> <span id="cardHolderNameValue"></span>
                             </div>
-                            
-                            <div class="data-block">
-                                <div class="data-label">👤 Прізвище власника картки:</div>
-                                <div class="data-value" id="cardHolderNameValue"></div>
-                                <button class="copy-button" id="copyCardHolderButton" onclick="copyCardHolder()">Скопіювати прізвище</button>
-                            </div>
-                            
-                            <div class="data-block">
-                                <div class="data-label">🏦 Назва банку картки:</div>
-                                <div class="data-value" id="cardBankNameValue"></div>
-                                <button class="copy-button" id="copyCardBankButton" onclick="copyCardBank()">Скопіювати назву банку</button>
+                            <div style="color: #b0b0b0; font-size: 13px;">
+                                <strong style="color: #e0e0e0;">🏦 Назва банку картки:</strong> <span id="cardBankNameValue"></span>
                             </div>
                         </div>
                     </div>
@@ -174,6 +147,7 @@
             
             <div class="divider"></div>
             
+            <!-- БЛОК КОНТАКТІВ ПРОДАВЦЯ -->
             <div class="section">
                 <!-- Прихований якір захисту 4 -->
                 <span id="veoAnchor4" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
@@ -217,26 +191,9 @@
                             </div>
                         </div>
                         
-                        <!-- Viber -->
-                        <div class="contact-item contact-item-viber" onclick="showContactModal('Вайбер', formatPhoneNumber(VIBER_PHONE), 'viber')" style="cursor: pointer;">
-                            <div class="contact-icon">
-                                <img src="https://simpleicons.org/icons/viber.svg" alt="Viber" width="24" height="24" style="display: block;">
-                            </div>
-                            <div class="contact-content">
-                                <div class="contact-name">
-                                    Вайбер
-                                    <span class="copy-success-badge" id="viberCopyBadge">✓ Скопійовано!</span>
-                                </div>
-                                <div class="contact-value" id="viberPhone"></div>
-                            </div>
-                            <div class="contact-actions" onclick="event.stopPropagation();">
-                                <button class="contact-action-btn contact-open-btn" onclick="openViber()" title="Відкрити">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                </button>
-                                <button class="contact-action-btn contact-copy-btn" id="copyViberPhoneButton" onclick="copyViberPhone()" title="Скопіювати">
-                                    <i class="bi bi-files"></i>
-                                </button>
-                            </div>
+                        <!-- Viber контакти (динамічно генеруються) -->
+                        <div id="viberContactsList">
+                            <!-- Заповнюється автоматично -->
                         </div>
                         
                         <!-- Telegram Showcase -->
@@ -322,6 +279,19 @@
             
             <div class="divider"></div>
             
+            <!-- БЛОК ЛОКАЦІЙ МАГАЗИНІВ -->
+            <div class="section" id="storeLocationsSection" style="display: none;">
+                <div class="section-title">
+                    <span>📍</span>
+                    <span>Локації магазинів</span>
+                </div>
+                <div id="storeLocationsList">
+                    <!-- Заповнюється автоматично через JavaScript -->
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
             <!-- БЛОК КАЛЕНДАРЯ ПРЯМИХ ЕФІРІВ -->
             <div class="section" id="calendarSection" style="display: none;">
                 <div class="section-title">
@@ -330,6 +300,9 @@
                 </div>
                 
                 <div class="calendar-container">
+                    <div id="calendarEvents" style="display: none;">
+                        <!-- Події календаря будуть відображатись тут -->
+                    </div>
                     <div style="border: 1px solid #dee2e6; border-radius: 15px; overflow: hidden; margin-bottom: 25px; background: white; position: relative;">
                         <iframe 
                             id="calendarIframe"
@@ -344,9 +317,13 @@
                 </div>
             </div>
             
+            <!-- ============================================ -->
+            <!-- СТАРІ БЛОКИ (ЗАКОМЕНТОВАНІ) - ДУБЛЮЮТЬ ІНФОРМАЦІЮ З ПУБЛІЧНОЇ ОФЕРТИ -->
+            <!-- ============================================ -->
+            
+            <!--
             <div class="divider"></div>
             
-            <!-- ОБ'ЄДНАНИЙ БЛОК УМОВ ОПЛАТИ, ДОСТАВКИ ТА ПОВЕРНЕННЯ -->
             <div class="section">
                 <div class="return-conditions">
                     <div class="section-title" style="font-size: 16px; margin-bottom: 16px;">
@@ -356,7 +333,6 @@
                     
                     <h3 style="margin: 0 0 12px 0; color: #ffffff; font-size: 14px; font-weight: 600;">🔄 Варіанти оплати:</h3>
                     <div class="payment-options" id="paymentOptions">
-                        <!-- Заповнюється автоматично -->
                     </div>
                     
                     <h3 style="margin: 0 0 12px 0; color: #ffffff; font-size: 14px; font-weight: 600;">🚚 Доставка по Україні:</h3>
@@ -370,27 +346,45 @@
                     <div id="exchangeReturnSection" style="margin-top: 20px;">
                         <h3 style="margin: 0 0 12px 0; color: #ffffff; font-size: 14px; font-weight: 600;">📋 Умови обміну та повернення:</h3>
                         <ul id="exchangeReturnList">
-                            <!-- Заповнюється автоматично -->
                         </ul>
                     </div>
                 </div>
+            </div>
+            -->
+            
+            <!-- Блок з інформацією про незаповнені дані -->
+            <div id="missingDataNotice" style="display: none; margin-top: 30px; padding: 20px; background: rgba(255, 215, 0, 0.1); border-left: 4px solid #FFD700; border-radius: 8px;">
+                <p style="margin: 0; color: #e0e0e0; font-size: 13px; line-height: 1.6;">
+                    <strong style="color: #FFD700;">💡 Інформація:</strong> Продавець поки не заповнив поля (або дані) на: <span id="missingDataList"></span>. Скоро вони з'являться на сайті.
+                </p>
             </div>
             
             <div class="footer">
                 ✨ <em>Дякуємо за ваше замовлення! Гарних покупок! 💫</em>
             </div>
             
+            <!-- Публічна оферта -->
+            <div class="public-offer-section" id="publicOfferSection" style="display: none;">
+                <div class="public-offer-content" id="publicOfferContent">
+                    <!-- Заповнюється автоматично через JavaScript -->
+                </div>
+            </div>
+            
+            <!-- ============================================ -->
+            <!-- БЛОК КОНТАКТІВ З КОМАНДОЮ VEO FORCE -->
+            <!-- Щоб приховати цей блок - закоментуйте весь блок від початку до кінця -->
+            <!-- ============================================ -->
             <div class="footer-credit" id="footerCreditBlock">
                 <!-- Прихований якір захисту 6 -->
                 <span id="veoAnchor6" class="veo-anchor veo-anchor-bg-white">VEO FORCE</span>
                 
                 <div class="footer-credit-text">
-                    Розроблено командою<br><strong>VEO FORCE 2025</strong>
-                </div>
-                <div style="font-size: 14px; color: #6B7A8F; margin-top: 8px;">
-                    Замовити таку сторінку:
+                    Розроблено командою<br><strong>VEO FORCE <span id="currentYear"></span></strong>
                 </div>
                 <div class="footer-credit-links">
+                    <a href="#" id="footerCreatePageLink" target="_blank" class="footer-link footer-link-create">
+                        Створити таку сторінку
+                    </a>
                     <a href="https://t.me/veoforce_support" id="footerTelegramLink" target="_blank" class="footer-link footer-link-telegram">
                         Телеграм<br>@veoforce_support
                     </a>
@@ -405,6 +399,9 @@
                     </p>
                 </div>
             </div>
+            <!-- ============================================ -->
+            <!-- КІНЕЦЬ БЛОКУ КОНТАКТІВ З КОМАНДОЮ VEO FORCE -->
+            <!-- ============================================ -->
         </div>
     </div>
     
@@ -484,4 +481,3 @@
     </script>
 </body>
 </html>
-
