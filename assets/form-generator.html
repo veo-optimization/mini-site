@@ -779,7 +779,8 @@
             }
             
             /* Viber контакти */
-            .viber-contact-item {
+            .viber-contact-item,
+            .social-contact-item {
                 padding: 12px !important;
             }
             
@@ -921,6 +922,7 @@
             /* Контейнери з кнопками */
             .location-item,
             .viber-contact-item,
+            .social-contact-item,
             .return-condition-item,
             .template-custom-field-item,
             .custom-category-item {
@@ -1210,7 +1212,7 @@
                             <div class="form-group" style="margin-bottom: 10px;">
                                 <label>Номер телефону</label>
                                 <input type="text" class="viber-phone" placeholder="Введіть номер телефону" style="width: 100%;">
-                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу + та пробілів. Наприклад: "0112223344"</div>
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер у форматі: <span style="color: #FFD700; font-weight: 600;">+380671112233</span>. Наприклад: "+380671112233"</div>
                             </div>
                             <div class="form-group" style="margin-bottom: 10px;">
                                 <label>Назва контакту (макс. 20 символів)</label>
@@ -1224,42 +1226,168 @@
                     <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 Viber контактів. Натисніть "+ Додати Viber контакт" для додавання нового контакту.</div>
                 </div>
                 <div class="form-group">
-                    <label for="telegramShowcase">Telegram вітрина</label>
-                    <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="Введіть Telegram вітрину">
-                    <div class="help-text">📝 Якщо є Telegram-вітрина (канал/група), вкажіть username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "veoforce_chat" або "https://t.me/+Z-iCu_n0QYdmYTJi". Якщо немає - залиште порожнім</div>
+                    <label>Telegram вітрина</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте Telegram вітрини (канали/групи). Можна додати до 5 контактів. Введіть username з @ або посилання - система автоматично витягне username.
+                    </div>
+                    <div id="telegramContainer">
+                        <div class="social-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Username або посилання</label>
+                                <input type="text" class="social-username-input" data-network="telegram" placeholder="Введіть @username або t.me/username" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Система автоматично витягне username з посилання</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Вітрина", "Канал", "Група"</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, 'telegram')" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addSocialContact('telegram')" id="addTelegramShowcaseBtn" style="margin-top: 10px;">+ Додати Telegram вітрину</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 Telegram вітрин. Натисніть "+ Додати Telegram вітрину" для додавання нового контакту.</div>
                 </div>
                 <div class="form-group">
-                    <label for="instagramUsername">Instagram username</label>
-                    <input type="text" id="instagramUsername" name="instagramUsername" placeholder="Введіть Instagram username">
-                    <div class="help-text">📝 Ім'я користувача Instagram <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "instagram.com/my_shop_ua", то впишіть "my_shop_ua". Якщо немає Instagram - залиште порожнім</div>
+                    <label>Instagram</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте Instagram профілі. Можна додати до 5 контактів. Введіть username з @ або посилання - система автоматично витягне username.
+                    </div>
+                    <div id="instagramContainer">
+                        <div class="social-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Username або посилання</label>
+                                <input type="text" class="social-username-input" data-network="instagram" placeholder="Введіть @username або instagram.com/username" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Система автоматично витягне username з посилання</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Основний профіль", "Бізнес акаунт"</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, 'instagram')" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addSocialContact('instagram')" id="addInstagramBtn" style="margin-top: 10px;">+ Додати Instagram контакт</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 Instagram контактів.</div>
                 </div>
                 <div class="form-group">
-                    <label for="biggoLiveUrl">BIGGO LIVE</label>
-                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="Введіть BIGGO LIVE username або ID">
-                    <div class="help-text">📝 Username або ID профілю у BIGGO LIVE <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @ та <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> посилання. Наприклад: якщо посилання "https://biggo.tv/user/veo_me", то впишіть "veo_me". Якщо username не встановлено, впишіть цифровий ID. Якщо немає - залиште порожнім</div>
-                    <button type="button" class="instruction-btn" onclick="showInstruction('biggo')" style="margin-top: 10px; padding: 8px 16px; background: rgba(0, 136, 204, 0.2); border: 1px solid #0088cc; border-radius: 6px; color: #0088cc; cursor: pointer; font-size: 13px; font-weight: 600;">
+                    <label>BIGGO LIVE</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте BIGGO LIVE профілі. Можна додати до 5 контактів. Введіть username, ID або посилання - система автоматично витягне username.
+                    </div>
+                    <div id="biggoContainer">
+                        <div class="social-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Username, ID або посилання</label>
+                                <input type="text" class="social-username-input" data-network="biggo" placeholder="Введіть username, ID або biggo.tv/user/username" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Система автоматично витягне username з посилання</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Основний профіль", "Бізнес акаунт"</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, 'biggo')" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addSocialContact('biggo')" id="addBiggoBtn" style="margin-top: 10px;">+ Додати BIGGO LIVE контакт</button>
+                    <button type="button" class="instruction-btn" onclick="showInstruction('biggo')" style="margin-top: 10px; padding: 8px 16px; background: rgba(0, 136, 204, 0.2); border: 1px solid #0088cc; border-radius: 6px; color: #0088cc; cursor: pointer; font-size: 13px; font-weight: 600; display: block; width: 100%;">
                         Як знайти username або ID у BIGGO LIVE?
                     </button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 BIGGO LIVE контактів.</div>
                 </div>
                 <div class="form-group">
-                    <label for="facebookPage">Facebook сторінка/група</label>
-                    <input type="text" id="facebookPage" name="facebookPage" placeholder="Введіть Facebook сторінку/групу">
-                    <div class="help-text">📝 Username Facebook сторінки <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "my_shop_ua" або "https://facebook.com/my_shop_ua". Якщо немає - залиште порожнім</div>
+                    <label>Facebook</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте Facebook сторінки/групи. Можна додати до 5 контактів. Введіть username або посилання - система автоматично витягне username.
+                    </div>
+                    <div id="facebookContainer">
+                        <div class="social-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Username або посилання</label>
+                                <input type="text" class="social-username-input" data-network="facebook" placeholder="Введіть username або facebook.com/username" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Система автоматично витягне username з посилання</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Сторінка", "Група"</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, 'facebook')" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addSocialContact('facebook')" id="addFacebookBtn" style="margin-top: 10px;">+ Додати Facebook контакт</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 Facebook контактів.</div>
                 </div>
                 <div class="form-group">
-                    <label for="tiktokUsername">TikTok username</label>
-                    <input type="text" id="tiktokUsername" name="tiktokUsername" placeholder="Введіть TikTok username">
-                    <div class="help-text">📝 Ім'я користувача TikTok <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "tiktok.com/@my_shop_ua", то впишіть "my_shop_ua". Якщо немає - залиште порожнім</div>
+                    <label>TikTok</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте TikTok профілі. Можна додати до 5 контактів. Введіть username з @ або посилання - система автоматично витягне username.
+                    </div>
+                    <div id="tiktokContainer">
+                        <div class="social-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Username або посилання</label>
+                                <input type="text" class="social-username-input" data-network="tiktok" placeholder="Введіть @username або tiktok.com/@username" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Система автоматично витягне username з посилання</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Основний профіль", "Бізнес акаунт"</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, 'tiktok')" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addSocialContact('tiktok')" id="addTiktokBtn" style="margin-top: 10px;">+ Додати TikTok контакт</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 TikTok контактів.</div>
                 </div>
                 <div class="form-group">
-                    <label for="youtubeChannel">YouTube канал</label>
-                    <input type="text" id="youtubeChannel" name="youtubeChannel" placeholder="Введіть YouTube канал">
-                    <div class="help-text">📝 Username YouTube каналу <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "MyShopUA" або "https://youtube.com/@MyShopUA". Якщо немає - залиште порожнім</div>
+                    <label>YouTube</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте YouTube канали. Можна додати до 5 контактів. Введіть username з @ або посилання - система автоматично витягне username.
+                    </div>
+                    <div id="youtubeContainer">
+                        <div class="social-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Username або посилання</label>
+                                <input type="text" class="social-username-input" data-network="youtube" placeholder="Введіть @username або youtube.com/@username" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Система автоматично витягне username з посилання</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Основний канал", "Бізнес канал"</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, 'youtube')" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addSocialContact('youtube')" id="addYoutubeBtn" style="margin-top: 10px;">+ Додати YouTube контакт</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 YouTube контактів.</div>
                 </div>
                 <div class="form-group">
-                    <label for="whatsappPhone">WhatsApp телефон</label>
-                    <input type="text" id="whatsappPhone" name="whatsappPhone" placeholder="Введіть WhatsApp номер">
-                    <div class="help-text">📝 Номер телефону для WhatsApp у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567". Якщо немає - залиште порожнім</div>
+                    <label>WhatsApp</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте WhatsApp контакти. Можна додати до 5 контактів. Введіть номер у форматі +380671112233 або посилання.
+                    </div>
+                    <div id="whatsappContainer">
+                        <div class="social-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Номер телефону або посилання</label>
+                                <input type="text" class="social-username-input" data-network="whatsapp" placeholder="Введіть +380671112233 або wa.me/380671112233" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер у форматі: <span style="color: #FFD700; font-weight: 600;">+380671112233</span></div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Менеджер", "Підтримка"</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, 'whatsapp')" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addSocialContact('whatsapp')" id="addWhatsappBtn" style="margin-top: 10px;">+ Додати WhatsApp контакт</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 WhatsApp контактів.</div>
                 </div>
             </div>
             
@@ -1637,6 +1765,149 @@
     <script>
         let generatedCode = '';
         
+        // ============================================
+        // УНІВЕРСАЛЬНА СИСТЕМА СОЦІАЛЬНИХ МЕРЕЖ
+        // ============================================
+        
+        // Визначення типу соціальної мережі з введеного тексту
+        function detectSocialNetwork(input) {
+            if (!input || !input.trim()) return null;
+            
+            const text = input.trim().toLowerCase();
+            
+            // Telegram
+            if (text.includes('t.me/') || text.includes('telegram.me/') || text.includes('@') && (text.startsWith('@') || text.includes('/@'))) {
+                return 'telegram';
+            }
+            // Instagram
+            if (text.includes('instagram.com/') || text.includes('instagr.am/')) {
+                return 'instagram';
+            }
+            // BIGGO LIVE
+            if (text.includes('biggo.tv/') || text.includes('biggo.live/')) {
+                return 'biggo';
+            }
+            // Facebook
+            if (text.includes('facebook.com/') || text.includes('fb.com/')) {
+                return 'facebook';
+            }
+            // TikTok
+            if (text.includes('tiktok.com/') || text.includes('vm.tiktok.com/')) {
+                return 'tiktok';
+            }
+            // YouTube
+            if (text.includes('youtube.com/') || text.includes('youtu.be/')) {
+                return 'youtube';
+            }
+            // WhatsApp
+            if (text.includes('wa.me/') || text.includes('whatsapp.com/') || /^\+380\d{9}$/.test(text)) {
+                return 'whatsapp';
+            }
+            
+            return null;
+        }
+        
+        // Витягування юзернейму з URL або тексту
+        function extractUsername(input, networkType) {
+            if (!input || !input.trim()) return '';
+            
+            let text = input.trim();
+            
+            // Видаляємо @ на початку
+            if (text.startsWith('@')) {
+                text = text.substring(1);
+            }
+            
+            // Видаляємо пробіли
+            text = text.replace(/\s/g, '');
+            
+            switch(networkType) {
+                case 'telegram':
+                    // t.me/username або telegram.me/username або @username
+                    const telegramMatch = text.match(/(?:t\.me\/|telegram\.me\/)([^\/\?]+)/i) || text.match(/@?([a-z0-9_]+)/i);
+                    return telegramMatch ? telegramMatch[1] : text.replace(/^@/, '');
+                    
+                case 'instagram':
+                    // instagram.com/username
+                    const instagramMatch = text.match(/(?:instagram\.com\/|instagr\.am\/)([^\/\?]+)/i);
+                    return instagramMatch ? instagramMatch[1] : text.replace(/^@/, '');
+                    
+                case 'biggo':
+                    // biggo.tv/user/username або biggo.live/user/username
+                    const biggoMatch = text.match(/(?:biggo\.tv\/user\/|biggo\.live\/user\/)([^\/\?]+)/i);
+                    return biggoMatch ? biggoMatch[1] : text;
+                    
+                case 'facebook':
+                    // facebook.com/username
+                    const facebookMatch = text.match(/(?:facebook\.com\/|fb\.com\/)([^\/\?]+)/i);
+                    return facebookMatch ? facebookMatch[1] : text.replace(/^@/, '');
+                    
+                case 'tiktok':
+                    // tiktok.com/@username
+                    const tiktokMatch = text.match(/(?:tiktok\.com\/@?|vm\.tiktok\.com\/)([^\/\?]+)/i);
+                    return tiktokMatch ? tiktokMatch[1] : text.replace(/^@/, '');
+                    
+                case 'youtube':
+                    // youtube.com/@username або youtube.com/c/username
+                    const youtubeMatch = text.match(/(?:youtube\.com\/@|youtube\.com\/c\/|youtu\.be\/)([^\/\?]+)/i);
+                    return youtubeMatch ? youtubeMatch[1] : text.replace(/^@/, '');
+                    
+                case 'whatsapp':
+                    // wa.me/380671112233 або +380671112233
+                    const whatsappMatch = text.match(/(?:wa\.me\/|whatsapp\.com\/)([0-9+]+)/i) || text.match(/^(\+380\d{9})$/);
+                    return whatsappMatch ? whatsappMatch[1].replace(/^\+/, '') : text.replace(/^\+/, '');
+                    
+                default:
+                    return text.replace(/^@/, '');
+            }
+        }
+        
+        // Отримання іконки для соціальної мережі
+        function getSocialIcon(networkType) {
+            const icons = {
+                'telegram': '<img src="https://simpleicons.org/icons/telegram.svg" alt="Telegram" width="24" height="24" style="display: block;">',
+                'instagram': '<img src="https://simpleicons.org/icons/instagram.svg" alt="Instagram" width="24" height="24" style="display: block;">',
+                'biggo': '<span style="display: block; font-weight: 700; font-size: 18px; font-family: Arial, sans-serif; color: currentColor;">B</span>',
+                'facebook': '<img src="https://simpleicons.org/icons/facebook.svg" alt="Facebook" width="24" height="24" style="display: block;">',
+                'tiktok': '<img src="https://simpleicons.org/icons/tiktok.svg" alt="TikTok" width="24" height="24" style="display: block;">',
+                'youtube': '<img src="https://simpleicons.org/icons/youtube.svg" alt="YouTube" width="24" height="24" style="display: block;">',
+                'whatsapp': '<img src="https://simpleicons.org/icons/whatsapp.svg" alt="WhatsApp" width="24" height="24" style="display: block;">'
+            };
+            return icons[networkType] || '<span>📱</span>';
+        }
+        
+        // Отримання назви соціальної мережі
+        function getSocialLabel(networkType) {
+            const labels = {
+                'telegram': 'Telegram',
+                'instagram': 'Instagram',
+                'biggo': 'BIGGO LIVE',
+                'facebook': 'Facebook',
+                'tiktok': 'TikTok',
+                'youtube': 'YouTube',
+                'whatsapp': 'WhatsApp'
+            };
+            return labels[networkType] || 'Соціальна мережа';
+        }
+        
+        // Отримання placeholder для соціальної мережі
+        function getSocialPlaceholder(networkType) {
+            const placeholders = {
+                'telegram': 'Введіть username (@username) або посилання (t.me/username)',
+                'instagram': 'Введіть username (@username) або посилання (instagram.com/username)',
+                'biggo': 'Введіть username або ID, або посилання (biggo.tv/user/username)',
+                'facebook': 'Введіть username або посилання (facebook.com/username)',
+                'tiktok': 'Введіть username (@username) або посилання (tiktok.com/@username)',
+                'youtube': 'Введіть username (@username) або посилання (youtube.com/@username)',
+                'whatsapp': 'Введіть номер (+380671112233) або посилання (wa.me/380671112233)'
+            };
+            return placeholders[networkType] || 'Введіть посилання або username';
+        }
+        
+        // ============================================
+        // КІНЕЦЬ УНІВЕРСАЛЬНОЇ СИСТЕМИ
+        // ============================================
+        
         // Функція для збору Viber контактів
         function getViberContacts() {
             const contacts = [];
@@ -1723,6 +1994,20 @@
             checks.push({label: 'Telegram', filled: !!telegramContact});
             const viberContacts = getViberContacts();
             checks.push({label: 'Viber', filled: viberContacts.length > 0});
+            const telegramShowcaseContacts = getSocialContacts('telegram');
+            checks.push({label: 'Telegram вітрина', filled: telegramShowcaseContacts.length > 0});
+            const instagramContacts = getSocialContacts('instagram');
+            checks.push({label: 'Instagram', filled: instagramContacts.length > 0});
+            const biggoContacts = getSocialContacts('biggo');
+            checks.push({label: 'BIGGO LIVE', filled: biggoContacts.length > 0});
+            const facebookContacts = getSocialContacts('facebook');
+            checks.push({label: 'Facebook', filled: facebookContacts.length > 0});
+            const tiktokContacts = getSocialContacts('tiktok');
+            checks.push({label: 'TikTok', filled: tiktokContacts.length > 0});
+            const youtubeContacts = getSocialContacts('youtube');
+            checks.push({label: 'YouTube', filled: youtubeContacts.length > 0});
+            const whatsappContacts = getSocialContacts('whatsapp');
+            checks.push({label: 'WhatsApp', filled: whatsappContacts.length > 0});
             const googleCalendarUrl = document.getElementById('googleCalendarUrl')?.value.trim();
             checks.push({label: 'Google Calendar', filled: !!googleCalendarUrl});
             
@@ -1930,6 +2215,122 @@
             }
         }
         
+        // ============================================
+        // УНІВЕРСАЛЬНІ ФУНКЦІЇ ДЛЯ СОЦІАЛЬНИХ МЕРЕЖ
+        // ============================================
+        
+        // Додавання контакту соціальної мережі
+        function addSocialContact(networkType) {
+            const containerId = networkType + 'Container';
+            const container = document.getElementById(containerId);
+            if (!container) {
+                console.error('Контейнер не знайдено:', containerId);
+                return;
+            }
+            
+            const contactCount = container.querySelectorAll('.social-contact-item').length;
+            if (contactCount >= 5) {
+                alert(`⚠️ Максимальна кількість ${getSocialLabel(networkType)} контактів - 5.`);
+                return;
+            }
+            
+            const div = document.createElement('div');
+            div.className = 'social-contact-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Username або посилання</label>
+                    <input type="text" class="social-username-input" data-network="${networkType}" placeholder="${getSocialPlaceholder(networkType)}" style="width: 100%;">
+                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Система автоматично витягне username з посилання</div>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Назва контакту (макс. 20 символів)</label>
+                    <input type="text" class="social-contact-name" maxlength="20" placeholder="Введіть назву контакту" style="width: 100%;">
+                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Наприклад: "Вітрина", "Канал", "Група"</div>
+                </div>
+                <button type="button" class="remove-item-btn" onclick="removeSocialContact(this, '${networkType}')" style="width: 100%;">× Видалити контакт</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробники подій
+            const usernameInput = div.querySelector('.social-username-input');
+            const nameInput = div.querySelector('.social-contact-name');
+            
+            if (usernameInput) {
+                usernameInput.addEventListener('input', function() {
+                    // Автоматичне визначення типу мережі та витягування username
+                    const input = this.value.trim();
+                    if (input) {
+                        const detectedNetwork = detectSocialNetwork(input);
+                        if (detectedNetwork && detectedNetwork === networkType) {
+                            const extracted = extractUsername(input, networkType);
+                            // Можна показати підказку про витягнутий username
+                        }
+                    }
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+                usernameInput.addEventListener('blur', function() {
+                    validateForm();
+                });
+            }
+            
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            
+            updateGeneratedCode();
+            updateDataCheckList();
+        }
+        
+        // Видалення контакту соціальної мережі
+        function removeSocialContact(button, networkType) {
+            const contactItem = button.closest('.social-contact-item');
+            if (contactItem) {
+                contactItem.remove();
+                updateGeneratedCode();
+                updateDataCheckList();
+            }
+        }
+        
+        // Отримання контактів соціальної мережі
+        function getSocialContacts(networkType) {
+            const contacts = [];
+            const containerId = networkType + 'Container';
+            const container = document.getElementById(containerId);
+            if (container) {
+                const items = container.querySelectorAll('.social-contact-item');
+                items.forEach(item => {
+                    const usernameInput = item.querySelector('.social-username-input');
+                    const nameInput = item.querySelector('.social-contact-name');
+                    const input = usernameInput?.value.trim();
+                    const name = nameInput?.value.trim();
+                    
+                    if (input) {
+                        // Визначаємо тип мережі та витягуємо username
+                        const detectedNetwork = detectSocialNetwork(input);
+                        const extractedUsername = extractUsername(input, detectedNetwork || networkType);
+                        
+                        contacts.push({
+                            username: extractedUsername,
+                            name: name || '',
+                            originalInput: input
+                        });
+                    }
+                });
+            }
+            return contacts;
+        }
+        
+        // ============================================
+        // КІНЕЦЬ УНІВЕРСАЛЬНИХ ФУНКЦІЙ
+        // ============================================
+        
         // Додавання нового поля шаблону
         function addTemplateCustomField() {
             const container = document.getElementById('templateCustomFieldsContainer');
@@ -1984,8 +2385,8 @@
             div.innerHTML = `
                 <div class="form-group" style="margin-bottom: 10px;">
                     <label>Номер телефону</label>
-                    <input type="text" class="viber-phone" placeholder="Наприклад: 0112223344" style="width: 100%;">
-                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу + та пробілів. Наприклад: "0112223344"</div>
+                    <input type="text" class="viber-phone" placeholder="Наприклад: +380671112233" style="width: 100%;">
+                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер у форматі: <span style="color: #FFD700; font-weight: 600;">+380671112233</span>. Наприклад: "+380671112233"</div>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
                     <label>Назва контакту (макс. 20 символів)</label>
@@ -2118,13 +2519,22 @@
                 }
             });
             
-            // Зберігаємо кастомні поля (локації, умови повернення, категорії, шаблон, Viber контакти)
+            // Зберігаємо кастомні поля (локації, умови повернення, категорії, шаблон, Viber контакти, соціальні мережі)
             const customFields = {
                 locations: [],
                 returnConditions: [],
                 categories: [],
                 templateFields: [],
-                viberContacts: []
+                viberContacts: [],
+                socialContacts: {
+                    telegram: [],
+                    instagram: [],
+                    biggo: [],
+                    facebook: [],
+                    tiktok: [],
+                    youtube: [],
+                    whatsapp: []
+                }
             };
             
             // Локації
@@ -2167,6 +2577,13 @@
                 if (phone) {
                     customFields.viberContacts.push({phone, name: name || ''});
                 }
+            });
+            
+            // Соціальні мережі
+            const socialNetworks = ['telegram', 'instagram', 'biggo', 'facebook', 'tiktok', 'youtube', 'whatsapp'];
+            socialNetworks.forEach(network => {
+                const contacts = getSocialContacts(network);
+                customFields.socialContacts[network] = contacts;
             });
             
             formData._customFields = customFields;
@@ -2309,6 +2726,42 @@
                                             if (nameInput) nameInput.value = contact.name || '';
                                         }
                                     }, 100);
+                                }
+                            });
+                        }
+                        
+                        // Соціальні мережі
+                        if (formData._customFields.socialContacts) {
+                            const socialNetworks = ['telegram', 'instagram', 'biggo', 'facebook', 'tiktok', 'youtube', 'whatsapp'];
+                            socialNetworks.forEach(network => {
+                                if (formData._customFields.socialContacts[network] && formData._customFields.socialContacts[network].length > 0) {
+                                    formData._customFields.socialContacts[network].forEach((contact, index) => {
+                                        if (index === 0) {
+                                            const container = document.getElementById(network + 'Container');
+                                            if (container) {
+                                                const usernameInput = container.querySelector('.social-username-input');
+                                                const nameInput = container.querySelector('.social-contact-name');
+                                                if (usernameInput) usernameInput.value = contact.originalInput || contact.username || '';
+                                                if (nameInput) nameInput.value = contact.name || '';
+                                            }
+                                        } else {
+                                            // Додаємо нові контакти
+                                            addSocialContact(network);
+                                            setTimeout(() => {
+                                                const container = document.getElementById(network + 'Container');
+                                                if (container) {
+                                                    const items = container.querySelectorAll('.social-contact-item');
+                                                    const item = items[items.length - 1];
+                                                    if (item) {
+                                                        const usernameInput = item.querySelector('.social-username-input');
+                                                        const nameInput = item.querySelector('.social-contact-name');
+                                                        if (usernameInput) usernameInput.value = contact.originalInput || contact.username || '';
+                                                        if (nameInput) nameInput.value = contact.name || '';
+                                                    }
+                                                }
+                                            }, 100);
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -2735,39 +3188,90 @@
                 constants.push(`c14_count - ${formData.viberContacts.length}`);
             }
             
-            // c15 - telegramShowcase
-            if (formData.telegramShowcase) {
-                constants.push(`c15 - ${formData.telegramShowcase}`);
+            // c15 - telegramShowcase (масив контактів)
+            const telegramContacts = getSocialContacts('telegram');
+            if (telegramContacts.length > 0) {
+                telegramContacts.forEach((contact, index) => {
+                    if (index < 5) {
+                        const char = String.fromCharCode(97 + index); // a, b, c, d, e
+                        constants.push(`c15${char} - ${contact.username}|${contact.name || ''}`);
+                    }
+                });
+                constants.push(`c15_count - ${Math.min(telegramContacts.length, 5)}`);
             }
             
-            // c16 - instagramUsername
-            if (formData.instagramUsername) {
-                constants.push(`c16 - ${formData.instagramUsername}`);
+            // c16 - instagram (масив контактів)
+            const instagramContacts = getSocialContacts('instagram');
+            if (instagramContacts.length > 0) {
+                instagramContacts.forEach((contact, index) => {
+                    if (index < 5) {
+                        const char = String.fromCharCode(97 + index);
+                        constants.push(`c16${char} - ${contact.username}|${contact.name || ''}`);
+                    }
+                });
+                constants.push(`c16_count - ${Math.min(instagramContacts.length, 5)}`);
             }
             
-            // c17 - biggoLiveUrl
-            if (formData.biggoLiveUrl) {
-                constants.push(`c17 - ${formData.biggoLiveUrl}`);
+            // c17 - biggoLive (масив контактів)
+            const biggoContacts = getSocialContacts('biggo');
+            if (biggoContacts.length > 0) {
+                biggoContacts.forEach((contact, index) => {
+                    if (index < 5) {
+                        const char = String.fromCharCode(97 + index);
+                        constants.push(`c17${char} - ${contact.username}|${contact.name || ''}`);
+                    }
+                });
+                constants.push(`c17_count - ${Math.min(biggoContacts.length, 5)}`);
             }
             
-            // c18 - facebookPage
-            if (formData.facebookPage) {
-                constants.push(`c18 - ${formData.facebookPage}`);
+            // c18 - facebook (масив контактів)
+            const facebookContacts = getSocialContacts('facebook');
+            if (facebookContacts.length > 0) {
+                facebookContacts.forEach((contact, index) => {
+                    if (index < 5) {
+                        const char = String.fromCharCode(97 + index);
+                        constants.push(`c18${char} - ${contact.username}|${contact.name || ''}`);
+                    }
+                });
+                constants.push(`c18_count - ${Math.min(facebookContacts.length, 5)}`);
             }
             
-            // c19 - tiktokUsername
-            if (formData.tiktokUsername) {
-                constants.push(`c19 - ${formData.tiktokUsername}`);
+            // c19 - tiktok (масив контактів)
+            const tiktokContacts = getSocialContacts('tiktok');
+            if (tiktokContacts.length > 0) {
+                tiktokContacts.forEach((contact, index) => {
+                    if (index < 5) {
+                        const char = String.fromCharCode(97 + index);
+                        constants.push(`c19${char} - ${contact.username}|${contact.name || ''}`);
+                    }
+                });
+                constants.push(`c19_count - ${Math.min(tiktokContacts.length, 5)}`);
             }
             
-            // c20 - youtubeChannel
-            if (formData.youtubeChannel) {
-                constants.push(`c20 - ${formData.youtubeChannel}`);
+            // c20 - youtube (масив контактів)
+            const youtubeContacts = getSocialContacts('youtube');
+            if (youtubeContacts.length > 0) {
+                youtubeContacts.forEach((contact, index) => {
+                    if (index < 5) {
+                        const char = String.fromCharCode(97 + index);
+                        constants.push(`c20${char} - ${contact.username}|${contact.name || ''}`);
+                    }
+                });
+                constants.push(`c20_count - ${Math.min(youtubeContacts.length, 5)}`);
             }
             
-            // c21 - whatsappPhone
-            if (formData.whatsappPhone) {
-                constants.push(`c21 - ${formData.whatsappPhone}`);
+            // c21 - whatsapp (масив контактів)
+            const whatsappContacts = getSocialContacts('whatsapp');
+            if (whatsappContacts.length > 0) {
+                whatsappContacts.forEach((contact, index) => {
+                    if (index < 5) {
+                        const char = String.fromCharCode(97 + index);
+                        // Для WhatsApp зберігаємо номер у форматі +380
+                        const phone = contact.username.startsWith('+') ? contact.username : '+' + contact.username;
+                        constants.push(`c21${char} - ${phone}|${contact.name || ''}`);
+                    }
+                });
+                constants.push(`c21_count - ${Math.min(whatsappContacts.length, 5)}`);
             }
             
             // c22 - googleCalendarUrl
@@ -2959,8 +3463,9 @@
                 const items = viberContainer.querySelectorAll('.viber-contact-item');
                 items.forEach((item, index) => {
                     const phoneInput = item.querySelector('.viber-phone');
-                    const phone = phoneInput?.value.trim().replace(/\s|-/g, '');
-                    if (phone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(phone)) {
+                    const phone = phoneInput?.value.trim();
+                    // Валідація на формат +380XXXXXXXXX (13 символів: +380 + 9 цифр)
+                    if (phone && !/^\+380\d{9}$/.test(phone)) {
                         phoneInput.style.borderColor = '#f44336';
                         isValid = false;
                     } else if (phoneInput) {
@@ -2969,14 +3474,25 @@
                 });
             }
             
-            // Валідація WhatsApp телефону
-            const whatsappPhone = document.getElementById('whatsappPhone').value.trim().replace(/\s|-/g, '');
-            if (whatsappPhone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(whatsappPhone)) {
-                showError('whatsappPhone', 'Номер має бути 10 цифр, починається з 0 (наприклад: 0112223344)');
-                isValid = false;
-            } else {
-                hideError('whatsappPhone');
-            }
+            // Валідація WhatsApp контактів
+            const whatsappContacts = getSocialContacts('whatsapp');
+            whatsappContacts.forEach((contact, index) => {
+                const phone = contact.username.startsWith('+') ? contact.username : '+' + contact.username;
+                if (phone && !/^\+380\d{9}$/.test(phone)) {
+                    isValid = false;
+                    // Знаходимо відповідний input та показуємо помилку
+                    const container = document.getElementById('whatsappContainer');
+                    if (container) {
+                        const items = container.querySelectorAll('.social-contact-item');
+                        if (items[index]) {
+                            const input = items[index].querySelector('.social-username-input');
+                            if (input) {
+                                input.style.borderColor = '#f44336';
+                            }
+                        }
+                    }
+                }
+            });
             
             // Валідація Google Calendar URL - має бути iCal посилання
             const googleCalendarUrl = document.getElementById('googleCalendarUrl')?.value.trim();
@@ -3225,13 +3741,8 @@
                 cardBankName: document.getElementById('cardBankName').value.trim(),
                 telegramContact: document.getElementById('telegramContact').value.trim(),
                 viberContacts: getViberContacts(), // Збираємо всі Viber контакти
-                telegramShowcase: document.getElementById('telegramShowcase').value.trim(),
-                instagramUsername: document.getElementById('instagramUsername').value.trim(),
-                biggoLiveUrl: document.getElementById('biggoLiveUrl').value.trim(),
-                facebookPage: document.getElementById('facebookPage').value.trim(),
-                tiktokUsername: document.getElementById('tiktokUsername').value.trim(),
-                youtubeChannel: document.getElementById('youtubeChannel').value.trim(),
-                whatsappPhone: document.getElementById('whatsappPhone').value.trim(),
+                // Соціальні мережі тепер збираються через getSocialContacts()
+                // Дані зберігаються в окремих контейнерах
                 googleCalendarUrl: document.getElementById('googleCalendarUrl').value.trim(),
                 exchangeDays: parseInt(document.getElementById('exchangeDays').value) || 0,
                 returnDays: parseInt(document.getElementById('returnDays').value) || 0,
