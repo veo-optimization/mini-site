@@ -701,7 +701,8 @@ function extractCalendarId(urlOrId) {
         if (urlOrId.includes('/ical/')) {
             // Витягуємо Calendar ID з URL (між /ical/ та /public/)
             // Може бути закодований (%40 замість @)
-            const match = urlOrId.match(/\/ical\/([^\/]+)\//);
+            // Використовуємо більш точний регулярний вираз, який враховує, що Calendar ID може містити закодовані символи
+            const match = urlOrId.match(/\/ical\/(.+?)\/public\/basic\.ics/);
             if (match && match[1]) {
                 // Декодуємо URL-кодування
                 let calendarId = decodeURIComponent(match[1]);
@@ -715,6 +716,13 @@ function extractCalendarId(urlOrId) {
                 return calendarId;
             } else {
                 console.error('extractCalendarId: не вдалося знайти Calendar ID в iCal URL');
+                // Спробуємо альтернативний підхід - знайти все між /ical/ та наступним /
+                const altMatch = urlOrId.match(/\/ical\/([^\/]+)\//);
+                if (altMatch && altMatch[1]) {
+                    let calendarId = decodeURIComponent(altMatch[1]);
+                    console.log('extractCalendarId: витягнуто альтернативним методом:', calendarId);
+                    return calendarId;
+                }
             }
         }
         
@@ -1663,6 +1671,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 calendarIframe.src = iframeUrl;
                 calendarIframe.style.display = 'block';
                 console.log('✅ Google Calendar iframe налаштовано:', iframeUrl);
+                console.log('📋 Calendar ID (raw):', calendarIdRaw);
+                console.log('📋 Calendar ID (encoded):', calendarIdEncoded);
+                
+                // Додаємо обробник помилок для iframe
+                calendarIframe.onerror = function() {
+                    console.error('❌ Помилка завантаження iframe календаря');
+                    showCalendarNotSynced();
+                };
+                
+                // Перевіряємо, чи iframe завантажився через 5 секунд
+                setTimeout(() => {
+                    try {
+                        // Спробуємо отримати доступ до контенту iframe (може не спрацювати через CORS)
+                        const iframeDoc = calendarIframe.contentDocument || calendarIframe.contentWindow.document;
+                        if (!iframeDoc || iframeDoc.body.innerHTML.includes('error') || iframeDoc.body.innerHTML.includes('denied')) {
+                            console.warn('⚠️ Можлива проблема з доступом до календаря');
+                        }
+                    } catch (e) {
+                        // CORS помилка - це нормально, але iframe може все одно працювати
+                        console.log('ℹ️ Не вдалося перевірити контент iframe (CORS), але це нормально');
+                    }
+                }, 5000);
             }
             
             // Завантажуємо події календаря
