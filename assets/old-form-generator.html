@@ -1,0 +1,3512 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стандарт-форма: дані продавця</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+            overflow-x: hidden; /* Запобігаємо горизонтальному скролу */
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4CAF50;
+            font-size: 28px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #333333;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .form-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+        
+        .required {
+            color: #ff6b6b;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .array-input {
+            margin-bottom: 10px;
+        }
+        
+        .array-input input {
+            margin-bottom: 5px;
+        }
+        
+        .add-item-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .add-item-btn:hover {
+            background: #45a049;
+        }
+        
+        .remove-item-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+        
+        .remove-item-btn:hover {
+            background: #ff5252;
+        }
+        
+        .help-text {
+            font-size: 13px;
+            color: #b0b0b0;
+            margin-top: 8px;
+            line-height: 1.5;
+            padding: 8px;
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid #4CAF50;
+            border-radius: 4px;
+        }
+        
+        .generate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+        
+        .generate-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Модальне вікно */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #2a2a2a;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-header h2 {
+            color: #4CAF50;
+            font-size: 24px;
+        }
+        
+        .modal-body {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-body pre {
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn-back {
+            background: #666;
+            color: white;
+        }
+        
+        .modal-btn-back:hover {
+            background: #777;
+        }
+        
+        .modal-btn-copy {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .modal-btn-copy:hover {
+            background: #45a049;
+        }
+        
+        .copy-success {
+            display: none;
+            text-align: center;
+            color: #4CAF50;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .copy-success.show {
+            display: block;
+        }
+        
+        .instruction-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        
+        .instruction-btn:hover {
+            background: #1976D2;
+            transform: scale(1.05);
+        }
+        
+        .instruction-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .instruction-modal.show {
+            display: flex;
+        }
+        
+        .instruction-content {
+            background: #2a2a2a;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .instruction-content h3 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .instruction-content ol,
+        .instruction-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instruction-content li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .instruction-content code {
+            background: #1a1a1a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #4CAF50;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            display: inline-block;
+            max-width: 100%;
+        }
+        
+        .instruction-close {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .instruction-close:hover {
+            background: #777;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        input.error,
+        textarea.error {
+            border-color: #ff6b6b;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-item:hover {
+            background: #252525;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .checkbox-item label {
+            cursor: pointer;
+            margin: 0;
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .custom-input-wrapper {
+            margin-top: 15px;
+            padding: 15px;
+            border-top: 2px dashed #4CAF50;
+            background: rgba(76, 175, 80, 0.05);
+            border-radius: 6px;
+            position: relative;
+        }
+        
+        .custom-input-wrapper::before {
+            display: block;
+            color: #4CAF50;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        
+        .custom-input-wrapper[data-label="payment"]::before {
+            content: "➕ Або вкажіть свій варіант оплати:";
+        }
+        
+        .custom-input-wrapper[data-label="delivery-method"]::before {
+            content: "➕ Або вкажіть свій спосіб доставки:";
+        }
+        
+        .custom-input-wrapper[data-label="delivery-time"]::before {
+            content: "➕ Або вкажіть свій термін доставки:";
+        }
+        
+        .custom-input-wrapper[data-label="return-condition"]::before {
+            content: "➕ Або вкажіть свою умову обміну/повернення:";
+        }
+        
+        .custom-input-wrapper[data-label="return-money"]::before {
+            content: "➕ Або вкажіть свій термін повернення коштів:";
+        }
+        
+        .custom-input-wrapper[data-label="return-delivery"]::before {
+            content: "➕ Або вкажіть свою умову щодо вартості доставки при поверненні:";
+        }
+        
+        .custom-input-wrapper[data-label="template"]::before {
+            content: "➕ Або додайте своє поле до шаблону:";
+        }
+        
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #FFC107;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+        
+        .warning-box strong {
+            color: #FFC107;
+        }
+        
+        .template-preview {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #444;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-line;
+        }
+        
+        .info-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .info-modal.show {
+            display: flex;
+        }
+        
+        .info-modal-content {
+            background: #2a2a2a;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .info-modal-content h3 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .info-modal-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        
+        .info-modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .info-modal-btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .info-modal-btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .info-modal-btn-primary:hover {
+            background: #45a049;
+        }
+        
+        .info-modal-btn-secondary {
+            background: #666;
+            color: white;
+        }
+        
+        .info-modal-btn-secondary:hover {
+            background: #777;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            
+            h1 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+            
+            .form-section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .form-section h2 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            label {
+                font-size: 13px;
+            }
+            
+            input[type="text"],
+            input[type="number"],
+            textarea,
+            select {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .help-text {
+                font-size: 12px;
+                padding: 10px;
+                margin-top: 6px;
+            }
+            
+            .add-item-btn,
+            .remove-item-btn {
+                font-size: 12px;
+                padding: 8px 14px;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .generate-btn {
+                padding: 14px;
+                font-size: 15px;
+            }
+            
+            /* Модальні вікна */
+            .modal-content {
+                padding: 20px;
+                max-width: 95%;
+                border-radius: 12px;
+            }
+            
+            .modal-header h2 {
+                font-size: 20px;
+            }
+            
+            .instruction-content,
+            .info-modal-content {
+                padding: 20px;
+                max-width: 95%;
+            }
+            
+            .instruction-content h3,
+            .info-modal-content h3 {
+                font-size: 18px;
+            }
+            
+            /* Блок перевірки даних */
+            #dataCheckList {
+                grid-template-columns: 1fr !important;
+                gap: 8px;
+            }
+            
+            #dataCheckList > div {
+                padding: 10px;
+                font-size: 13px;
+            }
+            
+            /* Блок згенерованого коду */
+            .code-block-container {
+                padding: 20px 15px !important;
+                margin-top: 20px !important;
+            }
+            
+            .code-block-container h2 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            #generatedCode {
+                font-size: 11px !important;
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            #copyCodeButton {
+                padding: 12px 30px;
+                font-size: 14px;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            /* Чекбокси та радіо-кнопки */
+            .checkbox-item {
+                padding: 10px;
+                flex-wrap: wrap;
+            }
+            
+            .checkbox-item label {
+                font-size: 13px;
+                word-break: break-word;
+            }
+            
+            /* Стилі для мобільних пристроїв - накладний платіж з передплатою */
+            #payment2custom + label {
+                flex: 1 1 100%;
+                min-width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            #payment2custom + label + div {
+                flex: 1 1 100%;
+                width: 100%;
+                margin-left: 30px;
+            }
+            
+            #codAmount {
+                width: 100% !important;
+                max-width: 150px;
+            }
+            
+            /* Telegram username і кнопка на два рядки */
+            #telegramContact {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            #telegramContact + .instruction-btn {
+                width: 100%;
+                margin-top: 8px;
+            }
+            
+            /* Google Calendar URL і кнопка на два рядки */
+            #googleCalendarUrl {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            #googleCalendarUrl + .instruction-btn {
+                width: 100%;
+                margin-top: 8px;
+            }
+            
+            /* Час роботи - мобільна версія */
+            #workingHoursTimeRangeContainer {
+                margin-left: 0 !important;
+                padding: 12px !important;
+            }
+            
+            #workingHoursTimeRangeContainer > div {
+                grid-template-columns: auto 1fr !important;
+                gap: 10px !important;
+            }
+            
+            #workingHoursTimeRangeContainer label {
+                font-size: 13px !important;
+            }
+            
+            #workingHoursTimeRangeContainer input[type="time"] {
+                width: 100% !important;
+                padding: 12px !important;
+                font-size: 16px !important; /* Prevent iOS zoom */
+            }
+            
+            #workingHoursWeekendsContainer {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            
+            #workingHoursWeekendsContainer .checkbox-item {
+                padding: 10px !important;
+            }
+            
+            /* Локації магазинів */
+            .location-item {
+                padding: 12px !important;
+            }
+            
+            .location-item .form-group {
+                margin-bottom: 10px;
+            }
+            
+            /* Viber контакти */
+            .viber-contact-item {
+                padding: 12px !important;
+            }
+            
+            /* Кастомні поля */
+            .custom-input-wrapper {
+                padding: 12px;
+            }
+            
+            .custom-input-wrapper::before {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+            
+            /* Інформаційні блоки */
+            .warning-box {
+                padding: 12px;
+                font-size: 13px;
+            }
+            
+            /* Блок TikTok */
+            div[style*="background: rgba(255, 0, 242"] {
+                padding: 12px !important;
+                font-size: 13px !important;
+            }
+            
+            /* Блок інструкцій */
+            div[style*="background: #333"] {
+                padding: 12px !important;
+                font-size: 13px !important;
+            }
+            
+            /* Кнопки інструкцій */
+            .instruction-btn {
+                width: 100%;
+                margin-top: 10px;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+            
+            /* Прев'ю шаблону */
+            .template-preview {
+                font-size: 12px;
+                padding: 12px;
+            }
+            
+            /* Блоки згенерованого коду - повідомлення */
+            #sendToSupportContainer {
+                padding: 15px !important;
+            }
+            
+            #sendToSupportContainer p {
+                font-size: 13px;
+            }
+            
+            #sendToSupportContainer button {
+                width: 100%;
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .form-section {
+                padding: 12px;
+            }
+            
+            .form-section h2 {
+                font-size: 15px;
+            }
+            
+            input[type="text"],
+            input[type="number"],
+            textarea,
+            select {
+                font-size: 16px; /* Збільшуємо для мобільних, щоб не збільшувався zoom */
+                padding: 12px;
+            }
+            
+            #generatedCode {
+                font-size: 10px !important;
+                padding: 12px;
+            }
+            
+            .checkbox-item {
+                padding: 8px;
+            }
+            
+            .checkbox-item label {
+                font-size: 12px;
+            }
+            
+            /* Всі інпути на повну ширину */
+            input[type="text"],
+            input[type="number"],
+            input[type="tel"],
+            input[type="url"],
+            textarea,
+            select {
+                width: 100% !important;
+            }
+            
+            /* Кнопки інструкцій для всіх соцмереж */
+            .form-group .instruction-btn {
+                width: 100%;
+                margin-top: 10px;
+                display: block;
+            }
+            
+            /* Блоки з полями та кнопками */
+            .form-group > div {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            /* BIGGO LIVE, YouTube та інші поля */
+            #biggoLiveUrl,
+            #youtubeChannel,
+            #facebookPage,
+            #tiktokUsername,
+            #instagramUsername,
+            #whatsappPhone {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            /* Контейнери з кнопками */
+            .location-item,
+            .viber-contact-item,
+            .return-condition-item,
+            .template-custom-field-item,
+            .custom-category-item {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            /* Запобігання горизонтальному скролу */
+            * {
+                max-width: 100%;
+            }
+            
+            /* Текстові блоки */
+            pre, code {
+                word-break: break-all;
+                overflow-wrap: break-word;
+                white-space: pre-wrap;
+            }
+            
+            /* Модальні вікна на мобільних */
+            .modal-overlay {
+                padding: 10px;
+            }
+            
+            .instruction-modal {
+                padding: 10px;
+            }
+            
+            /* Блоки з попередженнями */
+            .warning-box {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            
+            /* Довгі тексти в чекбоксах */
+            .checkbox-item label {
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Стандарт-форма: дані продавця</h1>
+        
+        <div style="background: rgba(255, 0, 242, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #FF00F2;">
+            <p style="margin: 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
+                <strong style="color: #FF00F2;">⚠️ Важливо про TikTok:</strong><br>
+                Міні-сайт, який розміщується на TikTok-профілі продавця (бізнесу), повинен містити інформацію, яка не суперечить правилам спільноти TikTok та відповідає вимогам TikTok до офіційних бізнесів. TikTok особливо звертає увагу на відповідність тематиці, наявність умов про повернення і обмін (відповідно до законодавства та прав споживачів - дуже бажано і великий плюс), прозорість контактної інформації та інші вимоги до бізнес-профілів. TikTok-браузер зчитує міні-сайт і бачить всю інформацію. TikTok - за прозорість і чесність на платформі.<br><br>
+                <em style="color: #b0b0b0;">Це лише рекомендації для бізнесу від команди VEO FORCE. Відповідальність за реакцію платформи на внесені дані несе тільки продавець.</em>
+            </p>
+        </div>
+        <div style="background: #333; padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #4CAF50;">
+            <p style="margin: 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
+                <strong style="color: #4CAF50;">Як користуватися:</strong><br>
+                1️⃣ Заповніть всі поля форми (поля з <span style="color: #ff6b6b;">*</span> обов'язкові)<br>
+                2️⃣ Блок даних автоматично генерується внизу сторінки при заповненні полів<br>
+                3️⃣ Натисніть "Скопіювати код" - блок даних скопіюється в буфер обміну<br>
+                4️⃣ Надішліть скопійований блок даних в Телеграм на @veoforce_support
+            </p>
+        </div>
+        
+        <form id="clientForm">
+            <!-- Назва магазину -->
+            <div class="form-section">
+                <h2>🏪 Основна інформація</h2>
+                <div class="form-group">
+                    <label for="shopName">Назва магазину <span class="required">*</span></label>
+                    <input type="text" id="shopName" name="shopName" placeholder="Введіть назву магазину" required>
+                    <div class="help-text">📝 Це назва, яка буде відображатися в шапці сайту. Наприклад: "VEO SHOP", "Модний Бутік", "Одяг від А до Я"</div>
+                </div>
+                <div class="form-group">
+                    <label for="shopDescription">Опис магазину</label>
+                    <input type="text" id="shopDescription" name="shopDescription" maxlength="100" placeholder="Введіть опис магазину">
+                    <div class="help-text">📝 Короткий опис магазину (максимум 100 символів, 1 речення). Наприклад: "ТікТок-магазин модного одягу" або "Онлайн-магазин косметики та парфумерії"</div>
+                </div>
+                <div class="form-group">
+                    <label>Час роботи / Контактний час</label>
+                    <div class="help-text" style="margin-bottom: 15px;">📝 Оберіть дні тижня та вкажіть час, коли продавець відповідає на повідомлення/дзвінки</div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <div class="checkbox-item" style="margin-bottom: 15px;">
+                            <input type="checkbox" id="workingHours24_7" name="workingHours24_7">
+                            <label for="workingHours24_7" style="font-weight: 600;">Відповідаємо цілодобово 24/7</label>
+                        </div>
+                        
+                        <div class="checkbox-item" style="margin-bottom: 15px;">
+                            <input type="checkbox" id="workingHoursTimeRange" name="workingHoursTimeRange">
+                            <label for="workingHoursTimeRange" style="font-weight: 600;">Відповідаємо в <span style="text-transform: uppercase;">РОБОЧІ</span> дні з __ до __</label>
+                        </div>
+                        <div id="workingHoursTimeRangeContainer" style="display: none; margin-left: 0; margin-top: 15px; margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div style="display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center;">
+                                <label for="workingHoursFrom" style="color: #e0e0e0; font-weight: 500; white-space: nowrap;">З:</label>
+                                <input type="time" id="workingHoursFrom" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 15px; font-family: 'Montserrat', sans-serif;" disabled>
+                                <label for="workingHoursTo" style="color: #e0e0e0; font-weight: 500; white-space: nowrap;">До:</label>
+                                <input type="time" id="workingHoursTo" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 15px; font-family: 'Montserrat', sans-serif;" disabled>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; margin-bottom: 10px;">
+                            <label style="font-weight: 600; margin-bottom: 10px; display: block;"><span style="text-transform: uppercase;">ВИХІДНІ</span> - обрати дні галочками:</label>
+                            <div class="checkbox-group" id="workingHoursWeekendsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendMon" name="workingHoursWeekend" value="Пн">
+                                    <label for="weekendMon">Пн</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendTue" name="workingHoursWeekend" value="Вт">
+                                    <label for="weekendTue">Вт</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendWed" name="workingHoursWeekend" value="Ср">
+                                    <label for="weekendWed">Ср</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendThu" name="workingHoursWeekend" value="Чт">
+                                    <label for="weekendThu">Чт</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendFri" name="workingHoursWeekend" value="Пт">
+                                    <label for="weekendFri">Пт</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendSat" name="workingHoursWeekend" value="Сб">
+                                    <label for="weekendSat">Сб</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendSun" name="workingHoursWeekend" value="Нд">
+                                    <label for="weekendSun">Нд</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Асортимент -->
+            <div class="form-section">
+                <h2>🛍️ Асортимент (категорії товарів)</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 Оберіть до 10 категорій товарів. Це допоможе клієнтам швидше зрозуміти вашу пропозицію.
+                </div>
+                <div class="form-group">
+                    <label>Оберіть категорії (максимум 10):</label>
+                    <div class="checkbox-group" id="categoriesCheckboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat1" name="category" value="Жіночий одяг">
+                            <label for="cat1">Жіночий одяг</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat2" name="category" value="Чоловічий одяг">
+                            <label for="cat2">Чоловічий одяг</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat3" name="category" value="Дитячий одяг">
+                            <label for="cat3">Дитячий одяг</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat4" name="category" value="Взуття">
+                            <label for="cat4">Взуття</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat5" name="category" value="Аксесуари">
+                            <label for="cat5">Аксесуари</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat6" name="category" value="Косметика та парфумерія">
+                            <label for="cat6">Косметика та парфумерія</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat7" name="category" value="Товари для дому">
+                            <label for="cat7">Товари для дому</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat8" name="category" value="Електроніка">
+                            <label for="cat8">Електроніка</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat9" name="category" value="Спорт та відпочинок">
+                            <label for="cat9">Спорт та відпочинок</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat10" name="category" value="Книги та навчальні матеріали">
+                            <label for="cat10">Книги та навчальні матеріали</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat11" name="category" value="Іграшки та розваги">
+                            <label for="cat11">Іграшки та розваги</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat12" name="category" value="Продукти харчування">
+                            <label for="cat12">Продукти харчування</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat13" name="category" value="Здоров'я та медицина">
+                            <label for="cat13">Здоров'я та медицина</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat14" name="category" value="Автотовари">
+                            <label for="cat14">Автотовари</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat15" name="category" value="Інше">
+                            <label for="cat15">Інше</label>
+                        </div>
+                    </div>
+                    <div id="customCategoriesContainer" style="margin-top: 15px;">
+                        <!-- Динамічно додані категорії будуть тут -->
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addCustomCategory()" style="margin-top: 10px;" id="addCategoryBtn">+ Додати свою категорію</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 своїх категорій. Загальна кількість категорій не повинна перевищувати 10.</div>
+                </div>
+            </div>
+            
+            <!-- Реквізити ФОП -->
+            <div class="form-section">
+                <h2>💳 Реквізити ФОП</h2>
+                <div class="form-group">
+                    <label for="fopName">ПІБ ФОП</label>
+                    <input type="text" id="fopName" name="fopName" placeholder="Введіть ПІБ ФОП">
+                    <div class="help-text">📝 Повне ім'я фізичної особи-підприємця. Наприклад: "ФОП Іванов Іван Іванович" або "ФОП Петренко Марія Олександрівна"</div>
+                </div>
+                <div class="form-group">
+                    <label for="edrpou">ЄДРПОУ</label>
+                    <input type="text" id="edrpou" name="edrpou" placeholder="Введіть ЄДРПОУ">
+                    <div class="help-text">📝 Єдиний державний реєстр підприємств та організацій. Має 8 або 10 цифр. Наприклад: "3361708913" або "12345678"</div>
+                </div>
+                <div class="form-group">
+                    <label for="iban">IBAN</label>
+                    <input type="text" id="iban" name="iban" placeholder="Введіть IBAN">
+                    <div class="help-text">📝 Міжнародний номер банківського рахунку. Наприклад: "UA273220010000026009330077981"</div>
+                </div>
+                <div class="form-group">
+                    <label for="bankName">Назва банку</label>
+                    <input type="text" id="bankName" name="bankName" placeholder="Введіть назву банку">
+                    <div class="help-text">📝 Повна назва банку, де відкритий рахунок. Наприклад: "Universal bank", "ПриватБанк", "Ощадбанк", "Райффайзен Банк Аваль"</div>
+                </div>
+                <div class="form-group">
+                    <label for="paymentPurpose">Призначення платежу</label>
+                    <input type="text" id="paymentPurpose" name="paymentPurpose" placeholder="Введіть призначення платежу">
+                    <div class="help-text">📝 Короткий опис, що буде вказано в призначенні платежу. Наприклад: "Послуга оптимізації реклами", "Оплата товару", "Передоплата за замовлення"</div>
+                </div>
+            </div>
+            
+            <!-- Оплата на картку -->
+            <div class="form-section">
+                <h2>💳 Оплата на картку</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 Цей блок для тих, хто приймає оплату на банківську картку (часто неФОПи продають, отримуючи просто на картку, або ФОПи, які також надають цей спосіб оплати)
+                </div>
+                <div class="form-group">
+                    <label for="cardNumber">Номер картки</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="Введіть номер картки" maxlength="19">
+                    <div class="help-text">📝 Номер банківської картки (16 цифр). Можна вводити з пробілами для зручності. Наприклад: "5169 3305 1234 5678" або "5169330512345678"</div>
+                </div>
+                <div class="form-group">
+                    <label for="cardHolderName">Прізвище власника картки</label>
+                    <input type="text" id="cardHolderName" name="cardHolderName" placeholder="Введіть прізвище власника картки">
+                    <div class="help-text">📝 Прізвище власника картки (як вказано на картці). Наприклад: "ІВАНОВ", "ПЕТРЕНКО"</div>
+                </div>
+                <div class="form-group">
+                    <label for="cardBankName">Назва банку картки</label>
+                    <input type="text" id="cardBankName" name="cardBankName" placeholder="Введіть назву банку картки">
+                    <div class="help-text">📝 Назва банку, який видав картку. Наприклад: "ПАТ КБ ПриватБанк", "АТ КБ Укргазбанк"</div>
+                </div>
+            </div>
+            
+            <!-- Контакти -->
+            <div class="form-section">
+                <h2>📱 Контакти</h2>
+                <div class="form-group">
+                    <label for="telegramContact">Telegram</label>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <input type="text" id="telegramContact" name="telegramContact" placeholder="Введіть Telegram username або номер телефону" style="flex: 1;">
+                        <button type="button" class="instruction-btn" onclick="showInstruction('telegram')">Як створити username</button>
+                    </div>
+                    <div class="help-text">📝 Вкажіть або username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ (наприклад: "veoforce_support"), або номер телефону з +380 (наприклад: "+380661112233"). Якщо вкажете номер, буде створено посилання https://t.me/+380661112233</div>
+                </div>
+                <div class="form-group">
+                    <label>Viber контакти</label>
+                    <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                        💡 Додайте Viber контакти для зв'язку. Можна додати до 5 контактів. Для кожного контакту вкажіть номер телефону та назву (ім'я, напрям, категорія товару, посада тощо).
+                    </div>
+                    <div id="viberContactsContainer">
+                        <div class="viber-contact-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Номер телефону</label>
+                                <input type="text" class="viber-phone" placeholder="Введіть номер телефону" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу + та пробілів. Наприклад: "0112223344"</div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Назва контакту (макс. 20 символів)</label>
+                                <input type="text" class="viber-name" placeholder="Введіть назву контакту" maxlength="20" style="width: 100%;">
+                                <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Ім'я, напрям, категорія товару, посада тощо</div>
+                            </div>
+                            <button type="button" class="remove-item-btn" onclick="removeViberContact(this)" style="width: 100%;">× Видалити контакт</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addViberContact()" id="addViberContactBtn" style="margin-top: 10px;">+ Додати Viber контакт</button>
+                    <div class="help-text" style="margin-top: 10px;">📝 Можна додати до 5 Viber контактів. Натисніть "+ Додати Viber контакт" для додавання нового контакту.</div>
+                </div>
+                <div class="form-group">
+                    <label for="telegramShowcase">Telegram вітрина</label>
+                    <input type="text" id="telegramShowcase" name="telegramShowcase" placeholder="Введіть Telegram вітрину">
+                    <div class="help-text">📝 Якщо є Telegram-вітрина (канал/група), вкажіть username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "veoforce_chat" або "https://t.me/+Z-iCu_n0QYdmYTJi". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="instagramUsername">Instagram username</label>
+                    <input type="text" id="instagramUsername" name="instagramUsername" placeholder="Введіть Instagram username">
+                    <div class="help-text">📝 Ім'я користувача Instagram <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "instagram.com/my_shop_ua", то впишіть "my_shop_ua". Якщо немає Instagram - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="biggoLiveUrl">BIGGO LIVE</label>
+                    <input type="text" id="biggoLiveUrl" name="biggoLiveUrl" placeholder="Введіть BIGGO LIVE username або ID">
+                    <div class="help-text">📝 Username або ID профілю у BIGGO LIVE <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @ та <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> посилання. Наприклад: якщо посилання "https://biggo.tv/user/veo_me", то впишіть "veo_me". Якщо username не встановлено, впишіть цифровий ID. Якщо немає - залиште порожнім</div>
+                    <button type="button" class="instruction-btn" onclick="showInstruction('biggo')" style="margin-top: 10px; padding: 8px 16px; background: rgba(0, 136, 204, 0.2); border: 1px solid #0088cc; border-radius: 6px; color: #0088cc; cursor: pointer; font-size: 13px; font-weight: 600;">
+                        Як знайти username або ID у BIGGO LIVE?
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label for="facebookPage">Facebook сторінка/група</label>
+                    <input type="text" id="facebookPage" name="facebookPage" placeholder="Введіть Facebook сторінку/групу">
+                    <div class="help-text">📝 Username Facebook сторінки <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "my_shop_ua" або "https://facebook.com/my_shop_ua". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="tiktokUsername">TikTok username</label>
+                    <input type="text" id="tiktokUsername" name="tiktokUsername" placeholder="Введіть TikTok username">
+                    <div class="help-text">📝 Ім'я користувача TikTok <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @. Наприклад: якщо посилання "tiktok.com/@my_shop_ua", то впишіть "my_shop_ua". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="youtubeChannel">YouTube канал</label>
+                    <input type="text" id="youtubeChannel" name="youtubeChannel" placeholder="Введіть YouTube канал">
+                    <div class="help-text">📝 Username YouTube каналу <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> @ або повне посилання. Наприклад: "MyShopUA" або "https://youtube.com/@MyShopUA". Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="form-group">
+                    <label for="whatsappPhone">WhatsApp телефон</label>
+                    <input type="text" id="whatsappPhone" name="whatsappPhone" placeholder="Введіть WhatsApp номер">
+                    <div class="help-text">📝 Номер телефону для WhatsApp у форматі: 10 цифр, починається з 0. Наприклад: "0112223344", "0501234567". Якщо немає - залиште порожнім</div>
+                </div>
+            </div>
+            
+            <!-- Календар -->
+            <div class="form-section">
+                <h2>📅 Календар</h2>
+                <div class="form-group">
+                    <label for="googleCalendarUrl">Google Calendar URL</label>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="Введіть Google Calendar iCal посилання" style="flex: 1;">
+                        <button type="button" class="instruction-btn" onclick="showInstruction('calendar')">Як дістати iCal посилання</button>
+                    </div>
+                    <div class="help-text">📝 Посилання на Google Calendar для відображення розкладу ефірів. <strong style="color: #ffd700;">Обов'язково має бути iCal посилання</strong> (закінчується на /public/basic.ics). Якщо немає календаря - залиште порожнім</div>
+                    <div id="googleCalendarUrl-error" class="error-message" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- Локації магазинів на Google Maps -->
+            <div class="form-section">
+                <h2>📍 Локації магазинів на Google Maps</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 Додайте локації ваших магазинів або точок видачі товарів на Google Maps. Кожна локація має назву та посилання на Google Maps.
+                </div>
+                <div id="storeLocationsContainer">
+                    <div class="location-item" style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label>Назва локації</label>
+                            <input type="text" class="location-name" placeholder="Введіть назву локації" style="width: 100%;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label>Посилання на Google Maps</label>
+                            <input type="text" class="location-url" placeholder="Введіть посилання на Google Maps" style="width: 100%;">
+                        </div>
+                        <button type="button" class="remove-item-btn" onclick="removeLocation(this)" style="width: 100%;">× Видалити локацію</button>
+                    </div>
+                </div>
+                <button type="button" class="add-item-btn" onclick="addLocation()">+ Додати локацію</button>
+                <div class="help-text" style="margin-top: 10px;">📝 Натисніть "+ Додати локацію" для додавання нової локації. Посилання на Google Maps можна отримати, натиснувши "Поділитися" на карті Google Maps.</div>
+            </div>
+            
+            <!-- Умови оплати -->
+            <div class="form-section">
+                <h2>💵 Умови оплати</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 <strong>Як це працює:</strong> Оберіть варіанти оплати, які Вам як продавцю комфортні. Можна обрати один або декілька варіантів одночасно. Всі обрані варіанти будуть відображені на міні-сайті клієнта у вигляді списку. Якщо оберете "Накладний платіж із передплатою" з кастомною сумою, введіть суму передплати - вона автоматично додасться до тексту варіанту оплати. Також можна додати свій власний варіант оплати в полі нижче.
+                </div>
+                <div class="checkbox-group" id="paymentOptionsCheckboxes">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment1" name="paymentOption" value="Повна передоплата 100%">
+                        <label for="payment1">Повна передоплата 100%</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment2" name="paymentOption" value="Накладний платіж з передоплатою 200 грн" data-payment-type="cod-200">
+                        <label for="payment2">Накладний платіж з передоплатою 200 грн</label>
+                    </div>
+                    <div class="checkbox-item" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <input type="checkbox" id="payment2custom" name="paymentOption" data-payment-type="cod-custom" style="align-self: center;">
+                        <label for="payment2custom" style="flex: 1 1 auto; min-width: 0; margin: 0; cursor: pointer; word-break: break-word;">
+                            Накладний платіж із передплатою
+                        </label>
+                        <div style="display: flex; align-items: center; gap: 5px; flex: 0 0 auto;">
+                            <input type="number" id="codAmount" placeholder="сума" min="1" style="width: 80px; padding: 4px 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 14px;" disabled>
+                            <span>грн</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-input-wrapper" data-label="payment">
+                    <div class="form-group" style="margin: 0;">
+                        <input type="text" id="paymentCustom" name="paymentCustom" placeholder="Введіть свій варіант оплати">
+                        <div class="help-text" style="margin-top: 8px;">📝 Якщо потрібен інший варіант оплати, впишіть його тут</div>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <strong>⚠️ Важливо:</strong> Всі тексти відображаються на сайті точно так, як Ви їх вписали, з усіма орфографічними та пунктуаційними помилками (якщо вони будуть). Ми не несемо відповідальність за правильність тексту, якщо Ви вводите його власноруч.
+                </div>
+            </div>
+            
+            <!-- Умови доставки -->
+            <div class="form-section">
+                <h2>🚚 Умови доставки</h2>
+                <div class="form-group">
+                    <label>Спосіб доставки</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery1" name="deliveryMethod" value="Нова пошта" data-requires-location="true">
+                            <label for="delivery1">Нова пошта</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery2" name="deliveryMethod" value="Укрпошта" data-requires-location="true">
+                            <label for="delivery2">Укрпошта</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery5" name="deliveryMethod" value="Meest Express" data-requires-location="true">
+                            <label for="delivery5">Meest Express</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery4" name="deliveryMethod" value="Кур'єрська доставка">
+                            <label for="delivery4">Кур'єрська доставка</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="delivery3" name="deliveryMethod" value="Самовивіз" data-requires-location-warning="true">
+                            <label for="delivery3">Самовивіз</label>
+                        </div>
+                    </div>
+                    <div id="deliveryLocationWarning" class="warning-box" style="display: none; margin-top: 10px;">
+                        <strong>⚠️ Увага:</strong> Самовивіз можливий лише за умови, якщо вказана хоча б одна локація магазину на Google Maps у блоці "📍 Локації магазинів на Google Maps". Будь ласка, заповніть цей блок перед генерацією даних.
+                    </div>
+                    <div class="custom-input-wrapper" data-label="delivery-method">
+                        <input type="text" id="deliveryMethodCustom" name="deliveryMethodCustom" placeholder="Введіть свій спосіб доставки">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Термін доставки</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="deliveryTime1" name="deliveryTime" value="1-3 робочі дні після отримання оплати">
+                            <label for="deliveryTime1">1-3 робочі дні після отримання оплати</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="deliveryTime2" name="deliveryTime" value="2-5 робочих днів">
+                            <label for="deliveryTime2">2-5 робочих днів</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="deliveryTime3" name="deliveryTime" value="Відправка щодня до 18:00">
+                            <label for="deliveryTime3">Відправка щодня до 18:00</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="deliveryTime4" name="deliveryTime" value="Відправка 2-3 рази на тиждень">
+                            <label for="deliveryTime4">Відправка 2-3 рази на тиждень</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper" data-label="delivery-time">
+                        <input type="text" id="deliveryTimeCustom" name="deliveryTimeCustom" placeholder="Введіть термін доставки">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryNote">Примітка про доставку</label>
+                    <textarea id="deliveryNote" name="deliveryNote" placeholder="Наприклад: Термін доставки залежить від регіону отримувача" rows="5"></textarea>
+                    <div class="help-text">📝 Додаткова інформація про доставку. Якщо немає - залиште порожнім</div>
+                </div>
+                <div class="warning-box">
+                    <strong>⚠️ Важливо:</strong> Всі тексти відображаються на сайті точно так, як Ви їх вписали, з усіма орфографічними та пунктуаційними помилками (якщо вони будуть). Ми не несемо відповідальність за правильність тексту, якщо Ви вводите його власноруч.
+                </div>
+            </div>
+            
+            <!-- Умови обміну та повернення -->
+            <div class="form-section">
+                <h2>🔄 Умови обміну та повернення</h2>
+                <div class="form-group">
+                    <label for="exchangeDays">Днів для обміну</label>
+                    <input type="number" id="exchangeDays" name="exchangeDays" min="0" value="0" placeholder="14">
+                    <div class="help-text">📝 Скільки днів після отримання товару можна зробити обмін. Вкажіть число (наприклад: 14). Якщо обмін недоступний - вкажіть 0</div>
+                </div>
+                <div class="form-group">
+                    <label for="returnDays">Днів для повернення</label>
+                    <input type="number" id="returnDays" name="returnDays" min="0" value="0" placeholder="14">
+                    <div class="help-text">📝 Скільки днів після отримання товару можна зробити повернення. Вкажіть число (наприклад: 14). Якщо повернення недоступне - вкажіть 0</div>
+                </div>
+                <div class="form-group">
+                    <label>Умови обміну/повернення</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond1" name="returnCondition" value="Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)">
+                            <label for="returnCond1">Товар повинен бути в оригінальному стані (не використовуваний, без слідів носіння)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond2" name="returnCondition" value="Збережені всі етикетки, бірки та упаковка">
+                            <label for="returnCond2">Збережені всі етикетки, бірки та упаковка</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond3" name="returnCondition" value="Товар не повинен бути пошкоджений або забруднений">
+                            <label for="returnCond3">Товар не повинен бути пошкоджений або забруднений</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="returnCond4" name="returnCondition" value="Товар не повинен бути в експлуатації">
+                            <label for="returnCond4">Товар не повинен бути в експлуатації</label>
+                        </div>
+                    </div>
+                    <div id="returnConditionsContainer" style="margin-top: 15px;">
+                        <!-- Динамічно додані умови будуть тут -->
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addReturnCondition()" style="margin-top: 10px;">+ Додати свою умову</button>
+                </div>
+                <div class="form-group">
+                    <label>Термін повернення коштів</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="returnMoney1" name="returnMoneyTime" value="3-5 робочих днів">
+                            <label for="returnMoney1">3-5 робочих днів</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="returnMoney2" name="returnMoneyTime" value="7-10 робочих днів">
+                            <label for="returnMoney2">7-10 робочих днів</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="returnMoney3" name="returnMoneyTime" value="14 робочих днів">
+                            <label for="returnMoney3">14 робочих днів</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper" data-label="return-money">
+                        <input type="text" id="returnMoneyTimeCustom" name="returnMoneyTimeCustom" placeholder="Введіть термін повернення коштів">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Вартість доставки при поверненні</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="returnDelivery1" name="returnDeliveryCost" value="Легке повернення">
+                            <label for="returnDelivery1">Легке повернення</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="returnDelivery2" name="returnDeliveryCost" value="Доставку при поверненні оплачує продавець">
+                            <label for="returnDelivery2">Доставку при поверненні оплачує продавець</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="returnDelivery3" name="returnDeliveryCost" value="Доставку при поверненні оплачує покупець">
+                            <label for="returnDelivery3">Доставку при поверненні оплачує покупець</label>
+                        </div>
+                    </div>
+                    <div class="custom-input-wrapper" data-label="return-delivery">
+                        <textarea id="returnDeliveryCostCustom" name="returnDeliveryCostCustom" placeholder="Введіть вартість доставки при поверненні" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <strong>⚠️ Важливо:</strong> Всі тексти відображаються на сайті точно так, як Ви їх вписали, з усіма орфографічними та пунктуаційними помилками (якщо вони будуть). Ми не несемо відповідальність за правильність тексту, якщо Ви вводите його власноруч.
+                </div>
+            </div>
+            
+            <!-- Шаблон після оплати -->
+            <div class="form-section">
+                <h2>📦 Шаблон після оплати</h2>
+                <div class="help-text" style="margin-bottom: 20px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    📝 <strong>Як це працює:</strong> Це шаблон тексту, який кінцевий споживач скопіює з міні-сайту і вставить у месенджер (Telegram, Viber тощо) з Вами як продавцем. Після цього споживач допише свої реквізити та дані для отримання товару. Ви як продавець формуєте цей шаблон - оберіть потрібні поля нижче, і шаблон автоматично оновиться. Створіть такий текст, який Вам буде зручно опрацьовувати при отриманні повідомлень від клієнтів.
+                </div>
+                <div class="form-group">
+                    <label>Оберіть поля для шаблону:</label>
+                    <div class="checkbox-group" id="templateFieldsCheckboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template1" name="templateField" value="👤 ПІБ отримувача: " checked>
+                            <label for="template1">👤 ПІБ отримувача</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template2" name="templateField" value="📱 Телефон отримувача: " checked>
+                            <label for="template2">📱 Телефон отримувача</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template3" name="templateField" value="📍 Населений пункт: " checked>
+                            <label for="template3">📍 Населений пункт</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template4" name="templateField" value="📦 Відділення НП: ">
+                            <label for="template4">📦 Нова пошта</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template5" name="templateField" value="📮 Відділення Укрпошти: ">
+                            <label for="template5">📮 Укрпошта</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template6" name="templateField" value="🏠 Адреса доставки: ">
+                            <label for="template6">🏠 Адреса доставки (кур'єр)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template7" name="templateField" value="📝 Коментар до замовлення: ">
+                            <label for="template7">📝 Коментар для замовлення</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="template8" name="templateField" value="🔢 4 останні цифри номера телефону отримувача: ">
+                            <label for="template8">🔢 4 останні цифри номера телефону отримувача</label>
+                        </div>
+                    </div>
+                    <div id="templateCustomFieldsContainer" style="margin-top: 15px;">
+                        <!-- Динамічно додані поля будуть тут -->
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addTemplateCustomField()" style="margin-top: 10px;">+ Додати своє поле</button>
+                </div>
+                <div class="form-group">
+                    <label>Прев'ю шаблону (як його скопіює кінцевий клієнт для вставки в месенджер для подальшого заповнення індивідуальних даних на отримання товару і посилки):</label>
+                    <div class="template-preview" id="templatePreview">
+👤 ПІБ отримувача: 
+📱 Телефон отримувача: 
+📍 Населений пункт: 
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Особливі умови для публічної оферти -->
+            <div class="form-section">
+                <h2>📄 Особливі умови для публічної оферти</h2>
+                <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50; border-radius: 6px;">
+                    💡 <strong>Як це працює:</strong> Цей текст буде додано в кінець публічної оферти. Тут можна вказати особливі умови, примітки, гарантії, або будь-яку іншу важливу інформацію для клієнтів. Наприклад: "Гарантія на товар 30 днів", "Можливість індивідуального підбору", "Спеціальні умови для оптових покупців" тощо.
+                </div>
+                <div class="form-group">
+                    <label for="offerAdditionalInfo">Особливі умови та примітки (необов'язково):</label>
+                    <textarea id="offerAdditionalInfo" name="offerAdditionalInfo" rows="5" placeholder="Наприклад: Гарантія на товар 30 днів з моменту покупки. Можливість індивідуального підбору за розміром та кольором. Спеціальні умови для оптових покупців - знижка 10% при замовленні від 5 одиниць товару." style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 8px; background: #2a2a2a; color: #e0e0e0; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.6; resize: vertical;"></textarea>
+                    <div class="help-text">📝 Можна залишити порожнім, якщо особливих умов немає. Текст буде відображатись в кінці публічної оферти.</div>
+                </div>
+            </div>
+            
+            <!-- Блок перевірки даних -->
+            <div class="form-section" style="background: #2a2a2a; border-left: 4px solid #FFD700;">
+                <div class="warning-box" style="background: rgba(255, 215, 0, 0.1); border-left: 3px solid #FFD700; margin-bottom: 20px;">
+                    <strong>⚠️ Увага:</strong> Будь ласка, уважно перевірте правильність введених даних, орфографію та пунктуацію. Ті поля, які не введені - не будуть відображатись на міні-сайті.
+                </div>
+                <h2 style="color: #FFD700; margin-bottom: 15px;">✅ Перевірка заповнених полів</h2>
+                <div id="dataCheckList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
+                    <!-- Динамічно заповнюється -->
+                </div>
+            </div>
+            
+        </form>
+    </div>
+    
+    <!-- Блок згенерованого коду (завжди видимий) -->
+    <div class="code-block-container" style="background: #1a1a1a; padding: 30px; margin-top: 30px; border-top: 2px solid #333;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="color: #4CAF50; margin-bottom: 20px; text-align: center;">📋 Згенерований блок даних</h2>
+            <div style="background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; border-radius: 6px; padding: 15px; margin-bottom: 20px; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
+                <p style="margin: 0 0 10px 0;">
+                    <strong style="color: #4CAF50;">📝 Інструкція:</strong> Внизу ви бачите блок даних у вигляді коду. Натисніть кнопку <strong>"Скопіювати код"</strong> внизу і вставте скопійований блок даних у чат в Telegram з <strong>@veoforce_support</strong>.
+                </p>
+                <p style="margin: 0; color: #ff9800;">
+                    <strong>⚠️ Важливо:</strong> Вносити зміни в готовий згенерований код не варто - для коректної роботи. В разі необхідності внести якісь зміни, внесіть їх у форму вище, тоді код автоматично перезапишеться на оновлені дані.
+                </p>
+            </div>
+            <div style="background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative;">
+                <pre id="generatedCode" style="color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; margin: 0; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto;"></pre>
+            </div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button type="button" id="copyCodeButton" class="generate-btn" onclick="copyToClipboard()" style="background: #4CAF50; color: white; border: none; padding: 15px 40px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                    Скопіювати код
+                </button>
+            </div>
+            <div id="sendToSupportContainer" style="display: none; text-align: center; margin-top: 20px; padding: 20px; background: rgba(0, 136, 204, 0.1); border-left: 4px solid #0088cc; border-radius: 6px;">
+                <p style="margin: 0 0 15px 0; color: #e0e0e0; font-size: 14px; line-height: 1.6;">
+                    Тепер надішліть скопійований код в чат Telegram на <strong style="color: #0088cc;">@veoforce_support</strong>
+                </p>
+                <button type="button" class="generate-btn" onclick="window.open('https://t.me/veoforce_support', '_blank')" style="background: #0088cc; color: white; border: none; padding: 15px 40px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
+                    Відкрити чат @veoforce_support
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Інформаційне модальне вікно про реквізити -->
+    <div class="info-modal" id="infoModal">
+        <div class="info-modal-content">
+            <h3>💼 Про офіційний бізнес та податки</h3>
+            <p>
+                Команда <strong style="color: #4CAF50;">VEO FORCE</strong> є прихильниками легального та офіційного бізнесу. 
+                Ми вважаємо, що кожен підприємець повинен працювати прозоро, сплачувати податки та дотримуватися 
+                законодавства України.
+            </p>
+            <p>
+                Якщо у Вас ще немає реквізитів ФОП (фізичної особи-підприємця), ми настійно рекомендуємо 
+                оформити їх для ведення легального бізнесу. Це допоможе Вам:
+            </p>
+            <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.8;">
+                <li>✅ Працювати офіційно та захищено</li>
+                <li>✅ Співпрацювати з великими клієнтами та партнерами</li>
+                <li>✅ Отримувати банківські послуги та кредити</li>
+                <li>✅ Бути захищеним перед законом</li>
+                <li>✅ Будувати довгостроковий бізнес</li>
+            </ul>
+            <p>
+                <strong style="color: #4CAF50;">Наступний крок:</strong> Надішліть згенеровані дані нашому менеджеру в Telegram, 
+                і ми допоможемо Вам з налаштуванням міні-сайту та надамо консультацію щодо оформлення ФОП.
+            </p>
+            <div class="info-modal-buttons">
+                <button type="button" class="info-modal-btn info-modal-btn-secondary" onclick="closeInfoModal()">Зрозуміло</button>
+                <button type="button" class="info-modal-btn info-modal-btn-primary" onclick="openTelegramSupport()">Написати в Telegram</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let generatedCode = '';
+        
+        // Функція для збору Viber контактів
+        function getViberContacts() {
+            const contacts = [];
+            const container = document.getElementById('viberContactsContainer');
+            if (container) {
+                const items = container.querySelectorAll('.viber-contact-item');
+                items.forEach(item => {
+                    const phoneInput = item.querySelector('.viber-phone');
+                    const nameInput = item.querySelector('.viber-name');
+                    const phone = phoneInput?.value.trim();
+                    const name = nameInput?.value.trim();
+                    if (phone) {
+                        contacts.push({
+                            phone: phone,
+                            name: name || ''
+                        });
+                    }
+                });
+            }
+            return contacts;
+        }
+        
+        // Оновлення прев'ю шаблону
+        function updateTemplatePreview() {
+            const templateFields = [];
+            Array.from(document.querySelectorAll('input[name="templateField"]:checked')).forEach(cb => {
+                templateFields.push(cb.value);
+            });
+            // Додаємо кастомні поля
+            document.querySelectorAll('.template-custom-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    templateFields.push(value);
+                }
+            });
+            const preview = document.getElementById('templatePreview');
+            if (preview) {
+                preview.textContent = templateFields.join('\n') || '(шаблон порожній)';
+            }
+        }
+        
+        // Функція перевірки даних
+        function updateDataCheckList() {
+            const checkList = document.getElementById('dataCheckList');
+            if (!checkList) return;
+            
+            const checks = [];
+            
+            // Основна інформація
+            const shopName = document.getElementById('shopName')?.value.trim();
+            checks.push({label: 'Назва магазину', filled: !!shopName});
+            const shopDescription = document.getElementById('shopDescription')?.value.trim();
+            checks.push({label: 'Опис магазину', filled: !!shopDescription});
+            const workingHours24_7 = document.getElementById('workingHours24_7')?.checked;
+            const workingHoursTimeRange = document.getElementById('workingHoursTimeRange')?.checked;
+            const hasWorkingHours = workingHours24_7 || workingHoursTimeRange;
+            checks.push({label: 'Час роботи / Контактний час', filled: hasWorkingHours});
+            
+            // Асортимент
+            const categories = Array.from(document.querySelectorAll('input[name="category"]:checked'));
+            const customCategories = Array.from(document.querySelectorAll('.custom-category-field')).some(input => input.value.trim());
+            checks.push({label: 'Асортимент (категорії)', filled: categories.length > 0 || customCategories});
+            
+            // FOP реквізити
+            const fopName = document.getElementById('fopName')?.value.trim();
+            checks.push({label: 'ПІБ ФОП', filled: !!fopName});
+            const edrpou = document.getElementById('edrpou')?.value.trim();
+            checks.push({label: 'ЄДРПОУ', filled: !!edrpou});
+            const iban = document.getElementById('iban')?.value.trim();
+            checks.push({label: 'IBAN', filled: !!iban});
+            const bankName = document.getElementById('bankName')?.value.trim();
+            checks.push({label: 'Назва банку', filled: !!bankName});
+            
+            // Картка
+            const cardNumber = document.getElementById('cardNumber')?.value.trim();
+            checks.push({label: 'Номер картки', filled: !!cardNumber});
+            const cardHolderName = document.getElementById('cardHolderName')?.value.trim();
+            checks.push({label: 'Прізвище власника картки', filled: !!cardHolderName});
+            const cardBankName = document.getElementById('cardBankName')?.value.trim();
+            checks.push({label: 'Назва банку картки', filled: !!cardBankName});
+            
+            // Контакти
+            const telegramContact = document.getElementById('telegramContact')?.value.trim();
+            checks.push({label: 'Telegram', filled: !!telegramContact});
+            const viberContacts = getViberContacts();
+            checks.push({label: 'Viber', filled: viberContacts.length > 0});
+            const googleCalendarUrl = document.getElementById('googleCalendarUrl')?.value.trim();
+            checks.push({label: 'Google Calendar', filled: !!googleCalendarUrl});
+            
+            // Умови оплати
+            const paymentOptions = Array.from(document.querySelectorAll('input[name="paymentOption"]:checked'));
+            checks.push({label: 'Умови оплати', filled: paymentOptions.length > 0});
+            
+            // Умови доставки
+            const deliveryMethods = Array.from(document.querySelectorAll('input[name="deliveryMethod"]:checked'));
+            checks.push({label: 'Спосіб доставки', filled: deliveryMethods.length > 0});
+            
+            // Умови обміну/повернення
+            const returnConditions = Array.from(document.querySelectorAll('input[name="returnCondition"]:checked'));
+            const customReturnConditions = Array.from(document.querySelectorAll('.return-condition-text')).some(ta => ta.value.trim());
+            checks.push({label: 'Умови обміну/повернення', filled: returnConditions.length > 0 || customReturnConditions});
+            
+            // Шаблон
+            const templateFields = Array.from(document.querySelectorAll('input[name="templateField"]:checked'));
+            const customTemplateFields = Array.from(document.querySelectorAll('.template-custom-field')).some(input => input.value.trim());
+            checks.push({label: 'Шаблон після оплати', filled: templateFields.length > 0 || customTemplateFields});
+            
+            // Генеруємо HTML
+            checkList.innerHTML = checks.map(check => `
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: ${check.filled ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 107, 107, 0.1)'}; border-radius: 6px; border-left: 3px solid ${check.filled ? '#4CAF50' : '#ff6b6b'};">
+                    <span style="font-size: 18px;">${check.filled ? '✅' : '❌'}</span>
+                    <span style="color: #e0e0e0; font-size: 14px;">${check.label}</span>
+                </div>
+            `).join('');
+        }
+        
+        // Обробка взаємовиключності накладеного платежу
+        function handleCodPaymentExclusivity() {
+            const cod200 = document.getElementById('payment2');
+            const codCustom = document.getElementById('payment2custom');
+            const codAmount = document.getElementById('codAmount');
+            
+            if (cod200 && codCustom && codAmount) {
+                cod200.addEventListener('change', function() {
+                    if (this.checked) {
+                        codCustom.checked = false;
+                        codAmount.disabled = true;
+                        codAmount.value = '';
+                    }
+                });
+                
+                codCustom.addEventListener('change', function() {
+                    if (this.checked) {
+                        cod200.checked = false;
+                        codAmount.disabled = false;
+                        codAmount.removeAttribute('readonly');
+                        // Використовуємо setTimeout, щоб поле активувалося після обробки події
+                        setTimeout(() => {
+                            codAmount.focus();
+                            codAmount.select();
+                        }, 50);
+                    } else {
+                        codAmount.disabled = true;
+                        codAmount.value = '';
+                    }
+                });
+                
+                // Додатково: обробка кліку на label та поле введення
+                const codCustomLabel = document.querySelector('label[for="payment2custom"]');
+                if (codCustomLabel) {
+                    codCustomLabel.addEventListener('click', function(e) {
+                        // Якщо клікнули на label, а не на input всередині
+                        if (e.target === codCustomLabel || e.target.tagName === 'SPAN') {
+                            setTimeout(() => {
+                                if (codCustom.checked && !codAmount.disabled) {
+                                    codAmount.focus();
+                                    codAmount.select();
+                                }
+                            }, 50);
+                        }
+                    });
+                }
+                
+                // Обробка кліку безпосередньо на поле введення
+                if (codAmount) {
+                    codAmount.addEventListener('click', function() {
+                        if (!codCustom.checked) {
+                            codCustom.checked = true;
+                            codAmount.disabled = false;
+                            codAmount.removeAttribute('readonly');
+                            setTimeout(() => {
+                                codAmount.focus();
+                                codAmount.select();
+                            }, 50);
+                        } else if (this.disabled) {
+                            codAmount.disabled = false;
+                            codAmount.removeAttribute('readonly');
+                            codAmount.focus();
+                        }
+                    });
+                }
+            }
+        }
+        
+        // Форматування номера картки
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '');
+            if (value.length > 16) {
+                value = value.substring(0, 16);
+            }
+            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formatted;
+        }
+        
+        // Додавання нової локації
+        function addLocation() {
+            const container = document.getElementById('storeLocationsContainer');
+            const div = document.createElement('div');
+            div.className = 'location-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Назва локації</label>
+                    <input type="text" class="location-name" placeholder="Наприклад: Магазин на Хрещатику або Склад №1" style="width: 100%;">
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Посилання на Google Maps</label>
+                    <input type="text" class="location-url" placeholder="Наприклад: https://maps.google.com/?q=50.4501,30.5234 або https://goo.gl/maps/..." style="width: 100%;">
+                </div>
+                <button type="button" class="remove-item-btn" onclick="removeLocation(this)" style="width: 100%;">× Видалити локацію</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробники подій для автоматичного оновлення
+            const nameInput = div.querySelector('.location-name');
+            const urlInput = div.querySelector('.location-url');
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            if (urlInput) {
+                urlInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            
+            // Перевіряємо локації після додавання
+            setTimeout(() => {
+                if (typeof checkDeliveryLocations === 'function') {
+                    checkDeliveryLocations(false);
+                }
+                updateGeneratedCode();
+                updateDataCheckList();
+            }, 100);
+        }
+        
+        // Видалення локації
+        function removeLocation(button) {
+            const locationItem = button.closest('.location-item');
+            if (locationItem) {
+                locationItem.remove();
+                updateGeneratedCode();
+                updateDataCheckList();
+            }
+            // Перевіряємо локації після видалення
+            setTimeout(() => {
+                if (typeof checkDeliveryLocations === 'function') {
+                    checkDeliveryLocations(false);
+                }
+            }, 100);
+        }
+        
+        // Додавання нової умови обміну/повернення
+        function addReturnCondition() {
+            const container = document.getElementById('returnConditionsContainer');
+            const div = document.createElement('div');
+            div.className = 'return-condition-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <textarea class="return-condition-text" placeholder="Введіть умову обміну/повернення" rows="2" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px; resize: vertical;"></textarea>
+                <button type="button" class="remove-item-btn" onclick="removeReturnCondition(this)" style="width: 100%; margin-top: 10px;">× Видалити умову</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробник подій для автоматичного оновлення
+            const textarea = div.querySelector('.return-condition-text');
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            
+            updateGeneratedCode();
+            updateDataCheckList();
+        }
+        
+        // Видалення умови обміну/повернення
+        function removeReturnCondition(button) {
+            const conditionItem = button.closest('.return-condition-item');
+            if (conditionItem) {
+                conditionItem.remove();
+                updateGeneratedCode();
+                updateDataCheckList();
+            }
+        }
+        
+        // Додавання нового поля шаблону
+        function addTemplateCustomField() {
+            const container = document.getElementById('templateCustomFieldsContainer');
+            const div = document.createElement('div');
+            div.className = 'template-custom-field-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <input type="text" class="template-custom-field" placeholder="Введіть своє поле шаблону" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
+                <button type="button" class="remove-item-btn" onclick="removeTemplateCustomField(this)" style="width: 100%; margin-top: 10px;">× Видалити поле</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробник для оновлення прев'ю та коду
+            const input = div.querySelector('.template-custom-field');
+            if (input) {
+                input.addEventListener('input', function() {
+                    updateTemplatePreview();
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            
+            updateGeneratedCode();
+            updateDataCheckList();
+        }
+        
+        // Видалення поля шаблону
+        function removeTemplateCustomField(button) {
+            const fieldItem = button.closest('.template-custom-field-item');
+            if (fieldItem) {
+                fieldItem.remove();
+                updateTemplatePreview();
+                updateGeneratedCode();
+                updateDataCheckList();
+            }
+        }
+        
+        // Додавання нового Viber контакту
+        function addViberContact() {
+            const container = document.getElementById('viberContactsContainer');
+            const contactCount = container.querySelectorAll('.viber-contact-item').length;
+            
+            if (contactCount >= 5) {
+                alert('⚠️ Максимальна кількість Viber контактів - 5.');
+                return;
+            }
+            
+            const div = document.createElement('div');
+            div.className = 'viber-contact-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Номер телефону</label>
+                    <input type="text" class="viber-phone" placeholder="Наприклад: 0112223344" style="width: 100%;">
+                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Номер <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу + та пробілів. Наприклад: "0112223344"</div>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label>Назва контакту (макс. 20 символів)</label>
+                    <input type="text" class="viber-name" placeholder="Наприклад: Менеджер, Одяг, Надя" maxlength="20" style="width: 100%;">
+                    <div class="help-text" style="font-size: 12px; margin-top: 5px;">📝 Ім'я, напрям, категорія товару, посада тощо</div>
+                </div>
+                <button type="button" class="remove-item-btn" onclick="removeViberContact(this)" style="width: 100%;">× Видалити контакт</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробники подій для автоматичного оновлення
+            const phoneInput = div.querySelector('.viber-phone');
+            const nameInput = div.querySelector('.viber-name');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+                phoneInput.addEventListener('blur', function() {
+                    validateForm();
+                });
+            }
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            
+            updateGeneratedCode();
+        }
+        
+        // Видалення Viber контакту
+        function removeViberContact(button) {
+            const contactItem = button.closest('.viber-contact-item');
+            if (contactItem) {
+                contactItem.remove();
+                updateGeneratedCode();
+                updateDataCheckList();
+            }
+        }
+        
+        // Додавання нової категорії
+        function addCustomCategory() {
+            const container = document.getElementById('customCategoriesContainer');
+            const selectedCount = document.querySelectorAll('input[name="category"]:checked').length;
+            const customCount = container.querySelectorAll('.custom-category-item').length;
+            
+            if (selectedCount + customCount >= 10) {
+                alert('⚠️ Максимальна кількість категорій - 10. Будь ласка, видаліть одну з існуючих категорій перед додаванням нової.');
+                return;
+            }
+            
+            if (customCount >= 5) {
+                alert('⚠️ Максимальна кількість своїх категорій - 5.');
+                return;
+            }
+            
+            const div = document.createElement('div');
+            div.className = 'custom-category-item';
+            div.style.cssText = 'margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;';
+            div.innerHTML = `
+                <input type="text" class="custom-category-field" placeholder="Введіть назву категорії" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 6px; background: #2a2a2a; color: #fff; font-family: Montserrat, sans-serif; font-size: 14px;">
+                <button type="button" class="remove-item-btn" onclick="removeCustomCategory(this)" style="width: 100%; margin-top: 10px;">× Видалити категорію</button>
+            `;
+            container.appendChild(div);
+            
+            // Додаємо обробник для перевірки ліміту та оновлення коду
+            const input = div.querySelector('.custom-category-field');
+            if (input) {
+                input.addEventListener('input', function() {
+                    checkCategoryLimit();
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            }
+            
+            updateGeneratedCode();
+            updateDataCheckList();
+        }
+        
+        // Видалення категорії
+        function removeCustomCategory(button) {
+            const categoryItem = button.closest('.custom-category-item');
+            if (categoryItem) {
+                categoryItem.remove();
+                checkCategoryLimit();
+                updateGeneratedCode();
+                updateDataCheckList();
+            }
+        }
+        
+        // Перевірка ліміту категорій
+        function checkCategoryLimit() {
+            const selectedCount = document.querySelectorAll('input[name="category"]:checked').length;
+            const customCount = document.getElementById('customCategoriesContainer').querySelectorAll('.custom-category-item').length;
+            const totalCount = selectedCount + customCount;
+            const addBtn = document.getElementById('addCategoryBtn');
+            
+            if (totalCount >= 10) {
+                if (addBtn) addBtn.disabled = true;
+                // Вимкнути всі невибрані чекбокси
+                document.querySelectorAll('input[name="category"]:not(:checked)').forEach(cb => {
+                    cb.disabled = true;
+                });
+            } else {
+                if (addBtn) addBtn.disabled = false;
+                // Увімкнути всі чекбокси
+                document.querySelectorAll('input[name="category"]').forEach(cb => {
+                    cb.disabled = false;
+                });
+            }
+        }
+        
+        // Функція для збереження даних у localStorage
+        function saveFormData() {
+            const formData = {};
+            const form = document.getElementById('clientForm');
+            
+            // Зберігаємо всі поля форми
+            const inputs = form.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    formData[input.id] = input.checked;
+                } else {
+                    formData[input.id] = input.value;
+                }
+            });
+            
+            // Зберігаємо кастомні поля (локації, умови повернення, категорії, шаблон, Viber контакти)
+            const customFields = {
+                locations: [],
+                returnConditions: [],
+                categories: [],
+                templateFields: [],
+                viberContacts: []
+            };
+            
+            // Локації
+            document.querySelectorAll('.location-item').forEach(item => {
+                const name = item.querySelector('.location-name')?.value.trim();
+                const url = item.querySelector('.location-url')?.value.trim();
+                if (name || url) {
+                    customFields.locations.push({name, url});
+                }
+            });
+            
+            // Кастомні умови повернення
+            document.querySelectorAll('.return-custom-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    customFields.returnConditions.push(value);
+                }
+            });
+            
+            // Кастомні категорії
+            document.querySelectorAll('.custom-category-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    customFields.categories.push(value);
+                }
+            });
+            
+            // Кастомні поля шаблону
+            document.querySelectorAll('.template-custom-field').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    customFields.templateFields.push(value);
+                }
+            });
+            
+            // Viber контакти
+            document.querySelectorAll('.viber-contact-item').forEach(item => {
+                const phone = item.querySelector('.viber-phone')?.value.trim();
+                const name = item.querySelector('.viber-name')?.value.trim();
+                if (phone) {
+                    customFields.viberContacts.push({phone, name: name || ''});
+                }
+            });
+            
+            formData._customFields = customFields;
+            
+            localStorage.setItem('formGeneratorData', JSON.stringify(formData));
+        }
+        
+        // Функція для завантаження даних з localStorage
+        function loadFormData() {
+            const savedData = localStorage.getItem('formGeneratorData');
+            if (savedData) {
+                try {
+                    const formData = JSON.parse(savedData);
+                    const form = document.getElementById('clientForm');
+                    
+                    // Завантажуємо базові поля
+                    Object.keys(formData).forEach(id => {
+                        if (id === '_customFields') return; // Пропускаємо кастомні поля
+                        const element = document.getElementById(id);
+                        if (element) {
+                            if (element.type === 'checkbox' || element.type === 'radio') {
+                                element.checked = formData[id];
+                            } else {
+                                element.value = formData[id];
+                            }
+                        }
+                    });
+                    
+                    // Завантажуємо кастомні поля
+                    if (formData._customFields) {
+                        // Локації
+                        if (formData._customFields.locations && formData._customFields.locations.length > 0) {
+                            formData._customFields.locations.forEach((loc, index) => {
+                                if (index === 0) {
+                                    const nameInput = document.querySelector('.location-name');
+                                    const urlInput = document.querySelector('.location-url');
+                                    if (nameInput) nameInput.value = loc.name || '';
+                                    if (urlInput) urlInput.value = loc.url || '';
+                                } else {
+                                    // Додаємо нові локації
+                                    const addBtn = document.querySelector('.add-location-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const items = document.querySelectorAll('.location-item');
+                                            const item = items[items.length - 1];
+                                            if (item) {
+                                                const nameInput = item.querySelector('.location-name');
+                                                const urlInput = item.querySelector('.location-url');
+                                                if (nameInput) nameInput.value = loc.name || '';
+                                                if (urlInput) urlInput.value = loc.url || '';
+                                            }
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Кастомні умови повернення
+                        if (formData._customFields.returnConditions && formData._customFields.returnConditions.length > 0) {
+                            formData._customFields.returnConditions.forEach((cond, index) => {
+                                if (index === 0) {
+                                    const input = document.querySelector('.return-custom-field');
+                                    if (input) input.value = cond;
+                                } else {
+                                    // Додаємо нові поля
+                                    const addBtn = document.querySelector('.add-return-condition-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const inputs = document.querySelectorAll('.return-custom-field');
+                                            const input = inputs[inputs.length - 1];
+                                            if (input) input.value = cond;
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Кастомні категорії
+                        if (formData._customFields.categories && formData._customFields.categories.length > 0) {
+                            formData._customFields.categories.forEach((cat, index) => {
+                                if (index === 0) {
+                                    const input = document.querySelector('.custom-category-field');
+                                    if (input) input.value = cat;
+                                } else {
+                                    // Додаємо нові поля
+                                    const addBtn = document.querySelector('.add-custom-category-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const inputs = document.querySelectorAll('.custom-category-field');
+                                            const input = inputs[inputs.length - 1];
+                                            if (input) input.value = cat;
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Кастомні поля шаблону
+                        if (formData._customFields.templateFields && formData._customFields.templateFields.length > 0) {
+                            formData._customFields.templateFields.forEach((field, index) => {
+                                if (index === 0) {
+                                    const input = document.querySelector('.template-custom-field');
+                                    if (input) input.value = field;
+                                } else {
+                                    // Додаємо нові поля
+                                    const addBtn = document.querySelector('.add-template-field-btn');
+                                    if (addBtn) {
+                                        addBtn.click();
+                                        setTimeout(() => {
+                                            const inputs = document.querySelectorAll('.template-custom-field');
+                                            const input = inputs[inputs.length - 1];
+                                            if (input) input.value = field;
+                                        }, 100);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Viber контакти
+                        if (formData._customFields.viberContacts && formData._customFields.viberContacts.length > 0) {
+                            formData._customFields.viberContacts.forEach((contact, index) => {
+                                if (index === 0) {
+                                    const phoneInput = document.querySelector('.viber-phone');
+                                    const nameInput = document.querySelector('.viber-name');
+                                    if (phoneInput) phoneInput.value = contact.phone || '';
+                                    if (nameInput) nameInput.value = contact.name || '';
+                                } else {
+                                    // Додаємо нові контакти
+                                    addViberContact();
+                                    setTimeout(() => {
+                                        const items = document.querySelectorAll('.viber-contact-item');
+                                        const item = items[items.length - 1];
+                                        if (item) {
+                                            const phoneInput = item.querySelector('.viber-phone');
+                                            const nameInput = item.querySelector('.viber-name');
+                                            if (phoneInput) phoneInput.value = contact.phone || '';
+                                            if (nameInput) nameInput.value = contact.name || '';
+                                        }
+                                    }, 100);
+                                }
+                            });
+                        }
+                    }
+                    
+                    // Оновлюємо всі залежні елементи
+                    updateTemplatePreview();
+                    updateDataCheckList();
+                    
+                    // Викликаємо обробники змін для активації залежних полів
+                    setTimeout(() => {
+                        const workingHoursTimeRange = document.getElementById('workingHoursTimeRange');
+                        if (workingHoursTimeRange && workingHoursTimeRange.checked) {
+                            workingHoursTimeRange.dispatchEvent(new Event('change'));
+                        }
+                        const workingHours24_7 = document.getElementById('workingHours24_7');
+                        if (workingHours24_7 && workingHours24_7.checked) {
+                            workingHours24_7.dispatchEvent(new Event('change'));
+                        }
+                        // Оновлюємо код після завантаження всіх даних
+                        updateGeneratedCode();
+                        updateTemplatePreview();
+                        updateDataCheckList();
+                    }, 300);
+                } catch (e) {
+                    console.error('Помилка завантаження даних:', e);
+                }
+            }
+        }
+        
+        // Обробка фокусу для полів exchangeDays та returnDays
+        function setupNumberFieldsFocus() {
+            const exchangeDays = document.getElementById('exchangeDays');
+            const returnDays = document.getElementById('returnDays');
+            
+            [exchangeDays, returnDays].forEach(field => {
+                if (field) {
+                    field.addEventListener('focus', function() {
+                        if (this.value === '0') {
+                            this.value = '';
+                        }
+                    });
+                    field.addEventListener('blur', function() {
+                        if (this.value === '') {
+                            this.value = '0';
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Додаємо обробники для оновлення прев'ю
+        // Додаємо обробники подій для існуючих Viber контактів
+        function setupViberContactsEvents() {
+            document.querySelectorAll('.viber-contact-item').forEach(item => {
+                const phoneInput = item.querySelector('.viber-phone');
+                const nameInput = item.querySelector('.viber-name');
+                if (phoneInput && !phoneInput.hasAttribute('data-events-setup')) {
+                    phoneInput.setAttribute('data-events-setup', 'true');
+                    phoneInput.addEventListener('input', function() {
+                        updateGeneratedCode();
+                        saveFormData();
+                    });
+                    phoneInput.addEventListener('blur', function() {
+                        validateForm();
+                    });
+                }
+                if (nameInput && !nameInput.hasAttribute('data-events-setup')) {
+                    nameInput.setAttribute('data-events-setup', 'true');
+                    nameInput.addEventListener('input', function() {
+                        updateGeneratedCode();
+                        saveFormData();
+                    });
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Завантажуємо дані з localStorage
+            loadFormData();
+            
+            // Налаштовуємо обробку фокусу для числових полів
+            setupNumberFieldsFocus();
+            
+            // Оновлюємо прев'ю при зміні чекбоксів
+            document.querySelectorAll('input[name="templateField"]').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    updateTemplatePreview();
+                    updateGeneratedCode();
+                });
+            });
+            // Оновлюємо прев'ю при зміні кастомного поля
+            const templateCustom = document.getElementById('templateCustom');
+            if (templateCustom) {
+                templateCustom.addEventListener('input', updateTemplatePreview);
+            }
+            // Початкове оновлення
+            updateTemplatePreview();
+            updateDataCheckList();
+            
+            // Налаштовуємо автоматичне оновлення коду
+            setupAutoUpdate();
+            
+            // Налаштовуємо обробники для Viber контактів
+            setupViberContactsEvents();
+            
+            // Оновлюємо код при завантаженні
+            updateGeneratedCode();
+            
+            // Обробники для категорій
+            document.querySelectorAll('input[name="category"]').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    checkCategoryLimit();
+                    updateDataCheckList();
+                    updateGeneratedCode();
+                });
+            });
+            
+            // Обробники для часу роботи
+            const workingHours24_7 = document.getElementById('workingHours24_7');
+            const workingHoursTimeRange = document.getElementById('workingHoursTimeRange');
+            const workingHoursTimeRangeContainer = document.getElementById('workingHoursTimeRangeContainer');
+            const workingHoursFrom = document.getElementById('workingHoursFrom');
+            const workingHoursTo = document.getElementById('workingHoursTo');
+            
+            // Обробка "Відповідаємо цілодобово 24/7"
+            if (workingHours24_7) {
+                workingHours24_7.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Вимкнути "Відповідаємо з __ до __"
+                        if (workingHoursTimeRange) {
+                            workingHoursTimeRange.checked = false;
+                            if (workingHoursTimeRangeContainer) workingHoursTimeRangeContainer.style.display = 'none';
+                            if (workingHoursFrom) {
+                                workingHoursFrom.disabled = true;
+                                workingHoursFrom.value = '';
+                            }
+                            if (workingHoursTo) {
+                                workingHoursTo.disabled = true;
+                                workingHoursTo.value = '';
+                            }
+                        }
+                    }
+                    updateDataCheckList();
+                    updateGeneratedCode();
+                });
+            }
+            
+            // Обробка "Відповідаємо з __ до __"
+            if (workingHoursTimeRange) {
+                workingHoursTimeRange.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Показати поля для вибору часу
+                        if (workingHoursTimeRangeContainer) {
+                            workingHoursTimeRangeContainer.style.display = 'block';
+                            if (workingHoursFrom) workingHoursFrom.disabled = false;
+                            if (workingHoursTo) workingHoursTo.disabled = false;
+                        }
+                        // Вимкнути 24/7
+                        if (workingHours24_7) workingHours24_7.checked = false;
+                    } else {
+                        // Сховати поля для вибору часу
+                        if (workingHoursTimeRangeContainer) {
+                            workingHoursTimeRangeContainer.style.display = 'none';
+                            if (workingHoursFrom) {
+                                workingHoursFrom.disabled = true;
+                                workingHoursFrom.value = '';
+                            }
+                            if (workingHoursTo) {
+                                workingHoursTo.disabled = true;
+                                workingHoursTo.value = '';
+                            }
+                        }
+                    }
+                    updateDataCheckList();
+                    updateGeneratedCode();
+                });
+            }
+            
+            // Обробка зміни часу (оновлюємо код при зміні)
+            if (workingHoursFrom) {
+                workingHoursFrom.addEventListener('change', function() {
+                    updateGeneratedCode();
+                });
+            }
+            if (workingHoursTo) {
+                workingHoursTo.addEventListener('change', function() {
+                    updateGeneratedCode();
+                });
+            }
+            
+            // Обробка вихідних днів (оновлюємо код при зміні)
+            const weekendCheckboxes = document.querySelectorAll('input[name="workingHoursWeekend"]');
+            weekendCheckboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    updateGeneratedCode();
+                });
+            });
+            
+            // Обробка взаємовиключності накладеного платежу
+            handleCodPaymentExclusivity();
+            
+            // Форматування номера картки
+            const cardNumber = document.getElementById('cardNumber');
+            if (cardNumber) {
+                cardNumber.addEventListener('input', function() {
+                    formatCardNumber(this);
+                });
+            }
+            
+            // Перевірка локацій при виборі перевізників
+            window.checkDeliveryLocations = function(showAlert) {
+                // Перевірка для обов'язкових локацій (Нова пошта, Укрпошта, Meest Express)
+                const requiresLocation = Array.from(document.querySelectorAll('input[name="deliveryMethod"][data-requires-location="true"]:checked'));
+                // Перевірка для попередження (Самовивіз)
+                const requiresLocationWarning = Array.from(document.querySelectorAll('input[name="deliveryMethod"][data-requires-location-warning="true"]:checked'));
+                
+                const hasLocations = document.querySelectorAll('.location-item').length > 0 && 
+                    Array.from(document.querySelectorAll('.location-item')).some(item => {
+                        const name = item.querySelector('.location-name').value.trim();
+                        const url = item.querySelector('.location-url').value.trim();
+                        return name && url;
+                    });
+                
+                const warningBox = document.getElementById('deliveryLocationWarning');
+                let isValid = true;
+                
+                // Для обов'язкових локацій (Нова пошта, Укрпошта, Meest Express) - блокуємо без попередження
+                if (requiresLocation.length > 0 && !hasLocations) {
+                    if (showAlert) {
+                        alert('⚠️ Помилка!\n\nДля доставки через "Нова пошта", "Укрпошта" або "Meest Express" обов\'язково необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
+                        return false;
+                    }
+                    isValid = false;
+                }
+                
+                // Для попередження (Самовивіз) - показуємо попередження завжди, якщо вибрано
+                if (requiresLocationWarning.length > 0 && !hasLocations) {
+                    if (warningBox) {
+                        warningBox.style.display = 'block';
+                    }
+                    if (showAlert) {
+                        alert('⚠️ Увага!\n\nДля "Самовивіз" необхідно додати локацію на Google Maps у блоці "📍 Локації магазинів на Google Maps".\n\nБудь ласка, заповніть цей блок перед генерацією даних.');
+                        return false;
+                    }
+                    isValid = false;
+                } else if (requiresLocationWarning.length > 0 && hasLocations) {
+                    // Якщо Самовивіз вибрано і локації є - приховуємо попередження
+                    if (warningBox) {
+                        warningBox.style.display = 'none';
+                    }
+                } else if (requiresLocationWarning.length === 0) {
+                    // Якщо Самовивіз не вибрано - приховуємо попередження
+                    if (warningBox) {
+                        warningBox.style.display = 'none';
+                    }
+                }
+                
+                return isValid;
+            };
+            
+            // Додаємо обробники для перевірки локацій
+            document.querySelectorAll('input[name="deliveryMethod"][data-requires-location="true"], input[name="deliveryMethod"][data-requires-location-warning="true"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    checkDeliveryLocations(false);
+                });
+            });
+            
+            // Перевірка при зміні локацій
+            const storeLocationsContainer = document.getElementById('storeLocationsContainer');
+            if (storeLocationsContainer) {
+                // Використовуємо делегування подій для динамічно доданих локацій
+                storeLocationsContainer.addEventListener('input', function(e) {
+                    if (e.target.classList.contains('location-name') || e.target.classList.contains('location-url')) {
+                        checkDeliveryLocations(false);
+                    }
+                });
+            }
+            
+            // Перевірка при видаленні локацій
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-item-btn') && e.target.closest('#storeLocationsContainer')) {
+                    setTimeout(function() {
+                        checkDeliveryLocations(false);
+                    }, 100);
+                }
+            });
+        });
+        
+        // Генерація коду у простому форматі з псевдонімами
+        // Кожна константа закріплена за конкретним полем
+        function generateCode(formData) {
+            const constants = [];
+            
+            // c1 - shopName
+            if (formData.shopName) {
+                constants.push(`c1 - ${formData.shopName}`);
+            }
+            
+            // c2 - shopDescription
+            if (formData.shopDescription) {
+                constants.push(`c2 - ${formData.shopDescription}`);
+            }
+            
+            // c3 - workingHours (генеруємо з нової структури)
+            let workingHoursText = '';
+            const workingHours24_7 = document.getElementById('workingHours24_7')?.checked;
+            const workingHoursTimeRange = document.getElementById('workingHoursTimeRange')?.checked;
+            const workingHoursFrom = document.getElementById('workingHoursFrom')?.value;
+            const workingHoursTo = document.getElementById('workingHoursTo')?.value;
+            const weekendDays = Array.from(document.querySelectorAll('input[name="workingHoursWeekend"]:checked')).map(cb => cb.value);
+            
+            // Функція форматування часу з HH:MM до читабельного формату
+            function formatTime(timeStr) {
+                if (!timeStr) return '';
+                const [hours, minutes] = timeStr.split(':');
+                return `${hours}:${minutes}`;
+            }
+            
+            if (workingHours24_7) {
+                workingHoursText = 'Відповідаємо цілодобово 24/7';
+            } else             if (workingHoursTimeRange && workingHoursFrom && workingHoursTo) {
+                workingHoursText = `Відповідаємо в РОБОЧІ дні з ${formatTime(workingHoursFrom)} до ${formatTime(workingHoursTo)}`;
+            } else if (workingHoursTimeRange) {
+                workingHoursText = 'Відповідаємо в РОБОЧІ дні з __ до __';
+            }
+            
+            // Додаємо вихідні дні, якщо є
+            if (weekendDays.length > 0) {
+                if (workingHoursText) {
+                    workingHoursText += '. ВИХІДНІ: ' + weekendDays.join(', ');
+                } else {
+                    workingHoursText = 'ВИХІДНІ: ' + weekendDays.join(', ');
+                }
+            }
+            
+            // c3 - workingHours
+            if (workingHoursText) {
+                constants.push(`c3 - ${workingHoursText}`);
+            }
+            
+            // c4 - categories (масив)
+            const categories = [];
+            Array.from(document.querySelectorAll('input[name="category"]:checked')).forEach(cb => {
+                categories.push(cb.value);
+            });
+            // Додаємо кастомні категорії
+            Array.from(document.querySelectorAll('.custom-category-field')).forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    categories.push(value);
+                }
+            });
+            if (categories.length > 0) {
+                categories.forEach((category, index) => {
+                    if (index < 10) { // Максимум 10 категорій
+                        constants.push(`c4${String.fromCharCode(97 + index)} - ${category}`);
+                    }
+                });
+                constants.push(`c4_count - ${Math.min(categories.length, 10)}`);
+            }
+            
+            // c5 - fopName
+            if (formData.fopName) {
+                constants.push(`c5 - ${formData.fopName}`);
+            }
+            
+            // c6 - edrpou
+            if (formData.edrpou) {
+                constants.push(`c6 - ${formData.edrpou}`);
+            }
+            
+            // c7 - iban
+            if (formData.iban) {
+                constants.push(`c7 - ${formData.iban}`);
+            }
+            
+            // c8 - bankName
+            if (formData.bankName) {
+                constants.push(`c8 - ${formData.bankName}`);
+            }
+            
+            // c9 - paymentPurpose
+            if (formData.paymentPurpose) {
+                constants.push(`c9 - ${formData.paymentPurpose}`);
+            }
+            
+            // c10 - cardNumber
+            if (formData.cardNumber) {
+                constants.push(`c10 - ${formData.cardNumber}`);
+            }
+            
+            // c11 - cardHolderName
+            if (formData.cardHolderName) {
+                constants.push(`c11 - ${formData.cardHolderName}`);
+            }
+            
+            // c12 - cardBankName
+            if (formData.cardBankName) {
+                constants.push(`c12 - ${formData.cardBankName}`);
+            }
+            
+            // c13 - telegramUsername або telegramPhone
+            const telegramContact = formData.telegramContact || '';
+            const cleanTelegramContact = telegramContact.replace(/\s|-/g, '');
+            if (telegramContact && (telegramContact.startsWith('+') || cleanTelegramContact.startsWith('0') || cleanTelegramContact.startsWith('380')) && /^\d{10,}$/.test(cleanTelegramContact.replace(/^\+?380/, '0'))) {
+                let phone = cleanTelegramContact.replace(/^\+?380/, '0');
+                if (!phone.startsWith('0')) phone = '0' + phone;
+                constants.push(`c13 - ${phone}`);
+                constants.push(`c13_type - phone`);
+            } else if (telegramContact) {
+                const username = telegramContact.replace('@', '').trim();
+                constants.push(`c13 - ${username}`);
+                constants.push(`c13_type - username`);
+            }
+            
+            // c14 - viberContacts (масив контактів)
+            if (formData.viberContacts && formData.viberContacts.length > 0) {
+                formData.viberContacts.forEach((contact, index) => {
+                    const char = String.fromCharCode(97 + index); // a, b, c, d, e
+                    // Формат: c14a - phone|name
+                    constants.push(`c14${char} - ${contact.phone}|${contact.name || ''}`);
+                });
+                constants.push(`c14_count - ${formData.viberContacts.length}`);
+            }
+            
+            // c15 - telegramShowcase
+            if (formData.telegramShowcase) {
+                constants.push(`c15 - ${formData.telegramShowcase}`);
+            }
+            
+            // c16 - instagramUsername
+            if (formData.instagramUsername) {
+                constants.push(`c16 - ${formData.instagramUsername}`);
+            }
+            
+            // c17 - biggoLiveUrl
+            if (formData.biggoLiveUrl) {
+                constants.push(`c17 - ${formData.biggoLiveUrl}`);
+            }
+            
+            // c18 - facebookPage
+            if (formData.facebookPage) {
+                constants.push(`c18 - ${formData.facebookPage}`);
+            }
+            
+            // c19 - tiktokUsername
+            if (formData.tiktokUsername) {
+                constants.push(`c19 - ${formData.tiktokUsername}`);
+            }
+            
+            // c20 - youtubeChannel
+            if (formData.youtubeChannel) {
+                constants.push(`c20 - ${formData.youtubeChannel}`);
+            }
+            
+            // c21 - whatsappPhone
+            if (formData.whatsappPhone) {
+                constants.push(`c21 - ${formData.whatsappPhone}`);
+            }
+            
+            // c22 - googleCalendarUrl
+            if (formData.googleCalendarUrl) {
+                constants.push(`c22 - ${formData.googleCalendarUrl}`);
+            }
+            
+            // c23 - storeLocations (масив локацій)
+            const storeLocations = [];
+            document.querySelectorAll('.location-item').forEach(item => {
+                const name = item.querySelector('.location-name').value.trim();
+                const url = item.querySelector('.location-url').value.trim();
+                if (name && url) {
+                    storeLocations.push(`${name}|${url}`);
+                }
+            });
+            if (storeLocations.length > 0) {
+                storeLocations.forEach((location, index) => {
+                    constants.push(`c23${String.fromCharCode(97 + index)} - ${location}`);
+                });
+                constants.push(`c23_count - ${storeLocations.length}`);
+            }
+            
+            // c24 - paymentOptions (масив)
+            const paymentOptions = [];
+            Array.from(document.querySelectorAll('input[name="paymentOption"]:checked')).forEach(cb => {
+                if (cb.id === 'payment2custom') {
+                    const codAmount = document.getElementById('codAmount').value.trim();
+                    if (codAmount) {
+                        paymentOptions.push(`🔷 Накладний платіж із передплатою ${codAmount} грн`);
+                    }
+                } else {
+                    paymentOptions.push(cb.value);
+                }
+            });
+            const paymentCustom = document.getElementById('paymentCustom').value.trim();
+            if (paymentCustom) {
+                paymentOptions.push(paymentCustom);
+            }
+            if (paymentOptions.length > 0) {
+                paymentOptions.forEach((option, index) => {
+                    constants.push(`c24${String.fromCharCode(97 + index)} - ${option}`);
+                });
+                constants.push(`c24_count - ${paymentOptions.length}`);
+            }
+            
+            // c25 - deliveryMethod
+            const deliveryMethods = [];
+            Array.from(document.querySelectorAll('input[name="deliveryMethod"]:checked')).forEach(cb => {
+                deliveryMethods.push(cb.value);
+            });
+            const deliveryMethodCustom = document.getElementById('deliveryMethodCustom').value.trim();
+            if (deliveryMethodCustom) {
+                deliveryMethods.push(deliveryMethodCustom);
+            }
+            if (deliveryMethods.length > 0) {
+                constants.push(`c25 - ${deliveryMethods.join(', ')}`);
+            }
+            
+            // c26 - deliveryTime (радіо-кнопка - тільки один варіант)
+            const deliveryTimeRadio = document.querySelector('input[name="deliveryTime"]:checked');
+            const deliveryTimeCustom = document.getElementById('deliveryTimeCustom').value.trim();
+            if (deliveryTimeRadio) {
+                constants.push(`c26 - ${deliveryTimeRadio.value}`);
+            } else if (deliveryTimeCustom) {
+                constants.push(`c26 - ${deliveryTimeCustom}`);
+            }
+            
+            // c27 - deliveryNote
+            if (formData.deliveryNote) {
+                constants.push(`c27 - ${formData.deliveryNote}`);
+            }
+            
+            // c28 - exchangeDays
+            if (formData.exchangeDays && formData.exchangeDays > 0) {
+                constants.push(`c28 - ${formData.exchangeDays}`);
+            }
+            
+            // c29 - returnDays
+            if (formData.returnDays && formData.returnDays > 0) {
+                constants.push(`c29 - ${formData.returnDays}`);
+            }
+            
+            // c30 - returnConditions (масив)
+            const returnConditions = [];
+            Array.from(document.querySelectorAll('input[name="returnCondition"]:checked')).forEach(cb => {
+                returnConditions.push(cb.value);
+            });
+            // Додаємо кастомні умови
+            Array.from(document.querySelectorAll('.return-condition-text')).forEach(textarea => {
+                const value = textarea.value.trim();
+                if (value) {
+                    returnConditions.push(value);
+                }
+            });
+            if (returnConditions.length > 0) {
+                returnConditions.forEach((condition, index) => {
+                    constants.push(`c30${String.fromCharCode(97 + index)} - ${condition}`);
+                });
+                constants.push(`c30_count - ${returnConditions.length}`);
+            }
+            
+            // c31 - returnMoneyTime (радіо-кнопка - тільки один варіант)
+            const returnMoneyTimeRadio = document.querySelector('input[name="returnMoneyTime"]:checked');
+            const returnMoneyTimeCustom = document.getElementById('returnMoneyTimeCustom').value.trim();
+            if (returnMoneyTimeRadio) {
+                constants.push(`c31 - ${returnMoneyTimeRadio.value}`);
+            } else if (returnMoneyTimeCustom) {
+                constants.push(`c31 - ${returnMoneyTimeCustom}`);
+            }
+            
+            // c32 - returnDeliveryCost (радіо-кнопка - тільки один варіант)
+            const returnDeliveryCostRadio = document.querySelector('input[name="returnDeliveryCost"]:checked');
+            const returnDeliveryCostCustom = document.getElementById('returnDeliveryCostCustom').value.trim();
+            if (returnDeliveryCostRadio) {
+                constants.push(`c32 - ${returnDeliveryCostRadio.value}`);
+            } else if (returnDeliveryCostCustom) {
+                constants.push(`c32 - ${returnDeliveryCostCustom}`);
+            }
+            
+            // c33 - afterPaymentTemplate
+            const templateFields = [];
+            Array.from(document.querySelectorAll('input[name="templateField"]:checked')).forEach(cb => {
+                templateFields.push(cb.value);
+            });
+            // Додаємо кастомні поля
+            Array.from(document.querySelectorAll('.template-custom-field')).forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    templateFields.push(value);
+                }
+            });
+            if (templateFields.length > 0) {
+                const template = templateFields.join('\n');
+                constants.push(`c33 - ${template.replace(/\n/g, '\\n')}`);
+            }
+            
+            // c34 - offerAdditionalInfo (особливі умови для оферти)
+            const offerAdditionalInfo = document.getElementById('offerAdditionalInfo')?.value.trim() || '';
+            if (offerAdditionalInfo) {
+                constants.push(`c34 - ${offerAdditionalInfo.replace(/\n/g, '\\n')}`);
+            }
+            
+            // Генеруємо простий текст з константами
+            return constants.join('\n');
+        }
+        
+        // Екранування рядків
+        function escapeString(str) {
+            if (!str) return '';
+            return str
+                .replace(/\\/g, '\\\\')
+                .replace(/"/g, '\\"')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r')
+                .replace(/\t/g, '\\t');
+        }
+        
+        // Валідація даних
+        function validateForm() {
+            let isValid = true;
+            
+            // Валідація IBAN
+            const iban = document.getElementById('iban').value.trim().replace(/\s/g, '');
+            // Український IBAN: UA + 2 цифри (контрольна сума) + 4 символи (код банку, може бути літери або цифри) + 19 цифр (номер рахунку)
+            // Формат: UA + 2 цифри + 4 символи (літери або цифри) + 19 цифр = 27 символів загалом
+            // Але в реальності може бути 21 цифра після коду банку (загалом 29 символів)
+            // Перевіряємо обидва варіанти: 19 або 21 цифра після коду банку
+            if (iban && !/^UA\d{2}[A-Z0-9]{4}\d{19}$/i.test(iban) && !/^UA\d{2}[A-Z0-9]{4}\d{21}$/i.test(iban)) {
+                showError('iban', 'IBAN має бути у форматі: UA + 2 цифри + 4 символи (літери або цифри) + 19 або 21 цифра');
+                isValid = false;
+            } else {
+                hideError('iban');
+            }
+            
+            // Валідація ЄДРПОУ
+            const edrpou = document.getElementById('edrpou').value.trim().replace(/\s|-/g, '');
+            if (edrpou && !/^\d{8}(\d{2})?$/.test(edrpou)) {
+                showError('edrpou', 'ЄДРПОУ має бути 8 або 10 цифр');
+                isValid = false;
+            } else {
+                hideError('edrpou');
+            }
+            
+            // Валідація Viber контактів
+            const viberContacts = getViberContacts();
+            const viberContainer = document.getElementById('viberContactsContainer');
+            if (viberContainer) {
+                const items = viberContainer.querySelectorAll('.viber-contact-item');
+                items.forEach((item, index) => {
+                    const phoneInput = item.querySelector('.viber-phone');
+                    const phone = phoneInput?.value.trim().replace(/\s|-/g, '');
+                    if (phone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(phone)) {
+                        phoneInput.style.borderColor = '#f44336';
+                        isValid = false;
+                    } else if (phoneInput) {
+                        phoneInput.style.borderColor = '';
+                    }
+                });
+            }
+            
+            // Валідація WhatsApp телефону
+            const whatsappPhone = document.getElementById('whatsappPhone').value.trim().replace(/\s|-/g, '');
+            if (whatsappPhone && !/^(0\d{9}|380\d{9}|\+380\d{9})$/.test(whatsappPhone)) {
+                showError('whatsappPhone', 'Номер має бути 10 цифр, починається з 0 (наприклад: 0112223344)');
+                isValid = false;
+            } else {
+                hideError('whatsappPhone');
+            }
+            
+            // Валідація Google Calendar URL - має бути iCal посилання
+            const googleCalendarUrl = document.getElementById('googleCalendarUrl')?.value.trim();
+            if (googleCalendarUrl) {
+                // Перевіряємо, чи це iCal посилання (має містити /public/basic.ics або /ical/...)
+                const isICalUrl = /\/public\/basic\.ics/i.test(googleCalendarUrl) || 
+                                  /\/ical\//i.test(googleCalendarUrl) ||
+                                  /\.ics/i.test(googleCalendarUrl);
+                if (!isICalUrl) {
+                    showError('googleCalendarUrl', '⚠️ Це не iCal посилання! Будь ласка, уважно перевірте інструкцію "Як дістати iCal посилання" та знайдіть правильне посилання, яке закінчується на /public/basic.ics');
+                    isValid = false;
+                } else {
+                    hideError('googleCalendarUrl');
+                }
+            } else {
+                hideError('googleCalendarUrl');
+            }
+            
+            // Валідація номера картки
+            const cardNumber = document.getElementById('cardNumber').value.trim().replace(/\s/g, '');
+            if (cardNumber && !/^\d{16}$/.test(cardNumber)) {
+                showError('cardNumber', 'Номер картки має містити рівно 16 цифр');
+                isValid = false;
+            } else {
+                hideError('cardNumber');
+            }
+            
+            return isValid;
+        }
+        
+        // Перевірка наявності реквізитів ФОП
+        function hasFopRequisites() {
+            const fopName = document.getElementById('fopName').value.trim();
+            const edrpou = document.getElementById('edrpou').value.trim();
+            const iban = document.getElementById('iban').value.trim();
+            const bankName = document.getElementById('bankName').value.trim();
+            const paymentPurpose = document.getElementById('paymentPurpose').value.trim();
+            
+            return fopName && edrpou && iban && bankName && paymentPurpose;
+        }
+        
+        // Показати інформаційне модальне вікно
+        function showInfoModal() {
+            const modal = document.getElementById('infoModal');
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+        
+        // Закрити інформаційне модальне вікно
+        function closeInfoModal() {
+            const modal = document.getElementById('infoModal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+        
+        // Відкрити Telegram
+        function openTelegramSupport() {
+            window.open('https://t.me/veoforce_support', '_blank');
+        }
+        
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            field.classList.add('error');
+            let errorDiv = field.parentElement.querySelector('.error-message');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                field.parentElement.appendChild(errorDiv);
+            }
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+        
+        function hideError(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.classList.remove('error');
+            const errorDiv = field.parentElement.querySelector('.error-message');
+            if (errorDiv) {
+                errorDiv.classList.remove('show');
+            }
+        }
+        
+        // Додавання обробників валідації
+        document.getElementById('iban').addEventListener('blur', validateForm);
+        document.getElementById('edrpou').addEventListener('blur', validateForm);
+        // Валідація Viber контактів при втраті фокусу
+        document.addEventListener('blur', function(e) {
+            if (e.target.classList.contains('viber-phone')) {
+                validateForm();
+            }
+        }, true);
+        document.getElementById('whatsappPhone').addEventListener('blur', validateForm);
+        const googleCalendarUrlInput = document.getElementById('googleCalendarUrl');
+        if (googleCalendarUrlInput) {
+            googleCalendarUrlInput.addEventListener('blur', validateForm);
+            googleCalendarUrlInput.addEventListener('input', function() {
+                // Валідація Google Calendar URL при введенні
+                const url = this.value.trim();
+                if (url) {
+                    // Перевіряємо, чи це iCal посилання
+                    const isICalUrl = /\/public\/basic\.ics/i.test(url) || 
+                                      /\/ical\//i.test(url) ||
+                                      /\.ics/i.test(url);
+                    if (!isICalUrl) {
+                        showError('googleCalendarUrl', '⚠️ Це не iCal посилання! Будь ласка, перевірте інструкцію "Як дістати iCal посилання" та знайдіть правильне посилання, яке закінчується на /public/basic.ics');
+                    } else {
+                        hideError('googleCalendarUrl');
+                    }
+                } else {
+                    hideError('googleCalendarUrl');
+                }
+                updateGeneratedCode();
+                saveFormData();
+                updateDataCheckList();
+            });
+        }
+        document.getElementById('shopDescription').addEventListener('input', function() {
+            const maxLength = 100;
+            const currentLength = this.value.length;
+            if (currentLength > maxLength) {
+                this.value = this.value.substring(0, maxLength);
+            }
+            // Оновлюємо лічильник, якщо він є
+            let counter = this.parentElement.querySelector('.char-counter');
+            if (!counter) {
+                counter = document.createElement('div');
+                counter.className = 'char-counter';
+                counter.style.cssText = 'font-size: 12px; color: #b0b0b0; margin-top: 5px; text-align: right;';
+                this.parentElement.appendChild(counter);
+            }
+            counter.textContent = `${this.value.length}/${maxLength} символів`;
+        });
+        
+        // Показ інструкцій
+        function showInstruction(type) {
+            const modal = document.getElementById('instructionModal');
+            const content = document.getElementById('instructionContent');
+            
+            let html = '';
+            
+            switch(type) {
+                case 'telegram':
+                    html = `
+                        <h3>📱 Як створити Telegram username?</h3>
+                        <ol>
+                            <li>Відкрийте Telegram на телефоні або комп'ютері</li>
+                            <li>Перейдіть в <strong>Налаштування</strong> (⚙️)</li>
+                            <li>Натисніть на ваше ім'я вгорі</li>
+                            <li>Знайдіть поле <strong>"Username"</strong></li>
+                            <li>Введіть бажаний username (наприклад: <code>my_shop_ua</code>)</li>
+                            <li>Натисніть <strong>"Готово"</strong></li>
+                            <li>Якщо username вільний, він буде встановлений</li>
+                        </ol>
+                        <p><strong>Важливо:</strong> Username має бути унікальним і може містити лише латинські літери, цифри та підкреслення. Вказуйте username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @.</p>
+                    `;
+                    break;
+                case 'calendar':
+                    html = `
+                        <h3>📅 Як дістати iCal посилання Google Calendar?</h3>
+                        <ol>
+                            <li>Відкрийте <a href="https://calendar.google.com" target="_blank" style="color: #64B5F6; text-decoration: underline;">Google Calendar</a></li>
+                            <li>Знайдіть ваш календар у списку зліва</li>
+                            <li>Натисніть на <strong>три крапки (⋮)</strong> біля назви календаря</li>
+                            <li>Виберіть <strong>"Налаштування та спільний доступ"</strong></li>
+                            <li>Прокрутіть до розділу <strong>"Інтеграція календаря"</strong></li>
+                            <li>Скопіюйте посилання з поля <strong>"Публічний URL iCal"</strong></li>
+                            <li>Якщо посилання немає, натисніть <strong>"Зробити календар публічним"</strong> спочатку</li>
+                        </ol>
+                        <p><strong>Приклад посилання:</strong><br><code>https://calendar.google.com/calendar/ical/abc123%40group.calendar.google.com/public/basic.ics</code></p>
+                        <p><strong>Альтернатива:</strong> Можна також вставити Calendar ID (виглядає як <code>abc123@group.calendar.google.com</code>)</p>
+                    `;
+                    break;
+                case 'biggo':
+                    html = `
+                        <h3>📺 Як знайти username або ID у BIGGO LIVE?</h3>
+                        <ol>
+                            <li>Відкрийте додаток BIGGO LIVE на телефоні</li>
+                            <li>Внизу екрану натисніть на іконку <strong>"Я"</strong> (профіль)</li>
+                            <li>Вгорі праворуч натисніть на іконку з <strong>людинкою</strong> (налаштування профілю)</li>
+                            <li>Прокрутіть вниз до розділу з вашим ім'ям</li>
+                            <li>Під ім'ям ви побачите рядок з <strong>ID</strong> (виглядає як цифри, наприклад: <code>123456789</code>)</li>
+                            <li>Поруч з ID є іконка <strong>двох аркушів</strong> (копіювати) - натисніть на неї</li>
+                            <li>Скопійований ID вставте в поле форми</li>
+                        </ol>
+                        <p><strong>Якщо у вас є username:</strong> Вкажіть username <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> символу @ та <span style="color: #FFD700; font-weight: 600;">БЕЗ</span> повного посилання. Наприклад: якщо посилання "https://biggo.tv/user/veo_me", то впишіть "veo_me".</p>
+                        <p><strong>Якщо username не встановлено:</strong> Використайте цифровий ID, який ви скопіювали з профілю.</p>
+                    `;
+                    break;
+                default:
+                    html = '<h3>Інструкція</h3><p>Інструкція буде додана найближчим часом.</p>';
+            }
+            
+            content.innerHTML = html + '<button class="instruction-close" onclick="closeInstruction()">Закрити</button>';
+            modal.classList.add('show');
+        }
+        
+        function closeInstruction() {
+            document.getElementById('instructionModal').classList.remove('show');
+        }
+        
+        // Перевірка локацій для перевізників
+        function checkDeliveryLocations() {
+            const selectedCarriers = [];
+            Array.from(document.querySelectorAll('input[name="deliveryMethod"]:checked')).forEach(cb => {
+                if (cb.hasAttribute('data-requires-location')) {
+                    selectedCarriers.push(cb.value);
+                }
+            });
+            
+            if (selectedCarriers.length > 0) {
+                // Перевіряємо, чи є локації на Google Maps
+                const locations = [];
+                document.querySelectorAll('.location-item').forEach(item => {
+                    const name = item.querySelector('.location-name').value.trim();
+                    const url = item.querySelector('.location-url').value.trim();
+                    if (name && url) {
+                        locations.push({ name, url });
+                    }
+                });
+                
+                if (locations.length === 0) {
+                    const carriersList = selectedCarriers.join(', ');
+                    alert(`⚠️ Ви обрали перевізників: ${carriersList}\n\nДля цих перевізників необхідно вказати локацію на Google Maps.\n\nБудь ласка, додайте локацію в блоці "📍 Локації магазинів на Google Maps" перед генерацією коду.`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Функція для отримання всіх даних форми
+        function getAllFormData() {
+            return {
+                shopName: document.getElementById('shopName').value.trim(),
+                shopDescription: document.getElementById('shopDescription').value.trim(),
+                workingHours: '', // Генерується автоматично з чекбоксів
+                fopName: document.getElementById('fopName').value.trim(),
+                edrpou: document.getElementById('edrpou').value.trim(),
+                iban: document.getElementById('iban').value.trim(),
+                bankName: document.getElementById('bankName').value.trim(),
+                paymentPurpose: document.getElementById('paymentPurpose').value.trim(),
+                cardNumber: document.getElementById('cardNumber').value.trim().replace(/\s/g, ''),
+                cardHolderName: document.getElementById('cardHolderName').value.trim(),
+                cardBankName: document.getElementById('cardBankName').value.trim(),
+                telegramContact: document.getElementById('telegramContact').value.trim(),
+                viberContacts: getViberContacts(), // Збираємо всі Viber контакти
+                telegramShowcase: document.getElementById('telegramShowcase').value.trim(),
+                instagramUsername: document.getElementById('instagramUsername').value.trim(),
+                biggoLiveUrl: document.getElementById('biggoLiveUrl').value.trim(),
+                facebookPage: document.getElementById('facebookPage').value.trim(),
+                tiktokUsername: document.getElementById('tiktokUsername').value.trim(),
+                youtubeChannel: document.getElementById('youtubeChannel').value.trim(),
+                whatsappPhone: document.getElementById('whatsappPhone').value.trim(),
+                googleCalendarUrl: document.getElementById('googleCalendarUrl').value.trim(),
+                exchangeDays: parseInt(document.getElementById('exchangeDays').value) || 0,
+                returnDays: parseInt(document.getElementById('returnDays').value) || 0,
+                deliveryNote: document.getElementById('deliveryNote').value.trim(),
+                offerAdditionalInfo: document.getElementById('offerAdditionalInfo')?.value.trim() || ''
+            };
+        }
+        
+        // Функція для автоматичного оновлення коду
+        function updateGeneratedCode() {
+            const formData = getAllFormData();
+            generatedCode = generateCode(formData);
+            const codeElement = document.getElementById('generatedCode');
+            if (codeElement) {
+                codeElement.textContent = generatedCode;
+            }
+            window.hasFopRequisites = hasFopRequisites();
+            // Зберігаємо дані при кожному оновленні
+            saveFormData();
+            // Оновлюємо перевірку заповнених полів
+            updateDataCheckList();
+        }
+        
+        // Додаємо обробники подій для всіх полів форми для автоматичного оновлення
+        function setupAutoUpdate() {
+            const form = document.getElementById('clientForm');
+            const inputs = form.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+                input.addEventListener('change', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            });
+            
+            // Також для чекбоксів та радіо-кнопок
+            const checkboxes = form.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    updateGeneratedCode();
+                    saveFormData();
+                    updateDataCheckList();
+                });
+            });
+        }
+        
+        // Обробка форми (тепер не потрібна, але залишаємо для сумісності)
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateGeneratedCode();
+        });
+        
+        // Функція для виконання копіювання (визначена перед copyToClipboard)
+        function performCopy(codeWithoutMarkdown, copyButton, originalText, originalBg) {
+            try {
+                // Створюємо тимчасовий елемент для копіювання
+                const textarea = document.createElement('textarea');
+                textarea.value = codeWithoutMarkdown;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '0';
+                textarea.setAttribute('readonly', '');
+                textarea.style.width = '1px';
+                textarea.style.height = '1px';
+                document.body.appendChild(textarea);
+                
+                // Вибираємо текст
+                textarea.focus();
+                textarea.select();
+                textarea.setSelectionRange(0, 99999); // Для мобільних пристроїв
+                
+                const copyFunction = () => {
+                    // Видаляємо textarea
+                    try {
+                        if (document.body.contains(textarea)) {
+                            document.body.removeChild(textarea);
+                        }
+                    } catch (e) {
+                        console.error('Помилка видалення textarea:', e);
+                    }
+                    
+                    // Повертаємо кнопку до нормального стану через 0.5 сек
+                    setTimeout(() => {
+                        copyButton.style.background = originalBg;
+                        copyButton.textContent = originalText;
+                        copyButton.disabled = false;
+                        
+                        // Показуємо повідомлення про надсилання в Telegram через 0.5 сек
+                        setTimeout(() => {
+                            const sendContainer = document.getElementById('sendToSupportContainer');
+                            if (sendContainer) {
+                                sendContainer.style.display = 'block';
+                                
+                                // Прокручуємо до блоку з повідомленням
+                                sendContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                            
+                            // Перевіряємо наявність реквізитів і показуємо інформаційне вікно
+                            if (window.hasFopRequisites === false) {
+                                setTimeout(() => {
+                                    if (typeof showInfoModal === 'function') {
+                                        showInfoModal();
+                                    }
+                                }, 500);
+                            }
+                        }, 500);
+                    }, 500);
+                };
+                
+                const handleError = (error) => {
+                    console.error('Помилка копіювання:', error);
+                    try {
+                        if (document.body.contains(textarea)) {
+                            document.body.removeChild(textarea);
+                        }
+                    } catch (e) {
+                        // Ігноруємо помилку видалення
+                    }
+                    copyButton.style.background = originalBg;
+                    copyButton.textContent = originalText;
+                    copyButton.disabled = false;
+                    alert('Не вдалося скопіювати автоматично. Скопіюйте вручну з блоку вище.');
+                };
+                
+                // Спробуємо використати Clipboard API (сучасний спосіб)
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(codeWithoutMarkdown).then(() => {
+                        copyFunction();
+                    }).catch((err) => {
+                        console.error('Помилка копіювання через Clipboard API:', err);
+                        // Fallback на старий метод
+                        try {
+                            const successful = document.execCommand('copy');
+                            if (successful) {
+                                copyFunction();
+                            } else {
+                                handleError(err);
+                            }
+                        } catch (e) {
+                            handleError(e);
+                        }
+                    });
+                } else {
+                    // Fallback для старих браузерів
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            copyFunction();
+                        } else {
+                            handleError(new Error('execCommand failed'));
+                        }
+                    } catch (err) {
+                        handleError(err);
+                    }
+                }
+            } catch (error) {
+                console.error('Помилка в performCopy:', error);
+                copyButton.style.background = originalBg;
+                copyButton.textContent = originalText;
+                copyButton.disabled = false;
+                alert('Сталася помилка при копіюванні. Спробуйте ще раз або скопіюйте вручну.');
+            }
+        }
+        
+        // Копіювання в буфер обміну
+        window.copyToClipboard = function() {
+            let copyButton = null;
+            let originalText = '';
+            let originalBg = '#4CAF50';
+            let codeWithoutMarkdown = '';
+            
+            try {
+                // Оновлюємо код перед копіюванням
+                try {
+                    if (typeof updateGeneratedCode === 'function') {
+                        updateGeneratedCode();
+                    }
+                } catch (updateError) {
+                    console.warn('Помилка оновлення коду:', updateError);
+                    // Продовжуємо, навіть якщо оновлення не вдалося
+                }
+                
+                // Отримуємо код з елемента (найнадійніший спосіб)
+                const codeElement = document.getElementById('generatedCode');
+                if (!codeElement) {
+                    alert('Блок з кодом не знайдено. Спробуйте перезавантажити сторінку.');
+                    return;
+                }
+                
+                let codeToCopy = '';
+                try {
+                    codeToCopy = codeElement.textContent || codeElement.innerText || '';
+                } catch (e) {
+                    console.warn('Помилка читання коду з елемента:', e);
+                }
+                
+                // Якщо код порожній, спробуємо взяти зі змінної
+                if (!codeToCopy || codeToCopy.trim() === '') {
+                    try {
+                        codeToCopy = (typeof generatedCode !== 'undefined' && generatedCode) ? generatedCode : '';
+                    } catch (e) {
+                        console.warn('Помилка читання generatedCode:', e);
+                        codeToCopy = '';
+                    }
+                }
+                
+                if (!codeToCopy || codeToCopy.trim() === '') {
+                    alert('Немає даних для копіювання. Заповніть форму вище.');
+                    return;
+                }
+                
+                copyButton = document.getElementById('copyCodeButton');
+                if (!copyButton) {
+                    console.error('Кнопка копіювання не знайдена');
+                    alert('Кнопка копіювання не знайдена. Спробуйте перезавантажити сторінку.');
+                    return;
+                }
+                
+                originalText = copyButton.textContent || 'Скопіювати код';
+                originalBg = copyButton.style.background || window.getComputedStyle(copyButton).backgroundColor || '#4CAF50';
+                
+                // Змінюємо кнопку на синій колір
+                copyButton.style.background = '#0088cc';
+                copyButton.textContent = '✓ Скопійовано!';
+                copyButton.disabled = true;
+                
+                // Видаляємо маркдаун для копіювання (копіюємо чистий код)
+                codeWithoutMarkdown = codeToCopy.replace(/^```\n?/g, '').replace(/\n?```$/g, '').trim();
+                
+                if (!codeWithoutMarkdown) {
+                    alert('Немає даних для копіювання. Заповніть форму вище.');
+                    copyButton.style.background = originalBg;
+                    copyButton.textContent = originalText;
+                    copyButton.disabled = false;
+                    return;
+                }
+                
+                // Виконуємо копіювання
+                performCopy(codeWithoutMarkdown, copyButton, originalText, originalBg);
+                
+            } catch (error) {
+                console.error('Помилка в copyToClipboard:', error);
+                // Відновлюємо кнопку при помилці
+                if (copyButton) {
+                    try {
+                        copyButton.style.background = originalBg;
+                        copyButton.textContent = originalText;
+                        copyButton.disabled = false;
+                    } catch (e) {
+                        console.error('Помилка відновлення кнопки:', e);
+                    }
+                }
+                alert('Сталася помилка при копіюванні: ' + (error.message || 'невідома помилка') + '. Спробуйте скопіювати вручну з блоку вище.');
+            }
+        };
+        
+        // Закриття інструкцій при кліку поза вікном
+        document.getElementById('instructionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeInstruction();
+            }
+        });
+    </script>
+    
+    <!-- Модальне вікно для інструкцій -->
+    <div class="instruction-modal" id="instructionModal">
+        <div class="instruction-content" id="instructionContent">
+            <!-- Контент буде додано динамічно -->
+        </div>
+    </div>
+</body>
+</html>
