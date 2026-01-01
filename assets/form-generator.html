@@ -740,38 +740,26 @@
             }
             
             /* Час роботи - мобільна версія */
-            #workingHoursDaysContainer .checkbox-item {
-                flex-direction: column;
-                align-items: flex-start !important;
-            }
-            
-            #workingHoursDaysContainer .checkbox-item label {
-                margin-bottom: 8px;
-            }
-            
-            #workingHoursDaysContainer .checkbox-item input[type="time"] {
-                width: 100%;
+            #workingHoursTimeRangeContainer {
                 margin-left: 0 !important;
-                margin-top: 8px;
             }
             
-            #workingHoursEverydayTimes {
+            #workingHoursTimeRangeContainer > div {
                 flex-direction: column;
                 gap: 10px;
             }
             
-            #workingHoursEverydayTimes > div {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            #workingHoursEverydayTimes label {
+            #workingHoursTimeRangeContainer label {
                 width: 100%;
                 text-align: left;
             }
             
-            #workingHoursEverydayTimes input[type="time"] {
+            #workingHoursTimeRangeContainer input[type="time"] {
                 width: 100%;
+            }
+            
+            #workingHoursWeekendsContainer {
+                grid-template-columns: repeat(2, 1fr) !important;
             }
             
             /* Локації магазинів */
@@ -1007,79 +995,58 @@
                     <label>Час роботи / Контактний час</label>
                     <div class="help-text" style="margin-bottom: 15px;">📝 Оберіть дні тижня та вкажіть час, коли продавець відповідає на повідомлення/дзвінки</div>
                     
-                    <div style="margin-bottom: 15px;">
-                        <div class="checkbox-item" style="margin-bottom: 10px;">
+                    <div style="margin-bottom: 20px;">
+                        <div class="checkbox-item" style="margin-bottom: 15px;">
                             <input type="checkbox" id="workingHours24_7" name="workingHours24_7">
                             <label for="workingHours24_7" style="font-weight: 600;">Відповідаємо цілодобово 24/7</label>
                         </div>
-                        <div class="checkbox-item" style="margin-bottom: 10px;">
-                            <input type="checkbox" id="workingHoursEveryday" name="workingHoursEveryday">
-                            <label for="workingHoursEveryday" style="font-weight: 600;">Відповідаю щодня</label>
+                        
+                        <div class="checkbox-item" style="margin-bottom: 15px;">
+                            <input type="checkbox" id="workingHoursTimeRange" name="workingHoursTimeRange">
+                            <label for="workingHoursTimeRange" style="font-weight: 600;">Відповідаємо з __ до __</label>
                         </div>
-                        <div id="workingHoursEverydayTimes" style="display: none; margin-left: 30px; margin-top: 10px; margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <label for="workingHoursEverydayFrom" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">З:</label>
-                                <input type="time" id="workingHoursEverydayFrom" style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                                <label for="workingHoursEverydayTo" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">До:</label>
-                                <input type="time" id="workingHoursEverydayTo" style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
+                        <div id="workingHoursTimeRangeContainer" style="display: none; margin-left: 30px; margin-top: 10px; margin-bottom: 15px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <label for="workingHoursFrom" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">З:</label>
+                                <input type="time" id="workingHoursFrom" style="flex: 1; min-width: 120px; padding: 8px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
+                                <label for="workingHoursTo" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">До:</label>
+                                <input type="time" id="workingHoursTo" style="flex: 1; min-width: 120px; padding: 8px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div id="workingHoursDaysContainer" style="margin-bottom: 15px;">
-                        <div class="checkbox-item" style="margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <input type="checkbox" id="workingHoursMon" name="workingHoursDay" value="Пн">
-                            <label for="workingHoursMon" style="min-width: 50px;">Пн</label>
-                            <input type="time" id="workingHoursMonFrom" style="margin-left: 10px; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                            <span style="margin: 0 8px; color: #b0b0b0;">-</span>
-                            <input type="time" id="workingHoursMonTo" style="padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
+                        
+                        <div style="margin-top: 20px; margin-bottom: 10px;">
+                            <label style="font-weight: 600; margin-bottom: 10px; display: block;">Вихідні - обрати дні галочками:</label>
+                            <div class="checkbox-group" id="workingHoursWeekendsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendMon" name="workingHoursWeekend" value="Пн">
+                                    <label for="weekendMon">Пн</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendTue" name="workingHoursWeekend" value="Вт">
+                                    <label for="weekendTue">Вт</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendWed" name="workingHoursWeekend" value="Ср">
+                                    <label for="weekendWed">Ср</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendThu" name="workingHoursWeekend" value="Чт">
+                                    <label for="weekendThu">Чт</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendFri" name="workingHoursWeekend" value="Пт">
+                                    <label for="weekendFri">Пт</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendSat" name="workingHoursWeekend" value="Сб">
+                                    <label for="weekendSat">Сб</label>
+                                </div>
+                                <div class="checkbox-item" style="margin-bottom: 0;">
+                                    <input type="checkbox" id="weekendSun" name="workingHoursWeekend" value="Нд">
+                                    <label for="weekendSun">Нд</label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="checkbox-item" style="margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <input type="checkbox" id="workingHoursTue" name="workingHoursDay" value="Вт">
-                            <label for="workingHoursTue" style="min-width: 50px;">Вт</label>
-                            <input type="time" id="workingHoursTueFrom" style="margin-left: 10px; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                            <span style="margin: 0 8px; color: #b0b0b0;">-</span>
-                            <input type="time" id="workingHoursTueTo" style="padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                        </div>
-                        <div class="checkbox-item" style="margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <input type="checkbox" id="workingHoursWed" name="workingHoursDay" value="Ср">
-                            <label for="workingHoursWed" style="min-width: 50px;">Ср</label>
-                            <input type="time" id="workingHoursWedFrom" style="margin-left: 10px; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                            <span style="margin: 0 8px; color: #b0b0b0;">-</span>
-                            <input type="time" id="workingHoursWedTo" style="padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                        </div>
-                        <div class="checkbox-item" style="margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <input type="checkbox" id="workingHoursThu" name="workingHoursDay" value="Чт">
-                            <label for="workingHoursThu" style="min-width: 50px;">Чт</label>
-                            <input type="time" id="workingHoursThuFrom" style="margin-left: 10px; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                            <span style="margin: 0 8px; color: #b0b0b0;">-</span>
-                            <input type="time" id="workingHoursThuTo" style="padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                        </div>
-                        <div class="checkbox-item" style="margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <input type="checkbox" id="workingHoursFri" name="workingHoursDay" value="Пт">
-                            <label for="workingHoursFri" style="min-width: 50px;">Пт</label>
-                            <input type="time" id="workingHoursFriFrom" style="margin-left: 10px; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                            <span style="margin: 0 8px; color: #b0b0b0;">-</span>
-                            <input type="time" id="workingHoursFriTo" style="padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                        </div>
-                        <div class="checkbox-item" style="margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <input type="checkbox" id="workingHoursSat" name="workingHoursDay" value="Сб">
-                            <label for="workingHoursSat" style="min-width: 50px;">Сб</label>
-                            <input type="time" id="workingHoursSatFrom" style="margin-left: 10px; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                            <span style="margin: 0 8px; color: #b0b0b0;">-</span>
-                            <input type="time" id="workingHoursSatTo" style="padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                        </div>
-                        <div class="checkbox-item" style="margin-bottom: 10px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <input type="checkbox" id="workingHoursSun" name="workingHoursDay" value="Нд">
-                            <label for="workingHoursSun" style="min-width: 50px;">Нд</label>
-                            <input type="time" id="workingHoursSunFrom" style="margin-left: 10px; padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                            <span style="margin: 0 8px; color: #b0b0b0;">-</span>
-                            <input type="time" id="workingHoursSunTo" style="padding: 6px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                        </div>
-                    </div>
-                    
-                    <div class="custom-input-wrapper" data-label="working-hours">
-                        <input type="text" id="workingHoursCustom" name="workingHoursCustom" placeholder="Або вкажіть свій варіант часу роботи (наприклад: Відповідаю на повідомлення щодня з 10:00 до 20:00)">
                     </div>
                 </div>
             </div>
@@ -1694,10 +1661,8 @@
             const shopDescription = document.getElementById('shopDescription')?.value.trim();
             checks.push({label: 'Опис магазину', filled: !!shopDescription});
             const workingHours24_7 = document.getElementById('workingHours24_7')?.checked;
-            const workingHoursEveryday = document.getElementById('workingHoursEveryday')?.checked;
-            const workingHoursDays = Array.from(document.querySelectorAll('input[name="workingHoursDay"]:checked'));
-            const workingHoursCustom = document.getElementById('workingHoursCustom')?.value.trim();
-            const hasWorkingHours = workingHours24_7 || workingHoursEveryday || workingHoursDays.length > 0 || !!workingHoursCustom;
+            const workingHoursTimeRange = document.getElementById('workingHoursTimeRange')?.checked;
+            const hasWorkingHours = workingHours24_7 || workingHoursTimeRange;
             checks.push({label: 'Час роботи / Контактний час', filled: hasWorkingHours});
             
             // Асортимент
@@ -1853,12 +1818,14 @@
                 nameInput.addEventListener('input', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
             }
             if (urlInput) {
                 urlInput.addEventListener('input', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
             }
             
@@ -1868,6 +1835,7 @@
                     checkDeliveryLocations(false);
                 }
                 updateGeneratedCode();
+                updateDataCheckList();
             }, 100);
         }
         
@@ -1877,6 +1845,7 @@
             if (locationItem) {
                 locationItem.remove();
                 updateGeneratedCode();
+                updateDataCheckList();
             }
             // Перевіряємо локації після видалення
             setTimeout(() => {
@@ -1904,10 +1873,12 @@
                 textarea.addEventListener('input', function() {
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
             }
             
             updateGeneratedCode();
+            updateDataCheckList();
         }
         
         // Видалення умови обміну/повернення
@@ -1916,6 +1887,7 @@
             if (conditionItem) {
                 conditionItem.remove();
                 updateGeneratedCode();
+                updateDataCheckList();
             }
         }
         
@@ -1938,10 +1910,12 @@
                     updateTemplatePreview();
                     updateGeneratedCode();
                     saveFormData();
+                    updateDataCheckList();
                 });
             }
             
             updateGeneratedCode();
+            updateDataCheckList();
         }
         
         // Видалення поля шаблону
@@ -1951,6 +1925,7 @@
                 fieldItem.remove();
                 updateTemplatePreview();
                 updateGeneratedCode();
+                updateDataCheckList();
             }
         }
         
@@ -2053,6 +2028,7 @@
             }
             
             updateGeneratedCode();
+            updateDataCheckList();
         }
         
         // Видалення категорії
@@ -2305,9 +2281,9 @@
                     
                     // Викликаємо обробники змін для активації залежних полів
                     setTimeout(() => {
-                        const workingHoursEveryday = document.getElementById('workingHoursEveryday');
-                        if (workingHoursEveryday && workingHoursEveryday.checked) {
-                            workingHoursEveryday.dispatchEvent(new Event('change'));
+                        const workingHoursTimeRange = document.getElementById('workingHoursTimeRange');
+                        if (workingHoursTimeRange && workingHoursTimeRange.checked) {
+                            workingHoursTimeRange.dispatchEvent(new Event('change'));
                         }
                         const workingHours24_7 = document.getElementById('workingHours24_7');
                         if (workingHours24_7 && workingHours24_7.checked) {
@@ -2403,12 +2379,6 @@
             // Оновлюємо код при завантаженні
             updateGeneratedCode();
             
-            // Додаємо обробники для оновлення перевірки даних
-            document.querySelectorAll('input, textarea, select').forEach(element => {
-                element.addEventListener('input', updateDataCheckList);
-                element.addEventListener('change', updateDataCheckList);
-            });
-            
             // Обробники для категорій
             document.querySelectorAll('input[name="category"]').forEach(cb => {
                 cb.addEventListener('change', function() {
@@ -2420,159 +2390,84 @@
             
             // Обробники для часу роботи
             const workingHours24_7 = document.getElementById('workingHours24_7');
-            const workingHoursEveryday = document.getElementById('workingHoursEveryday');
-            const workingHoursEverydayTimes = document.getElementById('workingHoursEverydayTimes');
-            const workingHoursEverydayFrom = document.getElementById('workingHoursEverydayFrom');
-            const workingHoursEverydayTo = document.getElementById('workingHoursEverydayTo');
-            const workingHoursDays = document.querySelectorAll('input[name="workingHoursDay"]');
-            const workingHoursCustom = document.getElementById('workingHoursCustom');
+            const workingHoursTimeRange = document.getElementById('workingHoursTimeRange');
+            const workingHoursTimeRangeContainer = document.getElementById('workingHoursTimeRangeContainer');
+            const workingHoursFrom = document.getElementById('workingHoursFrom');
+            const workingHoursTo = document.getElementById('workingHoursTo');
             
             // Обробка "Відповідаємо цілодобово 24/7"
             if (workingHours24_7) {
                 workingHours24_7.addEventListener('change', function() {
                     if (this.checked) {
-                        // Вимкнути всі інші опції
-                        if (workingHoursEveryday) {
-                            workingHoursEveryday.checked = false;
-                            if (workingHoursEverydayTimes) workingHoursEverydayTimes.style.display = 'none';
-                            if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = true;
-                            if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = true;
-                        }
-                        workingHoursDays.forEach(cb => {
-                            cb.checked = false;
-                            const day = cb.value.toLowerCase();
-                            const dayMap = {пн: 'mon', вт: 'tue', ср: 'wed', чт: 'thu', пт: 'fri', сб: 'sat', нд: 'sun'};
-                            const dayKey = dayMap[day];
-                            if (dayKey) {
-                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}From`).disabled = true;
-                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}To`).disabled = true;
+                        // Вимкнути "Відповідаємо з __ до __"
+                        if (workingHoursTimeRange) {
+                            workingHoursTimeRange.checked = false;
+                            if (workingHoursTimeRangeContainer) workingHoursTimeRangeContainer.style.display = 'none';
+                            if (workingHoursFrom) {
+                                workingHoursFrom.disabled = true;
+                                workingHoursFrom.value = '';
                             }
-                        });
-                        document.getElementById('workingHoursDaysContainer').style.opacity = '0.5';
-                        document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'none';
-                        if (workingHoursCustom) workingHoursCustom.value = '';
-                    } else {
-                        document.getElementById('workingHoursDaysContainer').style.opacity = '1';
-                        document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
+                            if (workingHoursTo) {
+                                workingHoursTo.disabled = true;
+                                workingHoursTo.value = '';
+                            }
+                        }
                     }
                     updateDataCheckList();
                     updateGeneratedCode();
                 });
             }
             
-            // Обробка "Відповідаю щодня"
-            if (workingHoursEveryday) {
-                workingHoursEveryday.addEventListener('change', function() {
+            // Обробка "Відповідаємо з __ до __"
+            if (workingHoursTimeRange) {
+                workingHoursTimeRange.addEventListener('change', function() {
                     if (this.checked) {
                         // Показати поля для вибору часу
-                        if (workingHoursEverydayTimes) {
-                            workingHoursEverydayTimes.style.display = 'block';
-                            if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = false;
-                            if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = false;
+                        if (workingHoursTimeRangeContainer) {
+                            workingHoursTimeRangeContainer.style.display = 'block';
+                            if (workingHoursFrom) workingHoursFrom.disabled = false;
+                            if (workingHoursTo) workingHoursTo.disabled = false;
                         }
                         // Вимкнути 24/7
                         if (workingHours24_7) workingHours24_7.checked = false;
-                        // Вимкнути всі дні
-                        workingHoursDays.forEach(cb => {
-                            cb.checked = false;
-                            const day = cb.value.toLowerCase();
-                            const dayMap = {пн: 'mon', вт: 'tue', ср: 'wed', чт: 'thu', пт: 'fri', сб: 'sat', нд: 'sun'};
-                            const dayKey = dayMap[day];
-                            if (dayKey) {
-                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}From`).disabled = true;
-                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}To`).disabled = true;
-                            }
-                        });
-                        document.getElementById('workingHoursDaysContainer').style.opacity = '0.5';
-                        document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'none';
-                        if (workingHoursCustom) workingHoursCustom.value = '';
                     } else {
                         // Сховати поля для вибору часу
-                        if (workingHoursEverydayTimes) {
-                            workingHoursEverydayTimes.style.display = 'none';
-                            if (workingHoursEverydayFrom) {
-                                workingHoursEverydayFrom.disabled = true;
-                                workingHoursEverydayFrom.value = '';
+                        if (workingHoursTimeRangeContainer) {
+                            workingHoursTimeRangeContainer.style.display = 'none';
+                            if (workingHoursFrom) {
+                                workingHoursFrom.disabled = true;
+                                workingHoursFrom.value = '';
                             }
-                            if (workingHoursEverydayTo) {
-                                workingHoursEverydayTo.disabled = true;
-                                workingHoursEverydayTo.value = '';
+                            if (workingHoursTo) {
+                                workingHoursTo.disabled = true;
+                                workingHoursTo.value = '';
                             }
                         }
-                        document.getElementById('workingHoursDaysContainer').style.opacity = '1';
-                        document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
                     }
                     updateDataCheckList();
                     updateGeneratedCode();
                 });
             }
             
-            // Обробка окремих днів
-            const dayMap = {
-                'Пн': {id: 'Mon', name: 'Пн'},
-                'Вт': {id: 'Tue', name: 'Вт'},
-                'Ср': {id: 'Wed', name: 'Ср'},
-                'Чт': {id: 'Thu', name: 'Чт'},
-                'Пт': {id: 'Fri', name: 'Пт'},
-                'Сб': {id: 'Sat', name: 'Сб'},
-                'Нд': {id: 'Sun', name: 'Нд'}
-            };
+            // Обробка зміни часу (оновлюємо код при зміні)
+            if (workingHoursFrom) {
+                workingHoursFrom.addEventListener('change', function() {
+                    updateGeneratedCode();
+                });
+            }
+            if (workingHoursTo) {
+                workingHoursTo.addEventListener('change', function() {
+                    updateGeneratedCode();
+                });
+            }
             
-            workingHoursDays.forEach(cb => {
+            // Обробка вихідних днів (оновлюємо код при зміні)
+            const weekendCheckboxes = document.querySelectorAll('input[name="workingHoursWeekend"]');
+            weekendCheckboxes.forEach(cb => {
                 cb.addEventListener('change', function() {
-                    const dayInfo = dayMap[this.value];
-                    if (dayInfo) {
-                        const fromInput = document.getElementById(`workingHours${dayInfo.id}From`);
-                        const toInput = document.getElementById(`workingHours${dayInfo.id}To`);
-                        if (this.checked) {
-                            fromInput.disabled = false;
-                            toInput.disabled = false;
-                            if (workingHours24_7) workingHours24_7.checked = false;
-                            if (workingHoursEveryday) {
-                                workingHoursEveryday.checked = false;
-                                if (workingHoursEverydayTimes) workingHoursEverydayTimes.style.display = 'none';
-                                if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = true;
-                                if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = true;
-                            }
-                            document.getElementById('workingHoursDaysContainer').style.opacity = '1';
-                            document.getElementById('workingHoursDaysContainer').style.pointerEvents = 'auto';
-                        } else {
-                            fromInput.disabled = true;
-                            toInput.disabled = true;
-                            fromInput.value = '';
-                            toInput.value = '';
-                        }
-                    }
-                    updateDataCheckList();
                     updateGeneratedCode();
                 });
             });
-            
-            // Обробка кастомного поля
-            if (workingHoursCustom) {
-                workingHoursCustom.addEventListener('input', function() {
-                    if (this.value.trim()) {
-                        if (workingHours24_7) workingHours24_7.checked = false;
-                        if (workingHoursEveryday) {
-                            workingHoursEveryday.checked = false;
-                            if (workingHoursEverydayTimes) workingHoursEverydayTimes.style.display = 'none';
-                            if (workingHoursEverydayFrom) workingHoursEverydayFrom.disabled = true;
-                            if (workingHoursEverydayTo) workingHoursEverydayTo.disabled = true;
-                        }
-                        workingHoursDays.forEach(cb => {
-                            cb.checked = false;
-                            const day = cb.value.toLowerCase();
-                            const dayMap = {пн: 'mon', вт: 'tue', ср: 'wed', чт: 'thu', пт: 'fri', сб: 'sat', нд: 'sun'};
-                            const dayKey = dayMap[day];
-                            if (dayKey) {
-                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}From`).disabled = true;
-                                document.getElementById(`workingHours${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}To`).disabled = true;
-                            }
-                        });
-                    }
-                    updateDataCheckList();
-                });
-            }
             
             // Обробка взаємовиключності накладеного платежу
             handleCodPaymentExclusivity();
@@ -2679,11 +2574,13 @@
                 constants.push(`c2 - ${formData.shopDescription}`);
             }
             
-            // c3 - workingHours (генеруємо з чекбоксів або кастомного поля)
+            // c3 - workingHours (генеруємо з нової структури)
             let workingHoursText = '';
-            const workingHoursCustom = document.getElementById('workingHoursCustom').value.trim();
-            const workingHours24_7 = document.getElementById('workingHours24_7').checked;
-            const workingHoursEveryday = document.getElementById('workingHoursEveryday').checked;
+            const workingHours24_7 = document.getElementById('workingHours24_7')?.checked;
+            const workingHoursTimeRange = document.getElementById('workingHoursTimeRange')?.checked;
+            const workingHoursFrom = document.getElementById('workingHoursFrom')?.value;
+            const workingHoursTo = document.getElementById('workingHoursTo')?.value;
+            const weekendDays = Array.from(document.querySelectorAll('input[name="workingHoursWeekend"]:checked')).map(cb => cb.value);
             
             // Функція форматування часу з HH:MM до читабельного формату
             function formatTime(timeStr) {
@@ -2692,47 +2589,20 @@
                 return `${hours}:${minutes}`;
             }
             
-            if (workingHoursCustom) {
-                workingHoursText = workingHoursCustom;
-            } else if (workingHours24_7) {
+            if (workingHours24_7) {
                 workingHoursText = 'Відповідаємо цілодобово 24/7';
-            } else if (workingHoursEveryday) {
-                const everydayTimeFrom = document.getElementById('workingHoursEverydayFrom').value;
-                const everydayTimeTo = document.getElementById('workingHoursEverydayTo').value;
-                if (everydayTimeFrom && everydayTimeTo) {
-                    workingHoursText = `Відповідаю щодня з ${formatTime(everydayTimeFrom)} до ${formatTime(everydayTimeTo)}`;
+            } else if (workingHoursTimeRange && workingHoursFrom && workingHoursTo) {
+                workingHoursText = `Відповідаємо з ${formatTime(workingHoursFrom)} до ${formatTime(workingHoursTo)}`;
+            } else if (workingHoursTimeRange) {
+                workingHoursText = 'Відповідаємо з __ до __';
+            }
+            
+            // Додаємо вихідні дні, якщо є
+            if (weekendDays.length > 0) {
+                if (workingHoursText) {
+                    workingHoursText += '. Вихідні: ' + weekendDays.join(', ');
                 } else {
-                    workingHoursText = 'Відповідаю щодня';
-                }
-            } else {
-                const selectedDays = [];
-                const dayMap = {
-                    'Пн': {id: 'Mon', name: 'Пн'},
-                    'Вт': {id: 'Tue', name: 'Вт'},
-                    'Ср': {id: 'Wed', name: 'Ср'},
-                    'Чт': {id: 'Thu', name: 'Чт'},
-                    'Пт': {id: 'Fri', name: 'Пт'},
-                    'Сб': {id: 'Sat', name: 'Сб'},
-                    'Нд': {id: 'Sun', name: 'Нд'}
-                };
-                
-                Array.from(document.querySelectorAll('input[name="workingHoursDay"]:checked')).forEach(cb => {
-                    const dayInfo = dayMap[cb.value];
-                    if (dayInfo) {
-                        const fromInput = document.getElementById(`workingHours${dayInfo.id}From`);
-                        const toInput = document.getElementById(`workingHours${dayInfo.id}To`);
-                        const fromTime = fromInput.value;
-                        const toTime = toInput.value;
-                        if (fromTime && toTime) {
-                            selectedDays.push(`${dayInfo.name}: ${formatTime(fromTime)}-${formatTime(toTime)}`);
-                        } else {
-                            selectedDays.push(dayInfo.name);
-                        }
-                    }
-                });
-                
-                if (selectedDays.length > 0) {
-                    workingHoursText = selectedDays.join(', ');
+                    workingHoursText = 'Вихідні: ' + weekendDays.join(', ');
                 }
             }
             
