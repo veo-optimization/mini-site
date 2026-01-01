@@ -96,7 +96,7 @@ function copyTelegramUsername() {
         // Якщо є username, копіюємо username
     copyToClipboard('@' + TELEGRAM_USERNAME, 'copyTelegramButton', '', true);
     showCopySuccess('telegramCopyBadge');
-    }
+}
 }
 
 function copyViberPhone(phone, index) {
@@ -253,7 +253,7 @@ function openTelegram() {
     } else if (typeof TELEGRAM_USERNAME !== 'undefined' && TELEGRAM_USERNAME) {
         // Якщо є username, використовуємо стандартне посилання
     window.open('https://t.me/' + TELEGRAM_USERNAME, '_blank');
-    }
+}
 }
 
 function openViber(phone) {
@@ -404,7 +404,8 @@ function checkSecurity() {
         
         // Перевірка наявності тексту про автора
         const footerText = footerCredit.textContent || '';
-        if (!footerText.includes('VEO FORCE') || !footerText.includes('2025')) {
+        const currentYear = new Date().getFullYear().toString();
+        if (!footerText.includes('VEO FORCE') || !footerText.includes(currentYear)) {
             blockPage();
             return false;
         }
@@ -1233,7 +1234,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const shopName = window.SHOP_NAME || (typeof SHOP_NAME !== 'undefined' ? SHOP_NAME : '');
         if (shopName) {
             calendarTitle.textContent = shopName + ': Розклад прямих ефірів';
-        }
+    }
     }
     
     const fopNameEl = document.getElementById('fopName');
@@ -1856,6 +1857,12 @@ document.addEventListener('DOMContentLoaded', function() {
         missingDataNotice.style.display = 'block';
     } else if (missingDataNotice) {
         missingDataNotice.style.display = 'none';
+    }
+    
+    // Встановлюємо поточний рік у футері
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
     }
     
     // Формуємо та відображаємо публічну оферту
