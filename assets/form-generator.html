@@ -742,24 +742,31 @@
             /* Час роботи - мобільна версія */
             #workingHoursTimeRangeContainer {
                 margin-left: 0 !important;
+                padding: 12px !important;
             }
             
             #workingHoursTimeRangeContainer > div {
-                flex-direction: column;
-                gap: 10px;
+                grid-template-columns: auto 1fr !important;
+                gap: 10px !important;
             }
             
             #workingHoursTimeRangeContainer label {
-                width: 100%;
-                text-align: left;
+                font-size: 13px !important;
             }
             
             #workingHoursTimeRangeContainer input[type="time"] {
-                width: 100%;
+                width: 100% !important;
+                padding: 12px !important;
+                font-size: 16px !important; /* Prevent iOS zoom */
             }
             
             #workingHoursWeekendsContainer {
                 grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            
+            #workingHoursWeekendsContainer .checkbox-item {
+                padding: 10px !important;
             }
             
             /* Локації магазинів */
@@ -1003,19 +1010,19 @@
                         
                         <div class="checkbox-item" style="margin-bottom: 15px;">
                             <input type="checkbox" id="workingHoursTimeRange" name="workingHoursTimeRange">
-                            <label for="workingHoursTimeRange" style="font-weight: 600;">Відповідаємо в робочі дні з __ до __</label>
+                            <label for="workingHoursTimeRange" style="font-weight: 600;">Відповідаємо в <span style="text-transform: uppercase;">РОБОЧІ</span> дні з __ до __</label>
                         </div>
-                        <div id="workingHoursTimeRangeContainer" style="display: none; margin-left: 30px; margin-top: 10px; margin-bottom: 15px; padding: 12px; background: #1a1a1a; border-radius: 6px;">
-                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                                <label for="workingHoursFrom" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">З:</label>
-                                <input type="time" id="workingHoursFrom" style="flex: 1; min-width: 120px; padding: 8px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
-                                <label for="workingHoursTo" style="flex: 0 0 auto; margin-bottom: 0; color: #e0e0e0;">До:</label>
-                                <input type="time" id="workingHoursTo" style="flex: 1; min-width: 120px; padding: 8px; border-radius: 4px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 14px;" disabled>
+                        <div id="workingHoursTimeRangeContainer" style="display: none; margin-left: 0; margin-top: 15px; margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444;">
+                            <div style="display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center;">
+                                <label for="workingHoursFrom" style="color: #e0e0e0; font-weight: 500; white-space: nowrap;">З:</label>
+                                <input type="time" id="workingHoursFrom" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 15px; font-family: 'Montserrat', sans-serif;" disabled>
+                                <label for="workingHoursTo" style="color: #e0e0e0; font-weight: 500; white-space: nowrap;">До:</label>
+                                <input type="time" id="workingHoursTo" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #555; background: #2a2a2a; color: #fff; font-size: 15px; font-family: 'Montserrat', sans-serif;" disabled>
                             </div>
                         </div>
                         
                         <div style="margin-top: 20px; margin-bottom: 10px;">
-                            <label style="font-weight: 600; margin-bottom: 10px; display: block;">Вихідні - обрати дні галочками:</label>
+                            <label style="font-weight: 600; margin-bottom: 10px; display: block;"><span style="text-transform: uppercase;">ВИХІДНІ</span> - обрати дні галочками:</label>
                             <div class="checkbox-group" id="workingHoursWeekendsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">
                                 <div class="checkbox-item" style="margin-bottom: 0;">
                                     <input type="checkbox" id="weekendMon" name="workingHoursWeekend" value="Пн">
@@ -2623,17 +2630,17 @@
             if (workingHours24_7) {
                 workingHoursText = 'Відповідаємо цілодобово 24/7';
             } else             if (workingHoursTimeRange && workingHoursFrom && workingHoursTo) {
-                workingHoursText = `Відповідаємо в робочі дні з ${formatTime(workingHoursFrom)} до ${formatTime(workingHoursTo)}`;
+                workingHoursText = `Відповідаємо в РОБОЧІ дні з ${formatTime(workingHoursFrom)} до ${formatTime(workingHoursTo)}`;
             } else if (workingHoursTimeRange) {
-                workingHoursText = 'Відповідаємо в робочі дні з __ до __';
+                workingHoursText = 'Відповідаємо в РОБОЧІ дні з __ до __';
             }
             
             // Додаємо вихідні дні, якщо є
             if (weekendDays.length > 0) {
                 if (workingHoursText) {
-                    workingHoursText += '. Вихідні: ' + weekendDays.join(', ');
+                    workingHoursText += '. ВИХІДНІ: ' + weekendDays.join(', ');
                 } else {
-                    workingHoursText = 'Вихідні: ' + weekendDays.join(', ');
+                    workingHoursText = 'ВИХІДНІ: ' + weekendDays.join(', ');
                 }
             }
             
