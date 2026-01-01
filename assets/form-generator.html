@@ -1272,7 +1272,8 @@
                         <input type="text" id="googleCalendarUrl" name="googleCalendarUrl" placeholder="Введіть Google Calendar iCal посилання" style="flex: 1;">
                         <button type="button" class="instruction-btn" onclick="showInstruction('calendar')">Як дістати iCal посилання</button>
                     </div>
-                    <div class="help-text">📝 Посилання на Google Calendar для відображення розкладу ефірів. Може бути iCal URL (закінчується на /public/basic.ics) або Calendar ID. Якщо немає календаря - залиште порожнім</div>
+                    <div class="help-text">📝 Посилання на Google Calendar для відображення розкладу ефірів. <strong style="color: #ffd700;">Обов'язково має бути iCal посилання</strong> (закінчується на /public/basic.ics). Якщо немає календаря - залиште порожнім</div>
+                    <div id="googleCalendarUrl-error" class="error-message" style="display: none;"></div>
                 </div>
             </div>
             
@@ -2977,6 +2978,23 @@
                 hideError('whatsappPhone');
             }
             
+            // Валідація Google Calendar URL - має бути iCal посилання
+            const googleCalendarUrl = document.getElementById('googleCalendarUrl')?.value.trim();
+            if (googleCalendarUrl) {
+                // Перевіряємо, чи це iCal посилання (має містити /public/basic.ics або /ical/...)
+                const isICalUrl = /\/public\/basic\.ics/i.test(googleCalendarUrl) || 
+                                  /\/ical\//i.test(googleCalendarUrl) ||
+                                  /\.ics/i.test(googleCalendarUrl);
+                if (!isICalUrl) {
+                    showError('googleCalendarUrl', '⚠️ Це не iCal посилання! Будь ласка, перевірте інструкцію "Як дістати iCal посилання" та знайдіть правильне посилання, яке закінчується на /public/basic.ics');
+                    isValid = false;
+                } else {
+                    hideError('googleCalendarUrl');
+                }
+            } else {
+                hideError('googleCalendarUrl');
+            }
+            
             // Валідація номера картки
             const cardNumber = document.getElementById('cardNumber').value.trim().replace(/\s/g, '');
             if (cardNumber && !/^\d{16}$/.test(cardNumber)) {
@@ -3053,6 +3071,15 @@
             }
         }, true);
         document.getElementById('whatsappPhone').addEventListener('blur', validateForm);
+        const googleCalendarUrlInput = document.getElementById('googleCalendarUrl');
+        if (googleCalendarUrlInput) {
+            googleCalendarUrlInput.addEventListener('blur', validateForm);
+            googleCalendarUrlInput.addEventListener('input', function() {
+                updateGeneratedCode();
+                saveFormData();
+                updateDataCheckList();
+            });
+        }
         document.getElementById('shopDescription').addEventListener('input', function() {
             const maxLength = 100;
             const currentLength = this.value.length;
