@@ -6,6 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* ===== FIX MOBILE OVERFLOW ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 /* ===== THEMES ===== */
 body.light {
   --bg:#f6f7fb;
@@ -40,13 +45,13 @@ body{
 .container{
   max-width:860px;
   margin:auto;
-  padding:24px;
+  padding:16px;
 }
 .card{
   background:var(--card);
   border-radius:20px;
-  padding:22px;
-  margin-top:24px;
+  padding:20px;
+  margin-top:20px;
   border:1px solid var(--border);
 }
 
@@ -58,8 +63,11 @@ label{
   margin-top:14px;
   display:block;
 }
-input,textarea{
+
+input,
+textarea{
   width:100%;
+  max-width:100%;
   padding:12px;
   margin-top:6px;
   border-radius:14px;
@@ -67,8 +75,10 @@ input,textarea{
   background:transparent;
   color:var(--text);
 }
+
 textarea{resize:vertical}
 
+/* ===== GRID ===== */
 .row{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -82,6 +92,7 @@ textarea{resize:vertical}
 .themes{
   display:flex;
   gap:10px;
+  flex-wrap:wrap;
 }
 .themes button{
   padding:8px 16px;
@@ -95,7 +106,7 @@ textarea{resize:vertical}
   color:#fff;
 }
 
-/* ===== OPTIONS ===== */
+/* ===== OPTIONS (FIXED) ===== */
 .option{
   display:flex;
   align-items:center;
@@ -106,7 +117,12 @@ textarea{resize:vertical}
   margin-top:10px;
   cursor:pointer;
 }
-.option input{width:22px;height:22px}
+
+.option input{
+  width:22px;
+  height:22px;
+  flex:0 0 22px;
+}
 
 /* ===== BUTTON ===== */
 .submit{
@@ -135,6 +151,7 @@ textarea{resize:vertical}
   background:#fff;
   color:#000;
   max-width:720px;
+  width:90%;
   max-height:80vh;
   overflow:auto;
   padding:24px;
@@ -195,7 +212,7 @@ textarea{resize:vertical}
 <div class="card">
 <h2>Контакти</h2>
 <label>Viber</label><input>
-<label>*Telegram (номер або @)</label><input required>
+<label>*Telegram</label><input required>
 <label>Повідомлення №1</label><input>
 <label>Повідомлення №2</label><input>
 </div>
@@ -224,7 +241,6 @@ textarea{resize:vertical}
 <label class="option"><input type="checkbox">Повернення можливе</label>
 </div>
 
-<!-- ОФЕРТА -->
 <p style="margin-top:24px">
   <input type="checkbox"> Я погоджуюсь з
   <span class="link" onclick="openOffer()">публічною офертою</span>
@@ -234,15 +250,11 @@ textarea{resize:vertical}
 
 </div>
 
-<!-- OFFER POPUP -->
 <div class="popup" id="offer">
   <div class="popup-content">
     <h3>Публічна оферта VEOFORCE</h3>
-    <p>VEOFORCE — маркетингова платформа, що надає послуги з організації
-    та оптимізації комунікації між продавцями і покупцями.</p>
-    <p>Сервіс не є стороною фінансових операцій і не несе відповідальності
-    за якість товарів, оплату, доставку чи повернення.</p>
-    <p>Продавець несе повну відповідальність за надану інформацію.</p>
+    <p>VEOFORCE — маркетингова платформа для організації комунікації між продавцями та покупцями.</p>
+    <p>Сервіс не є стороною фінансових операцій.</p>
     <button onclick="closeOffer()">Зрозуміло</button>
   </div>
 </div>
