@@ -2,64 +2,117 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<title>VEOFORCE — генератор міні-сайту</title>
+<title>VEOFORCE — міні-сайт продавця</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --bg:#fff;
-  --text:#111;
-  --accent:#ff0050;
-  --border:#ddd;
+/* ===== THEMES ===== */
+body.light {
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#222;
+  --border:#e1e3ea;
+  --accent:#6c7cff;
 }
-body.tiktok{
+body.dark {
+  --bg:#1c1f26;
+  --card:#262a33;
+  --text:#f1f1f1;
+  --border:#3a3f4b;
+  --accent:#8a9cff;
+}
+body.tiktok {
   --bg:linear-gradient(135deg,#000,#1a0033,#00f2ea,#ff0050);
+  --card:rgba(0,0,0,.45);
   --text:#fff;
   --border:rgba(255,255,255,.25);
+  --accent:#ff0050;
 }
+
 body{
   margin:0;
   font-family:Inter,Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
+
+/* ===== LAYOUT ===== */
 .container{
   max-width:860px;
   margin:auto;
   padding:24px;
 }
-h1,h2{margin-top:32px}
-label{font-weight:600;margin-top:14px;display:block}
+.card{
+  background:var(--card);
+  border-radius:20px;
+  padding:22px;
+  margin-top:24px;
+  border:1px solid var(--border);
+}
 
+h1,h2{margin:0 0 14px}
+
+/* ===== INPUTS ===== */
+label{
+  font-weight:600;
+  margin-top:14px;
+  display:block;
+}
 input,textarea{
   width:100%;
   padding:12px;
-  border-radius:12px;
+  margin-top:6px;
+  border-radius:14px;
   border:1px solid var(--border);
-  background:rgba(255,255,255,.9);
+  background:transparent;
+  color:var(--text);
 }
-body.tiktok input,body.tiktok textarea{
-  background:rgba(0,0,0,.4);
+textarea{resize:vertical}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+@media(max-width:600px){
+  .row{grid-template-columns:1fr}
+}
+
+/* ===== THEMES SWITCH ===== */
+.themes{
+  display:flex;
+  gap:10px;
+}
+.themes button{
+  padding:8px 16px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+}
+.themes button.active{
+  background:var(--accent);
   color:#fff;
 }
 
+/* ===== OPTIONS ===== */
 .option{
   display:flex;
   align-items:center;
   gap:12px;
   padding:14px;
-  border-radius:14px;
+  border-radius:16px;
   border:1px solid var(--border);
-  background:rgba(0,0,0,.3);
   margin-top:10px;
   cursor:pointer;
 }
 .option input{width:22px;height:22px}
 
+/* ===== BUTTON ===== */
 .submit{
+  width:100%;
   margin:40px 0;
   padding:18px;
-  width:100%;
   font-size:18px;
   font-weight:700;
   border-radius:18px;
@@ -68,14 +121,7 @@ body.tiktok input,body.tiktok textarea{
   border:none;
 }
 
-.link{
-  color:#00f2ea;
-  cursor:pointer;
-  text-decoration:underline;
-  font-size:14px;
-}
-
-/* POPUP */
+/* ===== POPUP ===== */
 .popup{
   position:fixed;
   inset:0;
@@ -92,9 +138,8 @@ body.tiktok input,body.tiktok textarea{
   max-height:80vh;
   overflow:auto;
   padding:24px;
-  border-radius:16px;
+  border-radius:18px;
 }
-.popup-content h3{margin-top:0}
 .popup-content button{
   margin-top:20px;
   padding:10px 16px;
@@ -103,6 +148,8 @@ body.tiktok input,body.tiktok textarea{
   color:#fff;
   border-radius:12px;
 }
+
+.link{color:var(--accent);cursor:pointer}
 </style>
 </head>
 
@@ -111,79 +158,103 @@ body.tiktok input,body.tiktok textarea{
 
 <h1>VEOFORCE</h1>
 
-<h2>УМОВИ ВІДПРАВКИ</h2>
-<label class="option"><input type="checkbox">В день замовлення</label>
-<label class="option"><input type="checkbox">1–3 робочі дні</label>
-<label class="option"><input type="checkbox">3–5 робочих днів</label>
+<div class="themes">
+  <button onclick="setTheme('light',this)">Світла</button>
+  <button onclick="setTheme('dark',this)">Темна</button>
+  <button onclick="setTheme('tiktok',this)" class="active">TikTok</button>
+</div>
 
-<h2>ФОРМАТ ОПЛАТИ</h2>
-<label class="option"><input type="checkbox">Накладений платіж без передплати</label>
-<label class="option"><input type="checkbox">Накладений платіж з передплатою</label>
-<label class="option"><input type="checkbox">Передплата 100%</label>
+<!-- ДАНІ МАГАЗИНУ -->
+<div class="card">
+<h2>Дані магазину</h2>
+<label>*Назва магазину</label><input required>
+<label>Опис (до 200 символів)</label><textarea maxlength="200"></textarea>
+</div>
 
-<h2>ОБМІН ТОВАРУ</h2>
+<!-- ФОП -->
+<div class="card">
+<h2>Реквізити ФОП</h2>
+<label>*ПІБ ФОП</label><input required>
+<div class="row">
+  <div><label>*ЄДРПОУ</label><input required></div>
+  <div><label>*IBAN</label><input required></div>
+</div>
+<label>Назва банку</label><input>
+<label>Призначення платежу</label><input>
+</div>
+
+<!-- КАРТКА -->
+<div class="card">
+<h2>Карткові реквізити</h2>
+<label>Номер картки</label><input>
+<label>ПІБ карткотримача</label><input>
+<label>Банк картки</label><input>
+</div>
+
+<!-- КОНТАКТИ -->
+<div class="card">
+<h2>Контакти</h2>
+<label>Viber</label><input>
+<label>*Telegram (номер або @)</label><input required>
+<label>Повідомлення №1</label><input>
+<label>Повідомлення №2</label><input>
+</div>
+
+<!-- СОЦМЕРЕЖІ -->
+<div class="card">
+<h2>Соцмережі</h2>
+<label>Instagram</label><input>
+<label>Facebook</label><input>
+<label>TikTok №1</label><input>
+<label>TikTok №2</label><input>
+<label>Bigo Live</label><input>
+</div>
+
+<!-- УМОВИ -->
+<div class="card">
+<h2>Обмін товару</h2>
 <label class="option"><input type="checkbox">Обмін відсутній</label>
 <label class="option"><input type="checkbox">Обмін можливий</label>
-<label class="option"><input type="checkbox">Цілісність упаковки</label>
-<label class="option"><input type="checkbox">Термін до 14 днів</label>
-<label class="option"><input type="checkbox">Без слідів експлуатації</label>
+<label class="option"><input type="checkbox">До 14 днів</label>
+</div>
 
-<h2>ПОВЕРНЕННЯ ТОВАРУ</h2>
+<div class="card">
+<h2>Повернення товару</h2>
 <label class="option"><input type="checkbox">Повернення відсутнє</label>
-<label class="option"><input type="checkbox">Повернення можливе за умов обміну</label>
+<label class="option"><input type="checkbox">Повернення можливе</label>
+</div>
 
-<h2>ПОВЕРНЕННЯ КОШТІВ</h2>
-<label class="option"><input type="checkbox">В день оформлення заявки</label>
-<label class="option"><input type="checkbox">3–5 банківських днів</label>
-
-<p style="margin-top:30px">
+<!-- ОФЕРТА -->
+<p style="margin-top:24px">
   <input type="checkbox"> Я погоджуюсь з
-  <span class="link" onclick="openOffer()">публічною офертою VEOFORCE</span>
+  <span class="link" onclick="openOffer()">публічною офертою</span>
 </p>
 
 <button class="submit">ЗГЕНЕРУВАТИ МІНІ-САЙТ</button>
+
 </div>
 
 <!-- OFFER POPUP -->
 <div class="popup" id="offer">
   <div class="popup-content">
     <h3>Публічна оферта VEOFORCE</h3>
-
-    <p>
-      Даний ресурс надається маркетинговою агенцією VEOFORCE з метою
-      спрощення та автоматизації комунікації між продавцями та покупцями
-      у цифрових каналах (соціальні мережі, месенджери, онлайн-платформи).
-    </p>
-
-    <p>
-      VEOFORCE не є стороною фінансових або товарних відносин між продавцем
-      та покупцем, не здійснює прийом платежів, не зберігає платіжні дані
-      та не несе відповідальності за якість товарів або послуг продавця.
-    </p>
-
-    <p>
-      Продавець самостійно несе відповідальність за достовірність наданої
-      інформації, умови продажу, доставки, обміну та повернення товарів,
-      а також за дотримання вимог законодавства України.
-    </p>
-
-    <p>
-      Використовуючи даний сервіс, користувач підтверджує згоду на обробку
-      та зберігання введених даних виключно з метою функціонування міні-сайту
-      та комунікації з клієнтами.
-    </p>
-
+    <p>VEOFORCE — маркетингова платформа, що надає послуги з організації
+    та оптимізації комунікації між продавцями і покупцями.</p>
+    <p>Сервіс не є стороною фінансових операцій і не несе відповідальності
+    за якість товарів, оплату, доставку чи повернення.</p>
+    <p>Продавець несе повну відповідальність за надану інформацію.</p>
     <button onclick="closeOffer()">Зрозуміло</button>
   </div>
 </div>
 
 <script>
-function openOffer(){
-  document.getElementById('offer').style.display='flex';
+function setTheme(theme,btn){
+  document.body.className=theme;
+  document.querySelectorAll('.themes button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
 }
-function closeOffer(){
-  document.getElementById('offer').style.display='none';
-}
+function openOffer(){document.getElementById('offer').style.display='flex'}
+function closeOffer(){document.getElementById('offer').style.display='none'}
 </script>
 
 </body>
