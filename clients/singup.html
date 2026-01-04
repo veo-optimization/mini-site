@@ -6,167 +6,86 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ===== FIX MOBILE OVERFLOW ===== */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*,*::before,*::after{box-sizing:border-box}
 
 /* ===== THEMES ===== */
-body.light {
-  --bg:#f6f7fb;
-  --card:#ffffff;
-  --text:#222;
-  --border:#e1e3ea;
-  --accent:#6c7cff;
-}
-body.dark {
-  --bg:#1c1f26;
-  --card:#262a33;
-  --text:#f1f1f1;
-  --border:#3a3f4b;
-  --accent:#8a9cff;
-}
-body.tiktok {
-  --bg:linear-gradient(135deg,#000,#1a0033,#00f2ea,#ff0050);
-  --card:rgba(0,0,0,.45);
-  --text:#fff;
-  --border:rgba(255,255,255,.25);
-  --accent:#ff0050;
-}
+body.light{
+--bg:#f6f7fb;--card:#fff;--text:#222;--border:#e1e3ea;--accent:#6c7cff}
+body.dark{
+--bg:#1c1f26;--card:#262a33;--text:#f1f1f1;--border:#3a3f4b;--accent:#8a9cff}
+body.tiktok{
+--bg:linear-gradient(135deg,#000,#1a0033,#00f2ea,#ff0050);
+--card:rgba(0,0,0,.45);--text:#fff;--border:rgba(255,255,255,.25);--accent:#ff0050}
 
-body{
-  margin:0;
-  font-family:Inter,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
 
-/* ===== LAYOUT ===== */
-.container{
-  max-width:860px;
-  margin:auto;
-  padding:16px;
-}
+.container{max-width:860px;margin:auto;padding:16px}
 .card{
-  background:var(--card);
-  border-radius:20px;
-  padding:20px;
-  margin-top:20px;
-  border:1px solid var(--border);
-}
+background:var(--card);
+border-radius:20px;
+padding:20px;
+margin-top:20px;
+border:1px solid var(--border)}
 
 h1,h2{margin:0 0 14px}
 
 /* ===== INPUTS ===== */
-label{
-  font-weight:600;
-  margin-top:14px;
-  display:block;
-}
+label{font-weight:600;margin-top:14px;display:block}
+.note{font-size:13px;opacity:.8;margin-top:4px}
 
-input,
-textarea{
-  width:100%;
-  max-width:100%;
-  padding:12px;
-  margin-top:6px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text);
-}
+input,textarea{
+width:100%;padding:12px;margin-top:6px;
+border-radius:14px;border:1px solid var(--border);
+background:transparent;color:var(--text)}
 
 textarea{resize:vertical}
 
 /* ===== GRID ===== */
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-@media(max-width:600px){
-  .row{grid-template-columns:1fr}
-}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
 
-/* ===== THEMES SWITCH ===== */
-.themes{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+/* ===== THEMES ===== */
+.themes{display:flex;gap:10px;flex-wrap:wrap}
 .themes button{
-  padding:8px 16px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text);
-}
-.themes button.active{
-  background:var(--accent);
-  color:#fff;
-}
+padding:8px 16px;border-radius:999px;
+border:1px solid var(--border);
+background:transparent;color:var(--text)}
+.themes button.active{background:var(--accent);color:#fff}
 
-/* ===== OPTIONS (FIXED) ===== */
+/* ===== OPTIONS ===== */
 .option{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px;
-  border-radius:16px;
-  border:1px solid var(--border);
-  margin-top:10px;
-  cursor:pointer;
-}
-
-.option input{
-  width:22px;
-  height:22px;
-  flex:0 0 22px;
-}
+display:flex;align-items:center;gap:12px;
+padding:14px;border-radius:16px;
+border:1px solid var(--border);
+margin-top:10px;cursor:pointer}
+.option input{width:22px;height:22px;flex:0 0 22px}
 
 /* ===== BUTTON ===== */
 .submit{
-  width:100%;
-  margin:40px 0;
-  padding:18px;
-  font-size:18px;
-  font-weight:700;
-  border-radius:18px;
-  background:var(--accent);
-  color:#fff;
-  border:none;
-}
+width:100%;margin:40px 0;padding:18px;
+font-size:18px;font-weight:700;
+border-radius:18px;background:var(--accent);
+color:#fff;border:none}
 
 /* ===== POPUP ===== */
 .popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
+position:fixed;inset:0;
+background:rgba(0,0,0,.75);
+display:none;align-items:center;
+justify-content:center;z-index:999}
 .popup-content{
-  background:#fff;
-  color:#000;
-  max-width:720px;
-  width:90%;
-  max-height:80vh;
-  overflow:auto;
-  padding:24px;
-  border-radius:18px;
-}
+background:#fff;color:#000;
+max-width:760px;width:90%;
+max-height:85vh;overflow:auto;
+padding:24px;border-radius:18px}
+.popup-content h3{margin-top:0}
 .popup-content button{
-  margin-top:20px;
-  padding:10px 16px;
-  border:none;
-  background:#000;
-  color:#fff;
-  border-radius:12px;
-}
+margin-top:20px;padding:10px 16px;
+border:none;background:#000;
+color:#fff;border-radius:12px}
 
 .link{color:var(--accent);cursor:pointer}
+.hidden{display:none}
 </style>
 </head>
 
@@ -176,33 +95,42 @@ textarea{resize:vertical}
 <h1>VEOFORCE</h1>
 
 <div class="themes">
-  <button onclick="setTheme('light',this)">Світла</button>
-  <button onclick="setTheme('dark',this)">Темна</button>
-  <button onclick="setTheme('tiktok',this)" class="active">TikTok</button>
+<button onclick="setTheme('light',this)">Світла</button>
+<button onclick="setTheme('dark',this)">Темна</button>
+<button onclick="setTheme('tiktok',this)" class="active">TikTok</button>
 </div>
 
 <!-- ДАНІ МАГАЗИНУ -->
 <div class="card">
 <h2>Дані магазину</h2>
-<label>*Назва магазину</label><input required>
-<label>Опис (до 200 символів)</label><textarea maxlength="200"></textarea>
+<label>*Назва магазину</label>
+<input required>
+
+<label>*Опис магазину</label>
+<textarea required maxlength="200"></textarea>
+<div class="note">До 200 символів, без посилань</div>
 </div>
 
 <!-- ФОП -->
 <div class="card">
 <h2>Реквізити ФОП</h2>
+
 <label>*ПІБ ФОП</label><input required>
+
 <div class="row">
-  <div><label>*ЄДРПОУ</label><input required></div>
-  <div><label>*IBAN</label><input required></div>
-</div>
-<label>Назва банку</label><input>
-<label>Призначення платежу</label><input>
+<div><label>*ЄДРПОУ</label><input required></div>
+<div><label>*IBAN</label><input required></div>
 </div>
 
-<!-- КАРТКА -->
+<label>Назва банку</label><input>
+
+<label>*Призначення платежу</label>
+<input required>
+</div>
+
+<!-- КАРТКА (НЕОБОВʼЯЗКОВО) -->
 <div class="card">
-<h2>Карткові реквізити</h2>
+<h2>Карткові реквізити (необовʼязково)</h2>
 <label>Номер картки</label><input>
 <label>ПІБ карткотримача</label><input>
 <label>Банк картки</label><input>
@@ -211,10 +139,23 @@ textarea{resize:vertical}
 <!-- КОНТАКТИ -->
 <div class="card">
 <h2>Контакти</h2>
-<label>Viber</label><input>
-<label>*Telegram</label><input required>
-<label>Повідомлення №1</label><input>
-<label>Повідомлення №2</label><input>
+
+<label>Viber</label>
+<input placeholder="+380XXXXXXXXX">
+<div class="note">Формат: +380XXXXXXXXX</div>
+
+<label>*Telegram</label>
+<input required placeholder="+380XXXXXXXXX або @username">
+<div class="note">
+Номер +380 або юзернейм.
+<span class="link" onclick="openPopup('tgHelp')">Як додати юзернейм?</span>
+</div>
+
+<label>Посилання на спільноту №1</label>
+<input placeholder="Viber або Telegram">
+
+<label>Посилання на спільноту №2</label>
+<input placeholder="Viber або Telegram">
 </div>
 
 <!-- СОЦМЕРЕЖІ -->
@@ -223,50 +164,100 @@ textarea{resize:vertical}
 <label>Instagram</label><input>
 <label>Facebook</label><input>
 <label>TikTok №1</label><input>
-<label>TikTok №2</label><input>
-<label>Bigo Live</label><input>
+<label>TikTok №2 (резервна)</label><input>
+
+<label>Bigo Live</label>
+<input>
+<div class="note">
+<span class="link" onclick="openPopup('bigo')">Що таке Bigo Live?</span>
+</div>
 </div>
 
-<!-- УМОВИ -->
+<!-- ОБМІН -->
 <div class="card">
 <h2>Обмін товару</h2>
-<label class="option"><input type="checkbox">Обмін відсутній</label>
-<label class="option"><input type="checkbox">Обмін можливий</label>
-<label class="option"><input type="checkbox">До 14 днів</label>
+<label class="option">
+<input type="radio" name="exchange">Обмін відсутній
+</label>
+<label class="option">
+<input type="radio" name="exchange">Обмін можливий (14 днів, товарний вигляд, кошти не повертаються)
+</label>
 </div>
 
+<!-- ПОВЕРНЕННЯ -->
 <div class="card">
 <h2>Повернення товару</h2>
-<label class="option"><input type="checkbox">Повернення відсутнє</label>
-<label class="option"><input type="checkbox">Повернення можливе</label>
+<label class="option">
+<input type="radio" name="return" onclick="toggleReturn(false)">Повернення відсутнє
+</label>
+<label class="option">
+<input type="radio" name="return" onclick="toggleReturn(true)">Повернення можливе
+</label>
+
+<div id="returnDetails" class="hidden">
+<label class="option"><input type="checkbox">До 14 днів</label>
+<label class="option"><input type="checkbox">Товарний вигляд</label>
+<label class="option"><input type="checkbox">Без слідів експлуатації</label>
+</div>
 </div>
 
 <p style="margin-top:24px">
-  <input type="checkbox"> Я погоджуюсь з
-  <span class="link" onclick="openOffer()">публічною офертою</span>
+<input type="checkbox" required>
+Я погоджуюсь з
+<span class="link" onclick="openPopup('offer')">публічною офертою</span>
 </p>
 
 <button class="submit">ЗГЕНЕРУВАТИ МІНІ-САЙТ</button>
 
 </div>
 
+<!-- POPUPS -->
 <div class="popup" id="offer">
-  <div class="popup-content">
-    <h3>Публічна оферта VEOFORCE</h3>
-    <p>VEOFORCE — маркетингова платформа для організації комунікації між продавцями та покупцями.</p>
-    <p>Сервіс не є стороною фінансових операцій.</p>
-    <button onclick="closeOffer()">Зрозуміло</button>
-  </div>
+<div class="popup-content">
+<h3>Публічна оферта VEOFORCE</h3>
+<p>ФОП Шеремета Василій Анатольович — засновник проєкту VEOFORCE.</p>
+<p>VEOFORCE — платформа для організації комунікації між продавцями та покупцями.</p>
+<p>Платформа має право вносити корективи у безкоштовні міні-сайти, а також
+розміщувати рекламні блоки без попереднього погодження.</p>
+<button onclick="closePopup()">Зрозуміло</button>
+</div>
+</div>
+
+<div class="popup" id="tgHelp">
+<div class="popup-content">
+<h3>Як додати юзернейм у Telegram</h3>
+<p><b>iPhone:</b> Налаштування → Імʼя користувача → створити</p>
+<p><b>Android:</b> Налаштування → Профіль → Імʼя користувача</p>
+<button onclick="closePopup()">Закрити</button>
+</div>
+</div>
+
+<div class="popup" id="bigo">
+<div class="popup-content">
+<h3>Що таке Bigo Live?</h3>
+<p>Bigo Live — це платформа для прямих трансляцій.</p>
+<p>Правила спільноти менш жорсткі, ніж у TikTok, що дозволяє продавати ширший
+асортимент товарів.</p>
+<p>Доступна для Android та iOS.</p>
+<button onclick="closePopup()">Закрити</button>
+</div>
 </div>
 
 <script>
 function setTheme(theme,btn){
-  document.body.className=theme;
-  document.querySelectorAll('.themes button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+document.body.className=theme;
+document.querySelectorAll('.themes button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
 }
-function openOffer(){document.getElementById('offer').style.display='flex'}
-function closeOffer(){document.getElementById('offer').style.display='none'}
+function openPopup(id){
+document.getElementById(id).style.display='flex'
+}
+function closePopup(){
+document.querySelectorAll('.popup').forEach(p=>p.style.display='none')
+}
+function toggleReturn(show){
+document.getElementById('returnDetails').style.display=show?'block':'none'
+}
 </script>
 
 </body>
