@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>VEOFORCE — генератор міні-сайту</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111;
+      --accent: #6c5cff;
+      --border: #ddd;
+    }
+
+    body.dark {
+      --bg: #0f0f14;
+      --text: #ffffff;
+      --border: #2a2a3a;
+    }
+
+    body.tiktok {
+      --bg: #000000;
+      --text: #ffffff;
+      --accent: #ff0050;
+      --border: #333;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1, h2 {
+      margin-top: 32px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .checkbox-group {
+      margin-top: 12px;
+    }
+
+    .checkbox-group label {
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .themes {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .themes button {
+      padding: 10px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .themes button.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .submit {
+      margin: 40px 0;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      width: 100%;
+      border-radius: 12px;
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .small {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body class="light">
+<div class="container">
+
+  <h1>VEOFORCE</h1>
+  <p class="small">Генератор міні-сайту продавця</p>
+
+  <!-- ТЕМА -->
+  <h2>ОБЕРІТЬ ТЕМУ *</h2>
+  <div class="themes">
+    <button type="button" onclick="setTheme('light')" class="active">Світла</button>
+    <button type="button" onclick="setTheme('dark')">Темна</button>
+    <button type="button" onclick="setTheme('tiktok')">TikTok</button>
+  </div>
+
+  <!-- ДАНІ МАГАЗИНУ -->
+  <h2>ДАНІ МАГАЗИНУ</h2>
+
+  <label>*Назва магазину</label>
+  <input required>
+
+  <label>Опис магазину (до 200 символів, без посилань)</label>
+  <textarea maxlength="200"></textarea>
+
+  <label>*ПІБ ФОП</label>
+  <input required>
+
+  <div class="row">
+    <div>
+      <label>*IBAN</label>
+      <input required>
+    </div>
+    <div>
+      <label>*ЄДРПОУ</label>
+      <input required>
+    </div>
+  </div>
+
+  <label>Назва банку</label>
+  <input>
+
+  <label>Призначення платежу</label>
+  <input>
+
+  <label>Номер картки</label>
+  <input>
+
+  <label>ПІБ та банк карткотримача</label>
+  <input>
+
+  <!-- КОНТАКТИ -->
+  <h2>КОНТАКТНІ ДАНІ</h2>
+
+  <label>Номер Viber</label>
+  <input>
+
+  <label>*Telegram (номер або @username)</label>
+  <input required>
+
+  <label>Послання №1 у спільноту</label>
+  <input>
+
+  <label>Послання №2 у спільноту</label>
+  <input>
+
+  <label>Instagram</label>
+  <input>
+
+  <label>Facebook</label>
+  <input>
+
+  <label>TikTok №1</label>
+  <input>
+
+  <label>TikTok №2</label>
+  <input>
+
+  <label>BIGGO LIVE</label>
+  <input>
+
+  <!-- УМОВИ -->
+  <h2>УМОВИ</h2>
+
+  <div class="checkbox-group">
+    <strong>*Терміни відправки</strong>
+    <label><input type="checkbox"> В день замовлення</label>
+    <label><input type="checkbox"> 1–3 робочі дні</label>
+    <label><input type="checkbox"> 3–5 робочих днів</label>
+  </div>
+
+  <div class="checkbox-group">
+    <strong>*Формат відправки</strong>
+    <label><input type="checkbox"> Накладений платіж без передплати</label>
+    <label><input type="checkbox"> Накладений платіж із передплатою</label>
+    <label><input type="checkbox"> Передплата 100%</label>
+  </div>
+
+  <div class="checkbox-group">
+    <strong>Обмін / Повернення</strong>
+    <label><input type="checkbox"> Обмін відсутній</label>
+    <label><input type="checkbox"> Цілісність упаковки</label>
+    <label><input type="checkbox"> До 14 днів</label>
+    <label><input type="checkbox"> Без слідів експлуатації</label>
+  </div>
+
+  <div class="checkbox-group">
+    <strong>Повернення коштів</strong>
+    <label><input type="checkbox"> В день заявки</label>
+    <label><input type="checkbox"> 3–5 банківських днів</label>
+  </div>
+
+  <!-- ІНТЕГРАЦІЇ -->
+  <h2>ІНТЕГРАЦІЇ</h2>
+
+  <label>Токен Telegram-бота</label>
+  <input>
+
+  <label>Токен Нової Пошти</label>
+  <input>
+
+  <!-- ОФЕРТА -->
+  <div class="checkbox-group">
+    <label>
+      <input type="checkbox" required>
+      Погоджуюсь з <a href="#" target="_blank">публічною офертою VEOFORCE</a>
+    </label>
+  </div>
+
+  <button class="submit">ЗГЕНЕРУВАТИ МІНІ-САЙТ</button>
+
+</div>
+
+<script>
+  function setTheme(theme) {
+    document.body.className = theme;
+    document.querySelectorAll('.themes button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
