@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Реєстрація продавця TikTok</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111;
+      --card: #f4f4f4;
+      --accent: #000;
+    }
+
+    body.dark {
+      --bg: #0f0f0f;
+      --text: #fff;
+      --card: #1c1c1c;
+      --accent: #fff;
+    }
+
+    body.tiktok {
+      --bg: #000;
+      --text: #fff;
+      --card: #121212;
+      --accent: #ff0050;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2, h3 {
+      margin-top: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .themes button,
+    .add-btn,
+    .create-btn {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .themes button {
+      margin-right: 8px;
+    }
+
+    .add-btn {
+      margin-top: 10px;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .contact-button {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .checkbox-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body class="light">
+<div class="container">
+
+  <!-- ВИБІР ТЕМИ -->
+  <div class="card">
+    <h2>Оберіть тему</h2>
+    <div class="themes">
+      <button onclick="setTheme('light')">Світла</button>
+      <button onclick="setTheme('dark')">Темна</button>
+      <button onclick="setTheme('tiktok')">TikTok-стиль</button>
+    </div>
+  </div>
+
+  <!-- БЛОК 1: МАГАЗИН + ФОП -->
+  <div class="card">
+    <h2>Інформація про магазин</h2>
+
+    <label>Назва магазину</label>
+    <input type="text" />
+
+    <label>Опис магазину</label>
+    <textarea rows="3"></textarea>
+
+    <label>Логотип (URL або файл)</label>
+    <input type="file" />
+
+    <label>Категорія магазину (до 3)</label>
+    <div class="checkbox-group" id="categories">
+      <label><input type="checkbox" /> Одяг</label>
+      <label><input type="checkbox" /> Взуття</label>
+      <label><input type="checkbox" /> Аксесуари</label>
+      <label><input type="checkbox" /> Косметика</label>
+      <label><input type="checkbox" /> Дім і декор</label>
+      <label><input type="checkbox" /> Дитячі товари</label>
+      <label><input type="checkbox" /> Техніка</label>
+      <label><input type="checkbox" /> Прикраси</label>
+      <label><input type="checkbox" /> HandMade</label>
+      <label><input type="checkbox" /> Інше</label>
+    </div>
+
+    <h3 style="margin-top:20px;">Дані ФОП</h3>
+
+    <div class="row">
+      <input placeholder="ПІБ ФОП" />
+      <input placeholder="IBAN" />
+      <input placeholder="ЄДРПОУ" />
+      <input placeholder="Назва банку" />
+    </div>
+
+    <h3 style="margin-top:20px;">Опціонально (картка)</h3>
+
+    <div class="row">
+      <input placeholder="Номер картки" />
+      <input placeholder="ПІБ власника картки" />
+      <input placeholder="Банк картки" />
+    </div>
+  </div>
+
+  <!-- БЛОК 2: КОНТАКТИ -->
+  <div class="card">
+    <h2>Контакти</h2>
+
+    <div id="contacts"></div>
+
+    <button class="add-btn" onclick="toggleContactForm()">Додати кнопку</button>
+
+    <div id="contactForm" style="display:none; margin-top:15px;">
+      <label>Тип кнопки</label>
+      <select id="contactType">
+        <option>Telegram</option>
+        <option>Viber</option>
+        <option>TikTok</option>
+        <option>Instagram</option>
+        <option>Facebook</option>
+        <option>WhatsApp</option>
+        <option>Bigo Live</option>
+        <option>YouTube</option>
+        <option>Інше</option>
+      </select>
+
+      <label>Назва кнопки</label>
+      <input id="contactTitle" />
+
+      <label>Посилання / юзернейм / номер</label>
+      <input id="contactValue" />
+
+      <button class="create-btn add-btn" onclick="addContact()">Створити</button>
+    </div>
+  </div>
+
+  <!-- БЛОК 3: УМОВИ -->
+  <div class="card">
+    <h2>Умови</h2>
+
+    <h3>Умови відправки та оплати</h3>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Повна передплата</label>
+      <label><input type="checkbox" /> Передплата (сума)</label>
+      <label><input type="checkbox" /> Без передоплати</label>
+    </div>
+
+    <h3>Оплата на</h3>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Р/р ФОП</label>
+      <label><input type="checkbox" /> Картку</label>
+      <label><input type="checkbox" /> Накладений платіж</label>
+      <label><input type="checkbox" /> Криптовалюта</label>
+    </div>
+
+    <h3>Обмін та повернення</h3>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Нема</label>
+      <label><input type="checkbox" /> Є обмін</label>
+      <label><input type="checkbox" /> Обмін і повернення 14 днів</label>
+      <label><input type="checkbox" /> Інше</label>
+    </div>
+
+    <h3>Відправка</h3>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> В день оплати</label>
+      <label><input type="checkbox" /> Наступного дня</label>
+      <label><input type="checkbox" /> 1–3 дні</label>
+      <label><input type="checkbox" /> До тижня</label>
+      <label><input type="checkbox" /> Інше</label>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function setTheme(theme) {
+    document.body.className = theme;
+  }
+
+  function toggleContactForm() {
+    const form = document.getElementById('contactForm');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function addContact() {
+    const type = document.getElementById('contactType').value;
+    const title = document.getElementById('contactTitle').value;
+    const value = document.getElementById('contactValue').value;
+
+    if (!title || !value) return alert('Заповніть всі поля');
+
+    const div = document.createElement('div');
+    div.className = 'contact-button';
+    div.textContent = `${type}: ${title}`;
+
+    document.getElementById('contacts').appendChild(div);
+
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('contactTitle').value = '';
+    document.getElementById('contactValue').value = '';
+  }
+
+  // обмеження категорій до 3
+  const cat = document.getElementById('categories');
+  cat.addEventListener('change', () => {
+    const checked = cat.querySelectorAll('input:checked');
+    if (checked.length > 3) {
+      alert('Можна обрати максимум 3 категорії');
+      event.target.checked = false;
+    }
+  });
+</script>
+
+</body>
+</html>
