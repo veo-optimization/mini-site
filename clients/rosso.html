@@ -56,9 +56,14 @@
             font-size: 1.6rem;
             font-weight: bold;
             color: #fff;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             word-break: break-word;
             overflow-wrap: break-word;
+        }
+        .store-categories {
+            font-size: 0.95rem;
+            color: #999;
+            margin-bottom: 20px;
         }
         .subtitle {
             font-size: 0.95rem;
@@ -188,14 +193,45 @@
             background: #0099e6 !important;
             box-shadow: 0 0 22px rgba(0, 136, 204, 0.5);
         }
+        .btn-telegram-cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .btn-telegram-cta .btn-line1 {
             display: block;
-            margin-bottom: 4px;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 2px;
         }
         .btn-telegram-cta .btn-line2 {
             display: block;
-            font-size: 0.95em;
+            font-size: 0.9em;
             opacity: 0.95;
+            margin-bottom: 2px;
+        }
+        .btn-telegram-cta .btn-line3 {
+            display: block;
+            font-size: 0.75em;
+            opacity: 0.9;
+        }
+        .btn-telegram-cta.sticky-btn {
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            padding: 12px 14px;
+        }
+        .btn-telegram-cta.sticky-btn .btn-line1,
+        .btn-telegram-cta.sticky-btn .btn-line2,
+        .btn-telegram-cta.sticky-btn .btn-line3 {
+            display: inline;
+            font-size: inherit;
+            margin: 0;
+        }
+        .btn-telegram-cta.sticky-btn .btn-line2,
+        .btn-telegram-cta.sticky-btn .btn-line3 {
+            margin-left: 4px;
         }
         .telegram-cta-desc {
             font-size: 14px;
@@ -320,6 +356,88 @@
             margin-bottom: 12px;
             padding-left: 4px;
             word-break: break-word;
+        }
+        .instruction-block {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .instruction-trigger {
+            cursor: pointer;
+            padding: 14px 12px;
+            border-radius: 12px;
+            background: rgba(182, 236, 223, 0.12);
+            border: 1px solid rgba(182, 236, 223, 0.25);
+            color: rgb(182, 236, 223);
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .instruction-trigger:hover {
+            background: rgba(182, 236, 223, 0.18);
+        }
+        .instruction-panel {
+            padding: 16px 12px 4px;
+            margin-top: 8px;
+        }
+        .instruction-intro {
+            font-size: 0.95rem;
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            border-left: 4px solid rgb(182, 236, 223);
+        }
+        .instruction-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            margin-left: 0;
+        }
+        .instruction-step:nth-child(2) { margin-left: 4px; }
+        .instruction-step:nth-child(3) { margin-left: 8px; }
+        .instruction-step:nth-child(4) { margin-left: 12px; }
+        .instruction-step:nth-child(5) { margin-left: 16px; }
+        .instruction-step:nth-child(6) { margin-left: 20px; }
+        .instruction-step:nth-child(7) { margin-left: 24px; }
+        .instruction-step:nth-child(8) { margin-left: 28px; }
+        .instruction-step:nth-child(9) { margin-left: 32px; }
+        .step-num {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            background: rgba(182, 236, 223, 0.25);
+            color: rgb(182, 236, 223);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .step-content {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #b8b8b8;
+            line-height: 1.55;
+            padding: 12px 14px;
+            background: rgba(55, 55, 60, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .step-content strong { color: #e0e0e0; }
+        .step-content ol, .step-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .step-content li { margin-bottom: 4px; }
+        .step-tip {
+            margin-top: 10px;
+            padding: 8px 10px;
+            background: rgba(182, 236, 223, 0.08);
+            border-radius: 8px;
+            font-size: 0.88rem;
         }
         .small-text {
             font-size: 14px;
@@ -497,25 +615,143 @@
     <!-- БЛОК 1 — HEADER / ІНФОРМАЦІЯ ПРО МАГАЗИН -->
     <section id="block-store-info" class="profile-header">
         <h1 id="storeName" class="store-name">ROSSO TT</h1>
+        <p id="storeCategories" class="store-categories">Одяг, аксесуари, сезонні колекції, розпродажі</p>
         <ul class="store-info-theses">
-            <li><span class="check">✓</span> Офіційна сторінка магазину для спілкування з клієнтами</li>
             <li><span class="check">✓</span> Оплата здійснюється лише через офіційний захищений платіжний шлюз (Visa, MasterCard)</li>
             <li><span class="check">✓</span> Після оплати на пошту автоматично надходить квитанція про успішну оплату та фіскальний чек</li>
             <li><span class="check">✓</span> Вся комунікація та оплата здійснюються лише через канали, зазначені на цій сторінці</li>
         </ul>
         <p class="store-info-warning">Остерігайтесь шахраїв — ми не пишемо перші та не надсилаємо дані банківських карток.</p>
-        <p id="storeCategories" class="small-text">Одяг, аксесуари, сезонні колекції, розпродажі</p>
     </section>
 
     <!-- БЛОК 2 — PRIMARY CTA -->
     <section id="block-primary-cta">
         <a id="btn-telegram-subscribe" class="btn-link-style btn-telegram-cta" href="https://t.me/rosso_tt_bot" target="_blank" rel="noopener noreferrer">
-            <span class="btn-line1"><i class="bi bi-telegram me-2"></i> Підписатися на бота в Telegram</span>
-            <span class="btn-line2">«<span id="telegramBtnStoreName">ROSSO TT</span>»</span>
+            <span class="btn-line1"><i class="bi bi-telegram me-2"></i> Підписатись</span>
+            <span class="btn-line2">на бот магазину</span>
+            <span class="btn-line3">@ROSSO_TT_bot</span>
         </a>
-        <p class="telegram-cta-desc" id="telegramCtaDesc">
-            <!-- Текст детальної інструкції до замовлення буде додано -->
-        </p>
+
+        <!-- Інструкція: як замовити -->
+        <div class="instruction-block">
+            <div class="instruction-trigger accordion-item" onclick="toggleInstruction(this)">
+                <i class="bi bi-chevron-right me-2 instruction-chevron"></i> Розгорнути інструкцію
+            </div>
+            <div class="instruction-panel panel">
+                <div class="instruction-intro">
+                    <strong>🛍 Як зробити замовлення:</strong><br>
+                    Ви перейшли за посиланням у профілі TikTok — тут зібрані всі кнопки для швидкого замовлення та підписки на магазин. Нижче коротка інструкція 👇
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">1</span>
+                    <div class="step-content">
+                        <strong>🔹 КРОК 1. Відкрийте сторінку у браузері</strong>
+                        <p>Якщо ви зайшли з профілю TikTok:</p>
+                        <ol>
+                            <li>Натисніть три крапки у правому верхньому куті</li>
+                            <li>Оберіть «Відкрити у браузері»</li>
+                        </ol>
+                        <p class="step-tip">✅ Це потрібно для коректної роботи кнопок.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">2</span>
+                    <div class="step-content">
+                        <strong>🔹 КРОК 2. Натисніть «Підписатись на бота»</strong>
+                        <p>Ви переходите в Telegram-бот магазину, який працює в екосистемі TikTok-продавців VEO FORCE.</p>
+                        <p><strong>Якщо ви вже зареєстровані в системі:</strong><br>Бот запитає, чи готові ви поділитися реквізитами доставки з цим магазином та отримувати від нього сповіщення. Підтверджуєте — і все готово 👍</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">3</span>
+                    <div class="step-content">
+                        <strong>🔹 КРОК 3. Якщо ви ще не в системі</strong>
+                        <ol>
+                            <li>Натисніть «Старт»</li>
+                            <li>Бот попросить надати номер телефону. Натисніть кнопку:<br>• «Поділитися контактом» або «Надіслати контакт» (назва може відрізнятися)</li>
+                        </ol>
+                        <p><strong>📌 Якщо кнопки не видно:</strong></p>
+                        <ul>
+                            <li>У полі введення повідомлення натисніть іконку з чотирма кружечками в квадратику</li>
+                            <li>Оберіть «Надіслати контакт»</li>
+                        </ul>
+                        <p>Після надсилання контакту ви автоматично підписуєтесь на магазин.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">4</span>
+                    <div class="step-content">
+                        <strong>🔹 Ваш унікальний ID</strong>
+                        <p>У розділі «Налаштування» ви побачите свій унікальний ID-номер.</p>
+                        <p class="step-tip">🔐 Це ваш особистий номер у системі. За ним продавці ідентифікують вас та оформлюють замовлення.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">5</span>
+                    <div class="step-content">
+                        <strong>🔹 Додайте реквізити Нової пошти</strong>
+                        <p>У «Налаштуваннях» натисніть «Додати дані Нової пошти» та введіть:</p>
+                        <ol>
+                            <li>Прізвище</li>
+                            <li>Ім'я</li>
+                            <li>По батькові (за бажанням)</li>
+                        </ol>
+                        <p class="step-tip">✍️ Вводьте уважно, буква в букву.</p>
+                        <p>• Вкажіть номер телефону отримувача у форматі +380<br>⚠️ Номер обов'язково у форматі +380XXXXXXXXX без помилок.</p>
+                        <p><strong>Далі:</strong></p>
+                        <ul>
+                            <li>Оберіть область (через список або пошук)</li>
+                            <li>Оберіть населений пункт або скористайтесь пошуком (кнопка «Знайти населений пункт») — введіть без слів «місто», «село», «смт» — просто назву, наприклад: Київ, Одеса, Шевченкове тощо</li>
+                            <li>Оберіть відділення або поштомат (можна також через кнопку пошуку)</li>
+                        </ul>
+                        <p>Після завершення бот підтвердить збереження даних ✅</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">6</span>
+                    <div class="step-content">
+                        <strong>🔔 Як працюють сповіщення під час ефіру</strong>
+                        <p>Якщо сповіщення увімкнені:</p>
+                        <ol>
+                            <li>Ви дивитесь прямий ефір у TikTok</li>
+                            <li>Ведучий показує товар</li>
+                            <li>Модератор робить скріншот і вносить товар</li>
+                            <li>Бот надсилає всім підписникам повідомлення</li>
+                        </ol>
+                        <p>📲 У вас зверху з'являється push-сповіщення. Натискаєте → йдете на оплату. Якщо товар в обмеженій кількості, система не пропустить платежі, які будуть перевищувати вказану кількість в наявності.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">7</span>
+                    <div class="step-content">
+                        <strong>💳 Оплата</strong>
+                        <p>Оплата проходить через захищені платіжні шлюзи Visa / MasterCard.</p>
+                        <p>🔒 Продавець не має доступу до даних вашої картки.<br>🧾 Після оплати ви отримуєте квитанцію та фіскальний чек.</p>
+                        <p>Замовлення потрапляє в систему автоматично.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <span class="step-num">8</span>
+                    <div class="step-content">
+                        <strong>📦 Відправка</strong>
+                        <ul>
+                            <li>Якщо замовлення завершені — формується ТТН</li>
+                            <li>Ви отримуєте номер відправлення</li>
+                            <li>Доставка здійснюється згідно з умовами магазину</li>
+                        </ul>
+                        <p>Якщо плануєте дозамовлення — попередьте продавця у особистих повідомленнях, надавши свій ID, який ви можете знайти в боті за кнопкою «Налаштування».</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- БЛОК 3 — КОНТАКТИ -->
@@ -609,9 +845,10 @@
 </div>
 
 <div class="sticky">
-    <a id="telegramSticky" class="btn-link-style btn-telegram-cta" href="https://t.me/rosso_tt_bot" target="_blank" rel="noopener noreferrer">
-        <span class="btn-line1"><i class="bi bi-telegram me-2"></i> Підписатися на бота в Telegram</span>
-        <span class="btn-line2">«<span id="telegramStickyStoreName">ROSSO TT</span>»</span>
+    <a id="telegramSticky" class="btn-link-style btn-telegram-cta sticky-btn" href="https://t.me/rosso_tt_bot" target="_blank" rel="noopener noreferrer">
+        <span class="btn-line1"><i class="bi bi-telegram me-2"></i> Підписатись</span>
+        <span class="btn-line2">на бот</span>
+        <span class="btn-line3">@ROSSO_TT_bot</span>
     </a>
 </div>
 
@@ -644,6 +881,16 @@ function toggle(el) {
     }
 }
 
+function toggleInstruction(el) {
+    const chevron = el.querySelector(".instruction-chevron");
+    const panel = el.nextElementSibling;
+    const isOpen = panel.style.display === "block";
+    panel.style.display = isOpen ? "none" : "block";
+    if (chevron) {
+        chevron.className = isOpen ? "bi bi-chevron-right me-2 instruction-chevron" : "bi bi-chevron-down me-2 instruction-chevron";
+    }
+}
+
 function closePopup() {
     document.getElementById("browserPopup").style.display = "none";
 }
@@ -652,8 +899,6 @@ function closePopup() {
 document.getElementById("storeName").innerText = config.storeName;
 document.getElementById("storeCategories").innerText = config.storeCategories;
 document.getElementById("footerStoreName").innerText = config.storeName;
-document.getElementById("telegramBtnStoreName").innerText = config.storeName;
-document.getElementById("telegramStickyStoreName").innerText = config.storeName;
 document.getElementById("btn-telegram-subscribe").href = config.telegramBot;
 document.getElementById("telegramSticky").href = config.telegramBot;
 
