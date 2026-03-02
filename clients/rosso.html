@@ -680,6 +680,9 @@
             <span class="btn-line2">на бот магазину</span>
             <span class="btn-line3">@ROSSO_TT_bot</span>
         </a>
+        <p class="telegram-cta-desc">
+            Завдяки боту та наданим продавцеві даних доставки ви зможете слідкувати за оновленням статусу вашого замовлення, отримувати ТТН, гортати каталог, отримувати сповіщення про розпродажі, вихід продавця в ефір на різних платформах та багато іншого цікавого від вашого улюбленого продавця.
+        </p>
 
         <!-- Інструкція: як замовити -->
         <div class="instruction-block">
@@ -941,10 +944,13 @@ function toggle(el) {
     }
 }
 
+let instructionExpandScrollY = 0;
+
 function toggleInstruction(el) {
     const chevron = el.querySelector(".instruction-chevron");
     const panel = el.nextElementSibling;
     const isOpen = panel.style.display === "block";
+    if (!isOpen) instructionExpandScrollY = window.scrollY || window.pageYOffset;
     panel.style.display = isOpen ? "none" : "block";
     if (chevron) {
         chevron.className = isOpen ? "bi bi-chevron-right me-2 instruction-chevron" : "bi bi-chevron-down me-2 instruction-chevron";
@@ -954,13 +960,13 @@ function toggleInstruction(el) {
 }
 
 function collapseInstruction() {
-    const trigger = document.querySelector(".instruction-trigger");
     const panel = document.querySelector(".instruction-panel");
     const chevron = document.querySelector(".instruction-chevron");
     const collapseBar = document.getElementById("collapseInstructionBar");
     if (panel) panel.style.display = "none";
     if (chevron) chevron.className = "bi bi-chevron-right me-2 instruction-chevron";
     if (collapseBar) collapseBar.classList.remove("visible");
+    window.scrollTo(0, instructionExpandScrollY);
 }
 
 function closePopup() {
