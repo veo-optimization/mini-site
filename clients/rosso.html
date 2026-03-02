@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Офіційна сторінка замовлень</title>
+    <title>ROSSO TT — Офіційна сторінка</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -65,17 +65,29 @@
         }
         .scam-warning-block {
             font-size: 0.85rem;
-            color: #FE2C55;
-            font-weight: 600;
+            color: #d4b84a;
+            font-weight: 500;
             text-align: center;
             margin-top: 12px;
             margin-bottom: 20px;
             padding: 10px 12px;
-            background: rgba(254, 44, 85, 0.12);
-            border: 1px solid rgba(254, 44, 85, 0.35);
+            background: rgba(212, 184, 74, 0.15);
+            border: 1px solid rgba(212, 184, 74, 0.35);
             border-radius: 10px;
             line-height: 1.4;
         }
+        .contact-btn-username {
+            display: block;
+            font-size: 0.8em;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+        .btn-link-style.contact-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .hidden { display: none !important; }
         .section-title {
             color: #fff;
             text-align: center;
@@ -352,6 +364,13 @@
         .popup-tiktok-hint strong {
             color: #fff;
         }
+        .popup-tiktok-hint .open-browser {
+            display: block;
+            margin-top: 6px;
+        }
+        .popup-content .btn-link-style {
+            margin-top: 20px;
+        }
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -435,7 +454,7 @@
     <div class="popup-content">
         <h3>Для коректної роботи відкрийте в браузері</h3>
         <p>Кнопки Telegram-бота та контактів працюють коректно лише у звичайному браузері.</p>
-        <p class="popup-tiktok-hint"><strong>Якщо ви з TikTok:</strong> натисніть три крапки <i class="bi bi-three-dots-vertical"></i> вгорі праворуч, потім оберіть «Відкрити в браузері».</p>
+        <p class="popup-tiktok-hint"><strong>Якщо ви з TikTok:</strong> натисніть три крапки <i class="bi bi-three-dots-vertical"></i> вгорі праворуч, потім оберіть<br><span class="open-browser">«Відкрити в браузері»</span></p>
         <button class="btn-link-style btn-primary-style" onclick="closePopup()">Зрозуміло</button>
     </div>
 </div>
@@ -444,173 +463,81 @@
 
     <!-- БЛОК 1 — HEADER / ІНФОРМАЦІЯ ПРО МАГАЗИН -->
     <section id="block-store-info" class="profile-header">
-        <h1 id="storeName" class="store-name">Taras Shop Ukraine</h1>
-        <p id="storeDescription" class="subtitle">Офіційна сторінка магазину для комунікації з клієнтами. Вся комунікація та оплата проводяться лише через канали зв'язку, зазначені на цій сторінці.</p>
-        <p class="scam-warning-block">Остерігайтесь шахраїв — магазин не несе відповідальності за дії, що призводять до втрати коштів.</p>
-        <p id="storeCategories" class="small-text">Одяг, аксесуари, шарфи, хустки, сезонні колекції</p>
+        <h1 id="storeName" class="store-name">ROSSO TT</h1>
+        <p id="storeDescription" class="subtitle">Офіційна сторінка магазину для спілкування з клієнтами. Оплата здійснюється лише через офіційний захищений платіжний шлюз (Visa, MasterCard). Після оплати на пошту автоматично надходить квитанція про успішну оплату та фіскальний чек. Вся комунікація та оплата здійснюються лише через канали зв'язку, зазначені на цій сторінці.</p>
+        <p class="scam-warning-block">Остерігайтесь шахраїв — магазин не несе відповідальності за дії, які призводять до втрати коштів.</p>
+        <p id="storeCategories" class="small-text">Одяг, аксесуари, сезонні колекції, розпродажі</p>
     </section>
 
-    <!-- БЛОК 2 — РЕКВІЗИТИ ФОП -->
-    <section id="block-requisites" class="block">
-        <h2 class="section-title">Реквізити ФОП</h2>
-        <p id="requisite-fop" class="fop-name">Шевченко Тарас Григорович</p>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">IBAN:</span>
-                <button type="button" class="btn-copy" id="copy-iban" onclick="copyById('copy-iban', this)">Скопіювати</button>
-            </div>
-            <p id="requisite-iban" class="requisite-value">UA903052990000026001234567890</p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">ЄДРПОУ:</span>
-                <button type="button" class="btn-copy" id="copy-edrpou" onclick="copyById('copy-edrpou', this)">Скопіювати</button>
-            </div>
-            <p id="requisite-edrpou" class="requisite-value">3123456789</p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">Призначення платежу:</span>
-                <button type="button" class="btn-copy" id="copy-payment-note" onclick="copyById('copy-payment-note', this)">Скопіювати</button>
-            </div>
-            <p id="requisite-payment-note" class="requisite-value">Оплата за товар</p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">Контактний телефон:</span>
-                <button type="button" class="btn-copy" id="copy-phone" onclick="copyById('copy-phone', this)">Скопіювати</button>
-            </div>
-            <p id="requisite-phone" class="requisite-value">+380 67 123 45 67</p>
-        </div>
-        <div class="requisites-actions">
-            <button type="button" class="btn-link-style btn-secondary-style" id="btn-copy-all" onclick="copyAllRequisites(this)">
-                <i class="bi bi-clipboard me-2"></i> Копіювати всі реквізити
-            </button>
-            <button type="button" class="btn-link-style btn-secondary-style" id="btn-share-requisites" onclick="shareRequisites(this)">
-                <i class="bi bi-share me-2"></i> Поділитися реквізитами
-            </button>
-        </div>
-    </section>
-
-    <!-- БЛОК 3 — PRIMARY CTA -->
+    <!-- БЛОК 2 — PRIMARY CTA -->
     <section id="block-primary-cta">
-        <a id="btn-telegram-subscribe" class="btn-link-style btn-telegram-cta" href="https://t.me/tarasshop_bot" target="_blank" rel="noopener noreferrer">
+        <a id="btn-telegram-subscribe" class="btn-link-style btn-telegram-cta" href="https://t.me/rosso_tt_bot" target="_blank" rel="noopener noreferrer">
             <span class="btn-line1"><i class="bi bi-telegram me-2"></i> Підписатися на бота в Telegram</span>
-            <span class="btn-line2">«<span id="telegramBtnStoreName">Taras Shop Ukraine</span>»</span>
+            <span class="btn-line2">«<span id="telegramBtnStoreName">ROSSO TT</span>»</span>
         </a>
-        <p class="telegram-cta-desc">
-            Завдяки боту та наданим продавцеві даних доставки ви зможете слідкувати за оновленням статусу вашого замовлення, отримувати ТТН, гортати каталог, отримувати сповіщення про розпродажі, вихід продавця в ефір на різних платформах та багато іншого цікавого від вашого улюбленого продавця.
+        <p class="telegram-cta-desc" id="telegramCtaDesc">
+            <!-- Текст детальної інструкції до замовлення буде додано -->
         </p>
     </section>
 
-    <!-- БЛОК 4 — КОНТАКТИ ТА СОЦМЕРЕЖІ -->
+    <!-- БЛОК 3 — КОНТАКТИ -->
     <section id="block-contacts">
-        <h2 class="section-title">Контакти та соцмережі</h2>
+        <h2 class="section-title">Контакти</h2>
         <div class="contact-subblock">
             <div class="contact-subblock-title">Telegram</div>
-            <a id="contact-telegram" class="btn-link-style btn-secondary-style" href="https://t.me/taras_support" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-telegram me-2"></i> Особисті повідомлення
+            <a id="contact-bot" class="btn-link-style btn-secondary-style contact-btn" href="https://t.me/rosso_tt_bot" target="_blank" rel="noopener noreferrer">
+                <span><i class="bi bi-robot me-2"></i> Бот для обробки замовлень</span>
+                <span class="contact-btn-username">@rosso_tt_bot</span>
             </a>
-            <a id="contact-telegram-channel" class="btn-link-style btn-secondary-style" href="https://t.me/tarasshop_channel" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-telegram me-2"></i> Канал
+            <a id="contact-manager" class="btn-link-style btn-secondary-style contact-btn" href="https://t.me/rosso_tt_admin" target="_blank" rel="noopener noreferrer">
+                <span><i class="bi bi-person-badge me-2"></i> Написати менеджеру</span>
+                <span class="contact-btn-username">@rosso_tt_admin</span>
             </a>
-            <a id="contact-telegram-group" class="btn-link-style btn-secondary-style" href="https://t.me/tarasshop_group" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-telegram me-2"></i> Група
+            <a id="contact-channel" class="btn-link-style btn-secondary-style contact-btn" href="https://t.me/rosso_tt" target="_blank" rel="noopener noreferrer">
+                <span><i class="bi bi-megaphone me-2"></i> Канал-вітрина</span>
+                <span class="contact-btn-username">@rosso_tt</span>
             </a>
-        </div>
-        <div class="contact-subblock">
-            <div class="contact-subblock-title">Viber</div>
-            <a id="contact-viber" class="btn-link-style btn-secondary-style" href="viber://chat?number=%2B380671234567">
-                <i class="bi bi-chat-right-dots-fill me-2"></i> Відкрити чат
-            </a>
-            <a id="contact-viber-group" class="btn-link-style btn-secondary-style" href="https://invite.viber.com/?g2=examplelink" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-chat-dots-fill me-2"></i> Група
-            </a>
-        </div>
-        <div class="contact-subblock">
-            <div class="contact-subblock-title">TikTok</div>
-            <a id="contact-tiktok" class="btn-link-style btn-secondary-style" href="https://www.tiktok.com/@tarasshop" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-tiktok me-2"></i> TikTok
-            </a>
-        </div>
-        <div class="contact-subblock">
-            <div class="contact-subblock-title">Meta</div>
-            <a id="contact-instagram" class="btn-link-style btn-secondary-style" href="https://www.instagram.com/tarasshop" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-instagram me-2"></i> Instagram
-            </a>
-            <a id="contact-facebook" class="btn-link-style btn-secondary-style" href="https://www.facebook.com/tarasshop" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-facebook me-2"></i> Facebook
-            </a>
-        </div>
-        <div class="contact-subblock">
-            <div class="contact-subblock-title">Google</div>
-            <a id="contact-youtube" class="btn-link-style btn-secondary-style" href="https://www.youtube.com/@tarasshop" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-youtube me-2"></i> YouTube
-            </a>
-            <a id="contact-email" class="btn-link-style btn-secondary-style" href="mailto:shop@tarasshop.ua">
-                <i class="bi bi-envelope me-2"></i> Пошта
-            </a>
-            <a id="contact-googlemaps" class="btn-link-style btn-secondary-style" href="https://maps.google.com/?q=tarasshop" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-geo-alt me-2"></i> Адреса на карті
-            </a>
-        </div>
-        <div class="contact-subblock">
-            <div class="contact-subblock-title">Інше</div>
-            <a id="contact-bigo" class="btn-link-style btn-secondary-style" href="https://www.bigo.tv/tarasshop" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-broadcast me-2"></i> Bigo Live
-            </a>
-            <a id="contact-twitch" class="btn-link-style btn-secondary-style" href="https://www.twitch.tv/tarasshop" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-twitch me-2"></i> Twitch
+            <a id="contact-group" class="btn-link-style btn-secondary-style contact-btn" href="https://t.me/rosso_shop" target="_blank" rel="noopener noreferrer">
+                <span><i class="bi bi-people me-2"></i> Група «Шопоголічки»</span>
+                <span class="contact-btn-username">@rosso_shop</span>
             </a>
         </div>
     </section>
 
-    <!-- БЛОК 5 — УМОВИ ОПЛАТИ ТА ДОСТАВКИ -->
+    <!-- БЛОК 4 — УМОВИ ОПЛАТИ ТА ДОСТАВКИ -->
     <section id="block-payment-delivery" class="block">
-        <h2 class="section-title">Умови оплати та доставки</h2>
+        <h2 class="section-title">Публічна оферта</h2>
+        <p style="font-size:0.9rem;color:#b0b0b0;margin-bottom:16px;">Здійснюючи покупку, Ви автоматично погоджуєтесь з умовами цієї оферти. ФОП Черних Н.В. (Продавець).</p>
         <div class="accordion-item" onclick="toggle(this)">
             <i class="bi bi-chevron-right me-2"></i> Варіанти оплати
         </div>
         <div class="panel">
-            <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
-                <li>Оплата через платіжний шлюз (Visa / MasterCard)</li>
-                <li>Оплата через IBAN</li>
-                <li>Переказ на розрахунковий рахунок ФОП</li>
-                <li>Онлайн-оплата через банківські сервіси</li>
-            </ul>
+            <p style="margin:0;color:#b0b0b0;">Оплата: Visa, MasterCard, Google Pay, Apple Pay через захищені платіжні шлюзи. Після оплати на пошту надходять квитанція про оплату та фіскальний чек.</p>
         </div>
 
         <div class="accordion-item" onclick="toggle(this)">
-            <i class="bi bi-chevron-right me-2"></i> Терміни відправки
+            <i class="bi bi-chevron-right me-2"></i> Доставка
         </div>
         <div class="panel">
-            <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
-                <li>Відправка в день замовлення (якщо замовлення до 14:00)</li>
-                <li>Або протягом 1–3 робочих днів</li>
-            </ul>
+            <p style="margin:0;color:#b0b0b0;">Виключно через «Нову Пошту». Вартість доставки оплачується при отриманні згідно з тарифами перевізника.</p>
         </div>
 
         <div class="accordion-item" onclick="toggle(this)">
-            <i class="bi bi-chevron-right me-2"></i> Служби доставки
+            <i class="bi bi-chevron-right me-2"></i> Термін відправки
         </div>
         <div class="panel">
-            <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
-                <li>Нова Пошта</li>
-                <li>Укрпошта</li>
-                <li>Meest Express</li>
-            </ul>
+            <p style="margin:0;color:#b0b0b0;">1–3 робочих дні з моменту підтвердження оплати.</p>
         </div>
 
         <div class="accordion-item" onclick="toggle(this)">
-            <i class="bi bi-chevron-right me-2"></i> Умови повернення
+            <i class="bi bi-chevron-right me-2"></i> Обмін та повернення
         </div>
         <div class="panel">
             <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
-                <li>Товар повинен мати товарний вигляд</li>
+                <li>14 днів згідно із Законом «Про захист прав споживачів»</li>
+                <li>Збереження товарного вигляду, цілісності упаковки, фабричних ярликів</li>
                 <li>Без слідів використання</li>
-                <li>Збережена оригінальна упаковка</li>
-                <li>Повернення протягом 14 днів</li>
-                <li>Витрати на доставку повернення — за рахунок покупця</li>
+                <li>«Легке повернення» від Нової Пошти або за рахунок Покупця</li>
             </ul>
         </div>
 
@@ -618,158 +545,46 @@
             <i class="bi bi-chevron-right me-2"></i> Відповідальність магазину
         </div>
         <div class="panel">
-            <p style="margin:0;color:#b0b0b0;">Магазин не несе відповідальності, якщо клієнт провів оплату за контактами, які не відображені на даній сторінці. Оплату здійснюйте лише через реквізити та канали зв'язку, зазначені вище.</p>
+            <p style="margin:0;color:#b0b0b0;">Магазин не несе відповідальності за дії, що призводять до втрати коштів; за порушення термінів доставки службою перевізника; за неправильне заповнення даних Покупцем. Оплату здійснюйте лише через канали зв'язку, зазначені на цій сторінці.</p>
         </div>
     </section>
 
     <div class="footer">
-        <a href="https://app.veoforce.com/register" target="_blank" rel="noopener noreferrer" class="btn-veoforce">
+        <a href="https://t.me/veoforce_support" target="_blank" rel="noopener noreferrer" class="btn-veoforce">
             <i class="bi bi-plus-circle me-2"></i> Створити таку сторінку
         </a>
-        <div class="footer-block">
+        <div class="footer-block hidden">
             <div class="footer-block-title">Платформа та підтримка</div>
             <div class="footer-block-content">
                 Сторінку створено на <span class="highlight">VEO FORCE</span> — CRM для продавців. Питання? <a href="https://t.me/veoforce_support" target="_blank" rel="noopener noreferrer">Напишіть нам у Telegram @veoforce_support</a>
             </div>
         </div>
-        <div class="footer-block">
+        <div class="footer-block hidden">
             <div class="footer-block-title">Автор екосистеми</div>
             <div class="footer-block-content">
                 Ідея та логіка — <span class="highlight">Vasil VEO</span>. Підписуйтесь: <a href="https://www.tiktok.com/@vasil_veo" target="_blank" rel="noopener noreferrer">TikTok</a>, <a href="https://t.me/vasil_veo" target="_blank" rel="noopener noreferrer">Telegram @vasil_veo</a>
             </div>
         </div>
-        <p style="font-size:0.8rem;color:#888;margin-top:16px;">© 2026 <span id="footerStoreName">Taras Shop Ukraine</span></p>
+        <p style="font-size:0.8rem;color:#888;margin-top:16px;">© 2026 <span id="footerStoreName">ROSSO TT</span></p>
     </div>
 
 </div>
 
 <div class="sticky">
-    <a id="telegramSticky" class="btn-link-style btn-telegram-cta" href="https://t.me/tarasshop_bot" target="_blank" rel="noopener noreferrer">
+    <a id="telegramSticky" class="btn-link-style btn-telegram-cta" href="https://t.me/rosso_tt_bot" target="_blank" rel="noopener noreferrer">
         <span class="btn-line1"><i class="bi bi-telegram me-2"></i> Підписатися на бота в Telegram</span>
-        <span class="btn-line2">«<span id="telegramStickyStoreName">Taras Shop Ukraine</span>»</span>
+        <span class="btn-line2">«<span id="telegramStickyStoreName">ROSSO TT</span>»</span>
     </a>
 </div>
 
 <div class="toast" id="toast">Скопійовано</div>
 
 <script>
-// Конфіг для легкої заміни даних під різних продавців
 const config = {
-    storeName: "Taras Shop Ukraine",
-    storeDescription: "Офіційна сторінка магазину для комунікації з клієнтами.",
-    storeCategories: "Одяг, аксесуари, шарфи, хустки, сезонні колекції",
-    fop: "Шевченко Тарас Григорович",
-    iban: "UA903052990000026001234567890",
-    edrpou: "3123456789",
-    paymentNote: "Оплата за товар",
-    phone: "+380 67 123 45 67",
-    telegramBot: "https://t.me/tarasshop_bot",
-    telegramSupport: "https://t.me/taras_support",
-    telegramChannel: "https://t.me/tarasshop_channel",
-    telegramGroup: "https://t.me/tarasshop_group",
-    viber: "viber://chat?number=%2B380671234567",
-    viberGroup: "https://invite.viber.com/?g2=examplelink",
-    tiktok: "https://www.tiktok.com/@tarasshop",
-    instagram: "https://www.instagram.com/tarasshop",
-    facebook: "https://www.facebook.com/tarasshop",
-    youtube: "https://www.youtube.com/@tarasshop",
-    email: "mailto:shop@tarasshop.ua",
-    googleMaps: "https://maps.google.com/?q=tarasshop",
-    bigo: "https://www.bigo.tv/tarasshop",
-    twitch: "https://www.twitch.tv/tarasshop"
+    storeName: "ROSSO TT",
+    storeCategories: "Одяг, аксесуари, сезонні колекції, розпродажі",
+    telegramBot: "https://t.me/rosso_tt_bot"
 };
-
-// Мапа: id кнопки копіювання -> id елемента з текстом
-const copyMap = {
-    "copy-iban": "requisite-iban",
-    "copy-edrpou": "requisite-edrpou",
-    "copy-payment-note": "requisite-payment-note",
-    "copy-phone": "requisite-phone"
-};
-
-function getAllRequisitesText() {
-    const fop = document.getElementById("requisite-fop").textContent.trim();
-    const iban = document.getElementById("requisite-iban").textContent.trim();
-    const edrpou = document.getElementById("requisite-edrpou").textContent.trim();
-    const paymentNote = document.getElementById("requisite-payment-note").textContent.trim();
-    const phone = document.getElementById("requisite-phone").textContent.trim();
-    return `ФОП: ${fop}\nIBAN: ${iban}\nЄДРПОУ: ${edrpou}\nПризначення платежу: ${paymentNote}\nКонтактний телефон: ${phone}`;
-}
-
-function copyAllRequisites(btnEl) {
-    const text = getAllRequisitesText();
-    navigator.clipboard.writeText(text).then(() => {
-        showToast("Реквізити скопійовано");
-        if (btnEl) {
-            const orig = btnEl.innerHTML;
-            btnEl.innerHTML = '<i class="bi bi-check-lg me-2"></i> Скопійовано';
-            btnEl.classList.add("copied");
-            btnEl.disabled = true;
-            setTimeout(() => {
-                btnEl.innerHTML = orig;
-                btnEl.classList.remove("copied");
-                btnEl.disabled = false;
-            }, 2000);
-        }
-    }).catch(() => showToast("Помилка копіювання"));
-}
-
-function shareRequisites(btnEl) {
-    const text = getAllRequisitesText();
-    const title = config.storeName + " — Реквізити";
-    if (navigator.share) {
-        navigator.share({
-            title: title,
-            text: text,
-            url: window.location.href
-        }).then(() => {
-            showToast("Реквізити надіслано");
-        }).catch((err) => {
-            if (err.name !== "AbortError") copyFallback(text, btnEl);
-        });
-    } else {
-        copyFallback(text, btnEl);
-    }
-}
-
-function copyFallback(text, btnEl) {
-    navigator.clipboard.writeText(text).then(() => {
-        showToast("Реквізити скопійовано");
-        if (btnEl) {
-            const orig = btnEl.innerHTML;
-            btnEl.innerHTML = '<i class="bi bi-check-lg me-2"></i> Скопійовано';
-            btnEl.classList.add("copied");
-            btnEl.disabled = true;
-            setTimeout(() => {
-                btnEl.innerHTML = orig;
-                btnEl.classList.remove("copied");
-                btnEl.disabled = false;
-            }, 2000);
-        }
-    }).catch(() => showToast("Помилка копіювання"));
-}
-
-function copyById(btnId, btnEl) {
-    const targetId = copyMap[btnId];
-    const el = document.getElementById(targetId);
-    const text = el ? el.textContent.trim() : "";
-    if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-        showToast("Скопійовано");
-        if (btnEl) {
-            btnEl.classList.add("copied");
-            btnEl.textContent = "Скопійовано";
-            btnEl.disabled = true;
-            setTimeout(() => {
-                btnEl.classList.remove("copied");
-                btnEl.textContent = "Скопіювати";
-                btnEl.disabled = false;
-            }, 2000);
-        }
-    }).catch(() => {
-        showToast("Помилка копіювання");
-    });
-}
 
 function showToast(msg) {
     const toast = document.getElementById("toast");
@@ -795,32 +610,14 @@ function closePopup() {
     document.getElementById("browserPopup").style.display = "none";
 }
 
-// Ініціалізація з config (для масштабування)
+// Ініціалізація
 document.getElementById("storeName").innerText = config.storeName;
 document.getElementById("storeCategories").innerText = config.storeCategories;
 document.getElementById("footerStoreName").innerText = config.storeName;
 document.getElementById("telegramBtnStoreName").innerText = config.storeName;
 document.getElementById("telegramStickyStoreName").innerText = config.storeName;
-document.getElementById("requisite-fop").innerText = config.fop;
-document.getElementById("requisite-iban").innerText = config.iban;
-document.getElementById("requisite-edrpou").innerText = config.edrpou;
-document.getElementById("requisite-payment-note").innerText = config.paymentNote;
-document.getElementById("requisite-phone").innerText = config.phone;
 document.getElementById("btn-telegram-subscribe").href = config.telegramBot;
 document.getElementById("telegramSticky").href = config.telegramBot;
-document.getElementById("contact-telegram").href = config.telegramSupport;
-document.getElementById("contact-telegram-channel").href = config.telegramChannel;
-document.getElementById("contact-telegram-group").href = config.telegramGroup;
-document.getElementById("contact-viber").href = config.viber;
-document.getElementById("contact-viber-group").href = config.viberGroup;
-document.getElementById("contact-tiktok").href = config.tiktok;
-document.getElementById("contact-instagram").href = config.instagram;
-document.getElementById("contact-facebook").href = config.facebook;
-document.getElementById("contact-youtube").href = config.youtube;
-document.getElementById("contact-email").href = config.email;
-document.getElementById("contact-googlemaps").href = config.googleMaps;
-document.getElementById("contact-bigo").href = config.bigo;
-document.getElementById("contact-twitch").href = config.twitch;
 
 // Зараз показуємо завжди при завантаженні. Потім змінити на: тільки якщо navigator.userAgent.includes("TikTok")
 document.getElementById("browserPopup").style.display = "flex";
