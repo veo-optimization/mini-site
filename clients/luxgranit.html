@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="uk" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="google" content="notranslate">
+    <title>Lux Granit — Каталог товарів</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body {
+            color: #e0e0e0;
+            font-family: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 20px 12px 120px;
+            margin: 0;
+            background: linear-gradient(-45deg, #1a1a1e, #25252a, #2d2d33, #1e1e23, #FE2C55, #1a1a1e);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: rgba(18, 18, 18, 0.85);
+            border-radius: 20px;
+            padding: 20px 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        @media (min-width: 400px) { .container { padding: 25px 20px; } }
+        .profile-header { text-align: center; margin-bottom: 25px; }
+        .store-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .store-categories { font-size: 0.95rem; color: #999; margin-bottom: 20px; }
+        .section-title {
+            color: #fff;
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: rgb(182, 236, 223);
+            margin: 8px auto 0;
+            border-radius: 3px;
+        }
+        .product-card {
+            background: rgba(40, 40, 40, 0.9);
+            border: 1px solid #505050;
+            border-radius: 15px;
+            padding: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: rgba(55, 55, 60, 0.6);
+        }
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .product-desc {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: rgb(182, 236, 223);
+            margin-bottom: 14px;
+        }
+        .btn-link-style {
+            display: block;
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 0;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-link-style:hover { color: inherit; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .btn-primary-style {
+            background: rgb(182, 236, 223);
+            color: #1a1a1e !important;
+            font-size: 16px;
+        }
+        .btn-primary-style:hover { color: #1a1a1e !important; background: rgb(195, 240, 230); }
+        .btn-secondary-style {
+            background: rgb(182, 236, 223);
+            color: #1a1a1e;
+            border: none;
+        }
+        .btn-secondary-style:hover { background: rgb(195, 240, 230); color: #1a1a1e; }
+        .btn-telegram-cta {
+            background: #0088cc !important;
+            color: #fff !important;
+        }
+        .btn-telegram-cta:hover { color: #fff !important; background: #0099e6 !important; }
+        .block {
+            background-color: rgba(40, 40, 40, 0.9);
+            border: 1px solid #505050;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        .requisite-item {
+            background: rgba(55, 55, 60, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+        .requisite-item:last-child { margin-bottom: 0; }
+        .copy-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #ccc;
+        }
+        .btn-copy {
+            flex-shrink: 0;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgb(182, 236, 223);
+            color: #1a1a1e;
+        }
+        .btn-copy:hover { background: rgb(195, 240, 230); }
+        .btn-copy.copied { background: #fff; color: #1a1a1e; }
+        .requisite-value {
+            font-size: 14px;
+            color: rgb(182, 236, 223);
+            word-break: break-all;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .accordion-item {
+            cursor: pointer;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+            padding: 8px 0;
+        }
+        .accordion-item:hover { color: rgb(182, 236, 223); }
+        .panel {
+            display: none;
+            font-size: 14px;
+            color: #b0b0b0;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+        .contact-subblock { margin-bottom: 20px; }
+        .contact-subblock-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .contact-btn-username { display: block; font-size: 0.8em; opacity: 0.85; margin-top: 4px; }
+        .btn-link-style.contact-btn { display: flex; flex-direction: column; align-items: center; }
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 10000;
+            overflow-y: auto;
+        }
+        .popup.visible { display: flex; }
+        .popup-content {
+            background: rgba(30, 30, 35, 0.98);
+            padding: 24px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #e0e0e0;
+            margin: auto;
+        }
+        .popup-content h3 { color: #fff; margin-bottom: 16px; font-size: 1.2rem; }
+        .popup-product-name { color: rgb(182, 236, 223); font-weight: 600; margin-bottom: 16px; }
+        .popup-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+        .popup-actions .btn-link-style { margin-bottom: 0; }
+        .popup-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .popup-close:hover { color: #fff; }
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1E1E23;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        .footer a { color: rgb(182, 236, 223); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<!-- Спливаюче вікно для оплати -->
+<div class="popup" id="buyPopup">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <button type="button" class="popup-close" onclick="closeBuyPopup()">&times;</button>
+        <h3>Реквізити для оплати</h3>
+        <p class="popup-product-name" id="popupProductName"></p>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">IBAN:</span>
+                <button type="button" class="btn-copy" onclick="copyRequisite('iban', this)">Скопіювати</button>
+            </div>
+            <p id="popup-iban" class="requisite-value"></p>
+        </div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">Призначення платежу:</span>
+                <button type="button" class="btn-copy" onclick="copyRequisite('paymentNote', this)">Скопіювати</button>
+            </div>
+            <p id="popup-payment-note" class="requisite-value"></p>
+        </div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">ЄДРПОУ:</span>
+                <button type="button" class="btn-copy" onclick="copyRequisite('edrpou', this)">Скопіювати</button>
+            </div>
+            <p id="popup-edrpou" class="requisite-value"></p>
+        </div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">ФОП:</span>
+                <button type="button" class="btn-copy" onclick="copyRequisite('fop', this)">Скопіювати</button>
+            </div>
+            <p id="popup-fop" class="requisite-value"></p>
+        </div>
+        <button type="button" class="btn-link-style btn-primary-style" onclick="copyAllRequisites()">
+            <i class="bi bi-clipboard me-2"></i> Копіювати всі реквізити одним кліком
+        </button>
+        <div class="popup-actions">
+            <a id="popup-phone" class="btn-link-style btn-secondary-style" href="#">
+                <i class="bi bi-telephone me-2"></i> Зателефонувати
+            </a>
+            <a id="popup-telegram" class="btn-link-style btn-telegram-cta" href="#" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-telegram me-2"></i> Написати в Telegram
+            </a>
+            <a id="popup-viber" class="btn-link-style btn-secondary-style" href="#">
+                <i class="bi bi-chat-dots-fill me-2"></i> Написати в Viber
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <section class="profile-header">
+        <h1 class="store-name" id="storeName">Lux Granit</h1>
+        <p class="store-categories" id="storeCategories">Граніт, мармур, камінь для інтер'єру та екстер'єру</p>
+    </section>
+
+    <!-- КАТАЛОГ ТОВАРІВ -->
+    <section id="catalog">
+        <h2 class="section-title">Каталог товарів</h2>
+        <div id="productsContainer"></div>
+    </section>
+
+    <!-- УМОВИ ОПЛАТИ -->
+    <section class="block">
+        <h2 class="section-title">Умови оплати</h2>
+        <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
+            <li>Оплата через IBAN (реквізити у спливаючому вікні при натисканні «Купити»)</li>
+            <li>Оплата через платіжний шлюз Visa / MasterCard</li>
+            <li>Переказ на розрахунковий рахунок ФОП</li>
+        </ul>
+    </section>
+
+    <!-- УМОВИ ДОСТАВКИ ТА ПОВЕРНЕННЯ -->
+    <section class="block">
+        <h2 class="section-title">Доставка та повернення</h2>
+        <div class="accordion-item" onclick="toggle(this)">
+            <i class="bi bi-chevron-right me-2"></i> Доставка
+        </div>
+        <div class="panel">
+            <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
+                <li>Нова Пошта</li>
+                <li>Укрпошта</li>
+                <li>Самовивіз за домовленістю</li>
+            </ul>
+        </div>
+        <div class="accordion-item" onclick="toggle(this)">
+            <i class="bi bi-chevron-right me-2"></i> Умови повернення
+        </div>
+        <div class="panel">
+            <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
+                <li>Товар повинен мати товарний вигляд</li>
+                <li>Без слідів використання</li>
+                <li>Повернення протягом 14 днів згідно із законом</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- КОНТАКТИ -->
+    <section id="contacts">
+        <h2 class="section-title">Контакти</h2>
+        <div class="contact-subblock">
+            <a id="contact-telegram" class="btn-link-style btn-telegram-cta contact-btn" href="#" target="_blank" rel="noopener noreferrer">
+                <span><i class="bi bi-telegram me-2"></i> Telegram-бот</span>
+                <span class="contact-btn-username" id="contact-telegram-label">@luxgranit_bot</span>
+            </a>
+            <a id="contact-viber" class="btn-link-style btn-secondary-style contact-btn" href="#">
+                <span><i class="bi bi-chat-dots-fill me-2"></i> Viber</span>
+                <span class="contact-btn-username" id="contact-viber-label">+380 67 123 45 67</span>
+            </a>
+        </div>
+    </section>
+
+    <div class="footer">
+        <p style="font-size:0.8rem;color:#888;margin-top:16px;">© 2026 <span id="footerStoreName">Lux Granit</span></p>
+    </div>
+
+</div>
+
+<div class="toast" id="toast">Скопійовано</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// КОНФІГУРАЦІЯ — змінюйте дані тут для редагування сторінки
+// ═══════════════════════════════════════════════════════════════
+const config = {
+    storeName: "Lux Granit",
+    storeCategories: "Граніт, мармур, камінь для інтер'єру та екстер'єру",
+    requisites: {
+        fop: "Петренко Іван Олексійович",
+        iban: "UA903052990000026001234567890",
+        edrpou: "3123456789",
+        paymentNote: "Оплата за товар",
+        phone: "+380671234567",
+        phoneDisplay: "+380 67 123 45 67",
+        telegram: "https://t.me/luxgranit_support",
+        viber: "viber://chat?number=%2B380671234567"
+    },
+    products: [
+        {
+            id: "1",
+            name: "Гранітна плитка «Сапфір»",
+            description: "Преміальна гранітна плитка для підлоги та стін. Розмір 60×60 см, товщина 2 см. Природний український граніт.",
+            price: "2500 грн",
+            priceValue: 2500,
+            image: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=600",
+            imageFull: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=1200"
+        },
+        {
+            id: "2",
+            name: "Мармуровий підвіконня",
+            description: "Класичне мармурове підвіконня білого кольору. Довжина 150 см, глибина 25 см. Ідеально для вікон.",
+            price: "4200 грн",
+            priceValue: 4200,
+            image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
+            imageFull: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200"
+        },
+        {
+            id: "3",
+            name: "Гранітна стільниця для кухні",
+            description: "Стійка до подряпин та вологи гранітна стільниця. Розмір 240×60 см. Підходить під будь-який інтер'єр.",
+            price: "18500 грн",
+            priceValue: 18500,
+            image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
+            imageFull: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200"
+        },
+        {
+            id: "4",
+            name: "Декоративний камінь для фасаду",
+            description: "Штучний камінь для облицювання фасаду. Легкий, морозостійкий. Площа покриття 1 м² у комплекті.",
+            price: "890 грн",
+            priceValue: 890,
+            image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600",
+            imageFull: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200"
+        },
+        {
+            id: "5",
+            name: "Гранітний цоколь",
+            description: "Цокольна гранітна плитка для фундаменту. Розмір 100×20 см. Захищає від вологи та механічних пошкоджень.",
+            price: "3200 грн",
+            priceValue: 3200,
+            image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600",
+            imageFull: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200"
+        }
+    ]
+};
+
+// Рендер каталогу
+function renderProducts() {
+    const container = document.getElementById("productsContainer");
+    container.innerHTML = config.products.map(p => `
+        <div class="product-card" itemscope itemtype="https://schema.org/Product">
+            <img class="product-image" src="${p.image}" alt="${p.name}" itemprop="image" loading="lazy">
+            <h3 class="product-name" itemprop="name">${p.name}</h3>
+            <p class="product-desc" itemprop="description">${p.description}</p>
+            <p class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                <span itemprop="price" content="${p.priceValue}">${p.price}</span>
+                <meta itemprop="priceCurrency" content="UAH">
+            </p>
+            <button type="button" class="btn-link-style btn-primary-style" onclick="openBuyPopup('${p.id}')">
+                <i class="bi bi-cart-plus me-2"></i> Купити
+            </button>
+        </div>
+    `).join("");
+}
+
+function openBuyPopup(productId) {
+    const product = config.products.find(p => p.id === productId);
+    if (!product) return;
+    const req = config.requisites;
+    const paymentNote = `${req.paymentNote}: ${product.name}`;
+    document.getElementById("popupProductName").textContent = product.name;
+    document.getElementById("popup-iban").textContent = req.iban;
+    document.getElementById("popup-payment-note").textContent = paymentNote;
+    document.getElementById("popup-edrpou").textContent = req.edrpou;
+    document.getElementById("popup-fop").textContent = req.fop;
+    document.getElementById("popup-phone").href = "tel:" + req.phone.replace(/\s/g, "");
+    document.getElementById("popup-telegram").href = req.telegram + "?text=" + encodeURIComponent("Доброго дня! Хочу замовити: " + product.name);
+    document.getElementById("popup-viber").href = req.viber;
+    window._currentPaymentNote = paymentNote;
+    document.getElementById("buyPopup").classList.add("visible");
+    document.body.style.overflow = "hidden";
+}
+
+function closeBuyPopup() {
+    document.getElementById("buyPopup").classList.remove("visible");
+    document.body.style.overflow = "";
+}
+
+document.getElementById("buyPopup").addEventListener("click", function(e) {
+    if (e.target === this) closeBuyPopup();
+});
+
+function copyRequisite(field, btn) {
+    const map = { iban: "popup-iban", paymentNote: "popup-payment-note", edrpou: "popup-edrpou", fop: "popup-fop" };
+    const id = map[field];
+    const text = document.getElementById(id).textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+        showToast("Скопійовано");
+        btn.classList.add("copied");
+        btn.textContent = "Скопійовано";
+        setTimeout(() => { btn.classList.remove("copied"); btn.textContent = "Скопіювати"; }, 2000);
+    });
+}
+
+function copyAllRequisites() {
+    const req = config.requisites;
+    const text = `ФОП: ${req.fop}\nIBAN: ${req.iban}\nЄДРПОУ: ${req.edrpou}\nПризначення платежу: ${window._currentPaymentNote || req.paymentNote}`;
+    navigator.clipboard.writeText(text).then(() => showToast("Реквізити скопійовано"));
+}
+
+function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; toast.textContent = "Скопійовано"; }, 2000);
+}
+
+function toggle(el) {
+    const icon = el.querySelector("i");
+    const panel = el.nextElementSibling;
+    const isOpen = panel.style.display === "block";
+    panel.style.display = isOpen ? "none" : "block";
+    if (icon) icon.className = isOpen ? "bi bi-chevron-right me-2" : "bi bi-chevron-down me-2";
+}
+
+// Ініціалізація
+document.getElementById("storeName").textContent = config.storeName;
+document.getElementById("storeCategories").textContent = config.storeCategories;
+document.getElementById("footerStoreName").textContent = config.storeName;
+document.getElementById("contact-telegram").href = config.requisites.telegram;
+document.getElementById("contact-telegram-label").textContent = "@" + config.requisites.telegram.split("/").pop();
+document.getElementById("contact-viber").href = config.requisites.viber;
+document.getElementById("contact-viber-label").textContent = config.requisites.phoneDisplay || config.requisites.phone;
+
+renderProducts();
+
+// JSON-LD для Google Merchant
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": config.storeName + " — Каталог",
+    "itemListElement": config.products.map((p, i) => ({
+        "@type": "ListItem",
+        "position": i + 1,
+        "item": {
+            "@type": "Product",
+            "name": p.name,
+            "description": p.description,
+            "image": p.imageFull || p.image,
+            "offers": {
+                "@type": "Offer",
+                "price": p.priceValue,
+                "priceCurrency": "UAH"
+            }
+        }
+    }))
+};
+const script = document.createElement("script");
+script.type = "application/ld+json";
+script.textContent = JSON.stringify(jsonLd);
+document.head.appendChild(script);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
