@@ -351,11 +351,8 @@
             <i class="bi bi-chevron-right me-2"></i> Доставка
         </div>
         <div class="panel">
-            <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
-                <li>Нова Пошта</li>
-                <li>Укрпошта</li>
-                <li>Самовивіз за домовленістю</li>
-            </ul>
+            <p style="margin:0 0 10px;color:#b0b0b0;">Доставка товару проходить автотранспортом (вантажними машинами) по Києву, Київській області та по Україні (попутним вантажем).</p>
+            <p style="margin:0;color:#b0b0b0;"><strong style="color:#e0e0e0;">Мінімальне замовлення:</strong> машина 10 тонн.</p>
         </div>
         <div class="accordion-item" onclick="toggle(this)">
             <i class="bi bi-chevron-right me-2"></i> Умови повернення
@@ -366,6 +363,53 @@
                 <li>Без слідів використання</li>
                 <li>Повернення протягом 14 днів згідно із законом</li>
             </ul>
+        </div>
+    </section>
+
+    <!-- ОРІЄНТОВНІ ВИТРАТИ МАТЕРІАЛУ -->
+    <section class="block">
+        <h2 class="section-title">Орієнтовні витрати матеріалу для побудови споруди</h2>
+        <div class="calc-block">
+            <h4 style="color:rgb(182,236,223);font-size:1rem;margin-bottom:12px;">📐 Базові показники</h4>
+            <ul style="margin:0 0 16px;padding-left:18px;color:#b0b0b0;font-size:0.9rem;">
+                <li><strong style="color:#e0e0e0;">Об'ємна вага каменю:</strong> орієнтовно 3 тонни на 1 м³ монолітного блоку</li>
+                <li><strong style="color:#e0e0e0;">Мінімальна доставка (10 тонн):</strong> ≈ 3,3 м³ каменю або орієнтовно <strong>45–65 м²</strong> гранітної плитки для доріжок (при товщині 5–7 см)</li>
+            </ul>
+            <h4 style="color:rgb(182,236,223);font-size:1rem;margin-bottom:12px;">🧱 Коефіцієнт ущільнення та витрати каменю</h4>
+            <p style="margin:0 0 12px;color:#b0b0b0;font-size:0.9rem;">Орієнтовний об'єм каменю для різних типів споруд (з урахуванням пустот та ущільнення):</p>
+            <table style="width:100%;border-collapse:collapse;font-size:0.85rem;color:#b0b0b0;">
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                    <td style="padding:8px 0;"><strong style="color:#e0e0e0;">Тип споруди</strong></td>
+                    <td style="padding:8px 0;"><strong style="color:#e0e0e0;">Коеф. ущільнення</strong></td>
+                    <td style="padding:8px 0;"><strong style="color:#e0e0e0;">Орієнтовна витрата</strong></td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <td style="padding:8px 0;">Облицювання паркану, стовпчиків</td>
+                    <td style="padding:8px 0;">1,5–1,7</td>
+                    <td style="padding:8px 0;">1 м³ кладки ≈ 1,5–1,7 м³ каменю</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <td style="padding:8px 0;">Бутова кладка фундаменту</td>
+                    <td style="padding:8px 0;">1,3–1,5</td>
+                    <td style="padding:8px 0;">1 м³ фундаменту ≈ 1,3–1,5 м³ каменю</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <td style="padding:8px 0;">Паркан (1 м довжини, висота 2 м, товщ. 40 см)</td>
+                    <td style="padding:8px 0;">1,5</td>
+                    <td style="padding:8px 0;">≈ 1,2 м³ каменю на 1 п.м.</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <td style="padding:8px 0;">Стовпчик (40×40 см, висота 2 м)</td>
+                    <td style="padding:8px 0;">1,5</td>
+                    <td style="padding:8px 0;">≈ 0,5 м³ каменю на 1 стовпчик</td>
+                </tr>
+                <tr>
+                    <td style="padding:8px 0;">Дорожка з плитки (1 м², товщ. 6 см)</td>
+                    <td style="padding:8px 0;">—</td>
+                    <td style="padding:8px 0;">≈ 0,06 м³ (≈ 180 кг) на 1 м²</td>
+                </tr>
+            </table>
+            <p style="margin:16px 0 0;font-size:0.8rem;color:#999;">* Точні витрати залежать від розміру каменю, способу кладки та геометрії споруди. Рекомендуємо узгоджувати розрахунок з менеджером.</p>
         </div>
     </section>
 
@@ -398,7 +442,7 @@
 // ═══════════════════════════════════════════════════════════════
 const config = {
     storeName: "Lux Granit",
-    storeCategories: "Граніт, мармур, камінь для інтер'єру та екстер'єру",
+    storeCategories: "Граніт, камінь для доріжок, парканів, фундаментів. Ручна відбірка.",
     requisites: {
         fop: "Петренко Іван Олексійович",
         iban: "UA903052990000026001234567890",
@@ -412,46 +456,28 @@ const config = {
     products: [
         {
             id: "1",
-            name: "Гранітна плитка «Сапфір»",
-            description: "Преміальна гранітна плитка для підлоги та стін. Розмір 60×60 см, товщина 2 см. Природний український граніт.",
-            price: "2500 грн",
-            priceValue: 2500,
+            name: "Гранітна плитка для доріжок",
+            description: "Гранітна плитка з однією або двома рівними пиленими сторонами — по ній дуже зручно ходити, легко прибирати. Ідеально для садових доріжок, підʼїзних шляхів, зон біля будинку. Весь камінь відібраний вручну, має лицьові сторони. Природний український граніт, морозостійкий. Орієнтовно 45–65 м² плитки на мінімальну доставку (10 тонн).",
+            price: "за м³",
+            priceValue: 0,
             image: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=600",
             imageFull: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=1200"
         },
         {
             id: "2",
-            name: "Мармуровий підвіконня",
-            description: "Класичне мармурове підвіконня білого кольору. Довжина 150 см, глибина 25 см. Ідеально для вікон.",
-            price: "4200 грн",
-            priceValue: 4200,
-            image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
-            imageFull: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200"
-        },
-        {
-            id: "3",
-            name: "Гранітна стільниця для кухні",
-            description: "Стійка до подряпин та вологи гранітна стільниця. Розмір 240×60 см. Підходить під будь-який інтер'єр.",
-            price: "18500 грн",
-            priceValue: 18500,
-            image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
-            imageFull: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200"
-        },
-        {
-            id: "4",
-            name: "Декоративний камінь для фасаду",
-            description: "Штучний камінь для облицювання фасаду. Легкий, морозостійкий. Площа покриття 1 м² у комплекті.",
-            price: "890 грн",
-            priceValue: 890,
+            name: "Камінь для ручної кладки (облицювання)",
+            description: "Природний камінь для облицювання парканів, стовпчиків, фасадів та підпірних стінок. Весь камінь відібраний вручну для ручної кладки, має лицьові сторони. Різні фракції під різні типи споруд. Орієнтовна витрата: 1 м³ кладки ≈ 1,5–1,7 м³ каменю (коефіцієнт ущільнення). Доставка автотранспортом по Києву, області та Україні.",
+            price: "за м³",
+            priceValue: 0,
             image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600",
             imageFull: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200"
         },
         {
-            id: "5",
-            name: "Гранітний цоколь",
-            description: "Цокольна гранітна плитка для фундаменту. Розмір 100×20 см. Захищає від вологи та механічних пошкоджень.",
-            price: "3200 грн",
-            priceValue: 3200,
+            id: "3",
+            name: "Бутовий камінь для фундаментів",
+            description: "Бутовий камінь для побудови фундаментів, цоколів та підпірних конструкцій. Весь камінь відібраний вручну, має лицьові сторони. Об'ємна вага орієнтовно 3 тонни на 1 м³. Орієнтовна витрата: 1 м³ фундаменту ≈ 1,3–1,5 м³ каменю (коефіцієнт ущільнення). Мінімальна доставка — 10 тонн (≈ 3,3 м³).",
+            price: "за м³",
+            priceValue: 0,
             image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600",
             imageFull: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200"
         }
@@ -467,8 +493,7 @@ function renderProducts() {
             <h3 class="product-name" itemprop="name">${p.name}</h3>
             <p class="product-desc" itemprop="description">${p.description}</p>
             <p class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                <span itemprop="price" content="${p.priceValue}">${p.price}</span>
-                <meta itemprop="priceCurrency" content="UAH">
+                ${p.priceValue ? `<span itemprop="price" content="${p.priceValue}">${p.price}</span><meta itemprop="priceCurrency" content="UAH">` : `<span>${p.price}</span><meta itemprop="priceCurrency" content="UAH">`}
             </p>
             <button type="button" class="btn-link-style btn-primary-style" onclick="openBuyPopup('${p.id}')">
                 <i class="bi bi-cart-plus me-2"></i> Купити
@@ -561,11 +586,11 @@ const jsonLd = {
             "name": p.name,
             "description": p.description,
             "image": p.imageFull || p.image,
-            "offers": {
+            "offers": p.priceValue ? {
                 "@type": "Offer",
                 "price": p.priceValue,
                 "priceCurrency": "UAH"
-            }
+            } : { "@type": "Offer", "priceCurrency": "UAH", "availability": "https://schema.org/InStock" }
         }
     }))
 };
