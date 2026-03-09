@@ -788,14 +788,14 @@ function renderProducts() {
                 ${eyeBtn}
             </div>
             <h3 class="product-name" itemprop="name">${p.name}</h3>
-            ${p.intro ? `<p class="product-intro" itemprop="description">${p.intro}</p>` : (p.description ? `<p class="product-desc" itemprop="description">${p.description}</p>` : "")}
-            ${fitsBlock}
-            ${specsBlock}
             <p class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                 ${p.priceValue ? `<span itemprop="price" content="${p.priceValue}">${p.price}</span><meta itemprop="priceCurrency" content="UAH">` : `<span>${p.price}</span><meta itemprop="priceCurrency" content="UAH">`}
             </p>
             ${p.priceIncluded ? `<p class="product-price-included">${p.priceIncluded}</p>` : ""}
             ${p.priceNote ? `<p class="product-price-note">${p.priceNote}</p>` : ""}
+            ${p.intro ? `<p class="product-intro" itemprop="description">${p.intro}</p>` : (p.description ? `<p class="product-desc" itemprop="description">${p.description}</p>` : "")}
+            ${fitsBlock}
+            ${specsBlock}
             ${deliveryBlock}
             ${termsBlock}
             <button type="button" class="btn-link-style btn-primary-style" onclick="openBuyPopup('${p.id}')">
