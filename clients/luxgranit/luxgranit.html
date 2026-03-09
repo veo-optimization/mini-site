@@ -350,10 +350,12 @@
         .popup-product-name { color: rgb(182, 236, 223); font-weight: 600; margin-bottom: 16px; }
         .popup-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
         .popup-actions .btn-link-style { margin-bottom: 0; }
+        .popup-header-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
         .popup-close {
-            position: absolute;
-            top: 12px;
-            right: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -471,7 +473,9 @@
 <!-- Спливаюче вікно для оплати -->
 <div class="popup" id="buyPopup">
     <div class="popup-content" onclick="event.stopPropagation()">
-        <button type="button" class="popup-close" onclick="closeBuyPopup()"><i class="bi bi-x-lg"></i> Закрити</button>
+        <div class="popup-header-row">
+            <button type="button" class="popup-close" onclick="closeBuyPopup()"><i class="bi bi-x-lg"></i> Закрити</button>
+        </div>
         <h3>Реквізити для оплати</h3>
         <p class="popup-product-name" id="popupProductName"></p>
         <div class="requisite-item">
@@ -835,16 +839,15 @@ function openBuyPopup(productId) {
     const product = config.products.find(p => p.id === productId);
     if (!product) return;
     const req = config.requisites;
-    const paymentNote = `${req.paymentNote}: ${product.name}`;
     document.getElementById("popupProductName").textContent = product.name;
     document.getElementById("popup-iban").textContent = req.iban;
-    document.getElementById("popup-payment-note").textContent = paymentNote;
+    document.getElementById("popup-payment-note").textContent = req.paymentNote;
     document.getElementById("popup-edrpou").textContent = req.edrpou;
     document.getElementById("popup-fop").textContent = req.fop;
     document.getElementById("popup-phone").href = "tel:" + req.phone.replace(/\s/g, "");
     document.getElementById("popup-telegram").href = req.telegram + "?text=" + encodeURIComponent("Доброго дня! Хочу замовити: " + product.name);
     document.getElementById("popup-viber").href = req.viber;
-    window._currentPaymentNote = paymentNote;
+    window._currentPaymentNote = req.paymentNote;
     document.getElementById("buyPopup").classList.add("visible");
     document.body.style.overflow = "hidden";
 }
