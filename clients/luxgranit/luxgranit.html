@@ -75,14 +75,38 @@
             margin-bottom: 18px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
         }
-        .product-image {
+        .product-gallery {
+            position: relative;
             width: 100%;
             aspect-ratio: 1;
-            object-fit: cover;
             border-radius: 12px;
             margin-bottom: 12px;
+            overflow: hidden;
             background: rgba(55, 55, 60, 0.6);
         }
+        .product-gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .product-gallery img.active { display: block; }
+        .product-gallery-dots {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+        .product-gallery-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+        }
+        .product-gallery-dots span.active { background: rgb(182, 236, 223); }
         .product-name {
             font-size: 1.1rem;
             font-weight: 700;
@@ -453,43 +477,52 @@ const config = {
         telegram: "https://t.me/luxgranit_support",
         viber: "viber://chat?number=%2B380671234567"
     },
+    mediaPath: "media/",
     products: [
         {
             id: "1",
-            name: "Гранітна плитка для доріжок",
+            name: "Камінь для доріжок",
             description: "Гранітна плитка з однією або двома рівними пиленими сторонами — по ній дуже зручно ходити, легко прибирати. Ідеально для садових доріжок, підʼїзних шляхів, зон біля будинку. Весь камінь відібраний вручну, має лицьові сторони. Природний український граніт, морозостійкий. Орієнтовно 90–130 м² плитки на мінімальну доставку (10 тонн, ≈ 6,5 м³ навалом).",
             price: "за м³",
             priceValue: 0,
-            image: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=600",
-            imageFull: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=1200"
+            images: ["1.jpeg", "2.jpeg", "3.jpeg"]
         },
         {
             id: "2",
-            name: "Камінь для ручної кладки (облицювання)",
-            description: "Природний камінь для облицювання парканів, стовпчиків, фасадів та підпірних стінок. Весь камінь відібраний вручну для ручної кладки, має лицьові сторони. Різні фракції під різні типи споруд. Орієнтовна витрата: 1 м³ кладки ≈ 1,5–1,7 м³ каменю (коефіцієнт ущільнення). Доставка автотранспортом по Києву, області та Україні.",
+            name: "Камінь для стовпчиків",
+            description: "Природний камінь для побудови стовпчиків парканів. Весь камінь відібраний вручну для ручної кладки, має лицьові сторони. Орієнтовна витрата: 1 стовпчик (40×40 см, висота 2 м) ≈ 0,5 м³ каменю. Доставка автотранспортом по Києву, області та Україні.",
             price: "за м³",
             priceValue: 0,
-            image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600",
-            imageFull: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200"
+            images: ["4.jpeg", "5.jpeg"]
         },
         {
             id: "3",
-            name: "Бутовий камінь для фундаментів",
+            name: "Камінь для фундаменту",
             description: "Бутовий камінь для побудови фундаментів, цоколів та підпірних конструкцій. Весь камінь відібраний вручну, має лицьові сторони. Камінь навалом: 10 тонн ≈ 6,5 м³. Орієнтовна витрата: 1 м³ фундаменту ≈ 1,3–1,5 м³ каменю (коефіцієнт ущільнення). Мінімальна доставка — 10 тонн.",
             price: "за м³",
             priceValue: 0,
-            image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600",
-            imageFull: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200"
+            images: ["6.jpeg", "7.jpeg"]
         }
     ]
 };
 
 // Рендер каталогу
 function renderProducts() {
+    const base = config.mediaPath || "media/";
     const container = document.getElementById("productsContainer");
-    container.innerHTML = config.products.map(p => `
+    container.innerHTML = config.products.map((p, idx) => {
+        const imgs = p.images || [p.image];
+        const imgEls = imgs.map((img, i) => {
+            const src = img.startsWith("http") ? img : base + img;
+            return `<img src="${src}" alt="${p.name}" itemprop="image" loading="lazy" class="${i === 0 ? "active" : ""}" data-idx="${i}">`;
+        }).join("");
+        const dots = imgs.length > 1 ? imgs.map((_, i) => `<span class="${i === 0 ? "active" : ""}" data-idx="${i}" onclick="switchProductImg(${idx}, ${i})"></span>`).join("") : "";
+        return `
         <div class="product-card" itemscope itemtype="https://schema.org/Product">
-            <img class="product-image" src="${p.image}" alt="${p.name}" itemprop="image" loading="lazy">
+            <div class="product-gallery" id="gallery-${idx}">
+                ${imgEls}
+                ${dots ? `<div class="product-gallery-dots">${dots}</div>` : ""}
+            </div>
             <h3 class="product-name" itemprop="name">${p.name}</h3>
             <p class="product-desc" itemprop="description">${p.description}</p>
             <p class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
@@ -499,7 +532,13 @@ function renderProducts() {
                 <i class="bi bi-cart-plus me-2"></i> Купити
             </button>
         </div>
-    `).join("");
+    `}).join("");
+}
+function switchProductImg(productIdx, imgIdx) {
+    const gallery = document.getElementById("gallery-" + productIdx);
+    if (!gallery) return;
+    gallery.querySelectorAll("img").forEach((img, i) => { img.classList.toggle("active", i === imgIdx); });
+    gallery.querySelectorAll(".product-gallery-dots span").forEach((dot, i) => { dot.classList.toggle("active", i === imgIdx); });
 }
 
 function openBuyPopup(productId) {
@@ -574,25 +613,30 @@ document.getElementById("contact-viber-label").textContent = config.requisites.p
 renderProducts();
 
 // JSON-LD для Google Merchant
+const baseUrl = typeof location !== "undefined" ? (location.origin + location.pathname.replace(/[^/]+$/, "")) : "";
 const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": config.storeName + " — Каталог",
-    "itemListElement": config.products.map((p, i) => ({
-        "@type": "ListItem",
-        "position": i + 1,
-        "item": {
-            "@type": "Product",
-            "name": p.name,
-            "description": p.description,
-            "image": p.imageFull || p.image,
-            "offers": p.priceValue ? {
-                "@type": "Offer",
-                "price": p.priceValue,
-                "priceCurrency": "UAH"
-            } : { "@type": "Offer", "priceCurrency": "UAH", "availability": "https://schema.org/InStock" }
-        }
-    }))
+    "itemListElement": config.products.map((p, i) => {
+        const imgs = p.images || (p.image ? [p.image] : []);
+        const imgUrls = imgs.map(img => img.startsWith("http") ? img : baseUrl + (config.mediaPath || "media/") + img);
+        return {
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": {
+                "@type": "Product",
+                "name": p.name,
+                "description": p.description,
+                "image": imgUrls.length ? imgUrls : undefined,
+                "offers": p.priceValue ? {
+                    "@type": "Offer",
+                    "price": p.priceValue,
+                    "priceCurrency": "UAH"
+                } : { "@type": "Offer", "priceCurrency": "UAH", "availability": "https://schema.org/InStock" }
+            }
+        };
+    })
 };
 const script = document.createElement("script");
 script.type = "application/ld+json";
