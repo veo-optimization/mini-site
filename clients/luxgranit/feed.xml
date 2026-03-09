@@ -3,10 +3,12 @@
   <channel>
     <title>Lux Granit — Каталог товарів</title>
     <link>https://veo-optimization.github.io/mini-site/clients/luxgranit/luxgranit.html</link>
-    <description>Граніт, камінь для інтер'єру та екстер'єру. Lux Granit — каталог товарів.</description>
+    <description>Граніт, мармур, камінь для інтер'єру та екстер'єру. Lux Granit — каталог товарів.</description>
     <item>
       <g:id>luxgranit_1</g:id>
       <g:title>Камінь граніт для садових доріжок</g:title>
+      <g:content_language>uk</g:content_language>
+      <g:target_country>UA</g:target_country>
       <g:description>Гранітний камінь для облаштування садових доріжок, майданчиків та відмостки біля будинку. Натуральний, міцний та довговічний матеріал. Характеристики: товщина 3–5 см (±1 см), натуральний граніт, зручний для укладання. Підходить для садових доріжок, майданчиків під авто, відмостки навколо будинку.</g:description>
       <g:link>https://veo-optimization.github.io/mini-site/clients/luxgranit/luxgranit.html#product-1</g:link>
       <g:image_link>https://veo-optimization.github.io/mini-site/clients/luxgranit/media/1.jpeg</g:image_link>
@@ -17,6 +19,8 @@
     <item>
       <g:id>luxgranit_2</g:id>
       <g:title>Камінь бутовий кутовий для стовпів</g:title>
+      <g:content_language>uk</g:content_language>
+      <g:target_country>UA</g:target_country>
       <g:description>Бутовий кутовий камінь для будівництва надійних та міцних стовпів. Фракція 150–300 мм, натуральний бутовий камінь, кутова форма для зручної кладки. Підходить для стовпів для паркану, декоративних колон, ландшафтних конструкцій.</g:description>
       <g:link>https://veo-optimization.github.io/mini-site/clients/luxgranit/luxgranit.html#product-2</g:link>
       <g:image_link>https://veo-optimization.github.io/mini-site/clients/luxgranit/media/4.jpeg</g:image_link>
@@ -27,6 +31,8 @@
     <item>
       <g:id>luxgranit_3</g:id>
       <g:title>Камінь бутовий кутовий для фундаменту</g:title>
+      <g:content_language>uk</g:content_language>
+      <g:target_country>UA</g:target_country>
       <g:description>Міцний бутовий камінь для будівництва фундаментів. Фракція 150–350 мм, натуральний бутовий камінь. Підходить для фундаментів будинків, господарських будівель, підпірних конструкцій.</g:description>
       <g:link>https://veo-optimization.github.io/mini-site/clients/luxgranit/luxgranit.html#product-3</g:link>
       <g:image_link>https://veo-optimization.github.io/mini-site/clients/luxgranit/media/7.jpeg</g:image_link>
@@ -37,6 +43,8 @@
     <item>
       <g:id>luxgranit_4</g:id>
       <g:title>Камінь бутовий кутовий для паркану</g:title>
+      <g:content_language>uk</g:content_language>
+      <g:target_country>UA</g:target_country>
       <g:description>Бутовий кутовий камінь для будівництва парканів та огорож. Фракція 150–350 мм, натуральний бутовий камінь, зручний для кладки. Підходить для парканів, огорож, декоративних стін та конструкцій.</g:description>
       <g:link>https://veo-optimization.github.io/mini-site/clients/luxgranit/luxgranit.html#product-4</g:link>
       <g:image_link>https://veo-optimization.github.io/mini-site/clients/luxgranit/media/6.jpeg</g:image_link>
