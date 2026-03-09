@@ -336,6 +336,7 @@
         }
         .popup.visible { display: flex; }
         .popup-content {
+            position: relative;
             background: rgba(30, 30, 35, 0.98);
             padding: 24px;
             border-radius: 20px;
@@ -353,13 +354,23 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: none;
-            border: none;
-            color: #999;
-            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
         }
-        .popup-close:hover { color: #fff; }
+        .popup-close:hover {
+            background: rgba(255,255,255,0.25);
+            color: rgb(182, 236, 223);
+        }
         /* Повноекранний перегляд фото */
         .view-popup {
             position: fixed;
@@ -444,6 +455,15 @@
         }
         .footer a { color: rgb(182, 236, 223); text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
+        .req-contacts-block .requisite-item { margin-bottom: 12px; }
+        .req-contacts-block .requisite-item:last-of-type { margin-bottom: 0; }
+        .req-contacts-subtitle {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgb(182, 236, 223);
+            margin: 16px 0 10px;
+        }
+        .req-contacts-subtitle:first-child { margin-top: 0; }
     </style>
 </head>
 <body>
@@ -451,7 +471,7 @@
 <!-- Спливаюче вікно для оплати -->
 <div class="popup" id="buyPopup">
     <div class="popup-content" onclick="event.stopPropagation()">
-        <button type="button" class="popup-close" onclick="closeBuyPopup()">&times;</button>
+        <button type="button" class="popup-close" onclick="closeBuyPopup()"><i class="bi bi-x-lg"></i> Закрити</button>
         <h3>Реквізити для оплати</h3>
         <p class="popup-product-name" id="popupProductName"></p>
         <div class="requisite-item">
@@ -524,37 +544,13 @@
         <div id="productsContainer"></div>
     </section>
 
-    <!-- УМОВИ ОПЛАТИ -->
+    <!-- УМОВИ ДОСТАВКИ ТА ОПЛАТИ -->
     <section class="block">
-        <h2 class="section-title">Умови оплати</h2>
-        <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
-            <li>Оплата через IBAN (реквізити у спливаючому вікні при натисканні «Купити»)</li>
-            <li>Оплата через платіжний шлюз Visa / MasterCard</li>
-            <li>Переказ на розрахунковий рахунок ФОП</li>
-        </ul>
-    </section>
-
-    <!-- УМОВИ ДОСТАВКИ ТА ПОВЕРНЕННЯ -->
-    <section class="block">
-        <h2 class="section-title">Доставка та повернення</h2>
-        <div class="accordion-item" onclick="toggle(this)">
-            <i class="bi bi-chevron-right me-2"></i> Доставка
-        </div>
-        <div class="panel">
-            <p style="margin:0 0 10px;color:#b0b0b0;">Доставка товару проходить автотранспортом (вантажними машинами) по Києву, Київській області та по Україні (попутним вантажем).</p>
-            <p style="margin:0 0 10px;color:#b0b0b0;"><strong style="color:#e0e0e0;">Мінімальне замовлення:</strong> машина 10 тонн.</p>
-            <p style="margin:0;color:#b0b0b0;"><strong style="color:#e0e0e0;">Вивантаження (скидання) каменю:</strong> скидання може проводитись вздовж лінії майбутнього паркану в 1, 2 або максимум 3 точках — щоб будівельники не носили камінь вручну.</p>
-        </div>
-        <div class="accordion-item" onclick="toggle(this)">
-            <i class="bi bi-chevron-right me-2"></i> Умови повернення
-        </div>
-        <div class="panel">
-            <ul style="margin:0;padding-left:18px;color:#b0b0b0;">
-                <li>Товар повинен мати товарний вигляд</li>
-                <li>Без слідів використання</li>
-                <li>Повернення протягом 14 днів згідно із законом</li>
-            </ul>
-        </div>
+        <h2 class="section-title">Умови доставки та оплати</h2>
+        <p style="margin:0 0 10px;color:#b0b0b0;">Доставка здійснюється протягом 1–7 днів автотранспортом по Києву, Київській області та Україні.</p>
+        <p style="margin:0 0 10px;color:#b0b0b0;">Оплата по факту доставки — переказом на рахунок ФОП (реквізити у спливаючому вікні при натисканні «Купити»).</p>
+        <p style="margin:0 0 10px;color:#b0b0b0;"><strong style="color:#e0e0e0;">Мінімальне замовлення:</strong> машина 10 тонн.</p>
+        <p style="margin:0;color:#b0b0b0;"><strong style="color:#e0e0e0;">Вивантаження (скидання) каменю:</strong> скидання може проводитись вздовж лінії майбутнього паркану в 1, 2 або максимум 3 точках — щоб будівельники не носили камінь вручну.</p>
     </section>
 
     <!-- ОРІЄНТОВНІ ВИТРАТИ МАТЕРІАЛУ -->
@@ -604,12 +600,56 @@
         </div>
     </section>
 
-    <!-- КОНТАКТИ -->
-    <section id="contacts">
-        <h2 class="section-title">Контакти</h2>
+    <!-- РЕКВІЗИТИ ТА КОНТАКТИ -->
+    <section class="block req-contacts-block">
+        <h2 class="section-title">Реквізити та контакти</h2>
+        <div class="req-contacts-subtitle">Реквізити</div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">ФОП:</span>
+                <button type="button" class="btn-copy" onclick="copyFooterRequisite('fop', this)">Скопіювати</button>
+            </div>
+            <p id="footer-fop" class="requisite-value"></p>
+        </div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">IBAN:</span>
+                <button type="button" class="btn-copy" onclick="copyFooterRequisite('iban', this)">Скопіювати</button>
+            </div>
+            <p id="footer-iban" class="requisite-value"></p>
+        </div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">ЄДРПОУ:</span>
+                <button type="button" class="btn-copy" onclick="copyFooterRequisite('edrpou', this)">Скопіювати</button>
+            </div>
+            <p id="footer-edrpou" class="requisite-value"></p>
+        </div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">Адреса ФОП:</span>
+                <button type="button" class="btn-copy" onclick="copyFooterRequisite('address', this)">Скопіювати</button>
+            </div>
+            <p id="footer-address" class="requisite-value"></p>
+        </div>
+        <div class="requisite-item">
+            <div class="copy-row">
+                <span class="req-label">Призначення платежу:</span>
+                <button type="button" class="btn-copy" onclick="copyFooterRequisite('paymentNote', this)">Скопіювати</button>
+            </div>
+            <p id="footer-paymentNote" class="requisite-value"></p>
+        </div>
+        <button type="button" class="btn-link-style btn-secondary-style" style="margin-top:12px;margin-bottom:16px;" onclick="copyAllRequisites()">
+            <i class="bi bi-clipboard me-2"></i> Скопіювати всі реквізити
+        </button>
+        <div class="req-contacts-subtitle">Контакти</div>
         <div class="contact-subblock">
+            <a id="footer-phone" class="btn-link-style btn-secondary-style contact-btn" href="#">
+                <span><i class="bi bi-telephone me-2"></i> Зателефонувати</span>
+                <span class="contact-btn-username" id="footer-phone-label"></span>
+            </a>
             <a id="contact-telegram" class="btn-link-style btn-telegram-cta contact-btn" href="#" target="_blank" rel="noopener noreferrer">
-                <span><i class="bi bi-telegram me-2"></i> Telegram-бот</span>
+                <span><i class="bi bi-telegram me-2"></i> Telegram</span>
                 <span class="contact-btn-username" id="contact-telegram-label">@luxgranit_bot</span>
             </a>
             <a id="contact-viber" class="btn-link-style btn-secondary-style contact-btn" href="#">
@@ -635,14 +675,15 @@ const config = {
     storeName: "Lux Granit",
     storeCategories: "Граніт, камінь для доріжок, парканів, фундаментів. Ручна відбірка.",
     requisites: {
-        fop: "Петренко Іван Олексійович",
-        iban: "UA903052990000026001234567890",
-        edrpou: "3123456789",
+        fop: "Шеремета Анатолій Іванович",
+        iban: "UA943052990000026005045027488",
+        edrpou: "2451713759",
         paymentNote: "Оплата за товар",
-        phone: "+380671234567",
-        phoneDisplay: "+380 67 123 45 67",
-        telegram: "https://t.me/luxgranit_support",
-        viber: "viber://chat?number=%2B380671234567"
+        address: "Київ, вул. Верховинна, 34, кв. 64",
+        phone: "+380965817471",
+        phoneDisplay: "096 581 7471",
+        telegram: "https://t.me/luxgranit",
+        viber: "viber://chat?number=%2B380965817471"
     },
     mediaPath: "media/",
     products: [
@@ -817,6 +858,18 @@ document.getElementById("buyPopup").addEventListener("click", function(e) {
     if (e.target === this) closeBuyPopup();
 });
 
+function copyFooterRequisite(field, btn) {
+    const map = { fop: "footer-fop", iban: "footer-iban", edrpou: "footer-edrpou", address: "footer-address", paymentNote: "footer-paymentNote" };
+    const id = map[field];
+    const text = document.getElementById(id).textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+        showToast("Скопійовано");
+        btn.classList.add("copied");
+        btn.textContent = "Скопійовано";
+        setTimeout(() => { btn.classList.remove("copied"); btn.textContent = "Скопіювати"; }, 2000);
+    });
+}
+
 function copyRequisite(field, btn) {
     const map = { iban: "popup-iban", paymentNote: "popup-payment-note", edrpou: "popup-edrpou", fop: "popup-fop" };
     const id = map[field];
@@ -831,7 +884,7 @@ function copyRequisite(field, btn) {
 
 function copyAllRequisites() {
     const req = config.requisites;
-    const text = `ФОП: ${req.fop}\nIBAN: ${req.iban}\nЄДРПОУ: ${req.edrpou}\nПризначення платежу: ${window._currentPaymentNote || req.paymentNote}`;
+    const text = `ФОП: ${req.fop}\nIBAN: ${req.iban}\nЄДРПОУ: ${req.edrpou}\n${req.address ? "Адреса: " + req.address + "\n" : ""}Призначення платежу: ${window._currentPaymentNote || req.paymentNote}`;
     navigator.clipboard.writeText(text).then(() => showToast("Реквізити скопійовано"));
 }
 
@@ -854,10 +907,18 @@ function toggle(el) {
 document.getElementById("storeName").textContent = config.storeName;
 document.getElementById("storeCategories").textContent = config.storeCategories;
 document.getElementById("footerStoreName").textContent = config.storeName;
-document.getElementById("contact-telegram").href = config.requisites.telegram;
-document.getElementById("contact-telegram-label").textContent = "@" + config.requisites.telegram.split("/").pop();
-document.getElementById("contact-viber").href = config.requisites.viber;
-document.getElementById("contact-viber-label").textContent = config.requisites.phoneDisplay || config.requisites.phone;
+const req = config.requisites;
+document.getElementById("footer-fop").textContent = req.fop;
+document.getElementById("footer-iban").textContent = req.iban;
+document.getElementById("footer-edrpou").textContent = req.edrpou;
+document.getElementById("footer-address").textContent = req.address || "";
+document.getElementById("footer-paymentNote").textContent = req.paymentNote;
+document.getElementById("footer-phone").href = "tel:" + req.phone.replace(/\s/g, "");
+document.getElementById("footer-phone-label").textContent = req.phoneDisplay || req.phone;
+document.getElementById("contact-telegram").href = req.telegram;
+document.getElementById("contact-telegram-label").textContent = "@" + req.telegram.split("/").pop();
+document.getElementById("contact-viber").href = req.viber;
+document.getElementById("contact-viber-label").textContent = req.phoneDisplay || req.phone;
 
 renderProducts();
 initGallerySwipe();
