@@ -197,13 +197,21 @@
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.7);
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
             z-index: 10000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            pointer-events: none;
         }
-        .popup.visible { display: flex; }
+        .popup.visible {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
         .popup-content {
             background: rgba(30, 30, 35, 0.98);
             padding: 24px;
@@ -268,6 +276,56 @@
         }
         .footer a { color: rgb(182, 236, 223); text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
+        .accordion-trigger {
+            cursor: pointer;
+            padding: 18px 16px;
+            margin-top: 24px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(182, 236, 223, 0.2), rgba(182, 236, 223, 0.12));
+            border: 2px solid rgb(182, 236, 223);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            transition: all 0.2s;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(182, 236, 223, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .accordion-trigger:hover {
+            background: linear-gradient(135deg, rgba(182, 236, 223, 0.3), rgba(182, 236, 223, 0.2));
+            box-shadow: 0 6px 24px rgba(182, 236, 223, 0.35);
+            transform: translateY(-2px);
+        }
+        .accordion-trigger i.chevron { transition: transform 0.2s; }
+        .accordion-trigger.open i.chevron { transform: rotate(90deg); }
+        .accordion-panel {
+            display: none;
+            margin-top: 16px;
+            padding: 18px;
+            background: rgba(55, 55, 60, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .accordion-panel.open { display: block; }
+        .accordion-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .accordion-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .accordion-item-title {
+            font-weight: 600;
+            color: rgb(182, 236, 223);
+            margin-bottom: 6px;
+        }
+        .accordion-item-desc {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -286,7 +344,7 @@
 
             <div class="form-group">
                 <label class="form-label">Назва магазину <span class="required">*</span></label>
-                <input type="text" class="form-input" id="storeName" name="storeName" maxlength="80" placeholder="Наприклад: ROSSO TT" required>
+                <input type="text" class="form-input" id="storeName" name="storeName" maxlength="80" placeholder="Наприклад: VEO SHOP" required>
                 <div class="char-counter"><span id="storeNameCount">0</span>/80</div>
                 <div class="form-error" id="storeNameError"></div>
             </div>
@@ -300,7 +358,7 @@
 
         <!-- БЛОК: Реквізити ФОП -->
         <section class="block">
-            <h2 class="section-title">Реквізити ФОП</h2>
+            <h2 class="section-title">Реквізити ФОП <span class="free-badge">БЕЗКОШТОВНО</span></h2>
 
             <div class="form-group">
                 <label class="form-label">ПІБ ФОП (повне) <span class="required">*</span></label>
@@ -331,7 +389,7 @@
 
         <!-- БЛОК: Контакти -->
         <section class="block">
-            <h2 class="section-title">Контакти</h2>
+            <h2 class="section-title">Контакти <span class="free-badge">БЕЗКОШТОВНО</span></h2>
 
             <div class="form-group">
                 <label class="form-label">Контактний телефон</label>
@@ -346,7 +404,7 @@
             <div class="form-group">
                 <div class="form-label-row">
                     <label class="form-label">Telegram менеджера <span class="required">*</span></label>
-                    <button type="button" class="btn-info-link" onclick="openTelegramHelpPopup()">
+                    <button type="button" class="btn-info-link" id="btnTelegramHelp1">
                         <i class="bi bi-question-circle"></i> Як створити username?
                     </button>
                 </div>
@@ -358,7 +416,7 @@
             <div class="form-group">
                 <div class="form-label-row">
                     <label class="form-label">Юзернейм Telegram-каналу</label>
-                    <button type="button" class="btn-info-link" onclick="openTelegramHelpPopup()">
+                    <button type="button" class="btn-info-link" id="btnTelegramHelp2">
                         <i class="bi bi-question-circle"></i> Як створити username?
                     </button>
                 </div>
@@ -379,6 +437,54 @@
         <button type="submit" class="btn-submit" id="submitBtn">
             <i class="bi bi-check-circle me-2"></i> Створити міні-сайт!
         </button>
+
+        <!-- Розширені можливості -->
+        <div class="accordion-trigger" id="accordionTrigger">
+            <i class="bi bi-chevron-right chevron"></i>
+            <span>Розширені можливості</span>
+        </div>
+        <div class="accordion-panel" id="accordionPanel">
+            <div class="accordion-item">
+                <div class="accordion-item-title">Декілька номерів телефону та Viber менеджерів</div>
+                <div class="accordion-item-desc">Додайте кілька контактних номерів для різних менеджерів — клієнти зможуть обрати потрібний канал зв'язку.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">Посилання на декілька TikTok-акаунтів</div>
+                <div class="accordion-item-desc">Резервні акаунти або окремі профілі для різних медіа-ролей (основний, розважальний, новини тощо).</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">Умови оплати, доставки та повернення</div>
+                <div class="accordion-item-desc">Детальні умови для клієнтів: способи оплати, терміни доставки, політика повернення та обміну.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">API токен Telegram-бота</div>
+                <div class="accordion-item-desc">Інтеграція з власним Telegram-ботом для автоматизації замовлень, підписок та сповіщень.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">API токен Нової пошти</div>
+                <div class="accordion-item-desc">Автоматичне формування ТТН, відстеження відправлень та синхронізація зі службою доставки.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">Токен платіжного мерчанту</div>
+                <div class="accordion-item-desc">Прийом миттєвих оплат карткою, Google Pay, Apple Pay з автоматичною фіскалізацією чеків.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">Система обліку клієнтів</div>
+                <div class="accordion-item-desc">База клієнтів, історія замовлень, адреси доставки та персональні дані в одному місці.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">Система розсилок клієнтам</div>
+                <div class="accordion-item-desc">Масові розсилки в Telegram: акції, новинки, нагадування про замовлення.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">Сповіщення про прямі трансляції</div>
+                <div class="accordion-item-desc">Автоматичні сповіщення підписникам про вихід в ефір на TikTok, Bigo, Instagram та інших платформах.</div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-item-title">Аналітика, облік товарів та інше</div>
+                <div class="accordion-item-desc">Звіти з продажів, залишки товарів, популярні позиції, конверсія та інші метрики для управління бізнесом.</div>
+            </div>
+        </div>
     </form>
 
     <div class="footer">
@@ -387,10 +493,10 @@
 </div>
 
 <!-- Спливаюче вікно: Як створити username в Telegram -->
-<div class="popup" id="telegramHelpPopup" onclick="if(event.target===this)closeTelegramHelpPopup()">
-    <div class="popup-content" onclick="event.stopPropagation()">
+<div class="popup" id="telegramHelpPopup">
+    <div class="popup-content">
         <div class="popup-header-row">
-            <button type="button" class="popup-close" onclick="closeTelegramHelpPopup()"><i class="bi bi-x-lg"></i> Закрити</button>
+            <button type="button" class="popup-close" id="btnCloseTelegramHelp"><i class="bi bi-x-lg"></i> Закрити</button>
         </div>
         <h3><i class="bi bi-telegram me-2"></i>Як створити username в Telegram</h3>
         <div class="popup-body">
@@ -517,13 +623,34 @@
         }
     });
 
-    function openTelegramHelpPopup() {
-        document.getElementById('telegramHelpPopup').classList.add('visible');
-        document.body.style.overflow = 'hidden';
+    const popup = document.getElementById('telegramHelpPopup');
+    const popupContent = popup.querySelector('.popup-content');
+
+    function openTelegramHelpPopup(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        popup.classList.add('visible');
     }
-    function closeTelegramHelpPopup() {
-        document.getElementById('telegramHelpPopup').classList.remove('visible');
-        document.body.style.overflow = '';
+    function closeTelegramHelpPopup(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        popup.classList.remove('visible');
+    }
+
+    document.getElementById('btnTelegramHelp1').addEventListener('click', openTelegramHelpPopup);
+    document.getElementById('btnTelegramHelp2').addEventListener('click', openTelegramHelpPopup);
+    document.getElementById('btnCloseTelegramHelp').addEventListener('click', closeTelegramHelpPopup);
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) closeTelegramHelpPopup(e);
+    });
+    popupContent.addEventListener('click', function(e) { e.stopPropagation(); });
+
+    // Розширені можливості — випадаюче меню
+    const accordionTrigger = document.getElementById('accordionTrigger');
+    const accordionPanel = document.getElementById('accordionPanel');
+    if (accordionTrigger && accordionPanel) {
+        accordionTrigger.addEventListener('click', function() {
+            accordionTrigger.classList.toggle('open');
+            accordionPanel.classList.toggle('open');
+        });
     }
 })();
 </script>
