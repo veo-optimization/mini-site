@@ -155,6 +155,41 @@
             line-height: 1.5;
             margin-bottom: 12px;
         }
+        .product-intro { font-size: 0.9rem; color: #b0b0b0; line-height: 1.5; margin-bottom: 12px; }
+        .product-detail-block {
+            margin-bottom: 12px;
+            padding: 10px 12px;
+            background: rgba(55, 55, 60, 0.5);
+            border-radius: 10px;
+            border-left: 3px solid rgb(182, 236, 223);
+        }
+        .product-detail-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgb(182, 236, 223);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .product-detail-list {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.85rem;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        .product-detail-list li { margin-bottom: 2px; }
+        .product-delivery-block {
+            margin-bottom: 12px;
+            padding: 10px 12px;
+            background: rgba(55, 55, 60, 0.4);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #b0b0b0;
+            line-height: 1.5;
+        }
+        .product-delivery-block > div { margin-bottom: 4px; }
+        .product-delivery-block > div:last-child { margin-bottom: 0; }
         .product-price {
             font-size: 1.2rem;
             font-weight: 700;
@@ -601,40 +636,52 @@ const config = {
     products: [
         {
             id: "1",
-            name: "Камінь для доріжок",
-            description: "Гранітна плитка з однією або двома рівними пиленими сторонами — по ній дуже зручно ходити, легко прибирати. Ідеально для садових доріжок, підʼїзних шляхів, зон біля будинку. Весь камінь відібраний вручну, має лицьові сторони. Природний український граніт, морозостійкий. Кількість плитки на мінімальну доставку - 90 м² (10 тонн, ≈ 4,5 м³).",
-            price: "за м²",
-            priceValue: 0,
+            name: "Камінь граніт для садових доріжок",
+            intro: "Гранітний камінь для облаштування садових доріжок, майданчиків та відмостки біля будинку. Натуральний, міцний та довговічний матеріал, який добре витримує навантаження та погодні умови.",
+            fitsFor: ["садових доріжок", "майданчиків під авто", "відмостки навколо будинку", "декоративного благоустрою території"],
+            specs: ["товщина: 3–5 см (±1 см)", "натуральний граніт", "зручний для укладання"],
+            price: "277 грн / м² з доставкою",
+            priceValue: 277,
+            delivery: ["машина 10 т — 4,5 м³ / приблизно 90 м²", "вартість доставки — 25 000 грн"],
             images: ["1.jpeg", "2.jpeg", "3.jpeg"]
         },
         {
             id: "2",
-            name: "Камінь для стовпчиків",
-            description: "Природний камінь для побудови стовпчиків парканів. Весь камінь відібраний вручну для ручної кладки, має лицьові сторони. Орієнтовна витрата: 1 стовпчик (40×40 см, висота 2 м) ≈ 0,5 м³ каменю. Доставка автотранспортом по Києву, області та Україні.",
-            price: "за тонну",
+            name: "Камінь бутовий кутовий для стовпів",
+            intro: "Бутовий кутовий камінь для будівництва міцних та надійних стовпів. Завдяки кутовій формі зручний у кладці та дозволяє створювати рівні й акуратні конструкції.",
+            fitsFor: ["стовпів для паркану", "декоративних колон"],
+            specs: ["фракція: 150–300 мм", "натуральний бутовий камінь", "кутова форма для зручної кладки"],
+            price: "1100 грн / тонна",
+            priceValue: 1100,
             priceIncluded: "(з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
-            priceValue: 0,
             priceNote: "Скидання вздовж лінії паркану в 1–3 точках — будівельники не носять камінь.",
+            delivery: ["машина 10 тонн — 22 000 грн"],
             images: ["4.jpeg", "5.jpeg"]
         },
         {
             id: "3",
-            name: "Камінь для фундаменту",
-            description: "Бутовий камінь для побудови фундаментів, цоколів та підпірних конструкцій. Весь камінь відібраний вручну, має лицьові сторони. Камінь навалом: 10 тонн ≈ 6,5 м³. Орієнтовна витрата: 1 м³ фундаменту ≈ 1,3–1,5 м³ каменю (коефіцієнт ущільнення). Мінімальна доставка — 10 тонн.",
-            price: "за тонну",
+            name: "Камінь бутовий кутовий для фундаменту",
+            intro: "Міцний бутовий кутовий камінь для будівництва фундаментів. Натуральний матеріал, який відзначається високою міцністю, довговічністю та стійкістю до навантажень.",
+            fitsFor: ["фундаментів будинків", "господарських будівель", "підпірних конструкцій"],
+            specs: ["фракція: 150–350 мм", "натуральний бутовий камінь", "зручний для кладки"],
+            price: "1100 грн / тонна",
+            priceValue: 1100,
             priceIncluded: "(з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
             priceNote: "Скидання вздовж лінії паркану в 1–3 точках — будівельники не носять камінь.",
-            priceValue: 0,
+            delivery: ["машина 10 тонн — 22 000 грн"],
             images: ["7.jpeg", "6.jpeg"]
         },
         {
             id: "4",
-            name: "Камінь для парканів",
-            description: "Природний камінь для побудови парканів та облицювання. Весь камінь відібраний вручну для ручної кладки, має лицьові сторони. Орієнтовна витрата: 1 м довжини паркану (висота 2 м, товщ. 40 см) ≈ 1,2 м³ каменю. Коефіцієнт ущільнення для облицювання — 1,5–1,7. Доставка автотранспортом по Києву, області та Україні.",
-            price: "за тонну",
+            name: "Камінь бутовий кутовий для паркану",
+            intro: "Бутовий кутовий камінь для будівництва парканів та огорож. Має природний вигляд і добре підходить для міцної та декоративної кладки.",
+            fitsFor: ["парканів", "огорож", "декоративних стін"],
+            specs: ["фракція: 150–350 мм", "натуральний бутовий камінь", "кутова форма для зручного мурування"],
+            price: "1100 грн / тонна",
+            priceValue: 1100,
             priceIncluded: "(з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
             priceNote: "Скидання вздовж лінії паркану в 1–3 точках — будівельники не носять камінь.",
-            priceValue: 0,
+            delivery: ["машина 10 тонн — 22 000 грн"],
             images: ["6.jpeg"]
         }
     ]
@@ -652,6 +699,21 @@ function renderProducts() {
         }).join("");
         const dots = imgs.length > 1 ? imgs.map((_, i) => `<span class="${i === 0 ? "active" : ""}" data-idx="${i}" onclick="switchProductImg(${idx}, ${i})" role="button" aria-label="Фото ${i+1}"></span>`).join("") : "";
         const eyeBtn = imgs.length > 1 ? `<button type="button" class="gallery-eye-btn" onclick="openViewPopup(${idx})" aria-label="Переглянути фото в повному розмірі"><i class="bi bi-eye"></i></button>` : "";
+        const fitsBlock = p.fitsFor?.length ? `
+            <div class="product-detail-block">
+                <div class="product-detail-title">Підходить для</div>
+                <ul class="product-detail-list">${p.fitsFor.map(x => `<li>${x}</li>`).join("")}</ul>
+            </div>` : "";
+        const specsBlock = p.specs?.length ? `
+            <div class="product-detail-block">
+                <div class="product-detail-title">Характеристики</div>
+                <ul class="product-detail-list">${p.specs.map(x => `<li>${x}</li>`).join("")}</ul>
+            </div>` : "";
+        const deliveryBlock = p.delivery?.length ? `
+            <div class="product-delivery-block">
+                <div class="product-detail-title">Доставка</div>
+                ${p.delivery.map(x => `<div>${x}</div>`).join("")}
+            </div>` : "";
         return `
         <div class="product-card" itemscope itemtype="https://schema.org/Product">
             <div class="product-gallery-wrapper">
@@ -662,12 +724,15 @@ function renderProducts() {
                 ${eyeBtn}
             </div>
             <h3 class="product-name" itemprop="name">${p.name}</h3>
-            <p class="product-desc" itemprop="description">${p.description}</p>
+            ${p.intro ? `<p class="product-intro" itemprop="description">${p.intro}</p>` : (p.description ? `<p class="product-desc" itemprop="description">${p.description}</p>` : "")}
+            ${fitsBlock}
+            ${specsBlock}
             <p class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                 ${p.priceValue ? `<span itemprop="price" content="${p.priceValue}">${p.price}</span><meta itemprop="priceCurrency" content="UAH">` : `<span>${p.price}</span><meta itemprop="priceCurrency" content="UAH">`}
             </p>
             ${p.priceIncluded ? `<p class="product-price-included">${p.priceIncluded}</p>` : ""}
             ${p.priceNote ? `<p class="product-price-note">${p.priceNote}</p>` : ""}
+            ${deliveryBlock}
             <button type="button" class="btn-link-style btn-primary-style" onclick="openBuyPopup('${p.id}')">
                 <i class="bi bi-cart-plus me-2"></i> Купити
             </button>
@@ -812,7 +877,7 @@ const jsonLd = {
             "item": {
                 "@type": "Product",
                 "name": p.name,
-                "description": p.description,
+                "description": p.intro || p.description || "",
                 "image": imgUrls.length ? imgUrls : undefined,
                 "offers": p.priceValue ? {
                     "@type": "Offer",
