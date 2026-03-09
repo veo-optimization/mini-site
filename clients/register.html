@@ -305,21 +305,21 @@
             <div class="form-group">
                 <label class="form-label">ПІБ ФОП (повне) <span class="required">*</span></label>
                 <input type="text" class="form-input" id="fopName" name="fopName" placeholder="Прізвище Ім'я По батькові" required>
-                <div class="form-hint">Три слова, не менше 2 букв у кожному. Без цифр та символів.</div>
+                <div class="form-hint">Три слова. Без цифр та символів.</div>
                 <div class="form-error" id="fopNameError"></div>
             </div>
 
             <div class="form-group">
                 <label class="form-label">IBAN ФОП <span class="required">*</span></label>
                 <input type="text" class="form-input" id="iban" name="iban" placeholder="UA123456789012345678901234567" maxlength="29" required>
-                <div class="form-hint">Формат: UA + 27 цифр</div>
+                <div class="form-hint">Формат: UA+27 цифр. Без пробілів.</div>
                 <div class="form-error" id="ibanError"></div>
             </div>
 
             <div class="form-group">
                 <label class="form-label">ЄДРПОУ <span class="required">*</span></label>
                 <input type="text" class="form-input" id="edrpou" name="edrpou" placeholder="1234567890" maxlength="10" required>
-                <div class="form-hint">Рівно 10 цифр</div>
+                <div class="form-hint">10 цифр</div>
                 <div class="form-error" id="edrpouError"></div>
             </div>
 
@@ -377,7 +377,7 @@
         </section>
 
         <button type="submit" class="btn-submit" id="submitBtn">
-            <i class="bi bi-check-circle me-2"></i> Відправити заявку
+            <i class="bi bi-check-circle me-2"></i> Створити міні-сайт!
         </button>
     </form>
 
