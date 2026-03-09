@@ -161,6 +161,12 @@
             color: rgb(182, 236, 223);
             margin-bottom: 14px;
         }
+        .product-price-included {
+            font-size: 0.75rem;
+            color: #999;
+            margin: -4px 0 6px;
+            line-height: 1.3;
+        }
         .product-price-note {
             font-size: 0.8rem;
             color: #999;
@@ -605,7 +611,8 @@ const config = {
             id: "2",
             name: "Камінь для стовпчиків",
             description: "Природний камінь для побудови стовпчиків парканів. Весь камінь відібраний вручну для ручної кладки, має лицьові сторони. Орієнтовна витрата: 1 стовпчик (40×40 см, висота 2 м) ≈ 0,5 м³ каменю. Доставка автотранспортом по Києву, області та Україні.",
-            price: "за тонну (з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
+            price: "за тонну",
+            priceIncluded: "(з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
             priceValue: 0,
             priceNote: "Скидання вздовж лінії паркану в 1–3 точках — будівельники не носять камінь.",
             images: ["4.jpeg", "5.jpeg"]
@@ -614,16 +621,18 @@ const config = {
             id: "3",
             name: "Камінь для фундаменту",
             description: "Бутовий камінь для побудови фундаментів, цоколів та підпірних конструкцій. Весь камінь відібраний вручну, має лицьові сторони. Камінь навалом: 10 тонн ≈ 6,5 м³. Орієнтовна витрата: 1 м³ фундаменту ≈ 1,3–1,5 м³ каменю (коефіцієнт ущільнення). Мінімальна доставка — 10 тонн.",
-            price: "за тонну (з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
+            price: "за тонну",
+            priceIncluded: "(з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
             priceNote: "Скидання вздовж лінії паркану в 1–3 точках — будівельники не носять камінь.",
             priceValue: 0,
-            images: ["6.jpeg", "7.jpeg"]
+            images: ["7.jpeg", "6.jpeg"]
         },
         {
             id: "4",
             name: "Камінь для парканів",
             description: "Природний камінь для побудови парканів та облицювання. Весь камінь відібраний вручну для ручної кладки, має лицьові сторони. Орієнтовна витрата: 1 м довжини паркану (висота 2 м, товщ. 40 см) ≈ 1,2 м³ каменю. Коефіцієнт ущільнення для облицювання — 1,5–1,7. Доставка автотранспортом по Києву, області та Україні.",
-            price: "за тонну (з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
+            price: "за тонну",
+            priceIncluded: "(з ручним відбором, завантаженням, доставкою в Київ та вивантаженням)",
             priceNote: "Скидання вздовж лінії паркану в 1–3 точках — будівельники не носять камінь.",
             priceValue: 0,
             images: ["6.jpeg"]
@@ -642,7 +651,7 @@ function renderProducts() {
             return `<img src="${src}" alt="${p.name}" itemprop="image" loading="lazy" class="${i === 0 ? "active" : ""}" data-idx="${i}">`;
         }).join("");
         const dots = imgs.length > 1 ? imgs.map((_, i) => `<span class="${i === 0 ? "active" : ""}" data-idx="${i}" onclick="switchProductImg(${idx}, ${i})" role="button" aria-label="Фото ${i+1}"></span>`).join("") : "";
-        const eyeBtn = imgs.length ? `<button type="button" class="gallery-eye-btn" onclick="openViewPopup(${idx})" aria-label="Переглянути фото в повному розмірі"><i class="bi bi-eye"></i></button>` : "";
+        const eyeBtn = imgs.length > 1 ? `<button type="button" class="gallery-eye-btn" onclick="openViewPopup(${idx})" aria-label="Переглянути фото в повному розмірі"><i class="bi bi-eye"></i></button>` : "";
         return `
         <div class="product-card" itemscope itemtype="https://schema.org/Product">
             <div class="product-gallery-wrapper">
@@ -657,6 +666,7 @@ function renderProducts() {
             <p class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                 ${p.priceValue ? `<span itemprop="price" content="${p.priceValue}">${p.price}</span><meta itemprop="priceCurrency" content="UAH">` : `<span>${p.price}</span><meta itemprop="priceCurrency" content="UAH">`}
             </p>
+            ${p.priceIncluded ? `<p class="product-price-included">${p.priceIncluded}</p>` : ""}
             ${p.priceNote ? `<p class="product-price-note">${p.priceNote}</p>` : ""}
             <button type="button" class="btn-link-style btn-primary-style" onclick="openBuyPopup('${p.id}')">
                 <i class="bi bi-cart-plus me-2"></i> Купити
