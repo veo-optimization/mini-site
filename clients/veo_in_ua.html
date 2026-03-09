@@ -155,14 +155,29 @@
         }
         .cta-buttons {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: stretch;
             margin-top: 20px;
         }
         .cta-buttons .btn-link-style {
-            flex: 1;
-            min-width: 140px;
+            margin-bottom: 12px;
+        }
+        .cta-buttons .btn-link-style:last-child {
             margin-bottom: 0;
+        }
+        .btn-login-style {
+            padding: 10px 20px;
+            font-size: 14px;
+            max-width: 180px;
+            align-self: center;
+            background: transparent;
+            color: #999;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-login-style:hover {
+            color: rgb(182, 236, 223);
+            border-color: rgba(182, 236, 223, 0.4);
+            background: rgba(182, 236, 223, 0.08);
         }
         .footer {
             text-align: center;
@@ -208,25 +223,19 @@
     <!-- HEADER -->
     <section class="profile-header">
         <h1 class="store-name">VEO in UA</h1>
-        <p class="store-categories">Платформа міні-сайтів для TikTok-продавців</p>
+        <p class="store-categories">Частина екосистеми VEO FORCE — платформа міні-сайтів для TikTok-продавців</p>
     </section>
 
-    <!-- ПРО ЦЕЙ ДОМЕН -->
+    <!-- ПРО VEO.in.UA -->
     <section class="block">
-        <h2 class="section-title">Про цей домен</h2>
+        <h2 class="section-title">Про VEO.in.UA</h2>
         <p>На цьому домені розміщуються <strong>міні-сайти для продавців</strong> — окремі сторінки, де відображаються реквізити ФОП, контакти та каталог товарів.</p>
-        <p>Якщо ви перейшли сюди, прибравши частину адреси (наприклад, з посилання на міні-сайт типу <em>rosso</em> або <em>luxgranit</em>) — це головна сторінка платформи. Окремі магазини мають власні підсторінки з унікальними посиланнями.</p>
-    </section>
-
-    <!-- СТВОРИТИ СВОЮ СТОРІНКУ -->
-    <section class="block">
-        <h2 class="section-title">Створити свою міні-сторінку</h2>
-        <p>Щоб створити собі міні-сторінку з реквізитами, контактами та каталогом товарів — перейдіть на сторінку реєстрації в екосистемі для TikTok-продавців — <strong>CRM-систему VEO FORCE</strong>.</p>
+        <p>Щоб створити безкоштовний міні-сайт, зареєструйтесь в системі VEO FORCE. Якщо ви вже маєте обліковий запис в системі — увійдіть.</p>
         <div class="cta-buttons">
             <a href="https://app.veoforce.com/register" class="btn-link-style btn-primary-style" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-person-plus me-2"></i> Зареєструватись
             </a>
-            <a href="https://app.veoforce.com/login" class="btn-link-style btn-secondary-style" target="_blank" rel="noopener noreferrer">
+            <a href="https://app.veoforce.com/login" class="btn-link-style btn-login-style" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-box-arrow-in-right me-2"></i> Увійти
             </a>
         </div>
@@ -242,7 +251,7 @@
                 <span class="highlight">VEO FORCE</span> — CRM-система для TikTok-продавців. Питання? <a href="https://t.me/veoforce_support" target="_blank" rel="noopener noreferrer">@veoforce_support</a>
             </div>
         </div>
-        <p style="font-size:0.8rem;color:#888;margin-top:16px;">© 2026 VEO in UA</p>
+        <p style="font-size:0.8rem;color:#888;margin-top:16px;">© 2026 VEO FORCE</p>
     </div>
 
 </div>
