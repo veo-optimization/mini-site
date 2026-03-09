@@ -348,8 +348,6 @@
         }
         .popup-content h3 { color: #fff; margin-bottom: 16px; font-size: 1.2rem; }
         .popup-product-name { color: rgb(182, 236, 223); font-weight: 600; margin-bottom: 16px; }
-        .popup-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
-        .popup-actions .btn-link-style { margin-bottom: 0; }
         .popup-header-row {
             display: flex;
             justify-content: flex-end;
@@ -373,6 +371,54 @@
             background: rgba(255,255,255,0.25);
             color: rgb(182, 236, 223);
         }
+        .popup-phone-display {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: rgb(182, 236, 223);
+            margin-bottom: 14px;
+        }
+        .popup-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 0; margin-bottom: 18px; }
+        .popup-actions .btn-link-style { margin-bottom: 0; }
+        .btn-viber {
+            background: #7360F2 !important;
+            color: #fff !important;
+        }
+        .btn-viber:hover { background: #8b7af5 !important; color: #fff !important; }
+        .popup-req-toggle {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(55,55,60,0.6);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        .popup-req-toggle:hover { background: rgba(55,55,60,0.9); }
+        .popup-req-toggle i { transition: transform 0.2s; }
+        .popup-req-toggle.open i { transform: rotate(180deg); }
+        .popup-req-panel {
+            display: none;
+            margin-top: 12px;
+            padding: 14px;
+            background: rgba(40,40,45,0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .popup-req-panel.open { display: block; }
+        .popup-req-item {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        .popup-req-item:last-child { margin-bottom: 0; }
+        .popup-req-item .req-label { color: #999; font-size: 0.8rem; }
+        .popup-req-item .req-value { color: rgb(182, 236, 223); word-break: break-all; margin-top: 4px; }
+        .popup-req-item.no-copy .req-value { color: #e0e0e0; }
         /* Повноекранний перегляд фото */
         .view-popup {
             position: fixed;
@@ -476,49 +522,49 @@
         <div class="popup-header-row">
             <button type="button" class="popup-close" onclick="closeBuyPopup()"><i class="bi bi-x-lg"></i> Закрити</button>
         </div>
-        <h3>Реквізити для оплати</h3>
         <p class="popup-product-name" id="popupProductName"></p>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">IBAN:</span>
-                <button type="button" class="btn-copy" onclick="copyRequisite('iban', this)">Скопіювати</button>
-            </div>
-            <p id="popup-iban" class="requisite-value"></p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">Призначення платежу:</span>
-                <button type="button" class="btn-copy" onclick="copyRequisite('paymentNote', this)">Скопіювати</button>
-            </div>
-            <p id="popup-payment-note" class="requisite-value"></p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">ЄДРПОУ:</span>
-                <button type="button" class="btn-copy" onclick="copyRequisite('edrpou', this)">Скопіювати</button>
-            </div>
-            <p id="popup-edrpou" class="requisite-value"></p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">ФОП:</span>
-                <button type="button" class="btn-copy" onclick="copyRequisite('fop', this)">Скопіювати</button>
-            </div>
-            <p id="popup-fop" class="requisite-value"></p>
-        </div>
-        <button type="button" class="btn-link-style btn-primary-style" onclick="copyAllRequisites()">
-            <i class="bi bi-clipboard me-2"></i> Копіювати всі реквізити одним кліком
-        </button>
+        <p class="popup-phone-display" id="popupPhoneDisplay"></p>
         <div class="popup-actions">
             <a id="popup-phone" class="btn-link-style btn-secondary-style" href="#">
                 <i class="bi bi-telephone me-2"></i> Зателефонувати
             </a>
             <a id="popup-telegram" class="btn-link-style btn-telegram-cta" href="#" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-telegram me-2"></i> Написати в Telegram
+                <i class="bi bi-telegram me-2"></i> Написати у Telegram
             </a>
-            <a id="popup-viber" class="btn-link-style btn-secondary-style" href="#">
-                <i class="bi bi-chat-dots-fill me-2"></i> Написати в Viber
+            <a id="popup-viber" class="btn-link-style btn-viber" href="#">
+                <i class="bi bi-chat-dots-fill me-2"></i> Написати у Viber
             </a>
+        </div>
+        <button type="button" class="popup-req-toggle" id="popupReqToggle" onclick="togglePopupRequisites()">
+            <span>Реквізити ФОП</span>
+            <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="popup-req-panel" id="popupReqPanel">
+            <div class="popup-req-item no-copy">
+                <div class="req-label">ПІБ ФОП</div>
+                <div class="req-value" id="popup-fop"></div>
+            </div>
+            <div class="popup-req-item">
+                <div class="copy-row">
+                    <span class="req-label">IBAN</span>
+                    <button type="button" class="btn-copy" onclick="copyRequisite('iban', this)">Скопіювати</button>
+                </div>
+                <div class="req-value" id="popup-iban"></div>
+            </div>
+            <div class="popup-req-item">
+                <div class="copy-row">
+                    <span class="req-label">ЄДРПОУ</span>
+                    <button type="button" class="btn-copy" onclick="copyRequisite('edrpou', this)">Скопіювати</button>
+                </div>
+                <div class="req-value" id="popup-edrpou"></div>
+            </div>
+            <div class="popup-req-item">
+                <div class="copy-row">
+                    <span class="req-label">Призначення платежу</span>
+                    <button type="button" class="btn-copy" onclick="copyRequisite('paymentNote', this)">Скопіювати</button>
+                </div>
+                <div class="req-value" id="popup-payment-note"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -838,6 +884,7 @@ function openBuyPopup(productId) {
     if (!product) return;
     const req = config.requisites;
     document.getElementById("popupProductName").textContent = product.name;
+    document.getElementById("popupPhoneDisplay").textContent = req.phoneDisplay || req.phone;
     document.getElementById("popup-iban").textContent = req.iban;
     document.getElementById("popup-payment-note").textContent = req.paymentNote;
     document.getElementById("popup-edrpou").textContent = req.edrpou;
@@ -846,8 +893,17 @@ function openBuyPopup(productId) {
     document.getElementById("popup-telegram").href = req.telegram + "?text=" + encodeURIComponent("Доброго дня! Хочу замовити: " + product.name);
     document.getElementById("popup-viber").href = req.viber;
     window._currentPaymentNote = req.paymentNote;
+    document.getElementById("popupReqPanel").classList.remove("open");
+    document.getElementById("popupReqToggle").classList.remove("open");
     document.getElementById("buyPopup").classList.add("visible");
     document.body.style.overflow = "hidden";
+}
+
+function togglePopupRequisites() {
+    const panel = document.getElementById("popupReqPanel");
+    const toggle = document.getElementById("popupReqToggle");
+    panel.classList.toggle("open");
+    toggle.classList.toggle("open");
 }
 
 function closeBuyPopup() {
