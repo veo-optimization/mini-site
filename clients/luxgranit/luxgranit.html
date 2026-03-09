@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="google" content="notranslate">
     <title>Lux Granit — Каталог товарів</title>
+    <link rel="canonical" href="https://veo-optimization.github.io/mini-site/clients/luxgranit/luxgranit.html">
+    <meta name="google-site-verification" content="8zpgVZ9Thdc1inYeB2lftZnmcQzbPm16hmpcXm8NamA" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -712,6 +714,7 @@
 // КОНФІГУРАЦІЯ — змінюйте дані тут для редагування сторінки
 // ═══════════════════════════════════════════════════════════════
 const config = {
+    baseUrl: "https://veo-optimization.github.io/mini-site/clients/luxgranit/",
     storeName: "Lux Granit",
     storeCategories: "Граніт, камінь для доріжок, парканів, фундаментів. Ручна відбірка.",
     requisites: {
@@ -814,7 +817,7 @@ function renderProducts() {
                 ${p.deliveryTerms.map(x => `<div>${x}</div>`).join("")}
             </div>` : "";
         return `
-        <div class="product-card" itemscope itemtype="https://schema.org/Product">
+        <div class="product-card" id="product-${p.id}" itemscope itemtype="https://schema.org/Product">
             <div class="product-gallery-wrapper">
                 <div class="product-gallery" id="gallery-${idx}" data-product-idx="${idx}" data-img-count="${imgs.length}">
                     ${imgEls}
