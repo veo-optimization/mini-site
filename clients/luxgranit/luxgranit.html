@@ -654,59 +654,48 @@
     <!-- РЕКВІЗИТИ ТА КОНТАКТИ -->
     <section class="block req-contacts-block">
         <h2 class="section-title">Реквізити та контакти</h2>
-        <div class="req-contacts-subtitle">Реквізити</div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">ФОП:</span>
-                <button type="button" class="btn-copy" onclick="copyFooterRequisite('fop', this)">Скопіювати</button>
-            </div>
-            <p id="footer-fop" class="requisite-value"></p>
+        <p class="popup-phone-display" id="footer-phone-display"></p>
+        <div class="popup-actions">
+            <a id="footer-phone" class="btn-link-style btn-secondary-style" href="#">
+                <i class="bi bi-telephone me-2"></i> Зателефонувати
+            </a>
+            <a id="footer-telegram" class="btn-link-style btn-telegram-cta" href="#" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-telegram me-2"></i> Написати у Telegram
+            </a>
+            <a id="footer-viber" class="btn-link-style btn-viber" href="#">
+                <i class="bi bi-chat-dots-fill me-2"></i> Написати у Viber
+            </a>
         </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">IBAN:</span>
-                <button type="button" class="btn-copy" onclick="copyFooterRequisite('iban', this)">Скопіювати</button>
-            </div>
-            <p id="footer-iban" class="requisite-value"></p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">ЄДРПОУ:</span>
-                <button type="button" class="btn-copy" onclick="copyFooterRequisite('edrpou', this)">Скопіювати</button>
-            </div>
-            <p id="footer-edrpou" class="requisite-value"></p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">Адреса ФОП:</span>
-                <button type="button" class="btn-copy" onclick="copyFooterRequisite('address', this)">Скопіювати</button>
-            </div>
-            <p id="footer-address" class="requisite-value"></p>
-        </div>
-        <div class="requisite-item">
-            <div class="copy-row">
-                <span class="req-label">Призначення платежу:</span>
-                <button type="button" class="btn-copy" onclick="copyFooterRequisite('paymentNote', this)">Скопіювати</button>
-            </div>
-            <p id="footer-paymentNote" class="requisite-value"></p>
-        </div>
-        <button type="button" class="btn-link-style btn-secondary-style" style="margin-top:12px;margin-bottom:16px;" onclick="copyAllRequisites()">
-            <i class="bi bi-clipboard me-2"></i> Скопіювати всі реквізити
+        <button type="button" class="popup-req-toggle" id="footerReqToggle" onclick="toggleFooterRequisites()">
+            <span>Реквізити ФОП</span>
+            <i class="bi bi-chevron-down"></i>
         </button>
-        <div class="req-contacts-subtitle">Контакти</div>
-        <div class="contact-subblock">
-            <a id="footer-phone" class="btn-link-style btn-secondary-style contact-btn" href="#">
-                <span><i class="bi bi-telephone me-2"></i> Зателефонувати</span>
-                <span class="contact-btn-username" id="footer-phone-label"></span>
-            </a>
-            <a id="contact-telegram" class="btn-link-style btn-telegram-cta contact-btn" href="#" target="_blank" rel="noopener noreferrer">
-                <span><i class="bi bi-telegram me-2"></i> Telegram</span>
-                <span class="contact-btn-username" id="contact-telegram-label">@luxgranit_bot</span>
-            </a>
-            <a id="contact-viber" class="btn-link-style btn-secondary-style contact-btn" href="#">
-                <span><i class="bi bi-chat-dots-fill me-2"></i> Viber</span>
-                <span class="contact-btn-username" id="contact-viber-label">+380 67 123 45 67</span>
-            </a>
+        <div class="popup-req-panel" id="footerReqPanel">
+            <div class="popup-req-item no-copy">
+                <div class="req-label">ПІБ ФОП</div>
+                <div class="req-value" id="footer-fop"></div>
+            </div>
+            <div class="popup-req-item">
+                <div class="copy-row">
+                    <span class="req-label">IBAN</span>
+                    <button type="button" class="btn-copy" onclick="copyFooterRequisite('iban', this)">Скопіювати</button>
+                </div>
+                <div class="req-value" id="footer-iban"></div>
+            </div>
+            <div class="popup-req-item">
+                <div class="copy-row">
+                    <span class="req-label">ЄДРПОУ</span>
+                    <button type="button" class="btn-copy" onclick="copyFooterRequisite('edrpou', this)">Скопіювати</button>
+                </div>
+                <div class="req-value" id="footer-edrpou"></div>
+            </div>
+            <div class="popup-req-item">
+                <div class="copy-row">
+                    <span class="req-label">Призначення платежу</span>
+                    <button type="button" class="btn-copy" onclick="copyFooterRequisite('paymentNote', this)">Скопіювати</button>
+                </div>
+                <div class="req-value" id="footer-paymentNote"></div>
+            </div>
         </div>
     </section>
 
@@ -906,6 +895,13 @@ function togglePopupRequisites() {
     toggle.classList.toggle("open");
 }
 
+function toggleFooterRequisites() {
+    const panel = document.getElementById("footerReqPanel");
+    const toggle = document.getElementById("footerReqToggle");
+    panel.classList.toggle("open");
+    toggle.classList.toggle("open");
+}
+
 function closeBuyPopup() {
     document.getElementById("buyPopup").classList.remove("visible");
     document.body.style.overflow = "";
@@ -916,7 +912,7 @@ document.getElementById("buyPopup").addEventListener("click", function(e) {
 });
 
 function copyFooterRequisite(field, btn) {
-    const map = { fop: "footer-fop", iban: "footer-iban", edrpou: "footer-edrpou", address: "footer-address", paymentNote: "footer-paymentNote" };
+    const map = { fop: "footer-fop", iban: "footer-iban", edrpou: "footer-edrpou", paymentNote: "footer-paymentNote" };
     const id = map[field];
     const text = document.getElementById(id).textContent.trim();
     navigator.clipboard.writeText(text).then(() => {
@@ -968,14 +964,11 @@ const req = config.requisites;
 document.getElementById("footer-fop").textContent = req.fop;
 document.getElementById("footer-iban").textContent = req.iban;
 document.getElementById("footer-edrpou").textContent = req.edrpou;
-document.getElementById("footer-address").textContent = req.address || "";
 document.getElementById("footer-paymentNote").textContent = req.paymentNote;
+document.getElementById("footer-phone-display").textContent = req.phoneDisplay || req.phone;
 document.getElementById("footer-phone").href = "tel:" + req.phone.replace(/\s/g, "");
-document.getElementById("footer-phone-label").textContent = req.phoneDisplay || req.phone;
-document.getElementById("contact-telegram").href = req.telegram;
-document.getElementById("contact-telegram-label").textContent = "@" + req.telegram.split("/").pop();
-document.getElementById("contact-viber").href = req.viber;
-document.getElementById("contact-viber-label").textContent = req.phoneDisplay || req.phone;
+document.getElementById("footer-telegram").href = req.telegram;
+document.getElementById("footer-viber").href = req.viber;
 
 renderProducts();
 initGallerySwipe();
