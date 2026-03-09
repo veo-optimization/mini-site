@@ -318,6 +318,76 @@
             color: #b0b0b0;
             line-height: 1.5;
         }
+        .category-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(55, 55, 60, 0.6);
+            color: #e0e0e0;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .category-trigger:hover {
+            border-color: rgb(182, 236, 223);
+            background: rgba(55, 55, 60, 0.9);
+        }
+        .category-trigger.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+        }
+        .category-trigger .count {
+            color: rgb(182, 236, 223);
+            font-weight: 600;
+        }
+        .category-popup .popup-content {
+            max-width: 480px;
+            max-height: 90vh;
+        }
+        .category-group {
+            margin-bottom: 16px;
+        }
+        .category-group-title {
+            font-weight: 600;
+            color: rgb(182, 236, 223);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        .category-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+        .category-checkbox:hover { color: #e0e0e0; }
+        .category-checkbox input {
+            width: 18px;
+            height: 18px;
+            accent-color: rgb(182, 236, 223);
+        }
+        .category-checkbox input:disabled { opacity: 0.5; cursor: not-allowed; }
+        .category-popup-footer {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #999;
+        }
+        .category-popup-footer .count { color: rgb(182, 236, 223); font-weight: 600; }
+        .category-selected-list {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 8px;
+            max-height: 60px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -345,6 +415,21 @@
                 <label class="form-label">Опис магазину</label>
                 <textarea class="form-textarea" id="storeDesc" name="storeDesc" maxlength="300" placeholder="Короткий опис вашого магазину для клієнтів"></textarea>
                 <div class="char-counter"><span id="storeDescCount">0</span>/300</div>
+            </div>
+        </section>
+
+        <!-- БЛОК: Категорії товарів -->
+        <section class="block">
+            <h2 class="section-title">Категорії товарів <span class="free-badge">БЕЗКОШТОВНО</span></h2>
+            <div class="form-group">
+                <label class="form-label">Оберіть категорії <span class="required">*</span></label>
+                <button type="button" class="category-trigger" id="categoryTrigger">
+                    <span id="categoryTriggerText">Оберіть категорії (мін. 3, макс. 10)</span>
+                    <span class="count" id="categoryCount">0</span>
+                </button>
+                <div class="form-hint">Відображатимуться в описі магазину та для каталогу товарів.</div>
+                <div class="category-selected-list" id="categorySelectedList"></div>
+                <div class="form-error" id="categoriesError"></div>
             </div>
         </section>
 
@@ -509,9 +594,119 @@
     </div>
 </div>
 
+<!-- Попап вибору категорій -->
+<div class="popup category-popup" id="categoryPopup">
+    <div class="popup-content">
+        <div class="popup-header-row">
+            <button type="button" class="popup-close" id="btnCloseCategoryPopup"><i class="bi bi-x-lg"></i> Закрити</button>
+        </div>
+        <h3><i class="bi bi-grid-3x3-gap me-2"></i>Оберіть категорії товарів</h3>
+        <div class="popup-body" id="categoryPopupBody"></div>
+        <div class="category-popup-footer">
+            Обрано: <span class="count" id="categoryPopupCount">0</span> / 10 (мін. 3)
+        </div>
+    </div>
+</div>
+
 <script>
 (function() {
     const form = document.getElementById('registerForm');
+
+    // Категорії товарів: 15 основних × 10 підкатегорій
+    const CATEGORIES = {
+        "Одяг та взуття": ["Жіночий одяг", "Чоловічий одяг", "Дитячий одяг", "Взуття жіноче", "Взуття чоловіче", "Взуття дитяче", "Аксесуари", "Спортивний одяг", "Верхній одяг", "Одяг для дому"],
+        "Краса та здоров'я": ["Косметика", "Догляд за обличчям", "Догляд за волоссям", "Парфуми", "Вітаміни", "Медичні товари", "Гігієна", "Догляд за тілом", "Зубна гігієна", "БАДи"],
+        "Прикраси та аксесуари": ["Біжутерія", "Українські прикраси", "Годинники", "Сумки", "Рюкзаки", "Шарфи та хустки", "Кепки та капелюхи", "Пояси", "Манікюр", "Ремінні вироби"],
+        "Товари для дому": ["Текстиль", "Декор", "Посудина", "Кухонне приладдя", "Освітлення", "Меблі", "Зберігання", "Товари для спальні", "Прикраси для вікна", "Свічки"],
+        "Електроніка та гаджети": ["Смартфони", "Навушники", "Планшети", "Аксесуари для гаджетів", "Зарядні пристрої", "Побутова техніка", "Кабелі", "Електротранспорт", "Розумний дім", "Годинники-розумники"],
+        "Продукти харчування": ["Кондитерія", "Снеки", "Напої", "Сир та молочні", "М'ясо та ковбаси", "Консерви", "Хліб", "Мед та солодощі", "Соуси", "Хлібобулочні"],
+        "Товари для дітей": ["Іграшки", "Одежа для дітей", "Взуття для дітей", "Школа", "Підгузки", "Годівництво", "Прогулянки", "Дитячі кімнати", "Творчість", "Настільні ігри"],
+        "Спорт та відпочинок": ["Спортивне взуття", "Тренажери", "Спортивне харчування", "Велосипеди", "Рибальство", "Кемпінг", "Теніс", "Фітнес", "Біг", "Зимовий спорт"],
+        "Автотовари": ["Автоаксесуари", "Автохімія", "Догляд за авто", "Шини", "Акумулятори", "Автозапчастини", "Автоелектроніка", "Автоінструменти", "Авточехли", "Автопродукти"],
+        "Побутова хімія": ["Мийні засоби", "Порошки", "Засоби для підлоги", "Освіжувачі", "Догляд за взуттям", "Для посуду", "Для кухні", "Відбілювачі", "Дезінфекція", "Для гігієни"],
+        "Будівництво та ремонт": ["Інструменти", "Електроінструменти", "Фарби", "Лінолеум", "Плитка", "Сантехніка", "Електрика", "Ізоляція", "Кріплення", "Будматеріали"],
+        "Товари для тварин": ["Корм для собак", "Корм для котів", "Акваріуми", "Амуніція", "Гігієна тварин", "Ветеринарія", "Іграшки для тварин", "Годівництво", "Лежанки", "Догляд"],
+        "Книги та канцтовари": ["Книги", "Підручники", "Канцтовари", "Офісні товари", "Папір", "Ручки", "Портфелі", "Крейда та маркери", "Клей та ножиці", "Пластилін"],
+        "Квіти та сад": ["Кімнатні рослини", "Садові рослини", "Насіння", "Ґрунти", "Квіти", "Вази", "Догляд за рослинами", "Газони", "Інструменти для саду", "Теплиці"],
+        "Хобі та творчість": ["Рукоділля", "Віробництво", "Фарби", "Полотно", "Кераміка", "Дерево", "Швейні", "Вишивка", "Макраме", "Скрапбукінг"]
+    };
+
+    const selectedCategories = new Set();
+
+    function renderCategoryPopup() {
+        const body = document.getElementById('categoryPopupBody');
+        body.innerHTML = Object.entries(CATEGORIES).map(([main, subs]) => `
+            <div class="category-group">
+                <div class="category-group-title">${main}</div>
+                ${subs.map(sub => {
+                    const id = `cat_${main}_${sub}`.replace(/[^a-zA-Z0-9_а-яА-ЯіІїЇєЄґҐ]/g, '_');
+                    const fullName = `${main} → ${sub}`;
+                    const checked = selectedCategories.has(fullName) ? 'checked' : '';
+                    const disabled = !selectedCategories.has(fullName) && selectedCategories.size >= 10 ? 'disabled' : '';
+                    return `<label class="category-checkbox">
+                        <input type="checkbox" data-category="${fullName}" ${checked} ${disabled} id="${id}">
+                        <span>${sub}</span>
+                    </label>`;
+                }).join('')}
+            </div>
+        `).join('');
+
+        body.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                const cat = this.dataset.category;
+                if (this.checked) {
+                    if (selectedCategories.size < 10) selectedCategories.add(cat);
+                } else {
+                    selectedCategories.delete(cat);
+                }
+                updateCategoryCheckboxes();
+                updateCategoryUI();
+            });
+        });
+    }
+
+    function updateCategoryCheckboxes() {
+        document.querySelectorAll('#categoryPopupBody input[type="checkbox"]').forEach(cb => {
+            const cat = cb.dataset.category;
+            if (!selectedCategories.has(cat) && selectedCategories.size >= 10) {
+                cb.disabled = true;
+            } else {
+                cb.disabled = false;
+            }
+        });
+    }
+
+    function updateCategoryUI() {
+        const count = selectedCategories.size;
+        document.getElementById('categoryCount').textContent = count;
+        document.getElementById('categoryPopupCount').textContent = count;
+        document.getElementById('categoryTriggerText').textContent = count >= 3
+            ? `Обрано ${count} категорій`
+            : 'Оберіть категорії (мін. 3, макс. 10)';
+        document.getElementById('categorySelectedList').textContent = count >= 3
+            ? Array.from(selectedCategories).join(', ')
+            : '';
+    }
+
+    document.getElementById('categoryTrigger').addEventListener('click', function(e) {
+        e.preventDefault();
+        renderCategoryPopup();
+        updateCategoryUI();
+        document.getElementById('categoryPopup').classList.add('visible');
+    });
+
+    document.getElementById('btnCloseCategoryPopup').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('categoryPopup').classList.remove('visible');
+    });
+
+    document.getElementById('categoryPopup').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('visible');
+    });
+
+    document.getElementById('categoryPopup').querySelector('.popup-content').addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
 
     // Char counters
     document.getElementById('storeName').addEventListener('input', function() {
@@ -564,6 +759,15 @@
             valid = false;
         } else showError('storeName', null);
 
+        if (selectedCategories.size < 3) {
+            document.getElementById('categoriesError').textContent = 'Оберіть мінімум 3 категорії';
+            document.getElementById('categoryTrigger').classList.add('error');
+            valid = false;
+        } else {
+            document.getElementById('categoriesError').textContent = '';
+            document.getElementById('categoryTrigger').classList.remove('error');
+        }
+
         const fopName = document.getElementById('fopName').value.trim();
         if (!validateFopName(fopName)) {
             showError('fopName', 'Введіть ПІБ: три слова, не менше 2 букв у кожному');
@@ -592,6 +796,7 @@
             const data = {
                 storeName,
                 storeDesc: document.getElementById('storeDesc').value.trim(),
+                categories: Array.from(selectedCategories),
                 fopName,
                 iban,
                 edrpou,
