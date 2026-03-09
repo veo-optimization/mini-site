@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="uk" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="google" content="notranslate">
+    <title>Реєстрація міні-сайту — VEO FORCE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body {
+            color: #e0e0e0;
+            font-family: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 20px 12px 120px;
+            margin: 0;
+            background: linear-gradient(-45deg, #1a1a1e, #25252a, #2d2d33, #1e1e23, #FE2C55, #1a1a1e);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: rgba(18, 18, 18, 0.85);
+            border-radius: 20px;
+            padding: 20px 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        @media (min-width: 400px) { .container { padding: 25px 20px; } }
+        .profile-header { text-align: center; margin-bottom: 25px; }
+        .store-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .store-categories { font-size: 0.95rem; color: #999; margin-bottom: 20px; }
+        .section-title {
+            color: #fff;
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: rgb(182, 236, 223);
+            margin: 8px auto 0;
+            border-radius: 3px;
+        }
+        .section-title:first-of-type { margin-top: 0; }
+        .block {
+            background-color: rgba(40, 40, 40, 0.9);
+            border: 1px solid #505050;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        .form-label .required { color: #e74c3c; }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(55, 55, 60, 0.6);
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: #777;
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: rgb(182, 236, 223);
+            box-shadow: 0 0 0 3px rgba(182, 236, 223, 0.2);
+        }
+        .form-input.error, .form-textarea.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+        }
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .char-counter {
+            font-size: 0.75rem;
+            color: #777;
+            margin-top: 4px;
+            text-align: right;
+        }
+        .char-counter.over { color: #e74c3c; }
+        .form-hint {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 6px;
+        }
+        .form-error {
+            font-size: 0.8rem;
+            color: #e74c3c;
+            margin-top: 6px;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 16px 20px;
+            margin-top: 24px;
+            border-radius: 14px;
+            border: none;
+            background: rgb(182, 236, 223);
+            color: #1a1a1e;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        .btn-submit:hover {
+            background: rgb(195, 240, 230);
+            box-shadow: 0 0 20px rgba(182, 236, 223, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .free-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-left: 8px;
+        }
+        .form-label-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .form-label-row .form-label { margin-bottom: 0; }
+        .btn-info-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(182, 236, 223, 0.15);
+            border: 1px solid rgba(182, 236, 223, 0.4);
+            color: rgb(182, 236, 223);
+            font-size: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-info-link:hover {
+            background: rgba(182, 236, 223, 0.25);
+            color: rgb(182, 236, 223);
+        }
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 10000;
+        }
+        .popup.visible { display: flex; }
+        .popup-content {
+            background: rgba(30, 30, 35, 0.98);
+            padding: 24px;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #e0e0e0;
+        }
+        .popup-content h3 { color: #fff; margin-bottom: 16px; font-size: 1.2rem; }
+        .popup-header-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+        .popup-close {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .popup-close:hover {
+            background: rgba(255,255,255,0.25);
+            color: rgb(182, 236, 223);
+        }
+        .popup-body {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #b0b0b0;
+        }
+        .popup-body ol, .popup-body ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        .popup-body li { margin-bottom: 8px; }
+        .popup-body strong { color: #fff; }
+        .popup-body .highlight { color: rgb(182, 236, 223); }
+        .popup-body code {
+            background: rgba(55, 55, 60, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: rgb(182, 236, 223);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        .footer a { color: rgb(182, 236, 223); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <section class="profile-header">
+        <h1 class="store-name">Реєстрація міні-сайту</h1>
+        <p class="store-categories">Безкоштовний блок — основні дані для вашого магазину</p>
+    </section>
+
+    <form id="registerForm" novalidate>
+        <!-- БЛОК: Інформація про магазин -->
+        <section class="block">
+            <h2 class="section-title">Інформація про магазин <span class="free-badge">БЕЗКОШТОВНО</span></h2>
+
+            <div class="form-group">
+                <label class="form-label">Назва магазину <span class="required">*</span></label>
+                <input type="text" class="form-input" id="storeName" name="storeName" maxlength="80" placeholder="Наприклад: ROSSO TT" required>
+                <div class="char-counter"><span id="storeNameCount">0</span>/80</div>
+                <div class="form-error" id="storeNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Опис магазину</label>
+                <textarea class="form-textarea" id="storeDesc" name="storeDesc" maxlength="300" placeholder="Короткий опис вашого магазину для клієнтів"></textarea>
+                <div class="char-counter"><span id="storeDescCount">0</span>/300</div>
+            </div>
+        </section>
+
+        <!-- БЛОК: Реквізити ФОП -->
+        <section class="block">
+            <h2 class="section-title">Реквізити ФОП</h2>
+
+            <div class="form-group">
+                <label class="form-label">ПІБ ФОП (повне) <span class="required">*</span></label>
+                <input type="text" class="form-input" id="fopName" name="fopName" placeholder="Прізвище Ім'я По батькові" required>
+                <div class="form-hint">Три слова, не менше 2 букв у кожному. Без цифр та символів.</div>
+                <div class="form-error" id="fopNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">IBAN ФОП <span class="required">*</span></label>
+                <input type="text" class="form-input" id="iban" name="iban" placeholder="UA123456789012345678901234567" maxlength="29" required>
+                <div class="form-hint">Формат: UA + 27 цифр</div>
+                <div class="form-error" id="ibanError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">ЄДРПОУ <span class="required">*</span></label>
+                <input type="text" class="form-input" id="edrpou" name="edrpou" placeholder="1234567890" maxlength="10" required>
+                <div class="form-hint">Рівно 10 цифр</div>
+                <div class="form-error" id="edrpouError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Призначення платежу</label>
+                <input type="text" class="form-input" id="paymentNote" name="paymentNote" value="Оплата за товар" placeholder="Оплата за товар">
+            </div>
+        </section>
+
+        <!-- БЛОК: Контакти -->
+        <section class="block">
+            <h2 class="section-title">Контакти</h2>
+
+            <div class="form-group">
+                <label class="form-label">Контактний телефон</label>
+                <input type="tel" class="form-input" id="phone" name="phone" placeholder="+380 67 123 45 67">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Номер Viber</label>
+                <input type="tel" class="form-input" id="viber" name="viber" placeholder="+380 67 123 45 67">
+            </div>
+
+            <div class="form-group">
+                <div class="form-label-row">
+                    <label class="form-label">Telegram менеджера <span class="required">*</span></label>
+                    <button type="button" class="btn-info-link" onclick="openTelegramHelpPopup()">
+                        <i class="bi bi-question-circle"></i> Як створити username?
+                    </button>
+                </div>
+                <input type="text" class="form-input" id="telegramManager" name="telegramManager" placeholder="@username" required>
+                <div class="form-hint">Тільки юзернейм через @, наприклад @my_shop</div>
+                <div class="form-error" id="telegramManagerError"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label-row">
+                    <label class="form-label">Юзернейм Telegram-каналу</label>
+                    <button type="button" class="btn-info-link" onclick="openTelegramHelpPopup()">
+                        <i class="bi bi-question-circle"></i> Як створити username?
+                    </button>
+                </div>
+                <input type="text" class="form-input" id="telegramChannel" name="telegramChannel" placeholder="@channel_name">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Посилання на групу Viber</label>
+                <input type="url" class="form-input" id="viberGroup" name="viberGroup" placeholder="https://invite.viber.com/...">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Посилання на Instagram</label>
+                <input type="url" class="form-input" id="instagram" name="instagram" placeholder="https://www.instagram.com/...">
+            </div>
+        </section>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="bi bi-check-circle me-2"></i> Відправити заявку
+        </button>
+    </form>
+
+    <div class="footer">
+        <p>Частина екосистеми <a href="https://app.veoforce.com" target="_blank" rel="noopener noreferrer">VEO FORCE</a></p>
+    </div>
+</div>
+
+<!-- Спливаюче вікно: Як створити username в Telegram -->
+<div class="popup" id="telegramHelpPopup" onclick="if(event.target===this)closeTelegramHelpPopup()">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <div class="popup-header-row">
+            <button type="button" class="popup-close" onclick="closeTelegramHelpPopup()"><i class="bi bi-x-lg"></i> Закрити</button>
+        </div>
+        <h3><i class="bi bi-telegram me-2"></i>Як створити username в Telegram</h3>
+        <div class="popup-body">
+            <p><strong>Для особистого акаунту (менеджер):</strong></p>
+            <ol>
+                <li>Відкрийте Telegram</li>
+                <li>Натисніть <span class="highlight">Меню</span> (☰) або перейдіть у <span class="highlight">Налаштування</span></li>
+                <li>Оберіть <span class="highlight">Редагувати профіль</span></li>
+                <li>Натисніть на поле <span class="highlight">Username</span></li>
+                <li>Введіть ім'я латиницею (букви, цифри, підкреслення). Наприклад: <code>my_shop</code></li>
+                <li>Username має бути 5–32 символи. У форму вводьте з символом @: <code>@my_shop</code></li>
+            </ol>
+            <p><strong>Для каналу:</strong></p>
+            <ol>
+                <li>Створіть канал: Меню → Новий канал</li>
+                <li>Заповніть назву та опис, натисніть <span class="highlight">Готово</span></li>
+                <li>У налаштуваннях каналу оберіть <span class="highlight">Тип каналу</span> → <span class="highlight">Публічний канал</span></li>
+                <li>Вкажіть username каналу (латиницею, 5–32 символи)</li>
+                <li>У форму вводьте з @: <code>@channel_name</code></li>
+            </ol>
+            <p style="margin-top:16px;padding:12px;background:rgba(182,236,223,0.1);border-radius:10px;border-left:4px solid rgb(182,236,223);">
+                <strong>Важливо:</strong> Username пишеться латиницею, без пробілів. У полі форми завжди додавайте @ на початку.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const form = document.getElementById('registerForm');
+
+    // Char counters
+    document.getElementById('storeName').addEventListener('input', function() {
+        document.getElementById('storeNameCount').textContent = this.value.length;
+        document.getElementById('storeNameCount').parentElement.classList.toggle('over', this.value.length > 80);
+    });
+    document.getElementById('storeDesc').addEventListener('input', function() {
+        document.getElementById('storeDescCount').textContent = this.value.length;
+        document.getElementById('storeDescCount').parentElement.classList.toggle('over', this.value.length > 300);
+    });
+
+    function showError(id, msg) {
+        const el = document.getElementById(id);
+        const errEl = document.getElementById(id + 'Error');
+        if (msg) {
+            el.classList.add('error');
+            errEl.textContent = msg;
+        } else {
+            el.classList.remove('error');
+            errEl.textContent = '';
+        }
+    }
+
+    function validateFopName(val) {
+        const words = val.trim().split(/\s+/).filter(w => w.length > 0);
+        if (words.length !== 3) return false;
+        const letterCount = w => w.replace(/[^a-zA-Zа-яА-ЯіІїЇєЄґҐ]/g, '').length;
+        return words.every(w => letterCount(w) >= 2);
+    }
+
+    function validateIban(val) {
+        return /^UA\d{27}$/i.test(val.replace(/\s/g, ''));
+    }
+
+    function validateEdrpou(val) {
+        return /^\d{10}$/.test(val.replace(/\s/g, ''));
+    }
+
+    function validateTelegramUsername(val) {
+        return /^@[a-zA-Z0-9_]{5,32}$/.test(val.trim());
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let valid = true;
+
+        const storeName = document.getElementById('storeName').value.trim();
+        if (!storeName || storeName.length > 80) {
+            showError('storeName', storeName ? 'Максимум 80 символів' : 'Обов\'язкове поле');
+            valid = false;
+        } else showError('storeName', null);
+
+        const fopName = document.getElementById('fopName').value.trim();
+        if (!validateFopName(fopName)) {
+            showError('fopName', 'Введіть ПІБ: три слова, не менше 2 букв у кожному');
+            valid = false;
+        } else showError('fopName', null);
+
+        const iban = document.getElementById('iban').value.replace(/\s/g, '');
+        if (!validateIban(iban)) {
+            showError('iban', 'Формат: UA + 27 цифр');
+            valid = false;
+        } else showError('iban', null);
+
+        const edrpou = document.getElementById('edrpou').value.replace(/\s/g, '');
+        if (!validateEdrpou(edrpou)) {
+            showError('edrpou', 'Рівно 10 цифр');
+            valid = false;
+        } else showError('edrpou', null);
+
+        const telegramManager = document.getElementById('telegramManager').value.trim();
+        if (!validateTelegramUsername(telegramManager)) {
+            showError('telegramManager', 'Формат: @username (5–32 символи)');
+            valid = false;
+        } else showError('telegramManager', null);
+
+        if (valid) {
+            const data = {
+                storeName,
+                storeDesc: document.getElementById('storeDesc').value.trim(),
+                fopName,
+                iban,
+                edrpou,
+                paymentNote: document.getElementById('paymentNote').value.trim() || 'Оплата за товар',
+                phone: document.getElementById('phone').value.trim(),
+                viber: document.getElementById('viber').value.trim(),
+                telegramManager,
+                telegramChannel: document.getElementById('telegramChannel').value.trim(),
+                viberGroup: document.getElementById('viberGroup').value.trim(),
+                instagram: document.getElementById('instagram').value.trim()
+            };
+            console.log('Form data:', data);
+            alert('Заявку відправлено! (Дані виведено в консоль — тут буде інтеграція з бекендом)');
+        }
+    });
+
+    function openTelegramHelpPopup() {
+        document.getElementById('telegramHelpPopup').classList.add('visible');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeTelegramHelpPopup() {
+        document.getElementById('telegramHelpPopup').classList.remove('visible');
+        document.body.style.overflow = '';
+    }
+})();
+</script>
+</body>
+</html>
