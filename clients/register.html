@@ -754,6 +754,17 @@
     </div>
 </div>
 
+<!-- Попап помилок валідації -->
+<div class="popup" id="validationErrorPopup">
+    <div class="popup-content">
+        <h3><i class="bi bi-exclamation-triangle me-2"></i>Заповніть обов'язкові поля</h3>
+        <div class="popup-body" id="validationErrorList"></div>
+        <div style="margin-top: 20px; text-align: center;">
+            <button type="button" class="popup-close" id="btnCloseValidationPopup">Зрозуміло</button>
+        </div>
+    </div>
+</div>
+
 <!-- Попап вибору категорій -->
 <div class="popup category-popup" id="categoryPopup">
     <div class="popup-content">
@@ -970,20 +981,35 @@
         return digits.length >= 10 && digits.length <= 15;
     }
 
+    const FIELD_LABELS = {
+        storeName: 'Назва магазину',
+        categories: 'Категорії товарів',
+        fopName: 'ПІБ ФОП',
+        iban: 'IBAN ФОП',
+        edrpou: 'ЄДРПОУ'
+    };
+    const FIELD_SCROLL_IDS = {
+        storeName: 'storeName',
+        categories: 'categoryTrigger',
+        fopName: 'fopName',
+        iban: 'iban',
+        edrpou: 'edrpou'
+    };
+
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        let valid = true;
+        const errors = [];
 
         const storeName = document.getElementById('storeName').value.trim();
         if (!storeName || storeName.length > 80) {
             showError('storeName', storeName ? 'Максимум 80 символів' : 'Обов\'язкове поле');
-            valid = false;
+            errors.push('storeName');
         } else showError('storeName', null);
 
         if (selectedCategories.size < 3) {
             document.getElementById('categoriesError').textContent = 'Оберіть мінімум 3 категорії';
             document.getElementById('categoryTrigger').classList.add('error');
-            valid = false;
+            errors.push('categories');
         } else {
             document.getElementById('categoriesError').textContent = '';
             document.getElementById('categoryTrigger').classList.remove('error');
@@ -992,29 +1018,43 @@
         const fopName = document.getElementById('fopName').value.trim();
         if (!validateFopName(fopName)) {
             showError('fopName', 'Введіть ПІБ: три слова, не менше 2 букв у кожному');
-            valid = false;
+            errors.push('fopName');
         } else showError('fopName', null);
 
         const iban = document.getElementById('iban').value.replace(/\s/g, '');
         if (!validateIban(iban)) {
-            showError('iban', 'Формат: UA + 27 цифр');
-            valid = false;
+            showError('iban', 'Формат: UA+27 цифр');
+            errors.push('iban');
         } else showError('iban', null);
 
         const edrpou = document.getElementById('edrpou').value.replace(/\s/g, '');
         if (!validateEdrpou(edrpou)) {
             showError('edrpou', 'Рівно 10 цифр');
-            valid = false;
+            errors.push('edrpou');
         } else showError('edrpou', null);
 
         const telegramManager = document.getElementById('telegramManager').value.trim();
         if (telegramManager && !validateTelegramOrPhone(telegramManager)) {
             showError('telegramManager', 'Введіть @username (5–32 символи) або номер телефону');
-            valid = false;
         } else showError('telegramManager', null);
 
-        if (valid) {
-            const data = {
+        if (errors.length > 0) {
+            const listEl = document.getElementById('validationErrorList');
+            listEl.innerHTML = '<p>Заповніть, будь ласка:</p><ul style="margin:12px 0 0 20px;padding:0;">' +
+                errors.map(id => '<li>' + (FIELD_LABELS[id] || id) + '</li>').join('') + '</ul>';
+            const firstScrollEl = document.getElementById(FIELD_SCROLL_IDS[errors[0]]);
+            document.getElementById('validationErrorPopup').classList.add('visible');
+            document.getElementById('btnCloseValidationPopup').onclick = function() {
+                document.getElementById('validationErrorPopup').classList.remove('visible');
+                if (firstScrollEl) {
+                    firstScrollEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (firstScrollEl.focus) firstScrollEl.focus();
+                }
+            };
+            return;
+        }
+
+        const data = {
                 storeName,
                 storeDesc: document.getElementById('storeDesc').value.trim(),
                 categories: Array.from(selectedCategories),
@@ -1031,7 +1071,6 @@
             };
             console.log('Form data:', data);
             alert('Заявку відправлено! (Дані виведено в консоль — тут буде інтеграція з бекендом)');
-        }
     });
 
     const popup = document.getElementById('telegramHelpPopup');
