@@ -108,8 +108,16 @@
             box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
         }
         .form-input-iban {
-            font-size: clamp(0.7rem, 2.8vw + 0.5rem, 1rem);
-            letter-spacing: 0.02em;
+            font-size: clamp(0.5rem, 2.2vw + 0.35rem, 0.9rem);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.01em;
+        }
+        @media (max-width: 380px) {
+            .form-input-iban {
+                font-size: clamp(0.45rem, 2.5vw + 0.3rem, 0.75rem);
+                padding-left: 12px;
+                padding-right: 12px;
+            }
         }
         .form-textarea {
             min-height: 100px;
@@ -305,11 +313,33 @@
             justify-content: center;
             gap: 4px;
         }
-        .accordion-trigger.open {
-            position: sticky;
+        .accordion-sticky-bar {
+            display: none;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            background: linear-gradient(135deg, rgba(182, 236, 223, 0.35), rgba(182, 236, 223, 0.2));
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(30, 35, 40, 0.98), rgba(25, 28, 32, 0.98));
+            border-bottom: 2px solid rgb(182, 236, 223);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .accordion-sticky-bar.visible {
+            display: flex;
+        }
+        .accordion-sticky-bar-subtext {
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.9;
         }
         .accordion-trigger-subtext {
             font-size: 0.75rem;
@@ -724,6 +754,12 @@
         </button>
     </form>
 
+    <!-- Фіксована панель "згорнути" вгорі екрану при скролі -->
+    <div class="accordion-sticky-bar" id="accordionStickyBar">
+        <span><i class="bi bi-chevron-down"></i> Розширені можливості</span>
+        <span class="accordion-sticky-bar-subtext">згорнути</span>
+    </div>
+
     <div class="footer">
         <p>Частина екосистеми <a href="https://app.veoforce.com" target="_blank" rel="noopener noreferrer">VEO FORCE</a></p>
     </div>
@@ -1051,24 +1087,46 @@
     const accordionTrigger = document.getElementById('accordionTrigger');
     const accordionPanel = document.getElementById('accordionPanel');
     const accordionSubtext = document.getElementById('accordionTriggerSubtext');
+    const accordionStickyBar = document.getElementById('accordionStickyBar');
     let accordionScrollPos = 0;
-    if (accordionTrigger && accordionPanel && accordionSubtext) {
+
+    function toggleAccordion(open) {
+        if (open) {
+            accordionScrollPos = window.scrollY || document.documentElement.scrollTop;
+            accordionTrigger.classList.add('open');
+            accordionPanel.classList.add('open');
+            accordionSubtext.textContent = 'згорнути';
+        } else {
+            accordionTrigger.classList.remove('open');
+            accordionPanel.classList.remove('open');
+            accordionSubtext.textContent = 'розгорнути';
+            accordionStickyBar.classList.remove('visible');
+            requestAnimationFrame(function() {
+                window.scrollTo(0, accordionScrollPos);
+            });
+        }
+    }
+
+    function updateStickyBar() {
+        if (!accordionPanel.classList.contains('open') || !accordionTrigger || !accordionStickyBar) return;
+        const triggerRect = accordionTrigger.getBoundingClientRect();
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        if (triggerRect.bottom < 0 || scrollY > accordionScrollPos + 50) {
+            accordionStickyBar.classList.add('visible');
+        } else {
+            accordionStickyBar.classList.remove('visible');
+        }
+    }
+
+    if (accordionTrigger && accordionPanel && accordionSubtext && accordionStickyBar) {
         accordionTrigger.addEventListener('click', function() {
-            const isOpening = !accordionTrigger.classList.contains('open');
-            if (isOpening) {
-                accordionScrollPos = window.scrollY || document.documentElement.scrollTop;
-                accordionTrigger.classList.add('open');
-                accordionPanel.classList.add('open');
-                accordionSubtext.textContent = 'згорнути';
-            } else {
-                accordionTrigger.classList.remove('open');
-                accordionPanel.classList.remove('open');
-                accordionSubtext.textContent = 'розгорнути';
-                requestAnimationFrame(function() {
-                    window.scrollTo(0, accordionScrollPos);
-                });
-            }
+            toggleAccordion(!accordionTrigger.classList.contains('open'));
         });
+        accordionStickyBar.addEventListener('click', function() {
+            toggleAccordion(false);
+        });
+        window.addEventListener('scroll', updateStickyBar, { passive: true });
+        window.addEventListener('resize', updateStickyBar);
     }
 })();
 </script>
