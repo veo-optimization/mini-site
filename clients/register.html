@@ -347,16 +347,84 @@
         .category-popup .popup-content {
             max-width: 480px;
             max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .category-popup-header {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(30, 30, 35, 0.98);
+        }
+        .category-popup-header-btns {
+            display: flex;
+            gap: 10px;
+        }
+        .category-popup-header .btn-clear {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .category-popup-header .btn-clear:hover {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: #e74c3c;
+            color: #fff;
+        }
+        .category-popup-body-wrap {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .category-group {
-            margin-bottom: 16px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
         }
-        .category-group-title {
+        .category-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
             font-weight: 600;
             color: rgb(182, 236, 223);
-            margin-bottom: 10px;
             font-size: 0.95rem;
+            cursor: pointer;
+            background: rgba(55, 55, 60, 0.5);
+            transition: background 0.2s;
         }
+        .category-group-header:hover {
+            background: rgba(55, 55, 60, 0.8);
+        }
+        .category-group-header i.chevron {
+            transition: transform 0.2s;
+            font-size: 0.9rem;
+        }
+        .category-group-header.open i.chevron { transform: rotate(90deg); }
+        .category-group-count {
+            font-size: 0.85rem;
+            color: rgba(182, 236, 223, 0.8);
+            margin-left: 8px;
+        }
+        .category-group-subs {
+            display: none;
+            padding: 12px 16px 16px;
+            background: rgba(40, 40, 45, 0.6);
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .category-group.open .category-group-subs { display: block; }
         .category-checkbox {
             display: flex;
             align-items: center;
@@ -597,14 +665,17 @@
 <!-- Попап вибору категорій -->
 <div class="popup category-popup" id="categoryPopup">
     <div class="popup-content">
-        <div class="popup-header-row">
-            <button type="button" class="popup-close" id="btnCloseCategoryPopup"><i class="bi bi-x-lg"></i> Закрити</button>
+        <div class="category-popup-header">
+            <h3 style="margin:0;font-size:1.1rem;"><i class="bi bi-grid-3x3-gap me-2"></i>Оберіть категорії товарів</h3>
+            <div class="category-popup-header-btns">
+                <button type="button" class="btn-clear" id="btnClearCategories"><i class="bi bi-trash me-2"></i>Очистити вибір</button>
+                <button type="button" class="popup-close" id="btnCloseCategoryPopup"><i class="bi bi-x-lg"></i> Закрити</button>
+            </div>
         </div>
-        <h3><i class="bi bi-grid-3x3-gap me-2"></i>Оберіть категорії товарів</h3>
-        <div class="popup-body" id="categoryPopupBody"></div>
-        <div class="category-popup-footer">
+        <div class="category-popup-footer" style="flex-shrink:0;margin-bottom:8px;">
             Обрано: <span class="count" id="categoryPopupCount">0</span> / 10 (мін. 3)
         </div>
+        <div class="category-popup-body-wrap" id="categoryPopupBody"></div>
     </div>
 </div>
 
@@ -633,26 +704,46 @@
 
     const selectedCategories = new Set();
 
+
     function renderCategoryPopup() {
         const body = document.getElementById('categoryPopupBody');
-        body.innerHTML = Object.entries(CATEGORIES).map(([main, subs]) => `
-            <div class="category-group">
-                <div class="category-group-title">${main}</div>
-                ${subs.map(sub => {
-                    const id = `cat_${main}_${sub}`.replace(/[^a-zA-Z0-9_а-яА-ЯіІїЇєЄґҐ]/g, '_');
-                    const fullName = `${main} → ${sub}`;
-                    const checked = selectedCategories.has(fullName) ? 'checked' : '';
-                    const disabled = !selectedCategories.has(fullName) && selectedCategories.size >= 10 ? 'disabled' : '';
-                    return `<label class="category-checkbox">
-                        <input type="checkbox" data-category="${fullName}" ${checked} ${disabled} id="${id}">
-                        <span>${sub}</span>
-                    </label>`;
-                }).join('')}
+        body.innerHTML = Object.entries(CATEGORIES).map(([main, subs]) => {
+            const countInMain = subs.filter(sub => selectedCategories.has(`${main} → ${sub}`)).length;
+            const countHtml = countInMain > 0 ? `<span class="category-group-count">(${countInMain})</span>` : '';
+            const mainEsc = main.replace(/"/g, '&quot;');
+            return `
+            <div class="category-group" data-main="${mainEsc}">
+                <div class="category-group-header">
+                    <span>${main} ${countHtml}</span>
+                    <i class="bi bi-chevron-right chevron"></i>
+                </div>
+                <div class="category-group-subs">
+                    ${subs.map(sub => {
+                        const id = `cat_${main}_${sub}`.replace(/[^a-zA-Z0-9_а-яА-ЯіІїЇєЄґҐ]/g, '_');
+                        const fullName = `${main} → ${sub}`;
+                        const checked = selectedCategories.has(fullName) ? 'checked' : '';
+                        const disabled = !selectedCategories.has(fullName) && selectedCategories.size >= 10 ? 'disabled' : '';
+                        return `<label class="category-checkbox">
+                            <input type="checkbox" data-category="${fullName.replace(/"/g, '&quot;')}" ${checked} ${disabled} id="${id}">
+                            <span>${sub}</span>
+                        </label>`;
+                    }).join('')}
+                </div>
             </div>
-        `).join('');
+        `}).join('');
+
+        body.querySelectorAll('.category-group-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                if (e.target.closest('input')) return;
+                const group = this.closest('.category-group');
+                group.classList.toggle('open');
+                this.classList.toggle('open');
+            });
+        });
 
         body.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-            cb.addEventListener('change', function() {
+            cb.addEventListener('change', function(e) {
+                e.stopPropagation();
                 const cat = this.dataset.category;
                 if (this.checked) {
                     if (selectedCategories.size < 10) selectedCategories.add(cat);
@@ -661,7 +752,28 @@
                 }
                 updateCategoryCheckboxes();
                 updateCategoryUI();
+                updateCategoryGroupCounts();
             });
+        });
+    }
+
+    function updateCategoryGroupCounts() {
+        document.querySelectorAll('.category-group').forEach(group => {
+            const main = group.getAttribute('data-main');
+            const header = group.querySelector('.category-group-header');
+            let countSpan = header.querySelector('.category-group-count');
+            const count = (CATEGORIES[main] || []).filter(sub => selectedCategories.has(`${main} → ${sub}`)).length;
+            if (count > 0) {
+                if (!countSpan) {
+                    countSpan = document.createElement('span');
+                    countSpan.className = 'category-group-count';
+                    header.querySelector('span').appendChild(document.createTextNode(' '));
+                    header.querySelector('span').appendChild(countSpan);
+                }
+                countSpan.textContent = `(${count})`;
+            } else if (countSpan) {
+                countSpan.remove();
+            }
         });
     }
 
@@ -698,6 +810,13 @@
     document.getElementById('btnCloseCategoryPopup').addEventListener('click', function(e) {
         e.preventDefault();
         document.getElementById('categoryPopup').classList.remove('visible');
+    });
+
+    document.getElementById('btnClearCategories').addEventListener('click', function(e) {
+        e.preventDefault();
+        selectedCategories.clear();
+        renderCategoryPopup();
+        updateCategoryUI();
     });
 
     document.getElementById('categoryPopup').addEventListener('click', function(e) {
