@@ -524,6 +524,33 @@
             color: #999;
         }
         .category-popup-footer .count { color: rgb(182, 236, 223); font-weight: 600; }
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+        .category-tab {
+            flex: 1;
+            padding: 12px 8px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(55, 55, 60, 0.5);
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .category-tab:hover { background: rgba(55, 55, 60, 0.8); color: #e0e0e0; }
+        .category-tab.active {
+            border-color: rgb(182, 236, 223);
+            background: rgba(182, 236, 223, 0.15);
+            color: rgb(182, 236, 223);
+        }
+        .category-tab-panel { display: none; padding: 4px 0; }
+        .category-tab-panel.active { display: block; }
         .category-selected-list {
             font-size: 0.85rem;
             color: #999;
@@ -551,8 +578,8 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Назва магазину <span class="required">*</span></label>
-                <input type="text" class="form-input" id="storeName" name="storeName" maxlength="80" placeholder="Наприклад: VEO SHOP" required>
+                <label class="form-label">Назва магазину</label>
+                <input type="text" class="form-input" id="storeName" name="storeName" maxlength="80" placeholder="Наприклад: VEO SHOP">
                 <div class="char-counter"><span id="storeNameCount">0</span>/80</div>
                 <div class="form-error" id="storeNameError"></div>
             </div>
@@ -571,9 +598,9 @@
                 <span class="free-badge">БЕЗКОШТОВНО</span>
             </div>
             <div class="form-group">
-                <label class="form-label">Оберіть категорії <span class="required">*</span></label>
+                <label class="form-label">Оберіть категорії</label>
                 <button type="button" class="category-trigger" id="categoryTrigger">
-                    <span id="categoryTriggerText">Оберіть категорії<br>(мін. 3, макс. 10)</span>
+                    <span id="categoryTriggerText">Оберіть категорії<br>(мін. 3, макс. 5)</span>
                     <span class="count" id="categoryCount">0</span>
                 </button>
                 <div class="form-hint">Відображатимуться в описі магазину та для каталогу товарів.</div>
@@ -590,22 +617,22 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">ПІБ ФОП (повне) <span class="required">*</span></label>
-                <input type="text" class="form-input" id="fopName" name="fopName" placeholder="Прізвище Ім'я По батькові" required>
+                <label class="form-label">ПІБ ФОП (повне)</label>
+                <input type="text" class="form-input" id="fopName" name="fopName" placeholder="Прізвище Ім'я По батькові">
                 <div class="form-hint">Три слова. Без цифр та символів.</div>
                 <div class="form-error" id="fopNameError"></div>
             </div>
 
             <div class="form-group">
-                <label class="form-label">IBAN ФОП <span class="required">*</span></label>
-                <input type="text" class="form-input form-input-iban" id="iban" name="iban" placeholder="UA123456789012345678901234567" maxlength="29" required>
+                <label class="form-label">IBAN ФОП</label>
+                <input type="text" class="form-input form-input-iban" id="iban" name="iban" placeholder="UA123456789012345678901234567" maxlength="29">
                 <div class="form-hint">Формат: UA+27 цифр. Без пробілів.</div>
                 <div class="form-error" id="ibanError"></div>
             </div>
 
             <div class="form-group">
-                <label class="form-label">ЄДРПОУ <span class="required">*</span></label>
-                <input type="text" class="form-input" id="edrpou" name="edrpou" placeholder="1234567890" maxlength="10" required>
+                <label class="form-label">ЄДРПОУ</label>
+                <input type="text" class="form-input" id="edrpou" name="edrpou" placeholder="1234567890" maxlength="10">
                 <div class="form-hint">10 цифр</div>
                 <div class="form-error" id="edrpouError"></div>
             </div>
@@ -613,6 +640,26 @@
             <div class="form-group">
                 <label class="form-label">Призначення платежу</label>
                 <input type="text" class="form-input" id="paymentNote" name="paymentNote" value="Оплата за товар" placeholder="Оплата за товар">
+            </div>
+        </section>
+
+        <!-- БЛОК: Розрахунок на картку -->
+        <section class="block">
+            <div class="block-header">
+                <h2 class="section-title">Розрахунок на картку</h2>
+                <span class="free-badge">БЕЗКОШТОВНО</span>
+            </div>
+            <div class="form-hint" style="margin-bottom: 14px;">Для тих, чиїм клієнтам зручніше оплачувати на банківську картку — можна вказати номер картки Visa/Mastercard та ПІБ отримувача.</div>
+            <div class="form-group">
+                <label class="form-label">Номер картки</label>
+                <input type="text" class="form-input" id="cardNumber" name="cardNumber" placeholder="4149 4994 0000 0000" maxlength="19">
+                <div class="form-hint">Visa або Mastercard. Без пробілів або з пробілами.</div>
+                <div class="form-error" id="cardNumberError"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">ПІБ отримувача</label>
+                <input type="text" class="form-input" id="cardRecipient" name="cardRecipient" placeholder="Прізвище Ім'я По батькові">
+                <div class="form-error" id="cardRecipientError"></div>
             </div>
         </section>
 
@@ -758,7 +805,7 @@
 <!-- Попап помилок валідації -->
 <div class="popup" id="validationErrorPopup">
     <div class="popup-content">
-        <h3><i class="bi bi-exclamation-triangle me-2"></i>Заповніть обов'язкові поля</h3>
+        <h3><i class="bi bi-exclamation-triangle me-2"></i>Виправте помилки в полях</h3>
         <div class="popup-body" id="validationErrorList"></div>
         <div style="margin-top: 20px; text-align: center;">
             <button type="button" class="popup-close" id="btnCloseValidationPopup">Зрозуміло</button>
@@ -777,7 +824,12 @@
             </div>
         </div>
         <div class="category-popup-footer" style="flex-shrink:0;margin-bottom:8px;">
-            Обрано: <span class="count" id="categoryPopupCount">0</span> / 10 (мін. 3)
+            Обрано: <span class="count" id="categoryPopupCount">0</span> / 5 (мін. 3)
+        </div>
+        <div class="category-tabs">
+            <button type="button" class="category-tab active" data-tab="Товари">Товари</button>
+            <button type="button" class="category-tab" data-tab="Послуги">Послуги</button>
+            <button type="button" class="category-tab" data-tab="Онлайн">Онлайн</button>
         </div>
         <div class="category-popup-body-wrap" id="categoryPopupBody"></div>
     </div>
@@ -787,61 +839,46 @@
 (function() {
     const form = document.getElementById('registerForm');
 
-    // Категорії товарів: 100 підкатегорій (більше для одягу, дому та повсякденного вжитку)
-    const CATEGORIES = {
-        "Одяг та взуття": ["Жіночий одяг", "Чоловічий одяг", "Дитячий одяг", "Взуття жіноче", "Взуття чоловіче", "Взуття дитяче", "Спортивне взуття", "Аксесуари", "Спортивний одяг", "Верхній одяг", "Одяг для дому", "Білизна", "Піжами та халати", "Куртки та пальто", "Светри та кардигани", "Сукні та спідниці", "Джинси та штани"],
-        "Товари для дому": ["Текстиль", "Декор", "Посудина", "Кухонне приладдя", "Освітлення", "Меблі", "Зберігання", "Товари для спальні", "Прикраси для вікна", "Свічки", "Килими", "Подушки та ковдри", "Рушники", "Миски та контейнери"],
-        "Краса та здоров'я": ["Косметика", "Догляд за обличчям", "Догляд за волоссям", "Парфуми", "Вітаміни", "Медичні товари", "Гігієна", "Догляд за тілом", "Зубна гігієна", "БАДи"],
-        "Продукти харчування": ["Кондитерія", "Снеки", "Напої", "Сир та молочні", "М'ясо та ковбаси", "Консерви", "Хліб", "Мед та солодощі", "Соуси", "Хлібобулочні"],
-        "Товари для дітей": ["Іграшки", "Одежа для дітей", "Взуття для дітей", "Школа", "Підгузки", "Годівництво", "Прогулянки", "Дитячі кімнати", "Творчість", "Настільні ігри"],
-        "Побутова хімія": ["Мийні засоби", "Порошки", "Засоби для підлоги", "Освіжувачі", "Догляд за взуттям", "Для посуду", "Для кухні", "Відбілювачі"],
-        "Прикраси та аксесуари": ["Біжутерія", "Українські прикраси", "Годинники", "Сумки", "Рюкзаки", "Шарфи та хустки"],
-        "Електроніка та гаджети": ["Смартфони", "Навушники", "Планшети", "Аксесуари для гаджетів", "Зарядні пристрої"],
-        "Спорт та хобі": ["Тренажери", "Велосипеди", "Кемпінг", "Рукоділля", "Кераміка"],
-        "Автотовари": ["Автоаксесуари", "Автохімія", "Догляд за авто", "Шини"],
-        "Будівництво та ремонт": ["Інструменти", "Фарби", "Сантехніка"],
-        "Товари для тварин": ["Корм для собак", "Корм для котів", "Амуніція", "Гігієна тварин"],
-        "Книги та канцтовари": ["Книги", "Канцтовари"],
-        "Квіти та сад": ["Кімнатні рослини", "Насіння"]
+    const CATEGORY_MAX = 5;
+    const CATEGORY_MIN = 3;
+    const CATEGORIES_TABS = {
+        "Товари": ["Жіночий одяг", "Чоловічий одяг", "Дитячий одяг", "Взуття", "Сумки та рюкзаки", "Аксесуари", "Прикраси та біжутерія", "Косметика та догляд", "Парфуми", "Товари для дому", "Декор", "Кухня та посуд", "Текстиль", "Дитячі товари", "Спорт та фітнес", "Електроніка", "Автотовари", "Подарунки", "Handmade", "Інші товари"],
+        "Послуги": ["Психологія", "Юридичні", "Бухгалтерія", "Освіта", "Маркетинг", "Консалтинг", "Фітнес", "Б'юті", "Фото та відео", "Організація подій"],
+        "Онлайн": ["Онлайн-курси", "Електронні книги", "Цифрові шаблони", "Закриті спільноти", "ПЗ та інструменти", "Цифровий контент"]
     };
 
     const selectedCategories = new Set();
 
 
+    function renderCategoryTab(tabName) {
+        const subs = CATEGORIES_TABS[tabName] || [];
+        return subs.map(sub => {
+            const fullName = `${tabName} → ${sub}`;
+            const id = `cat_${tabName}_${sub}`.replace(/[^a-zA-Z0-9_а-яА-ЯіІїЇєЄґҐ]/g, '_');
+            const checked = selectedCategories.has(fullName) ? 'checked' : '';
+            const disabled = !selectedCategories.has(fullName) && selectedCategories.size >= CATEGORY_MAX ? 'disabled' : '';
+            return `<label class="category-checkbox">
+                <input type="checkbox" data-category="${fullName.replace(/"/g, '&quot;')}" ${checked} ${disabled} id="${id}">
+                <span>${sub}</span>
+            </label>`;
+        }).join('');
+    }
+
     function renderCategoryPopup() {
         const body = document.getElementById('categoryPopupBody');
-        body.innerHTML = Object.entries(CATEGORIES).map(([main, subs]) => {
-            const countInMain = subs.filter(sub => selectedCategories.has(`${main} → ${sub}`)).length;
-            const countHtml = countInMain > 0 ? `<span class="category-group-count">(${countInMain})</span>` : '';
-            const mainEsc = main.replace(/"/g, '&quot;');
-            return `
-            <div class="category-group" data-main="${mainEsc}">
-                <div class="category-group-header">
-                    <span>${main} ${countHtml}</span>
-                    <i class="bi bi-chevron-right chevron"></i>
-                </div>
-                <div class="category-group-subs">
-                    ${subs.map(sub => {
-                        const id = `cat_${main}_${sub}`.replace(/[^a-zA-Z0-9_а-яА-ЯіІїЇєЄґҐ]/g, '_');
-                        const fullName = `${main} → ${sub}`;
-                        const checked = selectedCategories.has(fullName) ? 'checked' : '';
-                        const disabled = !selectedCategories.has(fullName) && selectedCategories.size >= 10 ? 'disabled' : '';
-                        return `<label class="category-checkbox">
-                            <input type="checkbox" data-category="${fullName.replace(/"/g, '&quot;')}" ${checked} ${disabled} id="${id}">
-                            <span>${sub}</span>
-                        </label>`;
-                    }).join('')}
-                </div>
+        body.innerHTML = Object.keys(CATEGORIES_TABS).map(tabName => `
+            <div class="category-tab-panel ${tabName === 'Товари' ? 'active' : ''}" data-tab="${tabName}">
+                ${renderCategoryTab(tabName)}
             </div>
-        `}).join('');
+        `).join('');
 
-        body.querySelectorAll('.category-group-header').forEach(header => {
-            header.addEventListener('click', function(e) {
-                if (e.target.closest('input')) return;
-                const group = this.closest('.category-group');
-                group.classList.toggle('open');
-                this.classList.toggle('open');
-            });
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.onclick = function() {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.category-tab-panel').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                body.querySelector(`.category-tab-panel[data-tab="${this.dataset.tab}"]`).classList.add('active');
+            };
         });
 
         body.querySelectorAll('input[type="checkbox"]').forEach(cb => {
@@ -849,41 +886,24 @@
                 e.stopPropagation();
                 const cat = this.dataset.category;
                 if (this.checked) {
-                    if (selectedCategories.size < 10) selectedCategories.add(cat);
+                    if (selectedCategories.size < CATEGORY_MAX) {
+                        selectedCategories.add(cat);
+                    } else {
+                        this.checked = false;
+                    }
                 } else {
                     selectedCategories.delete(cat);
                 }
                 updateCategoryCheckboxes();
                 updateCategoryUI();
-                updateCategoryGroupCounts();
             });
-        });
-    }
-
-    function updateCategoryGroupCounts() {
-        document.querySelectorAll('.category-group').forEach(group => {
-            const main = group.getAttribute('data-main');
-            const header = group.querySelector('.category-group-header');
-            let countSpan = header.querySelector('.category-group-count');
-            const count = (CATEGORIES[main] || []).filter(sub => selectedCategories.has(`${main} → ${sub}`)).length;
-            if (count > 0) {
-                if (!countSpan) {
-                    countSpan = document.createElement('span');
-                    countSpan.className = 'category-group-count';
-                    header.querySelector('span').appendChild(document.createTextNode(' '));
-                    header.querySelector('span').appendChild(countSpan);
-                }
-                countSpan.textContent = `(${count})`;
-            } else if (countSpan) {
-                countSpan.remove();
-            }
         });
     }
 
     function updateCategoryCheckboxes() {
         document.querySelectorAll('#categoryPopupBody input[type="checkbox"]').forEach(cb => {
             const cat = cb.dataset.category;
-            if (!selectedCategories.has(cat) && selectedCategories.size >= 10) {
+            if (!selectedCategories.has(cat) && selectedCategories.size >= CATEGORY_MAX) {
                 cb.disabled = true;
             } else {
                 cb.disabled = false;
@@ -896,12 +916,12 @@
         document.getElementById('categoryCount').textContent = count;
         document.getElementById('categoryPopupCount').textContent = count;
         const triggerEl = document.getElementById('categoryTriggerText');
-        if (count >= 3) {
+        if (count >= CATEGORY_MIN) {
             triggerEl.textContent = `Обрано ${count} категорій`;
         } else {
-            triggerEl.innerHTML = 'Оберіть категорії<br>(мін. 3, макс. 10)';
+            triggerEl.innerHTML = `Оберіть категорії<br>(мін. ${CATEGORY_MIN}, макс. ${CATEGORY_MAX})`;
         }
-        document.getElementById('categorySelectedList').textContent = count >= 3
+        document.getElementById('categorySelectedList').textContent = count >= CATEGORY_MIN
             ? Array.from(selectedCategories).join(', ')
             : '';
     }
@@ -981,19 +1001,30 @@
         return digits.length >= 10 && digits.length <= 15;
     }
 
+    function validateCardNumber(val) {
+        const digits = val.replace(/\D/g, '');
+        return digits.length === 16 && /^\d{16}$/.test(digits);
+    }
+
     const FIELD_LABELS = {
         storeName: 'Назва магазину',
         categories: 'Категорії товарів',
         fopName: 'ПІБ ФОП',
         iban: 'IBAN ФОП',
-        edrpou: 'ЄДРПОУ'
+        edrpou: 'ЄДРПОУ',
+        cardNumber: 'Номер картки',
+        cardRecipient: 'ПІБ отримувача картки',
+        telegramManager: 'Telegram менеджера'
     };
     const FIELD_SCROLL_IDS = {
         storeName: 'storeName',
         categories: 'categoryTrigger',
         fopName: 'fopName',
         iban: 'iban',
-        edrpou: 'edrpou'
+        edrpou: 'edrpou',
+        cardNumber: 'cardNumber',
+        cardRecipient: 'cardRecipient',
+        telegramManager: 'telegramManager'
     };
 
     form.addEventListener('submit', function(e) {
@@ -1001,13 +1032,13 @@
         const errors = [];
 
         const storeName = document.getElementById('storeName').value.trim();
-        if (!storeName || storeName.length > 80) {
-            showError('storeName', storeName ? 'Максимум 80 символів' : 'Обов\'язкове поле');
+        if (storeName && storeName.length > 80) {
+            showError('storeName', 'Максимум 80 символів');
             errors.push('storeName');
         } else showError('storeName', null);
 
-        if (selectedCategories.size < 3) {
-            document.getElementById('categoriesError').textContent = 'Оберіть мінімум 3 категорії';
+        if (selectedCategories.size > 0 && (selectedCategories.size < CATEGORY_MIN || selectedCategories.size > CATEGORY_MAX)) {
+            document.getElementById('categoriesError').textContent = `Оберіть від ${CATEGORY_MIN} до ${CATEGORY_MAX} категорій`;
             document.getElementById('categoryTrigger').classList.add('error');
             errors.push('categories');
         } else {
@@ -1016,31 +1047,43 @@
         }
 
         const fopName = document.getElementById('fopName').value.trim();
-        if (!validateFopName(fopName)) {
-            showError('fopName', 'Введіть ПІБ: три слова, не менше 2 букв у кожному');
+        if (fopName && !validateFopName(fopName)) {
+            showError('fopName', 'ПІБ: три слова, не менше 2 букв у кожному');
             errors.push('fopName');
         } else showError('fopName', null);
 
         const iban = document.getElementById('iban').value.replace(/\s/g, '');
-        if (!validateIban(iban)) {
-            showError('iban', 'Формат: UA+27 цифр');
+        if (iban && !validateIban(iban)) {
+            showError('iban', 'Формат: UA + 27 цифр');
             errors.push('iban');
         } else showError('iban', null);
 
         const edrpou = document.getElementById('edrpou').value.replace(/\s/g, '');
-        if (!validateEdrpou(edrpou)) {
+        if (edrpou && !validateEdrpou(edrpou)) {
             showError('edrpou', 'Рівно 10 цифр');
             errors.push('edrpou');
         } else showError('edrpou', null);
 
+        const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+        const cardRecipient = document.getElementById('cardRecipient').value.trim();
+        if (cardNumber && !validateCardNumber(cardNumber)) {
+            showError('cardNumber', 'Номер картки: 16 цифр (Visa/Mastercard)');
+            errors.push('cardNumber');
+        } else showError('cardNumber', null);
+        if (cardRecipient && !validateFopName(cardRecipient)) {
+            showError('cardRecipient', 'ПІБ: три слова, не менше 2 букв у кожному');
+            errors.push('cardRecipient');
+        } else showError('cardRecipient', null);
+
         const telegramManager = document.getElementById('telegramManager').value.trim();
         if (telegramManager && !validateTelegramOrPhone(telegramManager)) {
             showError('telegramManager', 'Введіть @username (5–32 символи) або номер телефону');
+            errors.push('telegramManager');
         } else showError('telegramManager', null);
 
         if (errors.length > 0) {
             const listEl = document.getElementById('validationErrorList');
-            listEl.innerHTML = '<p>Заповніть, будь ласка:</p><ul style="margin:12px 0 0 20px;padding:0;">' +
+            listEl.innerHTML = '<p>Виправте, будь ласка:</p><ul style="margin:12px 0 0 20px;padding:0;">' +
                 errors.map(id => '<li>' + (FIELD_LABELS[id] || id) + '</li>').join('') + '</ul>';
             const firstScrollEl = document.getElementById(FIELD_SCROLL_IDS[errors[0]]);
             document.getElementById('validationErrorPopup').classList.add('visible');
@@ -1055,22 +1098,24 @@
         }
 
         const data = {
-                storeName,
-                storeDesc: document.getElementById('storeDesc').value.trim(),
-                categories: Array.from(selectedCategories),
-                fopName,
-                iban,
-                edrpou,
-                paymentNote: document.getElementById('paymentNote').value.trim() || 'Оплата за товар',
-                phone: document.getElementById('phone').value.trim(),
-                viber: document.getElementById('viber').value.trim(),
-                telegramManager,
-                telegramChannel: document.getElementById('telegramChannel').value.trim(),
-                viberGroup: document.getElementById('viberGroup').value.trim(),
-                instagram: document.getElementById('instagram').value.trim()
-            };
-            console.log('Form data:', data);
-            alert('Заявку відправлено! (Дані виведено в консоль — тут буде інтеграція з бекендом)');
+            storeName: document.getElementById('storeName').value.trim(),
+            storeDesc: document.getElementById('storeDesc').value.trim(),
+            categories: Array.from(selectedCategories),
+            fopName: document.getElementById('fopName').value.trim(),
+            iban: document.getElementById('iban').value.replace(/\s/g, ''),
+            edrpou: document.getElementById('edrpou').value.replace(/\s/g, ''),
+            paymentNote: document.getElementById('paymentNote').value.trim() || 'Оплата за товар',
+            cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+            cardRecipient: document.getElementById('cardRecipient').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            viber: document.getElementById('viber').value.trim(),
+            telegramManager: document.getElementById('telegramManager').value.trim(),
+            telegramChannel: document.getElementById('telegramChannel').value.trim(),
+            viberGroup: document.getElementById('viberGroup').value.trim(),
+            instagram: document.getElementById('instagram').value.trim()
+        };
+        console.log('Form data:', data);
+        alert('Заявку відправлено! (Дані виведено в консоль — тут буде інтеграція з бекендом)');
     });
 
     const popup = document.getElementById('telegramHelpPopup');
