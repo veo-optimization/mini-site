@@ -146,15 +146,17 @@
             border: none;
             background: rgb(182, 236, 223);
             color: #1a1a1e;
-            font-size: 17px;
-            font-weight: 700;
+            font-size: clamp(1.25rem, 7.5vw, 2rem);
+            font-weight: 800;
             font-family: inherit;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            line-height: 1.3;
+            line-height: 1.25;
         }
-        .btn-submit .btn-submit-text { text-align: center; }
+        .btn-submit .btn-submit-text {
+            text-align: center;
+        }
         .btn-submit:hover {
             background: rgb(195, 240, 230);
             box-shadow: 0 0 20px rgba(182, 236, 223, 0.4);
@@ -298,15 +300,28 @@
             text-align: center;
             box-shadow: 0 4px 20px rgba(182, 236, 223, 0.25);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 4px;
+        }
+        .accordion-trigger.open {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, rgba(182, 236, 223, 0.35), rgba(182, 236, 223, 0.2));
+        }
+        .accordion-trigger-subtext {
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.9;
         }
         .accordion-trigger:hover {
             background: linear-gradient(135deg, rgba(182, 236, 223, 0.3), rgba(182, 236, 223, 0.2));
             box-shadow: 0 6px 24px rgba(182, 236, 223, 0.35);
             transform: translateY(-2px);
         }
+        .accordion-trigger-main { display: flex; align-items: center; gap: 8px; }
         .accordion-trigger i.chevron { transition: transform 0.2s; }
         .accordion-trigger.open i.chevron { transform: rotate(90deg); }
         .accordion-panel {
@@ -650,8 +665,11 @@
 
         <!-- Розширені можливості (вгорі над кнопкою) -->
         <div class="accordion-trigger" id="accordionTrigger">
-            <i class="bi bi-chevron-right chevron"></i>
-            <span>Розширені можливості</span>
+            <span class="accordion-trigger-main">
+                <i class="bi bi-chevron-right chevron"></i>
+                Розширені можливості
+            </span>
+            <span class="accordion-trigger-subtext" id="accordionTriggerSubtext">розгорнути</span>
         </div>
         <div class="accordion-panel" id="accordionPanel">
             <div class="accordion-intro">
@@ -1032,10 +1050,24 @@
     // Розширені можливості — випадаюче меню
     const accordionTrigger = document.getElementById('accordionTrigger');
     const accordionPanel = document.getElementById('accordionPanel');
-    if (accordionTrigger && accordionPanel) {
+    const accordionSubtext = document.getElementById('accordionTriggerSubtext');
+    let accordionScrollPos = 0;
+    if (accordionTrigger && accordionPanel && accordionSubtext) {
         accordionTrigger.addEventListener('click', function() {
-            accordionTrigger.classList.toggle('open');
-            accordionPanel.classList.toggle('open');
+            const isOpening = !accordionTrigger.classList.contains('open');
+            if (isOpening) {
+                accordionScrollPos = window.scrollY || document.documentElement.scrollTop;
+                accordionTrigger.classList.add('open');
+                accordionPanel.classList.add('open');
+                accordionSubtext.textContent = 'згорнути';
+            } else {
+                accordionTrigger.classList.remove('open');
+                accordionPanel.classList.remove('open');
+                accordionSubtext.textContent = 'розгорнути';
+                requestAnimationFrame(function() {
+                    window.scrollTo(0, accordionScrollPos);
+                });
+            }
         });
     }
 })();
