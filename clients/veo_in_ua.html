@@ -58,6 +58,7 @@
             font-size: 0.95rem;
             color: #999;
             margin-bottom: 20px;
+            line-height: 1.5;
         }
         .section-title {
             color: #fff;
@@ -214,6 +215,106 @@
         }
         .footer-block-content a { color: rgb(182, 236, 223); font-weight: 500; }
         .footer-block-content .highlight { color: #fff; font-weight: 600; }
+        .search-store-block {
+            padding: 16px 0;
+            margin: 16px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .search-hint { margin-bottom: 12px !important; font-size: 0.9rem !important; }
+        .search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .search-input {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(55, 55, 60, 0.6);
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+        .search-input:focus { outline: none; border-color: rgb(182, 236, 223); }
+        .search-input.error { border-color: #e74c3c; }
+        .btn-search {
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: none;
+            background: rgb(182, 236, 223);
+            color: #1a1a1e;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-search:hover { background: rgb(195, 240, 230); }
+        .form-error { font-size: 0.8rem; color: #e74c3c; margin-top: 8px; }
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .category-tab-btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(55, 55, 60, 0.5);
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .category-tab-btn:hover { color: #e0e0e0; border-color: rgba(182, 236, 223, 0.5); }
+        .category-tab-btn.active {
+            border-color: rgb(182, 236, 223);
+            background: rgba(182, 236, 223, 0.15);
+            color: rgb(182, 236, 223);
+        }
+        .top-stores-title {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+        .top-stores-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .store-card {
+            background: rgba(40, 40, 45, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.2s;
+        }
+        .store-card:hover { transform: translateY(-2px); }
+        .store-card-img {
+            height: 80px;
+            background: linear-gradient(135deg, #25F4EE 0%, #FE2C55 50%, #000 100%);
+        }
+        .store-card-body {
+            padding: 12px;
+        }
+        .store-card-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .store-card-meta {
+            font-size: 0.75rem;
+            color: #999;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -223,13 +324,23 @@
     <!-- HEADER -->
     <section class="profile-header">
         <h1 class="store-name">VEO in UA</h1>
-        <p class="store-categories">Частина екосистеми VEO FORCE — платформа міні-сайтів для TikTok-продавців</p>
+        <p class="store-categories">Частина екосистеми VEO FORCE<br>Платформа міні-сайтів для TikTok-продавців</p>
     </section>
 
     <!-- ПРО VEO.in.UA -->
     <section class="block">
         <h2 class="section-title">Про VEO.in.UA</h2>
         <p>На цьому домені розміщуються <strong>міні-сайти для продавців</strong> — окремі сторінки, де відображаються реквізити ФОП, контакти та каталог товарів.</p>
+
+        <div class="search-store-block">
+            <p class="search-hint">Знайдіть міні-сайт вашого продавця через пошук за номером магазину.</p>
+            <div class="search-row">
+                <input type="text" class="search-input" id="storeNumberSearch" placeholder="№ магазину (4 цифри)" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+                <button type="button" class="btn-search" id="btnSearchStore"><i class="bi bi-search"></i> Шукати</button>
+            </div>
+            <div class="form-error" id="storeSearchError"></div>
+        </div>
+
         <p>Щоб створити безкоштовний міні-сайт, зареєструйтесь в системі VEO FORCE. Якщо ви вже маєте обліковий запис в системі — увійдіть.</p>
         <div class="cta-buttons">
             <a href="https://app.veoforce.com/register" class="btn-link-style btn-primary-style" target="_blank" rel="noopener noreferrer">
@@ -239,6 +350,19 @@
                 <i class="bi bi-box-arrow-in-right me-2"></i> Увійти
             </a>
         </div>
+    </section>
+
+    <!-- Топові магазини та фільтри -->
+    <section class="block">
+        <h2 class="section-title">Пошук магазинів</h2>
+        <p class="top-stores-title">Топові магазини по відвідуванню протягом останніх 7 днів</p>
+        <div class="category-tabs" id="categoryTabs">
+            <button type="button" class="category-tab-btn" data-category="all">Усі</button>
+            <button type="button" class="category-tab-btn" data-category="Товари">Товари</button>
+            <button type="button" class="category-tab-btn" data-category="Послуги">Послуги</button>
+            <button type="button" class="category-tab-btn" data-category="Онлайн">Онлайн</button>
+        </div>
+        <div class="top-stores-grid" id="topStoresGrid"></div>
     </section>
 
     <div class="footer">
@@ -253,5 +377,76 @@
 
 </div>
 
+<script>
+(function() {
+    const searchInput = document.getElementById('storeNumberSearch');
+    const searchError = document.getElementById('storeSearchError');
+    const btnSearch = document.getElementById('btnSearchStore');
+    const categoryTabs = document.getElementById('categoryTabs');
+    const topStoresGrid = document.getElementById('topStoresGrid');
+
+    function validateStoreNumber(val) {
+        return /^\d{4}$/.test(val.replace(/\D/g, ''));
+    }
+
+    btnSearch.addEventListener('click', function() {
+        const num = searchInput.value.replace(/\D/g, '');
+        searchError.textContent = '';
+        searchInput.classList.remove('error');
+        if (!validateStoreNumber(num)) {
+            searchError.textContent = 'Введіть 4 цифри номера магазину';
+            searchInput.classList.add('error');
+            return;
+        }
+        window.location.href = 'https://' + num + '.veo.in.ua';
+    });
+
+    searchInput.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') btnSearch.click();
+    });
+
+    const MOCK_STORES = Array.from({ length: 20 }, (_, i) => ({
+        id: 1001 + i,
+        name: 'Магазин ' + (1001 + i),
+        subscribers: Math.floor(50 + Math.random() * 500),
+        products: Math.floor(10 + Math.random() * 90),
+        daysInTop: Math.floor(1 + Math.random() * 7),
+        category: ['Товари', 'Послуги', 'Онлайн'][i % 3]
+    }));
+
+    function renderStores(category) {
+        const filtered = category === 'all'
+            ? MOCK_STORES
+            : MOCK_STORES.filter(s => s.category === category);
+        topStoresGrid.innerHTML = filtered.slice(0, 20).map(s => `
+            <a href="https://${s.id}.veo.in.ua" class="store-card" target="_blank" rel="noopener">
+                <div class="store-card-img"></div>
+                <div class="store-card-body">
+                    <div class="store-card-name">${s.name}</div>
+                    <div class="store-card-meta">
+                        ${s.subscribers} підписників · ${s.products} товарів<br>
+                        В ТОП-20: ${s.daysInTop} дн.
+                    </div>
+                </div>
+            </a>
+        `).join('');
+    }
+
+    categoryTabs.querySelectorAll('.category-tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            categoryTabs.querySelectorAll('.category-tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            renderStores(this.dataset.category);
+        });
+    });
+
+    document.querySelector('.category-tab-btn[data-category="all"]').classList.add('active');
+    renderStores('all');
+})();
+</script>
 </body>
 </html>
