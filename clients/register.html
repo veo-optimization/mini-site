@@ -627,7 +627,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Назва магазину</label>
+                <label class="form-label">Назва магазину <span class="required">*</span></label>
                 <input type="text" class="form-input" id="storeName" name="storeName" maxlength="80" placeholder="Наприклад: VEO SHOP">
                 <div class="char-counter"><span id="storeNameCount">0</span>/80</div>
                 <div class="form-error" id="storeNameError"></div>
@@ -647,7 +647,7 @@
                 <span class="free-badge">БЕЗКОШТОВНО</span>
             </div>
             <div class="form-group">
-                <label class="form-label">Оберіть категорії</label>
+                <label class="form-label">Оберіть категорії <span class="required">*</span></label>
                 <button type="button" class="category-trigger" id="categoryTrigger">
                     <span id="categoryTriggerText">Оберіть категорії<br>(мін. 3, макс. 5)</span>
                     <span class="count" id="categoryCount">0</span>
@@ -1122,13 +1122,18 @@
         const errors = [];
 
         const storeName = document.getElementById('storeName').value.trim();
-        if (storeName && storeName.length > 80) {
+        if (!storeName) {
+            showError('storeName', 'Введіть назву магазину');
+            errors.push('storeName');
+        } else if (storeName.length > 80) {
             showError('storeName', 'Максимум 80 символів');
             errors.push('storeName');
         } else showError('storeName', null);
 
-        if (selectedCategories.size > 0 && (selectedCategories.size < CATEGORY_MIN || selectedCategories.size > CATEGORY_MAX)) {
-            document.getElementById('categoriesError').textContent = `Оберіть від ${CATEGORY_MIN} до ${CATEGORY_MAX} категорій`;
+        if (selectedCategories.size < CATEGORY_MIN || selectedCategories.size > CATEGORY_MAX) {
+            document.getElementById('categoriesError').textContent = selectedCategories.size < CATEGORY_MIN
+                ? `Оберіть мінімум ${CATEGORY_MIN} категорій`
+                : `Оберіть від ${CATEGORY_MIN} до ${CATEGORY_MAX} категорій`;
             document.getElementById('categoryTrigger').classList.add('error');
             errors.push('categories');
         } else {
@@ -1180,8 +1185,10 @@
             document.getElementById('btnCloseValidationPopup').onclick = function() {
                 document.getElementById('validationErrorPopup').classList.remove('visible');
                 if (firstScrollEl) {
-                    firstScrollEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    if (firstScrollEl.focus) firstScrollEl.focus();
+                    setTimeout(function() {
+                        firstScrollEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        if (firstScrollEl.focus) firstScrollEl.focus();
+                    }, 150);
                 }
             };
             return;
