@@ -133,9 +133,14 @@
             margin-top: 6px;
         }
         .btn-submit {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             width: 100%;
-            padding: 16px 20px;
+            min-height: 150px;
+            padding: 24px 20px;
             margin-top: 24px;
             border-radius: 14px;
             border: none;
@@ -147,7 +152,9 @@
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            line-height: 1.3;
         }
+        .btn-submit .btn-submit-text { text-align: center; }
         .btn-submit:hover {
             background: rgb(195, 240, 230);
             box-shadow: 0 0 20px rgba(182, 236, 223, 0.4);
@@ -280,7 +287,7 @@
         .accordion-trigger {
             cursor: pointer;
             padding: 18px 16px;
-            margin-top: 24px;
+            margin-top: 20px;
             border-radius: 14px;
             background: linear-gradient(135deg, rgba(182, 236, 223, 0.2), rgba(182, 236, 223, 0.12));
             border: 2px solid rgb(182, 236, 223);
@@ -304,13 +311,30 @@
         .accordion-trigger.open i.chevron { transform: rotate(90deg); }
         .accordion-panel {
             display: none;
-            margin-top: 16px;
+            margin-top: 12px;
             padding: 18px;
             background: rgba(55, 55, 60, 0.5);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .accordion-panel.open { display: block; }
+        .accordion-intro {
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            background: rgba(182, 236, 223, 0.12);
+            border: 1px solid rgba(182, 236, 223, 0.3);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #d0d0d0;
+        }
+        .accordion-intro strong { color: #fff; }
+        .accordion-list-title {
+            font-size: 0.85rem;
+            color: rgb(182, 236, 223);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
         .accordion-item {
             margin-bottom: 16px;
             padding-bottom: 16px;
@@ -624,57 +648,62 @@
             </div>
         </section>
 
-        <button type="submit" class="btn-submit" id="submitBtn">
-            <i class="bi bi-check-circle me-2"></i> Створити міні-сайт!
-        </button>
-
-        <!-- Розширені можливості -->
+        <!-- Розширені можливості (вгорі над кнопкою) -->
         <div class="accordion-trigger" id="accordionTrigger">
             <i class="bi bi-chevron-right chevron"></i>
             <span>Розширені можливості</span>
         </div>
         <div class="accordion-panel" id="accordionPanel">
+            <div class="accordion-intro">
+                <strong>При створенні безкоштовного міні-сайту</strong> ви зможете згодом розширювати функціонал на платній основі за тарифами.
+            </div>
+            <div class="accordion-list-title">Доступні опції:</div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Декілька номерів телефону та Viber менеджерів</div>
-                <div class="accordion-item-desc">Додайте кілька контактних номерів для різних менеджерів — клієнти зможуть обрати потрібний канал зв'язку.</div>
+                <div class="accordion-item-title">Кілька телефонів та Viber</div>
+                <div class="accordion-item-desc">Декілька контактів для різних менеджерів.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Посилання на декілька TikTok-акаунтів</div>
-                <div class="accordion-item-desc">Резервні акаунти або окремі профілі для різних медіа-ролей (основний, розважальний, новини тощо).</div>
+                <div class="accordion-item-title">Декілька TikTok-акаунтів</div>
+                <div class="accordion-item-desc">Резервні або окремі профілі.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Умови оплати, доставки та повернення</div>
-                <div class="accordion-item-desc">Детальні умови для клієнтів: способи оплати, терміни доставки, політика повернення та обміну.</div>
+                <div class="accordion-item-title">Умови оплати, доставки, повернення</div>
+                <div class="accordion-item-desc">Способи оплати, терміни, політика обміну.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">API токен Telegram-бота</div>
-                <div class="accordion-item-desc">Інтеграція з власним Telegram-ботом для автоматизації замовлень, підписок та сповіщень.</div>
+                <div class="accordion-item-title">API Telegram-бота</div>
+                <div class="accordion-item-desc">Автоматизація замовлень та сповіщень.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">API токен Нової пошти</div>
-                <div class="accordion-item-desc">Автоматичне формування ТТН, відстеження відправлень та синхронізація зі службою доставки.</div>
+                <div class="accordion-item-title">API Нової пошти</div>
+                <div class="accordion-item-desc">ТТН, відстеження відправлень.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Токен платіжного мерчанту</div>
-                <div class="accordion-item-desc">Прийом миттєвих оплат карткою, Google Pay, Apple Pay з автоматичною фіскалізацією чеків.</div>
+                <div class="accordion-item-title">Оплата карткою (Google/Apple Pay)</div>
+                <div class="accordion-item-desc">Миттєва оплата з фіскалізацією.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Система обліку клієнтів</div>
-                <div class="accordion-item-desc">База клієнтів, історія замовлень, адреси доставки та персональні дані в одному місці.</div>
+                <div class="accordion-item-title">Облік клієнтів</div>
+                <div class="accordion-item-desc">База клієнтів, історія замовлень.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Система розсилок клієнтам</div>
-                <div class="accordion-item-desc">Масові розсилки в Telegram: акції, новинки, нагадування про замовлення.</div>
+                <div class="accordion-item-title">Розсилки в Telegram</div>
+                <div class="accordion-item-desc">Акції, новинки, нагадування.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Сповіщення про прямі трансляції</div>
-                <div class="accordion-item-desc">Автоматичні сповіщення підписникам про вихід в ефір на TikTok, Bigo, Instagram та інших платформах.</div>
+                <div class="accordion-item-title">Сповіщення про ефіри</div>
+                <div class="accordion-item-desc">TikTok, Bigo, Instagram — автоповідомлення підписникам.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Аналітика, облік товарів та інше</div>
-                <div class="accordion-item-desc">Звіти з продажів, залишки товарів, популярні позиції, конверсія та інші метрики для управління бізнесом.</div>
+                <div class="accordion-item-title">Аналітика та облік товарів</div>
+                <div class="accordion-item-desc">Звіти, залишки, популярні позиції.</div>
             </div>
         </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="bi bi-check-circle me-2"></i>
+            <span class="btn-submit-text">Створити<br>міні-сайт!</span>
+        </button>
     </form>
 
     <div class="footer">
