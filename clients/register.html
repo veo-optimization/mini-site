@@ -313,34 +313,6 @@
             justify-content: center;
             gap: 4px;
         }
-        .accordion-sticky-bar {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 14px 16px;
-            background: linear-gradient(135deg, rgba(30, 35, 40, 0.98), rgba(25, 28, 32, 0.98));
-            border-bottom: 2px solid rgb(182, 236, 223);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            cursor: pointer;
-            color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
-            text-align: center;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-        .accordion-sticky-bar.visible {
-            display: flex;
-        }
-        .accordion-sticky-bar-subtext {
-            font-size: 0.75rem;
-            font-weight: 500;
-            opacity: 0.9;
-        }
         .accordion-trigger-subtext {
             font-size: 0.75rem;
             font-weight: 500;
@@ -653,6 +625,7 @@
             <div class="form-group">
                 <label class="form-label">Контактний телефон</label>
                 <input type="tel" class="form-input" id="phone" name="phone" placeholder="+380 67 123 45 67">
+                <div class="form-hint">Буде показано великими цифрами на міні-сайті. Додайте за потреби; якщо не потрібно — залиште порожнім.</div>
             </div>
 
             <div class="form-group">
@@ -662,24 +635,25 @@
 
             <div class="form-group">
                 <div class="form-label-row">
-                    <label class="form-label">Telegram менеджера <span class="required">*</span></label>
+                    <label class="form-label">Telegram менеджера</label>
                     <button type="button" class="btn-info-link" id="btnTelegramHelp1">
                         <i class="bi bi-question-circle"></i> Як створити username?
                     </button>
                 </div>
-                <input type="text" class="form-input" id="telegramManager" name="telegramManager" placeholder="@username" required>
-                <div class="form-hint">Тільки юзернейм через @, наприклад @my_shop</div>
+                <input type="text" class="form-input" id="telegramManager" name="telegramManager" placeholder="@username або +380 67 123 45 67">
+                <div class="form-hint">Юзернейм через @ (наприклад @my_shop) або номер телефону, якщо немає юзернейму.</div>
                 <div class="form-error" id="telegramManagerError"></div>
             </div>
 
             <div class="form-group">
                 <div class="form-label-row">
-                    <label class="form-label">Юзернейм Telegram-каналу</label>
+                    <label class="form-label">Telegram-канал або група</label>
                     <button type="button" class="btn-info-link" id="btnTelegramHelp2">
                         <i class="bi bi-question-circle"></i> Як створити username?
                     </button>
                 </div>
-                <input type="text" class="form-input" id="telegramChannel" name="telegramChannel" placeholder="@channel_name">
+                <input type="text" class="form-input" id="telegramChannel" name="telegramChannel" placeholder="@channel_name або https://t.me/...">
+                <div class="form-hint">Юзернейм каналу, посилання на публічний або закритий канал/групу.</div>
             </div>
 
             <div class="form-group">
@@ -707,28 +681,24 @@
             </div>
             <div class="accordion-list-title">Доступні опції:</div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Кілька телефонів та Viber</div>
-                <div class="accordion-item-desc">Декілька контактів для різних менеджерів.</div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-item-title">Декілька TikTok-акаунтів</div>
-                <div class="accordion-item-desc">Резервні або окремі профілі.</div>
+                <div class="accordion-item-title">Додаткові кнопки контактів та соцмереж</div>
+                <div class="accordion-item-desc">Телефони, Viber, TikTok-акаунти.</div>
             </div>
             <div class="accordion-item">
                 <div class="accordion-item-title">Умови оплати, доставки, повернення</div>
                 <div class="accordion-item-desc">Способи оплати, терміни, політика обміну.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">API Telegram-бота</div>
-                <div class="accordion-item-desc">Автоматизація замовлень та сповіщень.</div>
+                <div class="accordion-item-title">Підключення Telegram-бота</div>
+                <div class="accordion-item-desc">Каталог товарів на міні-сайті та в боті. Автоматизація замовлень та сповіщень.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">API Нової пошти</div>
+                <div class="accordion-item-title">Підключення Нової Пошти</div>
                 <div class="accordion-item-desc">ТТН, відстеження відправлень.</div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-item-title">Оплата карткою (Google/Apple Pay)</div>
-                <div class="accordion-item-desc">Миттєва оплата з фіскалізацією.</div>
+                <div class="accordion-item-title">Миттєва оплата карткою</div>
+                <div class="accordion-item-desc">Visa, Mastercard, Google/Apple Pay з автоматичною фіскалізацією.</div>
             </div>
             <div class="accordion-item">
                 <div class="accordion-item-title">Облік клієнтів</div>
@@ -753,12 +723,6 @@
             <span class="btn-submit-text">Створити<br>міні-сайт!</span>
         </button>
     </form>
-
-    <!-- Фіксована панель "згорнути" вгорі екрану при скролі -->
-    <div class="accordion-sticky-bar" id="accordionStickyBar">
-        <span><i class="bi bi-chevron-down"></i> Розширені можливості</span>
-        <span class="accordion-sticky-bar-subtext">згорнути</span>
-    </div>
 
     <div class="footer">
         <p>Частина екосистеми <a href="https://app.veoforce.com" target="_blank" rel="noopener noreferrer">VEO FORCE</a></p>
@@ -998,6 +962,13 @@
     function validateTelegramUsername(val) {
         return /^@[a-zA-Z0-9_]{5,32}$/.test(val.trim());
     }
+    function validateTelegramOrPhone(val) {
+        const v = val.trim();
+        if (!v) return true;
+        if (/^@[a-zA-Z0-9_]{5,32}$/.test(v)) return true;
+        const digits = v.replace(/\D/g, '');
+        return digits.length >= 10 && digits.length <= 15;
+    }
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -1037,8 +1008,8 @@
         } else showError('edrpou', null);
 
         const telegramManager = document.getElementById('telegramManager').value.trim();
-        if (!validateTelegramUsername(telegramManager)) {
-            showError('telegramManager', 'Формат: @username (5–32 символи)');
+        if (telegramManager && !validateTelegramOrPhone(telegramManager)) {
+            showError('telegramManager', 'Введіть @username (5–32 символи) або номер телефону');
             valid = false;
         } else showError('telegramManager', null);
 
@@ -1087,46 +1058,24 @@
     const accordionTrigger = document.getElementById('accordionTrigger');
     const accordionPanel = document.getElementById('accordionPanel');
     const accordionSubtext = document.getElementById('accordionTriggerSubtext');
-    const accordionStickyBar = document.getElementById('accordionStickyBar');
     let accordionScrollPos = 0;
-
-    function toggleAccordion(open) {
-        if (open) {
-            accordionScrollPos = window.scrollY || document.documentElement.scrollTop;
-            accordionTrigger.classList.add('open');
-            accordionPanel.classList.add('open');
-            accordionSubtext.textContent = 'згорнути';
-        } else {
-            accordionTrigger.classList.remove('open');
-            accordionPanel.classList.remove('open');
-            accordionSubtext.textContent = 'розгорнути';
-            accordionStickyBar.classList.remove('visible');
-            requestAnimationFrame(function() {
-                window.scrollTo(0, accordionScrollPos);
-            });
-        }
-    }
-
-    function updateStickyBar() {
-        if (!accordionPanel.classList.contains('open') || !accordionTrigger || !accordionStickyBar) return;
-        const triggerRect = accordionTrigger.getBoundingClientRect();
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-        if (triggerRect.bottom < 0 || scrollY > accordionScrollPos + 50) {
-            accordionStickyBar.classList.add('visible');
-        } else {
-            accordionStickyBar.classList.remove('visible');
-        }
-    }
-
-    if (accordionTrigger && accordionPanel && accordionSubtext && accordionStickyBar) {
+    if (accordionTrigger && accordionPanel && accordionSubtext) {
         accordionTrigger.addEventListener('click', function() {
-            toggleAccordion(!accordionTrigger.classList.contains('open'));
+            const isOpening = !accordionTrigger.classList.contains('open');
+            if (isOpening) {
+                accordionScrollPos = window.scrollY || document.documentElement.scrollTop;
+                accordionTrigger.classList.add('open');
+                accordionPanel.classList.add('open');
+                accordionSubtext.textContent = 'згорнути';
+            } else {
+                accordionTrigger.classList.remove('open');
+                accordionPanel.classList.remove('open');
+                accordionSubtext.textContent = 'розгорнути';
+                requestAnimationFrame(function() {
+                    window.scrollTo(0, accordionScrollPos);
+                });
+            }
         });
-        accordionStickyBar.addEventListener('click', function() {
-            toggleAccordion(false);
-        });
-        window.addEventListener('scroll', updateStickyBar, { passive: true });
-        window.addEventListener('resize', updateStickyBar);
     }
 })();
 </script>
