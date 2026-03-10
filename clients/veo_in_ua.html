@@ -18,22 +18,16 @@
             font-family: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
             padding: 20px 12px 120px;
             margin: 0;
-            background: linear-gradient(-45deg, #1a1a1e, #25252a, #2d2d33, #1e1e23, #FE2C55, #1a1a1e);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
+            background: linear-gradient(-45deg, #1a1a1e, #25252a, #2d2d33, #1e1e23, rgb(182, 236, 223), #1a1a1e);
+            background-attachment: fixed;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
         .container {
             max-width: 500px;
             width: 100%;
             margin: 0 auto;
-            background-color: rgba(18, 18, 18, 0.85);
+            background-color: rgba(18, 18, 18, 0.95);
             border-radius: 20px;
             padding: 20px 16px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -215,12 +209,6 @@
         }
         .footer-block-content a { color: rgb(182, 236, 223); font-weight: 500; }
         .footer-block-content .highlight { color: #fff; font-weight: 600; }
-        .search-store-block {
-            padding: 16px 0;
-            margin: 16px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
         .search-hint { margin-bottom: 12px !important; font-size: 0.9rem !important; }
         .search-row {
             display: flex;
@@ -282,12 +270,6 @@
             border-color: rgb(182, 236, 223);
             background: rgba(182, 236, 223, 0.15);
             color: rgb(182, 236, 223);
-        }
-        .top-stores-title {
-            font-size: 0.9rem;
-            color: #999;
-            margin-bottom: 14px;
-            text-align: center;
         }
         .top-stores-grid {
             display: grid;
@@ -390,34 +372,29 @@
     <!-- HEADER -->
     <section class="profile-header">
         <h1 class="store-name">VEO in UA</h1>
-        <p class="store-categories">Частина екосистеми VEO FORCE<br>Платформа міні-сайтів для TikTok-продавців</p>
+        <p class="store-categories">Частина екосистеми VEO FORCE<br>Платформа TikTok-шопінгу</p>
     </section>
 
-    <!-- ПРО VEO.in.UA -->
+    <!-- Пошук магазинів -->
     <section class="block">
-        <h2 class="section-title">Про VEO.in.UA</h2>
-        <p>На цьому домені розміщуються <strong>міні-сайти для продавців</strong> — окремі сторінки, де відображаються реквізити ФОП, контакти та каталог товарів.</p>
-
-        <div class="search-store-block">
-            <p class="search-hint">Знайдіть міні-сайт вашого продавця через пошук за номером магазину.</p>
-            <div class="search-row">
-                <input type="text" class="search-input" id="storeNumberSearch" placeholder="№ магазину" maxlength="4" inputmode="numeric" pattern="[0-9]*">
-                <button type="button" class="btn-search" id="btnSearchStore"><i class="bi bi-search"></i> Шукати</button>
-            </div>
-            <p class="search-field-hint">введіть 4 цифри</p>
-            <div class="form-error" id="storeSearchError"></div>
-            <div class="search-result-block" id="searchResultBlock">
-                <div class="search-result-title">Знайдений магазин</div>
-                <div class="search-result-url" id="searchResultUrl"></div>
-                <div class="search-result-details" id="searchResultDetails"></div>
-            </div>
+        <h2 class="section-title">Пошук магазинів</h2>
+        <p class="search-hint">Знайдіть міні-сайт вашого продавця через пошук за номером магазину.</p>
+        <div class="search-row">
+            <input type="text" class="search-input" id="storeNumberSearch" placeholder="№ магазину" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+            <button type="button" class="btn-search" id="btnSearchStore"><i class="bi bi-search"></i> Шукати</button>
+        </div>
+        <p class="search-field-hint">введіть 4 цифри</p>
+        <div class="form-error" id="storeSearchError"></div>
+        <div class="search-result-block" id="searchResultBlock">
+            <div class="search-result-title">Знайдений магазин</div>
+            <div class="search-result-url" id="searchResultUrl"></div>
+            <div class="search-result-details" id="searchResultDetails"></div>
         </div>
     </section>
 
-    <!-- Топові магазини та фільтри -->
+    <!-- Топові магазини -->
     <section class="block">
-        <h2 class="section-title">Пошук магазинів</h2>
-        <p class="top-stores-title">Топові магазини по відвідуванню протягом останніх 7 днів</p>
+        <h2 class="section-title">Топові магазини по відвідуванню протягом останніх 7 днів</h2>
         <div class="category-tabs" id="categoryTabs">
             <button type="button" class="category-tab-btn" data-category="all">Усі</button>
             <button type="button" class="category-tab-btn" data-category="Товари">Товари</button>
@@ -436,6 +413,12 @@
         <div class="top20-explanation">
             <strong>Що таке ТОП-20?</strong> Це 20 магазинів з найбільшою кількістю відвідувань за останні 7 днів. Рейтинг оновлюється щодня на основі статистики переглядів міні-сайтів.
         </div>
+    </section>
+
+    <!-- Про VEO.in.UA -->
+    <section class="block">
+        <h2 class="section-title">Про VEO.in.UA</h2>
+        <p>На цьому домені розміщуються міні-сайти продавців.</p>
     </section>
 
     <section class="block cta-block">
@@ -547,14 +530,16 @@
             : MOCK_STORES.filter(s => s.category === currentCategory);
         filtered = filtered.slice(0, 20);
         filtered.sort((a, b) => b[currentSort] - a[currentSort]);
+        const daysWord = (n) => n === 1 ? 'день' : (n >= 2 && n <= 4 ? 'дні' : 'днів');
+        const productsWord = (n) => n === 1 ? 'товар' : (n >= 2 && n <= 4 ? 'товари' : 'товарів');
         topStoresGrid.innerHTML = filtered.map(s => `
             <a href="https://${s.id}.veo.in.ua" class="store-card" target="_blank" rel="noopener">
                 <div class="store-card-img"></div>
                 <div class="store-card-body">
                     <div class="store-card-name">${s.name}</div>
                     <div class="store-card-meta">
-                        ${s.subscribers} підписників · ${s.products} товарів<br>
-                        Тримається в ТОП-20 вже ${s.daysInTop} днів
+                        ${s.subscribers} підписників · ${s.products} ${productsWord(s.products)}<br>
+                        Тримається в ТОП-20 вже ${s.daysInTop} ${daysWord(s.daysInTop)}
                     </div>
                 </div>
             </a>
