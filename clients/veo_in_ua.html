@@ -258,6 +258,7 @@
             .btn-search { justify-content: center; }
         }
         .btn-search:hover { background: rgb(195, 240, 230); }
+        .search-field-hint { font-size: 0.8rem; color: #999; margin: 6px 0 0; }
         .form-error { font-size: 0.8rem; color: #e74c3c; margin-top: 8px; }
         .category-tabs {
             display: flex;
@@ -400,9 +401,10 @@
         <div class="search-store-block">
             <p class="search-hint">Знайдіть міні-сайт вашого продавця через пошук за номером магазину.</p>
             <div class="search-row">
-                <input type="text" class="search-input" id="storeNumberSearch" placeholder="№ магазину (4 цифри)" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+                <input type="text" class="search-input" id="storeNumberSearch" placeholder="№ магазину" maxlength="4" inputmode="numeric" pattern="[0-9]*">
                 <button type="button" class="btn-search" id="btnSearchStore"><i class="bi bi-search"></i> Шукати</button>
             </div>
+            <p class="search-field-hint">введіть 4 цифри</p>
             <div class="form-error" id="storeSearchError"></div>
             <div class="search-result-block" id="searchResultBlock">
                 <div class="search-result-title">Знайдений магазин</div>
