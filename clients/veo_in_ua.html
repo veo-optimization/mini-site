@@ -224,11 +224,13 @@
         .search-hint { margin-bottom: 12px !important; font-size: 0.9rem !important; }
         .search-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             align-items: center;
         }
         .search-input {
             flex: 1;
+            min-width: 0;
             padding: 12px 14px;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.2);
@@ -239,7 +241,7 @@
         .search-input:focus { outline: none; border-color: rgb(182, 236, 223); }
         .search-input.error { border-color: #e74c3c; }
         .btn-search {
-            padding: 12px 18px;
+            padding: 12px 16px;
             border-radius: 12px;
             border: none;
             background: rgb(182, 236, 223);
@@ -249,6 +251,11 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-shrink: 0;
+        }
+        @media (max-width: 360px) {
+            .search-row { flex-direction: column; align-items: stretch; }
+            .btn-search { justify-content: center; }
         }
         .btn-search:hover { background: rgb(195, 240, 230); }
         .form-error { font-size: 0.8rem; color: #e74c3c; margin-top: 8px; }
@@ -315,6 +322,64 @@
             color: #999;
             line-height: 1.4;
         }
+        .search-result-block {
+            margin-top: 14px;
+            padding: 16px;
+            background: rgba(182, 236, 223, 0.12);
+            border: 1px solid rgba(182, 236, 223, 0.3);
+            border-radius: 12px;
+            display: none;
+        }
+        .search-result-block.visible { display: block; }
+        .search-result-title {
+            font-weight: 600;
+            color: rgb(182, 236, 223);
+            margin-bottom: 10px;
+        }
+        .search-result-url {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
+        .search-result-url a { color: rgb(182, 236, 223); }
+        .search-result-details {
+            font-size: 0.85rem;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        .sort-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .sort-filter-label { font-size: 0.85rem; color: #999; }
+        .sort-filter-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+        .sort-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(55, 55, 60, 0.5);
+            color: #b0b0b0;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .sort-btn.active { border-color: rgb(182, 236, 223); color: rgb(182, 236, 223); }
+        .top20-explanation {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.5;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .cta-block {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
@@ -339,16 +404,11 @@
                 <button type="button" class="btn-search" id="btnSearchStore"><i class="bi bi-search"></i> Шукати</button>
             </div>
             <div class="form-error" id="storeSearchError"></div>
-        </div>
-
-        <p>Щоб створити безкоштовний міні-сайт, зареєструйтесь в системі VEO FORCE. Якщо ви вже маєте обліковий запис в системі — увійдіть.</p>
-        <div class="cta-buttons">
-            <a href="https://app.veoforce.com/register" class="btn-link-style btn-primary-style" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-person-plus me-2"></i> Зареєструватись
-            </a>
-            <a href="https://app.veoforce.com/login" class="btn-link-style btn-login-style" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-box-arrow-in-right me-2"></i> Увійти
-            </a>
+            <div class="search-result-block" id="searchResultBlock">
+                <div class="search-result-title">Знайдений магазин</div>
+                <div class="search-result-url" id="searchResultUrl"></div>
+                <div class="search-result-details" id="searchResultDetails"></div>
+            </div>
         </div>
     </section>
 
@@ -362,7 +422,30 @@
             <button type="button" class="category-tab-btn" data-category="Послуги">Послуги</button>
             <button type="button" class="category-tab-btn" data-category="Онлайн">Онлайн</button>
         </div>
+        <div class="sort-filter">
+            <span class="sort-filter-label">Сортувати:</span>
+            <div class="sort-filter-btns">
+                <button type="button" class="sort-btn" data-sort="subscribers">Підписники</button>
+                <button type="button" class="sort-btn" data-sort="products">Товари</button>
+                <button type="button" class="sort-btn" data-sort="daysInTop">Дні в ТОПі</button>
+            </div>
+        </div>
         <div class="top-stores-grid" id="topStoresGrid"></div>
+        <div class="top20-explanation">
+            <strong>Що таке ТОП-20?</strong> Це 20 магазинів з найбільшою кількістю відвідувань за останні 7 днів. Рейтинг оновлюється щодня на основі статистики переглядів міні-сайтів.
+        </div>
+    </section>
+
+    <section class="block cta-block">
+        <p>Щоб створити безкоштовний міні-сайт, зареєструйтесь в системі VEO FORCE. Якщо ви вже маєте обліковий запис в системі — увійдіть.</p>
+        <div class="cta-buttons">
+            <a href="https://app.veoforce.com/register" class="btn-link-style btn-primary-style" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-person-plus me-2"></i> Зареєструватись
+            </a>
+            <a href="https://app.veoforce.com/login" class="btn-link-style btn-login-style" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Увійти
+            </a>
+        </div>
     </section>
 
     <div class="footer">
@@ -381,12 +464,31 @@
 (function() {
     const searchInput = document.getElementById('storeNumberSearch');
     const searchError = document.getElementById('storeSearchError');
+    const searchResultBlock = document.getElementById('searchResultBlock');
+    const searchResultUrl = document.getElementById('searchResultUrl');
+    const searchResultDetails = document.getElementById('searchResultDetails');
     const btnSearch = document.getElementById('btnSearchStore');
     const categoryTabs = document.getElementById('categoryTabs');
     const topStoresGrid = document.getElementById('topStoresGrid');
 
+    let currentCategory = 'all';
+    let currentSort = 'subscribers';
+
     function validateStoreNumber(val) {
         return /^\d{4}$/.test(val.replace(/\D/g, ''));
+    }
+
+    function getMockStoreData(num) {
+        const n = parseInt(num, 10);
+        return {
+            id: n,
+            name: 'Магазин ' + num,
+            subscribers: 100 + (n % 400),
+            products: 15 + (n % 85),
+            daysInTop: 1 + (n % 7),
+            category: ['Товари', 'Послуги', 'Онлайн'][n % 3],
+            visits7d: 500 + (n % 2000)
+        };
     }
 
     btnSearch.addEventListener('click', function() {
@@ -396,13 +498,32 @@
         if (!validateStoreNumber(num)) {
             searchError.textContent = 'Введіть 4 цифри номера магазину';
             searchInput.classList.add('error');
+            searchResultBlock.classList.remove('visible');
             return;
         }
-        window.location.href = 'https://' + num + '.veo.in.ua';
+        doSearch();
     });
+
+    function doSearch() {
+        const num = searchInput.value.replace(/\D/g, '');
+        if (num.length === 4) {
+            searchError.textContent = '';
+            searchInput.classList.remove('error');
+            const store = getMockStoreData(num);
+            const url = 'https://' + num + '.veo.in.ua';
+            searchResultUrl.innerHTML = '<a href="' + url + '" target="_blank" rel="noopener">' + url + '</a>';
+            searchResultDetails.innerHTML = '<strong>' + store.name + '</strong><br>' +
+                'Підписників у боті: ' + store.subscribers + ' · Товарів: ' + store.products + '<br>' +
+                'Категорія: ' + store.category + ' · Відвідувань за 7 днів: ' + store.visits7d;
+            searchResultBlock.classList.add('visible');
+        } else {
+            searchResultBlock.classList.remove('visible');
+        }
+    }
 
     searchInput.addEventListener('input', function() {
         this.value = this.value.replace(/\D/g, '').slice(0, 4);
+        doSearch();
     });
 
     searchInput.addEventListener('keypress', function(e) {
@@ -418,18 +539,20 @@
         category: ['Товари', 'Послуги', 'Онлайн'][i % 3]
     }));
 
-    function renderStores(category) {
-        const filtered = category === 'all'
-            ? MOCK_STORES
-            : MOCK_STORES.filter(s => s.category === category);
-        topStoresGrid.innerHTML = filtered.slice(0, 20).map(s => `
+    function renderStores() {
+        let filtered = currentCategory === 'all'
+            ? [...MOCK_STORES]
+            : MOCK_STORES.filter(s => s.category === currentCategory);
+        filtered = filtered.slice(0, 20);
+        filtered.sort((a, b) => b[currentSort] - a[currentSort]);
+        topStoresGrid.innerHTML = filtered.map(s => `
             <a href="https://${s.id}.veo.in.ua" class="store-card" target="_blank" rel="noopener">
                 <div class="store-card-img"></div>
                 <div class="store-card-body">
                     <div class="store-card-name">${s.name}</div>
                     <div class="store-card-meta">
                         ${s.subscribers} підписників · ${s.products} товарів<br>
-                        В ТОП-20: ${s.daysInTop} дн.
+                        Тримається в ТОП-20 вже ${s.daysInTop} днів
                     </div>
                 </div>
             </a>
@@ -440,12 +563,23 @@
         btn.addEventListener('click', function() {
             categoryTabs.querySelectorAll('.category-tab-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            renderStores(this.dataset.category);
+            currentCategory = this.dataset.category;
+            renderStores();
+        });
+    });
+
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentSort = this.dataset.sort;
+            renderStores();
         });
     });
 
     document.querySelector('.category-tab-btn[data-category="all"]').classList.add('active');
-    renderStores('all');
+    document.querySelector('.sort-btn[data-sort="subscribers"]').classList.add('active');
+    renderStores();
 })();
 </script>
 </body>
